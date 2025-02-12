@@ -20,5 +20,7 @@ namespace CodingTracker.Common.DataInterfaces.IUserCredentialRepositories
         Task<bool> UpdateUserCredentialsAsync(string username, string passwordHash, int userId);
         Task<bool> UpdatePassWord(string username, string hashedPassword);
         Task<bool> DeleteUserAsync(int userId);
+
+        Task<bool> DeleteAllUsers();
     }
 }

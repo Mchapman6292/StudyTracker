@@ -10,7 +10,7 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel);
     }
 
-    public class LabelAssignment
+    public class LabelAssignment : ILabelAssignment
     {
         private readonly IApplicationLogger _appLogger;
         private readonly ICodingSessionRepository _codingSessionRepository;

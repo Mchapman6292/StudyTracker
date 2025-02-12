@@ -96,6 +96,12 @@ namespace CodingTracker.Data.Repositories.UserCredentialRepositories
                 .ExecuteDeleteAsync() > 0;
         }
 
+        public async Task<bool> DeleteAllUsers()
+        {
+            return await _dbContext.UserCredentials
+                .ExecuteDeleteAsync() > 0;
+        }
+
 
     }
 }

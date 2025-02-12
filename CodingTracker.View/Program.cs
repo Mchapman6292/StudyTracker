@@ -39,6 +39,8 @@ using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Business.MainPageService.PanelColorControls;
 using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
+using CodingTracker.Business.CodingSessionService.SessionCalculators;
+using CodingTracker.Business.MainPageService.LabelAssignments;
 
 
 /// To do
@@ -107,6 +109,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
                     .AddSingleton<IUserCredentialRepository , UserCredentialRepository>()
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
+                    .AddSingleton<ILabelAssignment, LabelAssignment>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()

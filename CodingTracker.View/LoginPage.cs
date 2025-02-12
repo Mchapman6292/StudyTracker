@@ -108,7 +108,6 @@ namespace CodingTracker.View
         {
             try
             {
-
                 if (Properties.Settings.Default.RememberMe)
                 {
                     var lastUsername = Properties.Settings.Default.LastUsername;
@@ -126,46 +125,38 @@ namespace CodingTracker.View
         }
 
 
+        private void SaveUsername(string username)
+        {
+            try
+            {
+                if (LoginPageRememberMeToggle.Checked)
+                {
+                    Properties.Settings.Default.LastUsername = username;
+                    Properties.Settings.Default.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                _appLogger.Error($"Error saving username: {ex.Message}");
+            }
+        }
+
+
 
 
         private async void loginPageLoginButton_Click(object sender, EventArgs e)
         {
-            await _appLogger.LogActivityAsync(nameof(loginPageLoginButton_Click),
-                async activity =>
-                {
-                    _appLogger.Info($"Login activity started. TraceId:{activity.TraceId}");
-                },
-                async activity =>  // Note the added 'activity' parameter here
-                {
-                    try
-                    {
-                        string username = loginPageUsernameTextbox.Text;
-                        string password = LoginPagePasswordTextbox.Text;
-                        bool isValidLogin = await _authenticationService.AuthenticateLogin(username, password, activity);
+            _appLogger.Info($"Starting {nameof(loginPageLoginButton_Click)}.");
 
-                        if (isValidLogin)
-                        {
-                            if (LoginPageRememberMeToggle.Checked)
-                            {
-                                Properties.Settings.Default.LastUsername = username;
-                                Properties.Settings.Default.Save();
-                            }
-                            this.Hide();
-                            _formSwitcher.SwitchToMainPage();
-                            _appLogger.Info($"User logged in successfully. TraceId:{activity.TraceId}");
-                        }
-                        else
-                        {
-                            LoginPageDisplaySuccessMessage("Login failed. Please check your username and password.");
-                            _appLogger.Warning($"Login failed for user '{username}'. TraceId:{activity.TraceId}");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _appLogger.Error($"Error during login process. TraceId:{activity.TraceId}", ex);
-                    }
-                }
-            );
+            string username = loginPageUsernameTextbox.Text;
+            string password = LoginPagePasswordTextbox.Text;
+            bool isValidLogin = await _authenticationService.AuthenticateLoginWithoutActivity(username, password);
+
+            if( isValidLogin ) 
+            {
+                SaveUsername(username);
+                _formSwitcher.SwitchToMainPage();
+            }
         }
 
 
@@ -213,7 +204,7 @@ namespace CodingTracker.View
 
         private void LoginPageForgotPasswordButton_Click(object sender, EventArgs e)
         {
-          
+            _authenticationService.DeleteAllUserCredential();
         }
 
         private void LoginPageRememberMeToggle_CheckedChanged(object sender, EventArgs e)
@@ -243,8 +234,8 @@ namespace CodingTracker.View
             if (LoginPagePasswordTextbox.Text == "Password")
             {
                 LoginPagePasswordTextbox.Text = "";
-                LoginPagePasswordTextbox.ForeColor = Color.Black; // Or whatever your default text color is
-                LoginPagePasswordTextbox.PasswordChar = '●'; // Set this to your desired password character
+                LoginPagePasswordTextbox.ForeColor = Color.Black; 
+                LoginPagePasswordTextbox.PasswordChar = '●'; 
             }
         }
 
@@ -265,7 +256,7 @@ namespace CodingTracker.View
             {
                 LoginPagePasswordTextbox.Text = "Password";
                 LoginPagePasswordTextbox.ForeColor = Color.Gray;
-                LoginPagePasswordTextbox.PasswordChar = '\0'; // Clear the PasswordChar property
+                LoginPagePasswordTextbox.PasswordChar = '\0'; 
             }
         }
     }

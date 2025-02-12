@@ -36,6 +36,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             if(await _userCredentialRepository.UsernameExistsAsync(username))
             {
                 _appLogger.Error($"Username already exists.");
+                return false;
             }
 
             UserCredentialEntity user = new UserCredentialEntity
@@ -60,6 +61,8 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
                 return false;
             }
 
+            _appLogger.Debug($"Username found for {username}.");
+
 
             UserCredentialEntity loginCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
 
@@ -70,12 +73,53 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
             if (!isValid)
             {
+                _appLogger.Debug($"Incorrect passwordHash.");
                 return false;
             }
+
+
 
             _userIdService.SetCurrentUserId(loginCredential.UserId);
             return true;
         }
+
+
+
+
+        public async Task<bool> AuthenticateLoginWithoutActivity(string username, string password)
+        {
+            bool usernameExist = await _userCredentialRepository.UsernameExistsAsync(username);
+
+            if (!usernameExist)
+            {
+                _appLogger.Info($"No username exists for {username}");
+                return false;
+            }
+
+            _appLogger.Debug($"Username found for {username}.");
+
+
+
+            UserCredentialEntity loginCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+
+
+            var inputHash = _utilityService.HashPassword(password);
+            var storedHash = loginCredential.PasswordHash;
+
+            bool isValid = inputHash.Equals(storedHash, StringComparison.Ordinal);
+
+            if (!isValid)
+            {
+                _appLogger.Debug($"Incorrect passwordHash.");
+                return false;
+            }
+            _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");     
+
+            _userIdService.SetCurrentUserId(loginCredential.UserId);
+            return true;
+        }
+
+
 
 
         public async Task<bool> ResetPassword(string username, string newPassword)
@@ -91,6 +135,15 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             return await _userCredentialRepository.UpdatePassWord(username, hashedPassword);
          
 
+        }
+
+
+
+        public async Task DeleteAllUserCredential()
+        {
+            bool success = await _userCredentialRepository.DeleteAllUsers();
+            string logMessage = success ? "All UserCredentials deleted" : "Failure to delete UserCredentials.";
+            _appLogger.Debug(logMessage);
         }
     }
 }
