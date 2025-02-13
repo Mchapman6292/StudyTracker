@@ -110,6 +110,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IUserCredentialRepository , UserCredentialRepository>()
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
+                    .AddSingleton<IFormStateManagement, FormStateManagement>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()

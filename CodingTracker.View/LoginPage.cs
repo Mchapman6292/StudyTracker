@@ -10,6 +10,8 @@ using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using CodingTracker.View.FormService;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.Common.Entities.UserCredentialEntities;
 
 namespace CodingTracker.View
 {
@@ -20,16 +22,18 @@ namespace CodingTracker.View
         private readonly IApplicationLogger _appLogger;
         private readonly IFormController _formController;
         private readonly IFormSwitcher _formSwitcher;
+        private readonly ICodingSessionManager _codingSessionManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
             _appLogger = applogger;
             _formController = formController;
             _formSwitcher = formSwitcher;
+            _codingSessionManager = codingSessionManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -152,9 +156,13 @@ namespace CodingTracker.View
             string password = LoginPagePasswordTextbox.Text;
             bool isValidLogin = await _authenticationService.AuthenticateLoginWithoutActivity(username, password);
 
-            if( isValidLogin ) 
+            if(isValidLogin ) 
             {
+                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
                 SaveUsername(username);
+
+                // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
+                _codingSessionManager.StartCodingSession();
                 _formSwitcher.SwitchToMainPage();
             }
         }

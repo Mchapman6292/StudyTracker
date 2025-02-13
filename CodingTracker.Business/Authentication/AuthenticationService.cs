@@ -77,8 +77,6 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
                 return false;
             }
 
-
-
             _userIdService.SetCurrentUserId(loginCredential.UserId);
             return true;
         }
@@ -115,7 +113,6 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             }
             _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");     
 
-            _userIdService.SetCurrentUserId(loginCredential.UserId);
             return true;
         }
 
