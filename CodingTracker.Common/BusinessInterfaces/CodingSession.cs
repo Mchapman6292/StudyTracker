@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.UserCredentials;
-using CodingTracker.Common.IdGenerators;
-using System.Diagnostics;
-using CodingTracker.Common.IApplicationLoggers;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace CodingTracker.Common.CodingSessions

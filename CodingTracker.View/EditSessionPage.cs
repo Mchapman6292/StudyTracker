@@ -28,10 +28,10 @@ namespace CodingTracker.View
         private readonly IFormSwitcher _formSwitcher;
         private readonly IFormController _formController;
         private readonly IApplicationLogger _appLogger;
-        private readonly CodingSessionRepository _codingSessionRepository;
+        private readonly ICodingSessionRepository _codingSessionRepository;
         private bool isEditSessionOn = false;
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, CodingSessionRepository codingSessionRepository, EditSessionPageContextManager editContextManager)
+        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, EditSessionPageContextManager editContextManager)
         {
             EditPageContextManager = editContextManager;
             _appLogger = appLogger;

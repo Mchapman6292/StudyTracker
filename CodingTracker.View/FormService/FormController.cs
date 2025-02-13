@@ -81,5 +81,11 @@ namespace CodingTracker.View.FormService
                 }));
             }
         }
+
+
+        public void SwtichToActiveForm(Form targetForm)
+        {
+
+        }
     }
 }

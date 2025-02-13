@@ -22,12 +22,13 @@ namespace CodingTracker.View.FormService
 
         private IServiceProvider _serviceProvider;
         private IApplicationLogger _appLogger;
-        private MainPage _mainPageInstance;
+        private readonly IFormStateManagement _formStateManagement;
 
-        public FormFactory(IServiceProvider serviceProvider, IApplicationLogger appLogger)
+        public FormFactory(IServiceProvider serviceProvider, IApplicationLogger appLogger, IFormStateManagement formStateManagement)
         {
             _serviceProvider = serviceProvider;
             _appLogger = appLogger;
+            _formStateManagement = formStateManagement;
         }
 
         public T CreateForm<T>(string methodName) where T : class
@@ -56,30 +57,48 @@ namespace CodingTracker.View.FormService
 
         public MainPage CreateMainPage()
         {
-            if (_mainPageInstance == null)
+            if (_formStateManagement.GetMainPageInstance() == null)
             {
-                _mainPageInstance = CreateForm<MainPage>(nameof(CreateMainPage));
+                _formStateManagement.SetMainPageInstance(CreateForm<MainPage>(nameof(CreateMainPage)));
             }
-            return _mainPageInstance;
+            return _formStateManagement.GetMainPageInstance();
         }
+
 
         public CodingSessionPage CreateCodingSessionPage()
         {
-            return CreateForm<CodingSessionPage>(nameof(CreateCodingSessionPage));
+            if (_formStateManagement.GetCodingSessionPageInstance() == null)
+            {
+                _formStateManagement.SetCodingSessionPageInstance(CreateForm<CodingSessionPage>(nameof(CreateCodingSessionPage)));
+            }
+            return _formStateManagement.GetCodingSessionPageInstance();
         }
 
         public EditSessionPage CreateEditSessionPage()
         {
-            return CreateForm<EditSessionPage>(nameof(CreateEditSessionPage));
+            if (_formStateManagement.GetEditSessionPageInstance() == null)
+            {
+                _formStateManagement.SetEditSessionPageInstance(CreateForm<EditSessionPage>(nameof(CreateEditSessionPage)));
+            }
+            return _formStateManagement.GetEditSessionPageInstance();
         }
+
         public CreateAccountPage CreateAccountPage()
         {
-            return CreateForm<CreateAccountPage>(nameof(CreateAccountPage));
+            if (_formStateManagement.GetCreateAccountPageInstance() == null)
+            {
+                _formStateManagement.SetCreateAccountPageInstance(CreateForm<CreateAccountPage>(nameof(CreateAccountPage)));
+            }
+            return _formStateManagement.GetCreateAccountPageInstance();
         }
 
         public CodingSessionTimerForm CreateCodingSessionTimer()
         {
-            return CreateForm<CodingSessionTimerForm>(nameof(CreateCodingSessionTimer));
+            if (_formStateManagement.GetCodingSessionTimerInstance() == null)
+            {
+                _formStateManagement.SetCodingSessionTimerInstance(CreateForm<CodingSessionTimerForm>(nameof(CreateCodingSessionTimer)));
+            }
+            return _formStateManagement.GetCodingSessionTimerInstance();
         }
     }
 }

@@ -1,59 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.IApplicationLoggers;
 
 namespace CodingTracker.Common.IdGenerators
 {
     public interface IIdGenerators
     {
-        int GenerateUserId(Activity activity);
-        int GenerateSessionId(Activity activity);
+        int GenerateUserId();
+        int GenerateSessionId();
     }
 
-    public  class IdGenerators : IIdGenerators
+    public class IdGenerators : IIdGenerators
     {
         private int lastAssignedUserId = 0;
         private int LastAssignedSessionId = 0;
         private readonly IApplicationLogger _appLogger;
 
-
-
-        public IdGenerators(IApplicationLogger appLogger) 
+        public IdGenerators(IApplicationLogger appLogger)
         {
             _appLogger = appLogger ?? throw new ArgumentNullException(nameof(appLogger));
         }
 
-
-
-
-        public int GenerateUserId(Activity activity)
+        public int GenerateUserId()
         {
-            if(activity == null) throw new ArgumentNullException(nameof(activity));
-
-            _appLogger.Info($"Starting {nameof(GenerateUserId)} TraceId : {activity.TraceId}");
-
-            int newId = ++ lastAssignedUserId;
-
-            _appLogger.Info($"LastAssignedUserId updated to {lastAssignedUserId}, new userId = {newId} TraceId : {activity.TraceId}.");
-
+            _appLogger.Info($"Starting {nameof(GenerateUserId)}");
+            int newId = ++lastAssignedUserId;
+            _appLogger.Info($"LastAssignedUserId updated to {lastAssignedUserId}, new userId = {newId}");
             return newId;
         }
 
-
-        public int GenerateSessionId(Activity activity)
+        public int GenerateSessionId()
         {
-            if(activity == null) throw new ArgumentNullException (nameof(activity));
-
-            _appLogger.Info($"Starting {nameof(GenerateSessionId)} TraceId : {activity.TraceId}");
-
+            _appLogger.Info($"Starting {nameof(GenerateSessionId)}");
             int newId = ++LastAssignedSessionId;
-
-            _appLogger.Info($"LastAssignedSessionId updated to {LastAssignedSessionId}, new userId = {newId} TraceId : {activity.TraceId}.");
-
+            _appLogger.Info($"LastAssignedSessionId updated to {LastAssignedSessionId}, new userId = {newId}");
             return newId;
         }
     }

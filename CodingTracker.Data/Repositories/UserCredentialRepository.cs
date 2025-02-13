@@ -32,8 +32,14 @@ namespace CodingTracker.Data.Repositories.UserCredentialRepositories
 
         public async Task<UserCredentialEntity?> GetUserCredentialByIdAsync(int userId)
         {
-            return await _dbContext.UserCredentials
+            var userCredential = await _dbContext.UserCredentials
                 .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            if(userCredential == null) 
+            {
+                throw new KeyNotFoundException($"Usercredential == null, unable to find user or error with data.");
+            }
+            return userCredential;
         }
 
         public async Task<bool> UsernameExistsAsync(string username)
