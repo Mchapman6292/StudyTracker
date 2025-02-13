@@ -1,14 +1,8 @@
-﻿using CodingTracker.Common.IApplicationControls;
-using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
-
-using System;
-using System.Collections.Generic;
+using CodingTracker.Common.IApplicationControls;
+using CodingTracker.Common.IApplicationLoggers;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 
 namespace CodingTracker.Business.ApplicationControls
 {
@@ -34,10 +28,10 @@ namespace CodingTracker.Business.ApplicationControls
             ApplicationIsRunning = true;
         }
 
-        public async Task ExitApplication()
+        public async Task ExitApplicationAsync()
         {
-            using var activity = new Activity(nameof(ExitApplication)).Start();
-            _appLogger.Info($"Starting {nameof(ExitApplication)}. TraceID: {activity.TraceId}");
+            using var activity = new Activity(nameof(ExitApplicationAsync)).Start();
+            _appLogger.Info($"Starting {nameof(ExitApplicationAsync)}. TraceID: {activity.TraceId}");
 
             var stopwatch = Stopwatch.StartNew();
 
@@ -45,21 +39,21 @@ namespace CodingTracker.Business.ApplicationControls
             {
                 if (_codingSessionManager.CheckIfCodingSessionActive())
                 {
-                    _codingSessionManager.EndCodingSession(activity);
+                    await _codingSessionManager.EndCodingSessionAsync();
                     _appLogger.Info($"Active coding session saved. TraceID: {activity.TraceId}");
                 }
 
                 await _context.SaveChangesAsync();
 
                 stopwatch.Stop();
-                _appLogger.Info($"{nameof(ExitApplication)} completed. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
+                _appLogger.Info($"{nameof(ExitApplicationAsync)} completed. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
 
                 Application.Exit();
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                _appLogger.Error($"An error occurred during {nameof(ExitApplication)}. Error: {ex.Message}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}", ex);
+                _appLogger.Error($"An error occurred during {nameof(ExitApplicationAsync)}. Error: {ex.Message}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}", ex);
             }
         }
     }

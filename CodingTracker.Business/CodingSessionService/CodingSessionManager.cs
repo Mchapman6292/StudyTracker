@@ -1,16 +1,17 @@
-﻿using CodingTracker.Common.IErrorHandlers;
-using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.CodingSessionDTOs;
-using System.Diagnostics;
-using CodingTracker.Common.IInputValidators;
-using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.IdGenerators;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using System.Linq.Expressions;
+﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionTimers;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.Entities.UserCredentialEntities;
+using CodingTracker.Common.CodingSessions;
+using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
+using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.Entities.UserCredentialEntities;
+using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.IdGenerators;
+using CodingTracker.Common.IErrorHandlers;
+using CodingTracker.Common.IInputValidators;
+using System.Diagnostics;
+using System.Net;
+using System.Text;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {
@@ -19,13 +20,13 @@ namespace CodingTracker.Business.CodingSessionManagers
 
     public class CodingSessionManager : ICodingSessionManager
     {
-        public CodingSession _currentCodingSession;
+        private CodingSession _currentCodingSession {  get; set; }
 
         private readonly IErrorHandler _errorHandler;
         private readonly IApplicationLogger _appLogger;
         private readonly IInputValidator _inputValidator;
         private readonly IIdGenerators _idGenerators;
-        private readonly ICodingSessionRepository _codingSessionRepo;
+        private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ICodingSessionTimer _sessionTimer;
         private readonly IUserCredentialRepository _userCredentialRepository;
 
@@ -37,7 +38,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             _appLogger = appLogger;
             _inputValidator = inputValidator;
             _idGenerators = idGenerators;
-            _codingSessionRepo = codingSessionRepo;
+            _codingSessionRepository = codingSessionRepo;
             _sessionTimer = sessionTimer;
             _userCredentialRepository = userCredentialRepository;
         }
@@ -84,13 +85,27 @@ namespace CodingTracker.Business.CodingSessionManagers
             return codingSession;
         }
 
+        public async Task SetCurrentSessionUserIdAsync(string username)
+        {
+            UserCredentialEntity credential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+
+            _appLogger.Debug($"UserId {credential.UserId} retrieved for username{username} for {nameof(SetCurrentSessionUserIdAsync)}");
+
+            int userId = credential.UserId;
+
+            _currentCodingSession.UserId = userId;
+
+            _appLogger.Debug($"_currentCodingSession.UserId set to {_currentCodingSession.UserId}");
+  
+        }
+
         // This is called upon successful login, If a user never starts the timer the Session is never saved to the database. 
-        public void StartCodingSession()
+        public async Task StartCodingSession(string username)
         {
             _appLogger.Info($"Starting {nameof(StartCodingSession)}");
-            
-            int userId = _currentCodingSession.UserId;
-            CodingSession newSession = CreateNewCodingSession(userId);
+
+            UserCredentialEntity userCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+            CodingSession newSession = CreateNewCodingSession(userCredential.UserId);
 
             IsCodingSessionActive = true;
             SetCurrentCodingSession(newSession);
@@ -115,10 +130,20 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
 
-
-        public void EndCodingSession()
+        public void SetCodingSessionStartTimeAndDate(DateTime currentDateTimeUtc)
         {
-            _appLogger.Info($"Starting {nameof(EndCodingSession)}");
+            _currentCodingSession.StartDate = DateOnly.FromDateTime(currentDateTimeUtc);
+            _currentCodingSession.StartTime = currentDateTimeUtc;
+
+            _appLogger.Debug($"Session StartDate: {_currentCodingSession.StartDate}, StartTime: {_currentCodingSession.StartTime}.");
+        }
+
+
+
+        // This is also called inEndCodingSession in ApplicationControl,
+        public async Task EndCodingSessionAsync()
+        {
+            _appLogger.Info($"Starting {nameof(EndCodingSessionAsync)}");
             DateTime currentEndTime = DateTime.UtcNow;
             DateOnly currentendDate = DateOnly.FromDateTime(currentEndTime);
             int currentDurationSeconds = CalculateDurationSeconds(_currentCodingSession.StartTime, currentEndTime);
@@ -128,6 +153,51 @@ namespace CodingTracker.Business.CodingSessionManagers
             _currentCodingSession.EndDate = currentendDate;
             _currentCodingSession.DurationSeconds = currentDurationSeconds;
             _currentCodingSession.DurationHHMM = currentDurationHHMM;
+
+            CheckAllRequiredCodingSessionDetailsNotNull();
+
+            CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
+
+            await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
+
+        }
+
+        public void CheckAllRequiredCodingSessionDetailsNotNull()
+        {
+            StringBuilder nullProperties = new StringBuilder();
+
+            foreach (var property in typeof(CodingSession).GetProperties())
+            {
+                var value = property.GetValue(_currentCodingSession);
+                if (value == null)
+                {
+                    nullProperties.Append($"{property.Name}, ");
+                }
+            }
+            if (nullProperties.Length > 0)
+            {
+                throw new InvalidOperationException($"The following properties are null: {nullProperties.ToString().TrimEnd(',', ' ')}");
+            }
+        }
+
+
+
+        public CodingSessionEntity ConvertCodingSessionToCodingSessionEntity()
+        {
+            CodingSessionEntity codingSessionEntity = new CodingSessionEntity
+            {
+                SessionId = _currentCodingSession.SessionId,
+                UserId = _currentCodingSession.UserId,
+                StartDate = _currentCodingSession.StartDate ?? throw new ArgumentNullException($"StartDate cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                StartTime = _currentCodingSession.StartTime ?? throw new ArgumentNullException($"StartTime cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                EndDate = _currentCodingSession.EndDate ?? throw new ArgumentNullException($"EndDate cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                EndTime = _currentCodingSession.EndTime ?? throw new ArgumentNullException($"EndTime cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                DurationSeconds = _currentCodingSession.DurationSeconds ?? throw new ArgumentNullException($"DurationSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                DurationHHMM = _currentCodingSession.DurationHHMM,
+                GoalMinutes = _currentCodingSession.GoalMinutes ?? throw new ArgumentNullException($"GoalMinutes cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
+            };
+            return codingSessionEntity;
         }
 
 
@@ -165,6 +235,8 @@ namespace CodingTracker.Business.CodingSessionManagers
                 throw new ArgumentNullException(nameof(SetUserIdForCurrentSessionAsync), $"_codingSession cannot be null for {nameof(SetCurrentCodingSession)}");
 
             UserCredentialEntity userCredential =  await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+
+            _appLogger.Debug($"UserId {userCredential.UserId} retrieved for username{username} for {nameof(SetCurrentSessionUserIdAsync)}");
 
             _currentCodingSession.UserId = userCredential.UserId;
 

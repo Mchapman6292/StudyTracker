@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.IApplicationLoggers;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace CodingTracker.Data.Repositories.CodingSessionRepositories
@@ -20,6 +20,25 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             _dbContext = context;
         }
 
+        public async Task<bool> AddCodingSessionEntityAsync(CodingSessionEntity currentSession)
+        {
+            if (await _dbContext.CodingSessions.AnyAsync(s => s.SessionId == currentSession.SessionId))
+            {
+                throw new InvalidOperationException($"A CodingSession with SessionId {currentSession.SessionId} already exists.");
+            }
+
+            _dbContext.CodingSessions.Add(currentSession);
+
+            bool success = await _dbContext.SaveChangesAsync() > 0;
+
+            if (!success)
+            {
+                _appLogger.Error($"Failed to add CodingSession with SessionId {currentSession.SessionId}.");
+            }
+
+            _appLogger.Debug($"Session added for SessionId: {currentSession.SessionId}, Duration: {currentSession.DurationHHMM}.");
+            return success;
+        }
 
         public async Task<List<CodingSessionEntity>> GetSessionsbyIDAsync(List<int> sessionIds)
         {
@@ -50,26 +69,22 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
         public async Task<List<CodingSessionEntity>> GetSessionsForLastDaysAsync(int numberOfDays)
         {
-            DateTime targetDate = DateTime.UtcNow.AddDays(-numberOfDays);
-
-            return await _dbContext.CodingSessions.
-                Where(s => s.StartDate == targetDate)
+            DateOnly targetDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-numberOfDays));
+            return await _dbContext.CodingSessions
+                .Where(s => s.StartDate >= targetDate || s.EndDate >= targetDate)
                 .OrderBy(s => s.StartDate)
                 .ToListAsync();
-
         }
 
 
         public async Task<List<CodingSessionEntity>> GetTodayCodingSessionsAsync()
         {
-            DateTime targetDate = DateTime.UtcNow;
-
-            return await _dbContext.CodingSessions.
-                Where(s => s.StartDate == targetDate)
-                .OrderBy(s => s.StartDate)
+            DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
+            return await _dbContext.CodingSessions
+                .Where(s => s.StartDate == today || s.EndDate == today)
+                .OrderBy(s => s.StartTime)
                 .ToListAsync();
         }
-
 
         public async Task<List<CodingSessionEntity>> GetAllCodingSessionAsync()
         {
@@ -79,10 +94,9 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
         public async Task<bool> CheckTodayCodingSessions()
         {
-            var today = DateTime.UtcNow.Date;
+            DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _dbContext.CodingSessions
-                .AnyAsync(s => s.StartDate.HasValue &&
-                               s.StartDate.Value.Date == today);
+                .AnyAsync(s => s.StartDate == today || s.EndDate == today);
         }
     }
 }

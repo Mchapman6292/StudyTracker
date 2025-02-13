@@ -42,37 +42,21 @@ namespace CodingTracker.View
 
         private async void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
         {
-            _appLogger.Debug($"Coding session start button clicked for {nameof(CodingSessionPageStartSessionButton)}");
+            _appLogger.Debug($"Coding session StartSession button clicked for {nameof(CodingSessionPageStartSessionButton)}.");
 
-           
+            _codingSessionManager.StartCodingSessionTimer();
+
+            _formSwitcher.SwitchToCodingSessionTimer();
         }
 
 
         private async void CodingSesionPageEndSessionButton_Click(object sender, EventArgs e)
         {
-            await _appLogger.LogActivityAsync(nameof(CodingSesionPageEndSessionButton_Click),
-                async activity =>
-                {
-                    _appLogger.Info($"Starting {nameof(CodingSesionPageEndSessionButton_Click)} TraceId: {activity.TraceId}.");
-                },
-                async activity =>
-                {
-                    try
-                    {
-                        _codingSessionManager.EndCodingSession(activity);
-                        _appLogger.Info($"Coding session ended. TraceId: {activity.TraceId}");
+            _appLogger.Debug($"Coding session EndSession button clicked for {nameof(CodingSesionPageEndSessionButton)}.");
 
-                        this.Hide();
-                        _appLogger.Info($"Form hidden. TraceId: {activity.TraceId}");
+            _codingSessionManager.EndCodingSessionTimer();
 
-                        _formSwitcher.SwitchToMainPage();
-                        _appLogger.Info($"Switched to main page. TraceId: {activity.TraceId}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _appLogger.Error($"Error ending coding session. TraceId: {activity.TraceId}", ex);
-                    }
-                });
+
         }
 
 

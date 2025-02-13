@@ -129,7 +129,7 @@ namespace CodingTracker.View
         }
 
 
-        private void SaveUsername(string username)
+        private void SaveUsernameForNextLogin(string username)
         {
             try
             {
@@ -159,10 +159,12 @@ namespace CodingTracker.View
             if(isValidLogin ) 
             {
                 await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
-                SaveUsername(username);
 
                 // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                _codingSessionManager.StartCodingSession();
+                _codingSessionManager.StartCodingSession(username);
+
+                SaveUsernameForNextLogin(username);
+
                 _formSwitcher.SwitchToMainPage();
             }
         }
@@ -201,7 +203,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _appControl.ExitApplication();
+            _appControl.ExitApplicationAsync();
 
         }
 

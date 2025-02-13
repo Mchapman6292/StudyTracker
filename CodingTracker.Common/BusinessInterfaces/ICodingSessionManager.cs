@@ -5,8 +5,11 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
     public interface ICodingSessionManager
     {
         CodingSession CreateNewCodingSession(int userId);
-        void StartCodingSession();
-        void EndCodingSession();
+        Task StartCodingSession(string username);
+        void StartCodingSessionTimer();
+        Task EndCodingSessionAsync();
+
+        void EndCodingSessionTimer();
         string ConvertDurationSecondsToStringHHMM(int durationSeconds);
         void UpdateCodingSessionEndTimes();
         void SetCurrentCodingSession(CodingSession codingSession);
