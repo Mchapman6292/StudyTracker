@@ -238,6 +238,7 @@
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Name = "CodingSessionPage";
+            Load += CodingSessionPage_Load;
             CodingSessionPageTopPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)CodingGoalSetMinToggle).EndInit();
             ((System.ComponentModel.ISupportInitialize)CodingGoalSetHourToggle).EndInit();

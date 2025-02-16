@@ -6,6 +6,7 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
     {
         private readonly IApplicationLogger _appLogger;
         private readonly HashSet<int> _sessionIdsForDeletion;
+        private bool IsEditSession { get; set; } = false;
 
 
         public EditSessionPageContextManager(IApplicationLogger appLogger)
@@ -31,12 +32,24 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
 
         public bool CheckForSessionId(int sessionId)
         {
+            _appLogger.Debug($"Checking for sessionId{sessionId} for {nameof(CheckForSessionId)}.");
             return _sessionIdsForDeletion.Contains(sessionId);
         }
 
-        public IReadOnlyCollection<int> GetSessionIdsForDeletion()
+        public HashSet<int> GetSessionIdsForDeletion()
         {
-            return _sessionIdsForDeletion.ToList().AsReadOnly();
+            return _sessionIdsForDeletion;
+        }
+
+        public bool ReturnIsEditSessionBool()
+        {
+            return IsEditSession;
+        }
+
+        public void UpdateIsEditSessionBool(bool isEditSession)
+        {
+            IsEditSession = isEditSession;
+            _appLogger.Debug($"IsEditSession set to: {IsEditSession}.");
         }
 
 

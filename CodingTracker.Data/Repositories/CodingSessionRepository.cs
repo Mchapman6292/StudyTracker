@@ -3,6 +3,7 @@ using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 
 namespace CodingTracker.Data.Repositories.CodingSessionRepositories
@@ -45,17 +46,35 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             // Creating a list of Coding sessions would load all sessions into memory.
             // Using .Where = SELECT * FROM CodingSessions WHERE SessionId IN (1,2,3)
 
+
+
             return await _dbContext.CodingSessions
                     .Where(s => sessionIds.Contains(s.SessionId))
                     .ToListAsync();
         }
 
 
-        public async Task<int> DeleteSessionsByIdAsync(IReadOnlyCollection<int> sessionIds)
+        public async Task<int> DeleteSessionsByIdAsync(HashSet<int> sessionIds)
         {
-            return await _dbContext.CodingSessions
+            _appLogger.Debug(string.Join(", ", sessionIds));
+
+            var sessionsToDelete = await _dbContext.CodingSessions
+                .Where(s => sessionIds.Contains(s.SessionId))
+                .Select(s => s.SessionId)
+                .ToListAsync();
+
+            if(!sessionsToDelete.Any())
+            {
+                throw new InvalidOperationException($"No sessions found in database for {string.Join(", ", sessionIds)}.");
+            }
+
+            int deletedSessions = await _dbContext.CodingSessions
                 .Where(s => sessionIds.Contains(s.SessionId))
                 .ExecuteDeleteAsync();
+
+            _appLogger.Info($"{deletedSessions} sessions deleted. Session IDs: {string.Join(", ", sessionsToDelete)}");
+
+            return deletedSessions;
         }
 
 

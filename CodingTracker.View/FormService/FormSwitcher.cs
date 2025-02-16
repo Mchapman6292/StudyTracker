@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.View.FormService
+﻿using System.Windows.Forms;
+
+namespace CodingTracker.View.FormService
 {
 
     public interface IFormSwitcher
@@ -9,6 +11,8 @@
         void SwitchToEditSessionPage();
         CreateAccountPage SwitchToCreateAccountPage();
         void SwitchToCodingSessionTimer();
+        void CloseLoginPage();
+
     }
 
 
@@ -48,6 +52,14 @@
             SwitchToForm(_formFactory.CreateEditSessionPage);
         }
 
+        public void CloseLoginPage()
+        {
+            var loginForm = Application.OpenForms.OfType<LoginPage>().FirstOrDefault();
+            if (loginForm != null)
+            {
+                loginForm.Close();
+            }
+        }
 
 
         public CreateAccountPage SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 

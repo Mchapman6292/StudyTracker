@@ -27,7 +27,7 @@ namespace CodingTracker.View
 
         private int _goalHours;
         private int _goalMinutes;
-        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController,ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, UserIdService idService)
+        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController, ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, UserIdService idService)
         {
             InitializeComponent();
             _formSwitcher = formSwitcher;
@@ -44,7 +44,15 @@ namespace CodingTracker.View
         {
             _appLogger.Debug($"Coding session StartSession button clicked for {nameof(CodingSessionPageStartSessionButton)}.");
 
+            bool goalSet = CodingSessionPageCodingGoalToggle.Checked;
+            int goalMinutes = Convert.ToInt32(CodingGoalSetMinToggle.Value);
+
+            _codingSessionManager.SetCurrentSessionGoalSet(goalSet);
+            _codingSessionManager.SetGoalHoursAndGoalMins(goalMinutes, goalSet);
+
+
             _codingSessionManager.StartCodingSessionTimer();
+
 
             _formSwitcher.SwitchToCodingSessionTimer();
         }
@@ -55,8 +63,6 @@ namespace CodingTracker.View
             _appLogger.Debug($"Coding session EndSession button clicked for {nameof(CodingSesionPageEndSessionButton)}.");
 
             _codingSessionManager.EndCodingSessionTimer();
-
-
         }
 
 
@@ -67,11 +73,11 @@ namespace CodingTracker.View
             var stopwatch = Stopwatch.StartNew();
 
             int goalHours = Convert.ToInt32(CodingGoalSetHourToggle.Value);
-            int goalMinutes = Convert.ToInt32(CodingGoalSetMinToggle.Value);
 
 
 
-            activity.Stop();
+
+
         }
 
 
@@ -125,6 +131,11 @@ namespace CodingTracker.View
         {
             this.Hide();
             _formSwitcher.SwitchToMainPage();
+        }
+
+        private void CodingSessionPage_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

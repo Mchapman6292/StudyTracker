@@ -10,6 +10,7 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
         public int SessionId { get; set; } // Default value indicating not set. 
 
         [ForeignKey("UserCredentials")]
+
         public int UserId { get; set; }
 
         public DateOnly StartDate { get; set; }
@@ -20,9 +21,9 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
 
         public string DurationHHMM { get; set; }
 
+        public bool GoalSet {  get; set; }
         public int GoalMinutes { get; set; }
 
-        [Range(0, 1, ErrorMessage = "GoalReached can only be 0 or 1.")]
         public bool GoalReached { get; set; }
     }
 }

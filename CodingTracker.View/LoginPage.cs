@@ -1,17 +1,13 @@
-﻿using CodingTracker.Common.IApplicationControls;
-using CodingTracker.Common.IApplicationLoggers;
-
-using System;
-using System.IO;
-using System.Windows.Forms;
-using LibVLCSharp.Shared;
-using LibVLCSharp.WinForms;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using CodingTracker.View.FormService;
+﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
+using CodingTracker.Common.IApplicationControls;
+using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormService;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
+using System.Drawing.Drawing2D;
 
 namespace CodingTracker.View
 {
@@ -23,10 +19,11 @@ namespace CodingTracker.View
         private readonly IFormController _formController;
         private readonly IFormSwitcher _formSwitcher;
         private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IUserIdService _userIdService;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager, IUserIdService userIdService)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
@@ -34,6 +31,7 @@ namespace CodingTracker.View
             _formController = formController;
             _formSwitcher = formSwitcher;
             _codingSessionManager = codingSessionManager;
+            _userIdService = userIdService;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -156,14 +154,20 @@ namespace CodingTracker.View
             string password = LoginPagePasswordTextbox.Text;
             bool isValidLogin = await _authenticationService.AuthenticateLoginWithoutActivity(username, password);
 
-            if(isValidLogin ) 
+            await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
+
+            if (isValidLogin)
             {
-                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
+                UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
 
                 // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                _codingSessionManager.StartCodingSession(username);
+                await _codingSessionManager.StartCodingSession(username);
+                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
+                _userIdService.SetCurrentUserId(userCredential.UserId);
+
 
                 SaveUsernameForNextLogin(username);
+
 
                 _formSwitcher.SwitchToMainPage();
             }
@@ -244,8 +248,8 @@ namespace CodingTracker.View
             if (LoginPagePasswordTextbox.Text == "Password")
             {
                 LoginPagePasswordTextbox.Text = "";
-                LoginPagePasswordTextbox.ForeColor = Color.Black; 
-                LoginPagePasswordTextbox.PasswordChar = '●'; 
+                LoginPagePasswordTextbox.ForeColor = Color.Black;
+                LoginPagePasswordTextbox.PasswordChar = '●';
             }
         }
 
@@ -266,7 +270,7 @@ namespace CodingTracker.View
             {
                 LoginPagePasswordTextbox.Text = "Password";
                 LoginPagePasswordTextbox.ForeColor = Color.Gray;
-                LoginPagePasswordTextbox.PasswordChar = '\0'; 
+                LoginPagePasswordTextbox.PasswordChar = '\0';
             }
         }
     }

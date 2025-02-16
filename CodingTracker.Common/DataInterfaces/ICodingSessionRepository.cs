@@ -7,7 +7,7 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
         Task<bool> AddCodingSessionEntityAsync(CodingSessionEntity currentSession);
         Task<List<CodingSessionEntity>> GetSessionsbyIDAsync(List<int> sessionIds);
 
-        Task<int> DeleteSessionsByIdAsync(IReadOnlyCollection<int> sessionIds);
+        Task<int> DeleteSessionsByIdAsync(HashSet<int> sessionIds);
 
         Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions);
 

@@ -1,17 +1,9 @@
-﻿using System;
+﻿using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormService;
-using CodingTracker.Common.BusinessInterfaces;
+using System.Diagnostics;
 namespace CodingTracker.View
 {
     public partial class CodingSessionTimerForm : Form
@@ -22,13 +14,15 @@ namespace CodingTracker.View
         private readonly IFormController _formController;
         private readonly ISessionGoalCountDownTimer _sessionCountDownTimer;
         private readonly IFormFactory _formFactory;
+        private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IUserIdService _userIdService;
         public event Action<TimeSpan> TimeChanged;
         private TimeSpan totalTime;
         public event Action CountDownFinished;
 
 
 
-        public CodingSessionTimerForm(IApplicationLogger appLogger, ISessionGoalCountDownTimer countdownTimer, IFormSwitcher formSwitcher, IFormController formController, IFormFactory formFactory)
+        public CodingSessionTimerForm(IApplicationLogger appLogger, ISessionGoalCountDownTimer countdownTimer, IFormSwitcher formSwitcher, IFormController formController, IFormFactory formFactory, ICodingSessionManager codingSessionManager, IUserIdService userIdService)
         {
             _appLogger = appLogger;
             _sessionCountDownTimer = countdownTimer;
@@ -40,6 +34,8 @@ namespace CodingTracker.View
             _sessionCountDownTimer.TimeChanged += UpdateTimeRemainingDisplay;
             _sessionCountDownTimer.CountDownFinished += HandleCountDownFinished;
             _formFactory = formFactory;
+            _codingSessionManager = codingSessionManager;
+            _userIdService = userIdService;
         }
 
         private void CodingSessionTimerForm_Load(object sender, EventArgs e)
@@ -98,11 +94,18 @@ namespace CodingTracker.View
             }));
         }
 
-        private void CodingTimerPageEndSessionButton_Click(object sender, EventArgs e)
+        private async void CodingTimerPageEndSessionButton_Click(object sender, EventArgs e)
         {
+            int userId = _userIdService.GetCurrentUserId();
+            _appLogger.Info($"UserId for {nameof(CodingTimerPageEndSessionButton)} ({userId})");    
             _sessionCountDownTimer.StopCountDownTimer();
             _formFactory.CreateMainPage();
             _formSwitcher.SwitchToMainPage();
+
+            await _codingSessionManager.EndCodingSessionAsync();
+
+
+            _codingSessionManager.Initialize_CurrentCodingSession(userId);
   
         }
 

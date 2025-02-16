@@ -1,13 +1,9 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.IApplicationLoggers;
 
 namespace CodingTracker.Business.CodingSessionService.UserIdServices
 {
-    public class UserIdService
+    public class UserIdService : IUserIdService
     {
         private readonly IApplicationLogger _appLogger;
         private  int _currentUserId {  get; set; }  
