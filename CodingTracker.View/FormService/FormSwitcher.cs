@@ -1,16 +1,12 @@
-﻿using System.Windows.Forms;
+﻿using CodingTracker.View.FormPageEnums;
+using System.Windows.Forms;
 
 namespace CodingTracker.View.FormService
 {
 
     public interface IFormSwitcher
     {
-        void SwitchToLoginPage();
-        void SwitchToMainPage();
-        void SwitchToCodingSessionPage();
-        void SwitchToEditSessionPage();
-        CreateAccountPage SwitchToCreateAccountPage();
-        void SwitchToCodingSessionTimer();
+        Form SwitchToForm(FormPageEnum formType);
         void CloseLoginPage();
 
     }
@@ -20,36 +16,36 @@ namespace CodingTracker.View.FormService
     {
         private readonly IFormController _formController;
         private readonly IFormFactory _formFactory;
+        private readonly IFormStateManagement _formStateManagement;
+        private Form _currentForm;
 
-        public FormSwitcher(IFormController formController, IFormFactory formFactory)
+        public FormSwitcher(IFormController formController, IFormFactory formFactory, IFormStateManagement formStateManagement)
         {
             _formController = formController;
             _formFactory = formFactory;
+            _formStateManagement = formStateManagement;
         }
 
-        private void SwitchToForm<T>(Func<T> createForm) where T : Form
+        public Form SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 
         {
-            _formController.HandleAndShowForm(() => createForm() as Form, typeof(T).Name, true);
+            var createAccountPage = _formFactory.CreateForm(FormPageEnum.CreateAccountPage);
+            _formController.HandleAndShowForm(() => createAccountPage, nameof(CreateAccountPage), true);
+            return createAccountPage;
         }
 
-        public void SwitchToLoginPage()
+        public Form SwitchToForm(FormPageEnum formType)
         {
-            SwitchToForm(_formFactory.CreateLoginPage);
-        }
+            var form = _formFactory.GetOrCreateForm(formType);
 
-        public void SwitchToMainPage()
-        {
-            SwitchToForm(_formFactory.CreateMainPage);
-        }
+            if (_currentForm != null)
+            {
+                _currentForm.Hide();
+            }
+            _currentForm = form;
 
-        public void SwitchToCodingSessionPage()
-        {
-            SwitchToForm(_formFactory.CreateCodingSessionPage);
-        }
+            form.Show();
 
-        public void SwitchToEditSessionPage()
-        {
-            SwitchToForm(_formFactory.CreateEditSessionPage);
+            return form;
         }
 
         public void CloseLoginPage()
@@ -59,19 +55,6 @@ namespace CodingTracker.View.FormService
             {
                 loginForm.Close();
             }
-        }
-
-
-        public CreateAccountPage SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 
-        {
-            var createAccountPage = _formFactory.CreateAccountPage();
-            _formController.HandleAndShowForm(() => createAccountPage, nameof(CreateAccountPage), true);
-            return createAccountPage;
-        }
-
-        public void SwitchToCodingSessionTimer()
-        {
-            SwitchToForm(_formFactory.CreateCodingSessionTimer);
         }
     }
 }

@@ -7,7 +7,6 @@ using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IdGenerators;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
 using System.Diagnostics;
@@ -27,7 +26,6 @@ namespace CodingTracker.Business.CodingSessionManagers
         private readonly IErrorHandler _errorHandler;
         private readonly IApplicationLogger _appLogger;
         private readonly IInputValidator _inputValidator;
-        private readonly IIdGenerators _idGenerators;
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ICodingSessionTimer _sessionTimer;
         private readonly IUserCredentialRepository _userCredentialRepository;
@@ -35,12 +33,11 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         private bool IsCodingSessionActive { get; set; } = false;
 
-        public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, IIdGenerators idGenerators, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
+        public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
         {
             _errorHandler = errorHandler;
             _appLogger = appLogger;
             _inputValidator = inputValidator;
-            _idGenerators = idGenerators;
             _codingSessionRepository = codingSessionRepo;
             _sessionTimer = sessionTimer;
             _userCredentialRepository = userCredentialRepository;

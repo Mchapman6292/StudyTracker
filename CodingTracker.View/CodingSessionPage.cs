@@ -7,6 +7,7 @@ using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
 
 
 namespace CodingTracker.View
@@ -22,12 +23,14 @@ namespace CodingTracker.View
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IAuthenticationService _authenticationService;
 
-        private readonly UserIdService _userIdService;
+        private readonly IUserIdService _userIdService;
+
 
 
         private int _goalHours;
         private int _goalMinutes;
-        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController, ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, UserIdService idService)
+
+        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController, ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, IUserIdService idService)
         {
             InitializeComponent();
             _formSwitcher = formSwitcher;
@@ -46,7 +49,6 @@ namespace CodingTracker.View
 
             bool goalSet = CodingSessionPageCodingGoalToggle.Checked;
             int goalMinutes = Convert.ToInt32(CodingGoalSetMinToggle.Value);
-
             _codingSessionManager.SetCurrentSessionGoalSet(goalSet);
             _codingSessionManager.SetGoalHoursAndGoalMins(goalMinutes, goalSet);
 
@@ -54,7 +56,7 @@ namespace CodingTracker.View
             _codingSessionManager.StartCodingSessionTimer();
 
 
-            _formSwitcher.SwitchToCodingSessionTimer();
+            _formSwitcher.SwitchToForm(FormPageEnum.CodingSessionTimerPage);
         }
 
 
@@ -73,11 +75,11 @@ namespace CodingTracker.View
             var stopwatch = Stopwatch.StartNew();
 
             int goalHours = Convert.ToInt32(CodingGoalSetHourToggle.Value);
+        }
 
-
-
-
-
+        private void setGoalMins()
+        {
+            
         }
 
 
@@ -130,7 +132,7 @@ namespace CodingTracker.View
         private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void CodingSessionPage_Load(object sender, EventArgs e)

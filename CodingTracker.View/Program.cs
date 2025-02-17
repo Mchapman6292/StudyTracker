@@ -21,7 +21,6 @@ using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.ErrorHandlers;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IdGenerators;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
@@ -39,6 +38,7 @@ using CodingTracker.View.SessionGoalCountDownTimers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CodingTracker.View.FormPageEnums;
 
 
 /// To do
@@ -70,7 +70,7 @@ namespace CodingTracker.View.Program
             ApplicationConfiguration.Initialize();
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
-            var loginPage = formFactory.CreateLoginPage();
+            var loginPage = formFactory.GetOrCreateForm(FormPageEnum.LoginPage);
             Application.Run(loginPage);
         }
 
@@ -101,7 +101,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
                     .AddSingleton<ICodingSessionTimer, CodingSessionTimer>()
                     .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
-                    .AddSingleton<IIdGenerators, IdGenerators>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingTrackerDbContext, CodingTrackerDbContext>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()

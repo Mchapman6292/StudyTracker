@@ -8,6 +8,7 @@ using CodingTracker.View.FormService;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
 using System.Drawing.Drawing2D;
+using CodingTracker.View.FormPageEnums; 
 
 namespace CodingTracker.View
 {
@@ -20,10 +21,12 @@ namespace CodingTracker.View
         private readonly IFormSwitcher _formSwitcher;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IUserIdService _userIdService;
+        private readonly IFormFactory _formFactory;
+        private readonly IFormStateManagement _formStateManagement;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager, IUserIdService userIdService)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager, IUserIdService userIdService, IFormFactory formFactory, IFormStateManagement formStateManagement)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
@@ -32,6 +35,8 @@ namespace CodingTracker.View
             _formSwitcher = formSwitcher;
             _codingSessionManager = codingSessionManager;
             _userIdService = userIdService;
+            _formFactory = formFactory;
+            _formStateManagement = formStateManagement;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -41,6 +46,7 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
+            _formFactory = formFactory;
         }
 
 
@@ -168,8 +174,9 @@ namespace CodingTracker.View
 
                 SaveUsernameForNextLogin(username);
 
+                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
 
-                _formSwitcher.SwitchToMainPage();
+
             }
         }
 
@@ -200,9 +207,8 @@ namespace CodingTracker.View
 
         private void LoginPageCreateAccountButton_Click_1(object sender, EventArgs e)
         {
-            var createAccountPage = _formSwitcher.SwitchToCreateAccountPage();
-            createAccountPage.AccountCreatedCallback = AccountCreatedSuccessfully;
-
+            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
+            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
@@ -272,6 +278,11 @@ namespace CodingTracker.View
                 LoginPagePasswordTextbox.ForeColor = Color.Gray;
                 LoginPagePasswordTextbox.PasswordChar = '\0';
             }
+        }
+
+        private void b(object sender, EventArgs e)
+        {
+
         }
     }
 }

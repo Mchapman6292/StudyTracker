@@ -4,7 +4,7 @@ using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormService;
-using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
 
 namespace CodingTracker.View
 {
@@ -49,7 +49,7 @@ namespace CodingTracker.View
             foreach (var session in sessions)
             {
                 int rowIndex = EditSessionPageDataGridView.Rows.Add();
-                if(rowIndex < 0)
+                if (rowIndex < 0)
                 {
                     _appLogger.Error($"Failed to add row for SessionID {session.SessionId}. Invalid row index returned.");
                     continue;
@@ -63,13 +63,13 @@ namespace CodingTracker.View
 
             }
         }
-         
-        
+
+
 
         private void EditModeDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _editSessionPageContextManager.UpdateIsEditSessionBool(true);
-            if ( e.RowIndex >= 0)
+            if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = EditSessionPageDataGridView.Rows[e.RowIndex];
                 int ConvertedsessionId = Convert.ToInt32(row.Cells["SessionId"].Value);
@@ -90,8 +90,8 @@ namespace CodingTracker.View
                 HighlightRow(row, IdAlreadyIn_sessionIdsForDeletion);
             }
         }
-            
-        
+
+
 
 
         private void HighlightRow(DataGridViewRow row, bool IdAlreadyIn_sessionIdsForDeletion)
@@ -118,6 +118,7 @@ namespace CodingTracker.View
         {
             ToggleEditMode();
             SetDataGridViewEditMode();
+            ChangeButtonColorIfEditSession();
             DeleteSessionButton.Visible = true;
         }
 
@@ -126,7 +127,7 @@ namespace CodingTracker.View
         private void ToggleEditMode()
         {
             bool isEditSessionOn = _editSessionPageContextManager.ReturnIsEditSessionBool();
-            if (!isEditSessionOn)
+            if (isEditSessionOn)
             {
                 _editSessionPageContextManager.UpdateIsEditSessionBool(true);
                 EditSessionPageDataGridView.BackgroundColor = Color.Yellow;
@@ -140,7 +141,7 @@ namespace CodingTracker.View
         private void ChangeButtonColorIfEditSession()
         {
             bool isEditSessionOn = _editSessionPageContextManager.ReturnIsEditSessionBool();
-            if (!isEditSessionOn) 
+            if (isEditSessionOn)
             {
                 EditSessionButton.ForeColor = Color.White;
             }
@@ -157,12 +158,12 @@ namespace CodingTracker.View
             {
                 EditSessionButton.ForeColor = Color.White;
             }
-            else 
+            else
             {
                 EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = Color.FromArgb(255, 140, 0);
             }
         }
-        
+
 
         private void UpdateColorsForSelectedSessionsInEditMode()
         {
@@ -222,7 +223,7 @@ namespace CodingTracker.View
             DisplayMessageBox.Caption = "Notification";
             DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
 
-         
+
             DisplayMessageBox.Show();
 
             SendKeys.Send("{ENTER}");
@@ -233,15 +234,17 @@ namespace CodingTracker.View
 
         private void EditSessionPageBackButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
+        private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

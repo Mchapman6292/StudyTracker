@@ -1,14 +1,11 @@
-﻿using System.Data;
+﻿using CodingTracker.Business.CodingSessionService.SessionCalculators;
+using CodingTracker.Business.MainPageService.LabelAssignments;
+using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
-using CodingTracker.Business.CodingSessionManagers;
-using Guna.UI2.WinForms;
-using System.Diagnostics;
-using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using CodingTracker.Business.CodingSessionService.SessionCalculators;
-using CodingTracker.Business.MainPageService.PanelColourAssigners;
-using CodingTracker.Business.MainPageService.LabelAssignments;
+using System.Diagnostics;
 
 
 namespace CodingTracker.View
@@ -50,7 +47,7 @@ namespace CodingTracker.View
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToCodingSessionPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
@@ -72,7 +69,7 @@ namespace CodingTracker.View
         private void MainPageEditSessionsButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToEditSessionPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.EditSessionPage);
         }
 
 

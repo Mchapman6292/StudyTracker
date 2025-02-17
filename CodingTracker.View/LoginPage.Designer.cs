@@ -208,7 +208,7 @@ namespace CodingTracker.View
             loginPageLoginButton.Size = new Size(120, 38);
             loginPageLoginButton.TabIndex = 18;
             loginPageLoginButton.Text = "Login";
-            loginPageLoginButton.Click += loginPageLoginButton_Click;
+            loginPageLoginButton.Click += b;
             // 
             // LoginPageCreateAccountButton
             // 
@@ -356,12 +356,6 @@ namespace CodingTracker.View
             guna2Panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
-
-
-        
-    
-
-
 
         private void ViewSessionsButton_Click(object sender, EventArgs e)
             {

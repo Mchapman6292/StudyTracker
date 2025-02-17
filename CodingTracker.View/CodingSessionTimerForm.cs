@@ -4,7 +4,10 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
+
 namespace CodingTracker.View
+
 {
     public partial class CodingSessionTimerForm : Form
     {
@@ -19,6 +22,9 @@ namespace CodingTracker.View
         public event Action<TimeSpan> TimeChanged;
         private TimeSpan totalTime;
         public event Action CountDownFinished;
+        private DateTime _lastUpdate = DateTime.MinValue;
+        private const int UPDATE_THRESHOLD_MS = 16;
+
 
 
 
@@ -40,23 +46,6 @@ namespace CodingTracker.View
 
         private void CodingSessionTimerForm_Load(object sender, EventArgs e)
         {
-            using (var activity = new Activity(nameof(CodingSessionTimerForm_Load)).Start())
-            {
-                var stopwatch = Stopwatch.StartNew();
-                _appLogger.Debug($"Loading Coding Session Timer Form. TraceID: {activity.TraceId}");
-
-                try
-                {
-
-                    stopwatch.Stop();
-                    _appLogger.Info($"Coding Session Timer Form loaded successfully. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
-                }
-                catch (Exception ex)
-                {
-                    stopwatch.Stop();
-                    _appLogger.Error($"Error loading Coding Session Timer Form. Execution Time: {stopwatch.ElapsedMilliseconds}ms, Error: {ex.Message}, TraceID: {activity.TraceId}", ex);
-                }
-            }
         }
 
 
@@ -64,25 +53,17 @@ namespace CodingTracker.View
 
         private void UpdateTimeRemainingDisplay(TimeSpan timeRemaining)
         {
-            using (var activity = new Activity(nameof(UpdateTimeRemainingDisplay)).Start())
-            {
-                try
-                {
-                    Invoke((MethodInvoker)(() =>
-                    {
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-                        CodingSessionTimerPageTimerLabel.Text = timeRemaining.ToString(@"hh\:mm\:ss");
-                        double percentage = CalculateRemainingPercentage(timeRemaining);
-                        UpdateProgressBar(percentage);
-                        stopwatch.Stop();
+            if ((DateTime.Now - _lastUpdate).TotalMilliseconds < UPDATE_THRESHOLD_MS)
+                return;
 
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    _appLogger.Error($"An error occurred while updating time remaining display. RemainingTime: {timeRemaining}. Error: {ex.Message}. TraceID: {activity.TraceId}", ex);
-                }
-            }
+            BeginInvoke((MethodInvoker)(() =>
+            {
+                CodingSessionTimerPageTimerLabel.Text = timeRemaining.ToString(@"hh\:mm\:ss");
+                double percentage = CalculateRemainingPercentage(timeRemaining);
+                UpdateProgressBar(percentage);
+            }));
+
+            _lastUpdate = DateTime.Now;
         }
 
         private void HandleCountDownFinished()
@@ -99,8 +80,7 @@ namespace CodingTracker.View
             int userId = _userIdService.GetCurrentUserId();
             _appLogger.Info($"UserId for {nameof(CodingTimerPageEndSessionButton)} ({userId})");    
             _sessionCountDownTimer.StopCountDownTimer();
-            _formFactory.CreateMainPage();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
 
             await _codingSessionManager.EndCodingSessionAsync();
 
