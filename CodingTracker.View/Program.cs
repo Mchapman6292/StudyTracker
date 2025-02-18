@@ -1,46 +1,44 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using CodingTracker.Business.ApplicationControls;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionTimers;
+using CodingTracker.Business.Authentication.AuthenticationServices;
+using CodingTracker.Business.CodingSessionManagers;
+using CodingTracker.Business.CodingSessionService;
+using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
+using CodingTracker.Business.CodingSessionService.SessionCalculators;
+using CodingTracker.Business.CodingSessionService.UserIdServices;
 using CodingTracker.Business.InputValidators;
+using CodingTracker.Business.MainPageService.LabelAssignments;
+using CodingTracker.Business.MainPageService.PanelColorControls;
+using CodingTracker.Business.MainPageService.PanelColourAssigners;
+using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionTimers;
+using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
+using CodingTracker.Common.DataInterfaces;
+using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
+using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
+using CodingTracker.Common.ErrorHandlers;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.IErrorHandlers;
+using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.UtilityServices;
 using CodingTracker.Data.Configurations;
+using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
+using CodingTracker.Data.Repositories.CodingSessionRepositories;
+using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
-using CodingTracker.View.SessionGoalCountDownTimers;
-using CodingTracker.Common.IInputValidationResults;
+using CodingTracker.View.FormService;
 using CodingTracker.View.IMessageBoxManagers;
 using CodingTracker.View.MessageBoxManagers;
-using CodingTracker.Common.IErrorHandlers;
-using CodingTracker.Common.ErrorHandlers;
-using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
+using CodingTracker.View.SessionGoalCountDownTimers;
 using Microsoft.EntityFrameworkCore;
-using CodingTracker.Data.Repositories.CodingSessionRepositories;
-using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
-using CodingTracker.Common.IdGenerators;
-using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Data.Repositories.UserCredentialRepositories;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Business.CodingSessionManagers;
-using CodingTracker.Business.Authentication.AuthenticationServices;
-using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
-using CodingTracker.Business.CodingSessionService.UserIdServices;
-using CodingTracker.Business.MainPageService;
-using CodingTracker.View.FormService;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Business.CodingSessionService;
-using CodingTracker.Common.BusinessInterfaces;
-using CodingTracker.Common.DataInterfaces;
-using CodingTracker.Business.MainPageService.PanelColorControls;
-using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
-using CodingTracker.Business.MainPageService.PanelColourAssigners;
-using CodingTracker.Business.CodingSessionService.SessionCalculators;
-using CodingTracker.Business.MainPageService.LabelAssignments;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using CodingTracker.View.FormPageEnums;
 
 
 /// To do
@@ -72,7 +70,10 @@ namespace CodingTracker.View.Program
             ApplicationConfiguration.Initialize();
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
-            var loginPage = formFactory.CreateLoginPage();
+            var loginPage = formFactory.GetOrCreateLoginPage();
+
+   
+
             Application.Run(loginPage);
         }
 
@@ -103,7 +104,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
                     .AddSingleton<ICodingSessionTimer, CodingSessionTimer>()
                     .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
-                    .AddSingleton<IIdGenerators, IdGenerators>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingTrackerDbContext, CodingTrackerDbContext>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
@@ -111,6 +111,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
+                    .AddSingleton<IUserIdService, UserIdService>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()

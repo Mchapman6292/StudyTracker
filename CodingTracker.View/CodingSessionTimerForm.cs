@@ -1,18 +1,13 @@
-﻿using System;
+﻿using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormService;
-using CodingTracker.Common.BusinessInterfaces;
+using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
+
 namespace CodingTracker.View
+
 {
     public partial class CodingSessionTimerForm : Form
     {
@@ -22,13 +17,18 @@ namespace CodingTracker.View
         private readonly IFormController _formController;
         private readonly ISessionGoalCountDownTimer _sessionCountDownTimer;
         private readonly IFormFactory _formFactory;
+        private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IUserIdService _userIdService;
         public event Action<TimeSpan> TimeChanged;
         private TimeSpan totalTime;
         public event Action CountDownFinished;
+        private DateTime _lastUpdate = DateTime.MinValue;
+        private const int UPDATE_THRESHOLD_MS = 16;
 
 
 
-        public CodingSessionTimerForm(IApplicationLogger appLogger, ISessionGoalCountDownTimer countdownTimer, IFormSwitcher formSwitcher, IFormController formController, IFormFactory formFactory)
+
+        public CodingSessionTimerForm(IApplicationLogger appLogger, ISessionGoalCountDownTimer countdownTimer, IFormSwitcher formSwitcher, IFormController formController, IFormFactory formFactory, ICodingSessionManager codingSessionManager, IUserIdService userIdService)
         {
             _appLogger = appLogger;
             _sessionCountDownTimer = countdownTimer;
@@ -40,27 +40,12 @@ namespace CodingTracker.View
             _sessionCountDownTimer.TimeChanged += UpdateTimeRemainingDisplay;
             _sessionCountDownTimer.CountDownFinished += HandleCountDownFinished;
             _formFactory = formFactory;
+            _codingSessionManager = codingSessionManager;
+            _userIdService = userIdService;
         }
 
         private void CodingSessionTimerForm_Load(object sender, EventArgs e)
         {
-            using (var activity = new Activity(nameof(CodingSessionTimerForm_Load)).Start())
-            {
-                var stopwatch = Stopwatch.StartNew();
-                _appLogger.Debug($"Loading Coding Session Timer Form. TraceID: {activity.TraceId}");
-
-                try
-                {
-
-                    stopwatch.Stop();
-                    _appLogger.Info($"Coding Session Timer Form loaded successfully. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
-                }
-                catch (Exception ex)
-                {
-                    stopwatch.Stop();
-                    _appLogger.Error($"Error loading Coding Session Timer Form. Execution Time: {stopwatch.ElapsedMilliseconds}ms, Error: {ex.Message}, TraceID: {activity.TraceId}", ex);
-                }
-            }
         }
 
 
@@ -68,25 +53,17 @@ namespace CodingTracker.View
 
         private void UpdateTimeRemainingDisplay(TimeSpan timeRemaining)
         {
-            using (var activity = new Activity(nameof(UpdateTimeRemainingDisplay)).Start())
-            {
-                try
-                {
-                    Invoke((MethodInvoker)(() =>
-                    {
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-                        CodingSessionTimerPageTimerLabel.Text = timeRemaining.ToString(@"hh\:mm\:ss");
-                        double percentage = CalculateRemainingPercentage(timeRemaining);
-                        UpdateProgressBar(percentage);
-                        stopwatch.Stop();
+            if ((DateTime.Now - _lastUpdate).TotalMilliseconds < UPDATE_THRESHOLD_MS)
+                return;
 
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    _appLogger.Error($"An error occurred while updating time remaining display. RemainingTime: {timeRemaining}. Error: {ex.Message}. TraceID: {activity.TraceId}", ex);
-                }
-            }
+            BeginInvoke((MethodInvoker)(() =>
+            {
+                CodingSessionTimerPageTimerLabel.Text = timeRemaining.ToString(@"hh\:mm\:ss");
+                double percentage = CalculateRemainingPercentage(timeRemaining);
+                UpdateProgressBar(percentage);
+            }));
+
+            _lastUpdate = DateTime.Now;
         }
 
         private void HandleCountDownFinished()
@@ -98,11 +75,17 @@ namespace CodingTracker.View
             }));
         }
 
-        private void CodingTimerPageEndSessionButton_Click(object sender, EventArgs e)
+        private async void CodingTimerPageEndSessionButton_Click(object sender, EventArgs e)
         {
+            int userId = _userIdService.GetCurrentUserId();
+            _appLogger.Info($"UserId for {nameof(CodingTimerPageEndSessionButton)} ({userId})");    
             _sessionCountDownTimer.StopCountDownTimer();
-            _formFactory.CreateMainPage();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+
+            await _codingSessionManager.EndCodingSessionAsync();
+
+
+            _codingSessionManager.Initialize_CurrentCodingSession(userId);
   
         }
 

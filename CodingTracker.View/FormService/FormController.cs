@@ -28,15 +28,12 @@ namespace CodingTracker.View.FormService
 
         public void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form // Handles the logic for closing forms & implementing error handling logic via ExecutePageAction
         {
-            ExecutePageAction(() =>
+            var newForm = createForm();
+            if (closeCurrent)
             {
-                var newForm = createForm();
-                if (closeCurrent)
-                {
-                    CloseCurrentForm();
-                }
-                DisplayForm(newForm);
-            }, methodName);
+                CloseCurrentForm();
+            }
+            DisplayForm(newForm);
         }
 
         public void ExecutePageAction(Action action, string methodName)
@@ -83,7 +80,7 @@ namespace CodingTracker.View.FormService
         }
 
 
-        public void SwtichToActiveForm(Form targetForm)
+        public void SwitchToActiveForm(Form targetForm)
         {
 
         }

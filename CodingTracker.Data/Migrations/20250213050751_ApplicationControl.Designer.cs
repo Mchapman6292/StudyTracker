@@ -3,6 +3,7 @@ using System;
 using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodingTracker.Data.Migrations
 {
     [DbContext(typeof(CodingTrackerDbContext))]
-    partial class CodingTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213050751_ApplicationControl")]
+    partial class ApplicationControl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,35 +34,25 @@ namespace CodingTracker.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SessionId"));
 
                     b.Property<string>("DurationHHMM")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("DurationSeconds")
+                    b.Property<double?>("DurationSeconds")
                         .HasColumnType("double precision");
 
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("GoalHHMM")
+                        .HasColumnType("text");
 
                     b.Property<int>("GoalMinutes")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("GoalReached")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("GoalSet")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
+                    b.Property<int?>("GoalReached")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("SessionId");
 

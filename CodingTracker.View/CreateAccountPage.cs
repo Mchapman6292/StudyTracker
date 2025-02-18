@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
-using System.Diagnostics;
-using CodingTracker.View;
-using System.Security.Principal;
 using CodingTracker.View.FormService;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
 
 namespace CodingTracker.View
 {
@@ -43,6 +33,7 @@ namespace CodingTracker.View
             CreateAccountPageErrorTextBox.Text = message; 
         }
 
+ 
 
         private async void CreateAccountPageCreateAccountButton_Click(object sender, EventArgs e)
         {
@@ -68,7 +59,7 @@ namespace CodingTracker.View
                             _appLogger.Info($"Account creation successful for user: {username}. Total Duration: {overallStopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
 
                             AccountCreatedCallback?.Invoke("Account created successfully.");
-                            _formSwitcher.SwitchToLoginPage();
+                            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
                         }
                         else
                         {

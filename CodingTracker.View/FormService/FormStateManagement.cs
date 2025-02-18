@@ -1,44 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CodingTracker.View.FormPageEnums;
 
 namespace CodingTracker.View.FormService
 {
     public interface IFormStateManagement
     {
-        MainPage GetMainPageInstance();
-        void SetMainPageInstance(MainPage form);
-        CodingSessionPage GetCodingSessionPageInstance();
-        void SetCodingSessionPageInstance(CodingSessionPage form);
-        EditSessionPage GetEditSessionPageInstance();
-        void SetEditSessionPageInstance(EditSessionPage form);
-        CodingSessionTimerForm GetCodingSessionTimerInstance();
-        void SetCodingSessionTimerInstance(CodingSessionTimerForm form);
-        CreateAccountPage GetCreateAccountPageInstance();
-        void SetCreateAccountPageInstance(CreateAccountPage form);
-        void SaveFormState<TForm>(TForm form, object state) where TForm : Form;
-        object GetFormState<TForm>() where TForm : Form;
+        Form GetFormByFormPageEnum(FormPageEnum form);
+
+        void SetFormByFormPageEnum(FormPageEnum form, Form instance);
+        bool IsFormCreated(FormPageEnum form);
+
+        void UpdateAccountCreatedCallBack(Action<string> callback);
 
 
-        bool IsMainPageCreated();
-        bool IsCodingSessionPageCreated();
-        bool IsEditSessionPageCreated();
-        bool IsCodingSessionTimerCreated();
-        bool IsCreateAccountPageCreated();
 
 
     }
 
     public class FormStateManagement : IFormStateManagement
     {
-        private Dictionary<Type, object> formStates = new Dictionary<Type, object>();
         private MainPage _mainPageInstance;
         private CodingSessionPage _codingSessionPageInstance;
         private EditSessionPage _editSessionPageInstance;
         private CodingSessionTimerForm _codingSessionTimerInstance;
         private CreateAccountPage _createAccountPageInstance;
+        private LoginPage _loginPageInstance;
 
 
         private bool _mainPageCreated = false;
@@ -46,94 +31,99 @@ namespace CodingTracker.View.FormService
         private bool _editSessionPageCreated = false;
         private bool _codingSessionTimerCreated = false;
         private bool _createAccountPageCreated = false;
+        private bool _loginPageCreated = false;
 
 
-
-        public MainPage GetMainPageInstance()
+        private readonly Dictionary<FormPageEnum, Type> _formTypes = new Dictionary<FormPageEnum, Type>
         {
-            return _mainPageInstance;
+            { FormPageEnum.LoginPage, typeof(LoginPage) },
+            { FormPageEnum.MainPage, typeof(MainPage) },
+            { FormPageEnum.CodingSessionPage, typeof(CodingSessionPage) },
+            { FormPageEnum.EditSessionPage, typeof(EditSessionPage) },
+            { FormPageEnum.CreateAccountPage, typeof(CreateAccountPage) },
+            { FormPageEnum.CodingSessionTimerPage, typeof(CodingSessionTimerForm) }
+        };
+
+
+        public Form GetFormByFormPageEnum(FormPageEnum form)
+        {
+            switch (form)
+            {
+                case FormPageEnum.MainPage:
+                    return _mainPageInstance;
+                case FormPageEnum.CodingSessionPage:
+                    return _codingSessionPageInstance;
+                case FormPageEnum.EditSessionPage:
+                    return _editSessionPageInstance;
+                case FormPageEnum.CodingSessionTimerPage:
+                    return _codingSessionTimerInstance;
+                case FormPageEnum.CreateAccountPage:
+                    return _createAccountPageInstance;
+                default:
+                    return null;
+            }
         }
 
-        public void SetMainPageInstance(MainPage form)
+
+        public void SetFormByFormPageEnum(FormPageEnum form, Form instance)
         {
-            _mainPageInstance = form;
+            switch (form)
+            {
+                case FormPageEnum.MainPage:
+                    _mainPageInstance = instance as MainPage;
+                    break;
+                case FormPageEnum.CodingSessionPage:
+                    _codingSessionPageInstance = instance as CodingSessionPage;
+                    break;
+                case FormPageEnum.EditSessionPage:
+                    _editSessionPageInstance = instance as EditSessionPage;
+                    break;
+                case FormPageEnum.CodingSessionTimerPage:
+                    _codingSessionTimerInstance = instance as CodingSessionTimerForm;
+                    break;
+                case FormPageEnum.CreateAccountPage:
+                    _createAccountPageInstance = instance as CreateAccountPage;
+                    break;
+                case FormPageEnum.LoginPage:
+                    _loginPageInstance = instance as LoginPage;
+                    break;
+            }
         }
 
-        public CodingSessionPage GetCodingSessionPageInstance()
+
+        public bool IsFormCreated(FormPageEnum form)
         {
-            return _codingSessionPageInstance;
+            switch (form)
+            {
+                case FormPageEnum.MainPage:
+                    return _mainPageCreated;
+                case FormPageEnum.CodingSessionPage:
+                    return _codingSessionPageCreated;
+                case FormPageEnum.EditSessionPage:
+                    return _editSessionPageCreated;
+                case FormPageEnum.CodingSessionTimerPage:
+                    return _codingSessionTimerCreated;
+                case FormPageEnum.CreateAccountPage:
+                    return _createAccountPageCreated;
+                case FormPageEnum.LoginPage:
+                    return _loginPageCreated;
+                default:
+                    return false;
+            }
         }
 
-        public void SetCodingSessionPageInstance(CodingSessionPage form)
+        public void UpdateAccountCreatedCallBack(Action<string> callback)
         {
-            _codingSessionPageInstance = form;
+            _createAccountPageInstance.AccountCreatedCallback = callback;   
         }
 
-        public EditSessionPage GetEditSessionPageInstance()
-        {
-            return _editSessionPageInstance;
-        }
 
-        public void SetEditSessionPageInstance(EditSessionPage form)
-        {
-            _editSessionPageInstance = form;
-        }
 
-        public CodingSessionTimerForm GetCodingSessionTimerInstance()
-        {
-            return _codingSessionTimerInstance;
-        }
 
-        public void SetCodingSessionTimerInstance(CodingSessionTimerForm form)
-        {
-            _codingSessionTimerInstance = form;
-        }
 
-        public CreateAccountPage GetCreateAccountPageInstance()
-        {
-            return _createAccountPageInstance;
-        }
 
-        public void SetCreateAccountPageInstance(CreateAccountPage form)
-        {
-            _createAccountPageInstance = form;
-        }
 
-        public void SaveFormState<TForm>(TForm form, object state) where TForm : Form
-        {
-            formStates[typeof(TForm)] = state;
-        }
 
-        public object GetFormState<TForm>() where TForm : Form
-        {
-            formStates.TryGetValue(typeof(TForm), out var state);
-            return state;
-        }
-
-        public bool IsMainPageCreated()
-        {
-            return _mainPageCreated;
-        }
-
-        public bool IsCodingSessionPageCreated()
-        {
-            return _codingSessionPageCreated;
-        }
-
-        public bool IsEditSessionPageCreated()
-        {
-            return _editSessionPageCreated;
-        }
-
-        public bool IsCodingSessionTimerCreated()
-        {
-            return _codingSessionTimerCreated;
-        }
-
-        public bool IsCreateAccountPageCreated()
-        {
-            return _createAccountPageCreated;
-        }
 
     }
 }

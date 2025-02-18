@@ -69,17 +69,16 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                 List<Color> sessionColors = new List<Color>();
                 foreach (var session in recentSessions)
                 {
-                    double totalDurationSeconds = session.DurationSeconds ?? 0;
+                    double totalDurationSeconds = session.DurationSeconds;
 
-                    DateOnly? sessionDate = session.StartDate.HasValue
-                            ? DateOnly.FromDateTime(session.StartDate.Value)
-                            : null;
+                    DateOnly sessionDate = session.StartDate;
+
 
                     SessionColor colorEnum = DetermineSessionColor(totalDurationSeconds);
                     Color color = ConvertSessionColorEnumToColor(colorEnum);
                     sessionColors.Add(color);
 
-                    _appLogger.Debug($"Assigned color for day: {sessionDate?.ToString("yyyy-MM-dd")}, DurationSeconds: {totalDurationSeconds}, Color: {color}.");
+                    _appLogger.Debug($"Assigned color for day: {sessionDate.ToString("yyyy-MM-dd")}, DurationSeconds: {totalDurationSeconds}, Color: {color}.");
                 }
                 _appLogger.Info($"Completed {nameof(AssignColorsToSessionsInLast28Days)}.TraceID: {activity.TraceId}.");
                 return sessionColors;

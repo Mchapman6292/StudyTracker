@@ -59,5 +59,15 @@ namespace CodingTracker.View.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EditSessionIcon {
+            get {
+                object obj = ResourceManager.GetObject("EditSessionIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

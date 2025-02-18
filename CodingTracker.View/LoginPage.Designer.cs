@@ -42,6 +42,7 @@ namespace CodingTracker.View
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -79,6 +80,7 @@ namespace CodingTracker.View
             guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             LoginPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             LoginPageCreationSuccessTextBox = new Guna.UI2.WinForms.Guna2TextBox();
+            LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
             LoginPageMediaPanel.SuspendLayout();
             guna2Panel1.SuspendLayout();
@@ -331,6 +333,11 @@ namespace CodingTracker.View
             LoginPageCreationSuccessTextBox.Size = new Size(200, 36);
             LoginPageCreationSuccessTextBox.TabIndex = 24;
             // 
+            // LoginPageAnimateWindow
+            // 
+            LoginPageAnimateWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
+            LoginPageAnimateWindow.TargetForm = this;
+            // 
             // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -356,12 +363,6 @@ namespace CodingTracker.View
             guna2Panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
-
-
-        
-    
-
-
 
         private void ViewSessionsButton_Click(object sender, EventArgs e)
             {
@@ -392,5 +393,6 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
         private Guna.UI2.WinForms.Guna2TextBox LoginPageCreationSuccessTextBox;
         private Guna.UI2.WinForms.Guna2ControlBox LoginPageExitControlBox;
+        private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
     }
 }

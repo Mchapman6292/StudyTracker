@@ -7,6 +7,7 @@ using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
 
 
 namespace CodingTracker.View
@@ -22,12 +23,14 @@ namespace CodingTracker.View
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IAuthenticationService _authenticationService;
 
-        private readonly UserIdService _userIdService;
+        private readonly IUserIdService _userIdService;
+
 
 
         private int _goalHours;
         private int _goalMinutes;
-        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController,ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, UserIdService idService)
+
+        public CodingSessionPage(IFormSwitcher formSwitcher, IFormController formController, ISessionGoalCountDownTimer goalCountDownTimer, IInputValidator inputValidator, IApplicationLogger appLogger, ICodingSessionManager codingSessionManager, IAuthenticationService authenticationService, IUserIdService idService)
         {
             InitializeComponent();
             _formSwitcher = formSwitcher;
@@ -42,37 +45,28 @@ namespace CodingTracker.View
 
         private async void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
         {
-            _appLogger.Debug($"Coding session start button clicked for {nameof(CodingSessionPageStartSessionButton)}");
+            _appLogger.Debug($"Coding session StartSession button clicked for {nameof(CodingSessionPageStartSessionButton)}.");
 
-           
+            bool goalSet = CodingSessionPageCodingGoalToggle.Checked;
+
+            // Testing has to change
+            int goalmins = 60;
+            _codingSessionManager.SetCurrentSessionGoalSet(goalSet);
+            _codingSessionManager.SetGoalHoursAndGoalMins(goalmins, goalSet);
+
+
+            _codingSessionManager.StartCodingSessionTimer();
+
+
+            _formSwitcher.SwitchToForm(FormPageEnum.CodingSessionTimerPage);
         }
 
 
         private async void CodingSesionPageEndSessionButton_Click(object sender, EventArgs e)
         {
-            await _appLogger.LogActivityAsync(nameof(CodingSesionPageEndSessionButton_Click),
-                async activity =>
-                {
-                    _appLogger.Info($"Starting {nameof(CodingSesionPageEndSessionButton_Click)} TraceId: {activity.TraceId}.");
-                },
-                async activity =>
-                {
-                    try
-                    {
-                        _codingSessionManager.EndCodingSession(activity);
-                        _appLogger.Info($"Coding session ended. TraceId: {activity.TraceId}");
+            _appLogger.Debug($"Coding session EndSession button clicked for {nameof(CodingSesionPageEndSessionButton)}.");
 
-                        this.Hide();
-                        _appLogger.Info($"Form hidden. TraceId: {activity.TraceId}");
-
-                        _formSwitcher.SwitchToMainPage();
-                        _appLogger.Info($"Switched to main page. TraceId: {activity.TraceId}");
-                    }
-                    catch (Exception ex)
-                    {
-                        _appLogger.Error($"Error ending coding session. TraceId: {activity.TraceId}", ex);
-                    }
-                });
+            _codingSessionManager.EndCodingSessionTimer();
         }
 
 
@@ -80,14 +74,13 @@ namespace CodingTracker.View
         private void CodingSessionPageConfirmSessionGoalButton_Click(object sender, EventArgs e)
         {
             var activity = new Activity(nameof(CodingSessionPageConfirmSessionGoalButton_Click)).Start();
-            var stopwatch = Stopwatch.StartNew();
 
-            int goalHours = Convert.ToInt32(CodingGoalSetHourToggle.Value);
-            int goalMinutes = Convert.ToInt32(CodingGoalSetMinToggle.Value);
+  
+        }
 
-
-
-            activity.Stop();
+        private void setGoalMins()
+        {
+            
         }
 
 
@@ -119,8 +112,10 @@ namespace CodingTracker.View
         {
             bool isChecked = CodingSessionPageCodingGoalToggle.Checked;
 
+            /*
             CodingGoalSetHourToggle.Enabled = isChecked;
             CodingGoalSetMinToggle.Enabled = isChecked;
+            */
         }
 
         public void MinimizeToTray()
@@ -140,7 +135,12 @@ namespace CodingTracker.View
         private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToMainPage();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+        }
+
+        private void CodingSessionPage_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

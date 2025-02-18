@@ -46,7 +46,7 @@ namespace CodingTracker.Business.CodingSessionService.SessionCalculators
 
             var sessionsByDate = sessions
                 .GroupBy(s => s.StartDate)
-                .Select(g => new { Date = g.Key, TotalSeconds = g.Sum(s => s.DurationSeconds ?? 0) })
+                .Select(g => new { Date = g.Key, TotalSeconds = g.Sum(s => s.DurationSeconds) })
                 .ToList();
 
             double totalSeconds = sessionsByDate.Sum(s => s.TotalSeconds);
@@ -70,7 +70,7 @@ namespace CodingTracker.Business.CodingSessionService.SessionCalculators
                 return 0;
             }
 
-            double totalDurationSeconds = sessions.Sum(s => s.DurationSeconds ?? 0);
+            double totalDurationSeconds = sessions.Sum(s => s.DurationSeconds);
 
             return totalDurationSeconds;
         }
@@ -84,7 +84,7 @@ namespace CodingTracker.Business.CodingSessionService.SessionCalculators
                 return 0;
             }
 
-            double totalSeconds = allSessions.Sum(s => s.DurationSeconds ?? 0);
+            double totalSeconds = allSessions.Sum(s => s.DurationSeconds);
             int sessionCount = allSessions.Count();
             double averageSeconds = totalSeconds / sessionCount;
 

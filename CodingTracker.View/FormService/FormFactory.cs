@@ -2,18 +2,18 @@
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
 using System.Diagnostics;
+using CodingTracker.View.FormPageEnums;
+using System.Windows.Forms;
+using LibVLCSharp.Shared;
 
 namespace CodingTracker.View.FormService
 {
     public interface IFormFactory
     {
-        T CreateForm<T>(string methodName) where T : class;
-        LoginPage CreateLoginPage();
-        MainPage CreateMainPage();
-        CodingSessionPage CreateCodingSessionPage();
-        EditSessionPage CreateEditSessionPage();
-        CreateAccountPage CreateAccountPage();
-        CodingSessionTimerForm CreateCodingSessionTimer();
+        Form CreateForm(FormPageEnum formType);
+        Form GetOrCreateForm(FormPageEnum formType);
+        Form GetOrCreateLoginPage();
+
 
     }
 
@@ -31,74 +31,51 @@ namespace CodingTracker.View.FormService
             _formStateManagement = formStateManagement;
         }
 
-        public T CreateForm<T>(string methodName) where T : class
+        public Form CreateForm(FormPageEnum formType)
         {
-            using (var activity = new Activity(methodName).Start())
+            Type formClassType = formType switch
             {
-                _appLogger.Info($"Starting {methodName}. TraceID: {activity.TraceId}");
-                try
-                {
-                    var page = _serviceProvider.GetRequiredService<T>();
-                    _appLogger.Info($"Created {typeof(T).Name} successfully. TraceID: {activity.TraceId}");
-                    return page;
-                }
-                catch (Exception ex)
-                {
-                    _appLogger.Error($"An error occurred during {methodName}. Error: {ex.Message}. TraceID: {activity.TraceId}", ex);
-                    throw;
-                }
-            }
-        }
+                FormPageEnum.LoginPage => typeof(LoginPage),
+                FormPageEnum.MainPage => typeof(MainPage),
+                FormPageEnum.CodingSessionPage => typeof(CodingSessionPage),
+                FormPageEnum.EditSessionPage => typeof(EditSessionPage),
+                FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
+                FormPageEnum.CodingSessionTimerPage => typeof(CodingSessionTimerForm),
+                _ => throw new ArgumentException($"Unknown form type: {formType}")
+            };
 
-        public LoginPage CreateLoginPage()
-        {
-            return CreateForm<LoginPage>(nameof(CreateLoginPage));
-        }
-
-        public MainPage CreateMainPage()
-        {
-            if (_formStateManagement.GetMainPageInstance() == null)
-            {
-                _formStateManagement.SetMainPageInstance(CreateForm<MainPage>(nameof(CreateMainPage)));
-            }
-            return _formStateManagement.GetMainPageInstance();
+            return _serviceProvider.GetRequiredService(formClassType) as Form;
         }
 
 
-        public CodingSessionPage CreateCodingSessionPage()
+        public Form GetOrCreateForm(FormPageEnum formType)
         {
-            if (_formStateManagement.GetCodingSessionPageInstance() == null)
+            var existingForm = _formStateManagement.GetFormByFormPageEnum(formType);
+            if (existingForm == null || existingForm.IsDisposed)
             {
-                _formStateManagement.SetCodingSessionPageInstance(CreateForm<CodingSessionPage>(nameof(CreateCodingSessionPage)));
+                var newForm = CreateForm(formType);
+                _formStateManagement.SetFormByFormPageEnum(formType, newForm);
+                return newForm;
             }
-            return _formStateManagement.GetCodingSessionPageInstance();
+            return existingForm;
         }
 
-        public EditSessionPage CreateEditSessionPage()
+        public Form GetOrCreateLoginPage()
         {
-            if (_formStateManagement.GetEditSessionPageInstance() == null)
-            {
-                _formStateManagement.SetEditSessionPageInstance(CreateForm<EditSessionPage>(nameof(CreateEditSessionPage)));
-            }
-            return _formStateManagement.GetEditSessionPageInstance();
-        }
+            var loginForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.LoginPage);
 
-        public CreateAccountPage CreateAccountPage()
-        {
-            if (_formStateManagement.GetCreateAccountPageInstance() == null)
+            if(loginForm == null || loginForm.IsDisposed)
             {
-                _formStateManagement.SetCreateAccountPageInstance(CreateForm<CreateAccountPage>(nameof(CreateAccountPage)));
+                loginForm = CreateForm(FormPageEnum.LoginPage);
             }
-            return _formStateManagement.GetCreateAccountPageInstance();
-        }
+            loginForm.WindowState = FormWindowState.Normal;
+            loginForm.StartPosition = FormStartPosition.CenterScreen;
+            loginForm.BringToFront();
+            loginForm.TopLevel = true;
 
-        public CodingSessionTimerForm CreateCodingSessionTimer()
-        {
-            if (_formStateManagement.GetCodingSessionTimerInstance() == null)
-            {
-                _formStateManagement.SetCodingSessionTimerInstance(CreateForm<CodingSessionTimerForm>(nameof(CreateCodingSessionTimer)));
-            }
-            return _formStateManagement.GetCodingSessionTimerInstance();
+
+            return loginForm;
         }
     }
 }
+

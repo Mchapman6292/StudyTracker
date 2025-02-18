@@ -1,7 +1,6 @@
 ﻿using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.IApplicationLoggers;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Diagnostics;
 
 namespace CodingTracker.Data.Configurations

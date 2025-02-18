@@ -1,17 +1,14 @@
-﻿using CodingTracker.Common.IApplicationControls;
-using CodingTracker.Common.IApplicationLoggers;
-
-using System;
-using System.IO;
-using System.Windows.Forms;
-using LibVLCSharp.Shared;
-using LibVLCSharp.WinForms;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
-using CodingTracker.View.FormService;
+﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
+using CodingTracker.Common.IApplicationControls;
+using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormService;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
+using System.Drawing.Drawing2D;
+using CodingTracker.View.FormPageEnums; 
 
 namespace CodingTracker.View
 {
@@ -23,10 +20,13 @@ namespace CodingTracker.View
         private readonly IFormController _formController;
         private readonly IFormSwitcher _formSwitcher;
         private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IUserIdService _userIdService;
+        private readonly IFormFactory _formFactory;
+        private readonly IFormStateManagement _formStateManagement;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager, IUserIdService userIdService, IFormFactory formFactory, IFormStateManagement formStateManagement)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
@@ -34,6 +34,9 @@ namespace CodingTracker.View
             _formController = formController;
             _formSwitcher = formSwitcher;
             _codingSessionManager = codingSessionManager;
+            _userIdService = userIdService;
+            _formFactory = formFactory;
+            _formStateManagement = formStateManagement;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -43,6 +46,7 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
+            _formFactory = formFactory;
         }
 
 
@@ -129,7 +133,7 @@ namespace CodingTracker.View
         }
 
 
-        private void SaveUsername(string username)
+        private void SaveUsernameForNextLogin(string username)
         {
             try
             {
@@ -156,14 +160,26 @@ namespace CodingTracker.View
             string password = LoginPagePasswordTextbox.Text;
             bool isValidLogin = await _authenticationService.AuthenticateLoginWithoutActivity(username, password);
 
-            if(isValidLogin ) 
+            await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
+
+            if (isValidLogin)
             {
-                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
-                SaveUsername(username);
+                UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
 
                 // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                _codingSessionManager.StartCodingSession();
-                _formSwitcher.SwitchToMainPage();
+                await _codingSessionManager.StartCodingSession(username);
+                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
+                _userIdService.SetCurrentUserId(userCredential.UserId);
+
+
+                SaveUsernameForNextLogin(username);
+
+                Form mainPage = _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+
+                this.Hide();
+                mainPage.Show();
+
+
             }
         }
 
@@ -194,14 +210,13 @@ namespace CodingTracker.View
 
         private void LoginPageCreateAccountButton_Click_1(object sender, EventArgs e)
         {
-            var createAccountPage = _formSwitcher.SwitchToCreateAccountPage();
-            createAccountPage.AccountCreatedCallback = AccountCreatedSuccessfully;
-
+            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
+            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _appControl.ExitApplication();
+            _appControl.ExitApplicationAsync();
 
         }
 
@@ -242,8 +257,8 @@ namespace CodingTracker.View
             if (LoginPagePasswordTextbox.Text == "Password")
             {
                 LoginPagePasswordTextbox.Text = "";
-                LoginPagePasswordTextbox.ForeColor = Color.Black; 
-                LoginPagePasswordTextbox.PasswordChar = '●'; 
+                LoginPagePasswordTextbox.ForeColor = Color.Black;
+                LoginPagePasswordTextbox.PasswordChar = '●';
             }
         }
 
@@ -264,8 +279,13 @@ namespace CodingTracker.View
             {
                 LoginPagePasswordTextbox.Text = "Password";
                 LoginPagePasswordTextbox.ForeColor = Color.Gray;
-                LoginPagePasswordTextbox.PasswordChar = '\0'; 
+                LoginPagePasswordTextbox.PasswordChar = '\0';
             }
+        }
+
+        private void b(object sender, EventArgs e)
+        {
+
         }
     }
 }

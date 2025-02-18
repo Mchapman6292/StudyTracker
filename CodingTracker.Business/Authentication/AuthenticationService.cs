@@ -1,15 +1,11 @@
 ﻿
-using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.UserCredentials;
-
-using CodingTracker.Data.Repositories.UserCredentialRepositories;
+using CodingTracker.Business.CodingSessionService.UserIdServices;
+using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.UserCredentials.UserCredentialDTOs;
+using CodingTracker.Common.Entities.UserCredentialEntities;
+using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
 using System.Diagnostics;
-using CodingTracker.Business.CodingSessionService.UserIdServices;
-using CodingTracker.Common.Entities.UserCredentialEntities;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 
 
 // resetPassword, updatePassword, rememberUser 
@@ -114,6 +110,17 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");     
 
             return true;
+        }
+
+
+        public async Task<UserCredentialEntity> ReturnUserCredentialIfLoginAuthenticated(bool loginAuthenticated, string username)
+        {
+            if(loginAuthenticated)
+            {
+                _appLogger.Debug($"Login authenticated fro {username}.");
+                return await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+            }
+            throw new ArgumentException($"loginAuthenticated bool for {nameof(ReturnUserCredentialIfLoginAuthenticated)} loginAuthenticated: {loginAuthenticated}.");
         }
 
 
