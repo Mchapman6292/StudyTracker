@@ -246,5 +246,35 @@ namespace CodingTracker.View
         {
             this.Hide();
         }
+
+        private void TestEditSessionButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TestEditSessionButton2.Checked)
+            {
+                // ON State (Editing Enabled) - Teal Theme
+                EditSessionPAgeNotificationPaint.Text = "On";
+                EditSessionPAgeNotificationPaint.FillColor = Color.FromArgb(0, 128, 128);  // Standard Teal
+                EditSessionPAgeNotificationPaint.BorderColor = Color.FromArgb(0, 180, 180); // Brighter Teal
+                EditSessionPAgeNotificationPaint.ForeColor = Color.White;  // High contrast text
+
+                // Update Button Colors to Match ON State
+                TestEditSessionButton2.FillColor = Color.FromArgb(0, 128, 128);  // Teal background
+                TestEditSessionButton2.BorderColor = Color.FromArgb(0, 180, 180); // Brighter teal border
+                TestEditSessionButton2.ForeColor = Color.White;  // White text
+            }
+            else
+            {
+                // OFF State (Editing Disabled) - Dark Mode Purple-Gray
+                EditSessionPAgeNotificationPaint.Text = "Off";
+                EditSessionPAgeNotificationPaint.FillColor = Color.FromArgb(64, 63, 79); // Muted dark gray-purple
+                EditSessionPAgeNotificationPaint.BorderColor = Color.FromArgb(128, 127, 145); // Soft grayish-purple
+                EditSessionPAgeNotificationPaint.ForeColor = Color.FromArgb(200, 200, 220); // Light grayish-blue text
+
+                // Update Button Colors to Match OFF State
+                TestEditSessionButton2.FillColor = Color.FromArgb(64, 63, 79); // Dark muted gray-purple
+                TestEditSessionButton2.BorderColor = Color.FromArgb(128, 127, 145); // Soft grayish-purple
+                TestEditSessionButton2.ForeColor = Color.FromArgb(200, 200, 220); // Light grayish-blue text
+            }
+        }
     }
 }

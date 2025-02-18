@@ -3,6 +3,8 @@ using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
 using System.Diagnostics;
 using CodingTracker.View.FormPageEnums;
+using System.Windows.Forms;
+using LibVLCSharp.Shared;
 
 namespace CodingTracker.View.FormService
 {
@@ -10,6 +12,7 @@ namespace CodingTracker.View.FormService
     {
         Form CreateForm(FormPageEnum formType);
         Form GetOrCreateForm(FormPageEnum formType);
+        Form GetOrCreateLoginPage();
 
 
     }
@@ -55,6 +58,23 @@ namespace CodingTracker.View.FormService
                 return newForm;
             }
             return existingForm;
+        }
+
+        public Form GetOrCreateLoginPage()
+        {
+            var loginForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.LoginPage);
+
+            if(loginForm == null || loginForm.IsDisposed)
+            {
+                loginForm = CreateForm(FormPageEnum.LoginPage);
+            }
+            loginForm.WindowState = FormWindowState.Normal;
+            loginForm.StartPosition = FormStartPosition.CenterScreen;
+            loginForm.BringToFront();
+            loginForm.TopLevel = true;
+
+
+            return loginForm;
         }
     }
 }

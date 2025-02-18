@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -45,6 +46,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
@@ -63,6 +66,7 @@
             EditSessionPageSaveButton = new Guna.UI2.WinForms.Guna2Button();
             EditSessionButton = new Guna.UI2.WinForms.Guna2Button();
             guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            TestEditSessionButton2 = new Guna.UI2.WinForms.Guna2Button();
             EditSessionPageDataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
             SessionId = new DataGridViewTextBoxColumn();
             GoalHHMM = new DataGridViewTextBoxColumn();
@@ -71,6 +75,8 @@
             EndTimeColumn = new DataGridViewTextBoxColumn();
             GoalReached = new DataGridViewTextBoxColumn();
             DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            guna2ShadowForm1 = new Guna.UI2.WinForms.Guna2ShadowForm(components);
+            EditSessionPAgeNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
             guna2Panel1.SuspendLayout();
             guna2Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)EditSessionPageDataGridView).BeginInit();
@@ -267,17 +273,44 @@
             // 
             // guna2Panel2
             // 
+            guna2Panel2.Controls.Add(TestEditSessionButton2);
             guna2Panel2.Controls.Add(EditSessionPageDataGridView);
             guna2Panel2.Controls.Add(DeleteSessionButton);
             guna2Panel2.Controls.Add(EditSessionPageSaveButton);
             guna2Panel2.Controls.Add(EditSessionButton);
-            guna2Panel2.CustomizableEdges = customizableEdges17;
+            guna2Panel2.CustomizableEdges = customizableEdges19;
             guna2Panel2.Dock = DockStyle.Bottom;
             guna2Panel2.Location = new Point(0, 81);
             guna2Panel2.Name = "guna2Panel2";
-            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges20;
             guna2Panel2.Size = new Size(1300, 639);
             guna2Panel2.TabIndex = 1;
+            // 
+            // TestEditSessionButton2
+            // 
+            TestEditSessionButton2.Animated = true;
+            TestEditSessionButton2.AutoRoundedCorners = true;
+            TestEditSessionButton2.BackColor = Color.FromArgb(25, 24, 40);
+            TestEditSessionButton2.BorderColor = Color.Transparent;
+            TestEditSessionButton2.BorderRadius = 43;
+            TestEditSessionButton2.BorderThickness = 2;
+            TestEditSessionButton2.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            TestEditSessionButton2.CustomizableEdges = customizableEdges17;
+            TestEditSessionButton2.DisabledState.BorderColor = Color.DarkGray;
+            TestEditSessionButton2.DisabledState.CustomBorderColor = Color.DarkGray;
+            TestEditSessionButton2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            TestEditSessionButton2.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            TestEditSessionButton2.FillColor = Color.FromArgb(25, 24, 40);
+            TestEditSessionButton2.Font = new Font("Segoe UI", 9F);
+            TestEditSessionButton2.ForeColor = Color.White;
+            TestEditSessionButton2.Image = (Image)resources.GetObject("TestEditSessionButton2.Image");
+            TestEditSessionButton2.ImageSize = new Size(40, 40);
+            TestEditSessionButton2.Location = new Point(1073, 173);
+            TestEditSessionButton2.Name = "TestEditSessionButton2";
+            TestEditSessionButton2.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            TestEditSessionButton2.Size = new Size(97, 88);
+            TestEditSessionButton2.TabIndex = 23;
+            TestEditSessionButton2.CheckedChanged += TestEditSessionButton2_CheckedChanged;
             // 
             // EditSessionPageDataGridView
             // 
@@ -309,7 +342,7 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             EditSessionPageDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             EditSessionPageDataGridView.GridColor = Color.FromArgb(35, 34, 50);
-            EditSessionPageDataGridView.Location = new Point(23, 27);
+            EditSessionPageDataGridView.Location = new Point(12, -11);
             EditSessionPageDataGridView.Name = "EditSessionPageDataGridView";
             EditSessionPageDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -389,6 +422,15 @@
             DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
             // 
+            // EditSessionPAgeNotificationPaint
+            // 
+            EditSessionPAgeNotificationPaint.Alignment = Guna.UI2.WinForms.Enums.CustomContentAlignment.MiddleCenter;
+            EditSessionPAgeNotificationPaint.FillColor = Color.Red;
+            EditSessionPAgeNotificationPaint.Location = new Point(63, 35);
+            EditSessionPAgeNotificationPaint.Offset = new Point(30, 0);
+            EditSessionPAgeNotificationPaint.Size = new Size(30, 18);
+            EditSessionPAgeNotificationPaint.TargetControl = TestEditSessionButton2;
+            // 
             // EditSessionPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -429,5 +471,8 @@
         private DataGridViewTextBoxColumn EndTimeColumn;
         private DataGridViewTextBoxColumn GoalReached;
         private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
+        private Guna.UI2.WinForms.Guna2Button TestEditSessionButton2;
+        private Guna.UI2.WinForms.Guna2ShadowForm guna2ShadowForm1;
+        private Guna.UI2.WinForms.Guna2NotificationPaint EditSessionPAgeNotificationPaint;
     }
 }

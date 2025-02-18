@@ -48,9 +48,11 @@ namespace CodingTracker.View
             _appLogger.Debug($"Coding session StartSession button clicked for {nameof(CodingSessionPageStartSessionButton)}.");
 
             bool goalSet = CodingSessionPageCodingGoalToggle.Checked;
-            int goalMinutes = Convert.ToInt32(CodingGoalSetMinToggle.Value);
+
+            // Testing has to change
+            int goalmins = 60;
             _codingSessionManager.SetCurrentSessionGoalSet(goalSet);
-            _codingSessionManager.SetGoalHoursAndGoalMins(goalMinutes, goalSet);
+            _codingSessionManager.SetGoalHoursAndGoalMins(goalmins, goalSet);
 
 
             _codingSessionManager.StartCodingSessionTimer();
@@ -72,9 +74,8 @@ namespace CodingTracker.View
         private void CodingSessionPageConfirmSessionGoalButton_Click(object sender, EventArgs e)
         {
             var activity = new Activity(nameof(CodingSessionPageConfirmSessionGoalButton_Click)).Start();
-            var stopwatch = Stopwatch.StartNew();
 
-            int goalHours = Convert.ToInt32(CodingGoalSetHourToggle.Value);
+  
         }
 
         private void setGoalMins()
@@ -111,8 +112,10 @@ namespace CodingTracker.View
         {
             bool isChecked = CodingSessionPageCodingGoalToggle.Checked;
 
+            /*
             CodingGoalSetHourToggle.Enabled = isChecked;
             CodingGoalSetMinToggle.Enabled = isChecked;
+            */
         }
 
         public void MinimizeToTray()

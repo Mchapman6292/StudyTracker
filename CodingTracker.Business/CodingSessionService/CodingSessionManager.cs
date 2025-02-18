@@ -10,8 +10,6 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
 using System.Diagnostics;
-using System.Net;
-using System.Text;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {

@@ -70,7 +70,10 @@ namespace CodingTracker.View.Program
             ApplicationConfiguration.Initialize();
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
-            var loginPage = formFactory.GetOrCreateForm(FormPageEnum.LoginPage);
+            var loginPage = formFactory.GetOrCreateLoginPage();
+
+   
+
             Application.Run(loginPage);
         }
 

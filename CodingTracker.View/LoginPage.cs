@@ -174,7 +174,10 @@ namespace CodingTracker.View
 
                 SaveUsernameForNextLogin(username);
 
-                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                Form mainPage = _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+
+                this.Hide();
+                mainPage.Show();
 
 
             }

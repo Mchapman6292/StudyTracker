@@ -47,7 +47,7 @@ namespace CodingTracker.View
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formSwitcher.SwitchToForm(FormPageEnum.CodingSessionPage);
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)

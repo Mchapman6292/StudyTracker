@@ -117,6 +117,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         {
             if(loginAuthenticated)
             {
+                _appLogger.Debug($"Login authenticated fro {username}.");
                 return await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
             }
             throw new ArgumentException($"loginAuthenticated bool for {nameof(ReturnUserCredentialIfLoginAuthenticated)} loginAuthenticated: {loginAuthenticated}.");
