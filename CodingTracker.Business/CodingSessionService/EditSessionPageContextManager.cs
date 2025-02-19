@@ -6,7 +6,7 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
     {
         private readonly IApplicationLogger _appLogger;
         private readonly HashSet<int> _sessionIdsForDeletion;
-        private bool IsEditSession { get; set; } = false;
+  
 
 
         public EditSessionPageContextManager(IApplicationLogger appLogger)
@@ -41,16 +41,10 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
             return _sessionIdsForDeletion;
         }
 
-        public bool ReturnIsEditSessionBool()
-        {
-            return IsEditSession;
-        }
+   
 
-        public void UpdateIsEditSessionBool(bool isEditSession)
-        {
-            IsEditSession = isEditSession;
-            _appLogger.Debug($"IsEditSession set to: {IsEditSession}.");
-        }
+
+
 
 
 

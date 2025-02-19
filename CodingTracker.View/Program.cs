@@ -39,7 +39,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.FormPageEnums;
-
+using CodingTracker.View.FormService.LayoutServices;
 
 /// To do
 /// Change get validDate & Time inputvalidator
@@ -112,6 +112,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
                     .AddSingleton<IUserIdService, UserIdService>()
+                    .AddSingleton<ILayoutService, LayoutService>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()
