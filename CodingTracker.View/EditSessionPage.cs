@@ -6,6 +6,9 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
+using CodingTracker.View.FormService.ColourServices;
+using CodingTracker.Common.CommonEnums;
+using System.DirectoryServices;
 
 namespace CodingTracker.View
 {
@@ -22,12 +25,15 @@ namespace CodingTracker.View
         private readonly EditSessionPageContextManager _editSessionPageContextManager;
         private readonly ILayoutService _layoutService;
 
+
         private Dictionary<int, int> _rowIndexToSessionId = new Dictionary<int, int>();
-        private bool IsEditSession { get; set; } = false;
-
+        private bool _isEditSession { get; set; } = false;
         private List<int> _currentHighlightedRows = new List<int>();
-
         private int _numberOfSessions = 10;
+        public string DisplayText { get; set; }
+        public SessionSortCriteria SortCriteria { get; set; }
+
+        public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
         public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, EditSessionPageContextManager editContextManager, ILayoutService layoutService)
@@ -39,30 +45,53 @@ namespace CodingTracker.View
             _editSessionPageContextManager = editContextManager;
             _layoutService = layoutService;
             InitializeComponent();
+            InitializeComboBoxDropDowns();
         }
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await LoadSessionsIntoDataGridView();
+            await LoadSessionsIntoDataGridView(SessionSortCriteria.None);
         }
 
-        private void AddToRowIndexToSessionId(int rowIndex, int sessionId)
+        // Methods to update properties, button behaviour.
+        private void UpdateIsEditSession(bool isEditSession)
         {
-            if(_rowIndexToSessionId.ContainsKey(rowIndex))
+            _isEditSession = isEditSession;
+        }
+
+        private void UpdateDeleteSessionButtonEnabled(bool enabled)
+        {
+            if (enabled)
             {
-                throw new ArgumentException($"RowIndex key: {rowIndex} already exists in {nameof(_rowIndexToSessionId)}");
+                DeleteSessionButton.Enabled = true;
+                return;
+            }
+            DeleteSessionButton.Enabled = false;
+        }
+
+        private void UpdateDeleteSessionButtonVisibility(bool visible)
+        {
+            if (visible)
+            {
+                DeleteSessionButton.Visible = true;
+                return;
             }
 
-            _rowIndexToSessionId.Add(rowIndex, sessionId);
+            DeleteSessionButton.Visible = false;
         }
 
 
-        private async Task LoadSessionsIntoDataGridView()
+
+
+
+
+        // Data grid viewing loading methods.
+        private async Task LoadSessionsIntoDataGridView(SessionSortCriteria sortCriteria)
         {
             EditSessionPageDataGridView.Rows.Clear();
             _rowIndexToSessionId.Clear();
 
-            List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsAsync(_numberOfSessions);
+            List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsOrderedBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
 
             foreach (var session in sessions)
             {
@@ -84,23 +113,57 @@ namespace CodingTracker.View
 
             }
         }
-            
-        private void UpdateIsEditSession(bool isEditSession)
+
+
+        private void AddToRowIndexToSessionId(int rowIndex, int sessionId)
         {
-            IsEditSession = isEditSession;
+            if (_rowIndexToSessionId.ContainsKey(rowIndex))
+            {
+                throw new ArgumentException($"RowIndex key: {rowIndex} already exists in {nameof(_rowIndexToSessionId)}");
+            }
+            _rowIndexToSessionId.Add(rowIndex, sessionId);
         }
 
 
+        // Row Selection & Highlighting. 
+
+        private bool CheckValidRowSelectedDuringEditSession(int rowIndex)
+        {
+            return _isEditSession && rowIndex >= 0;
+        }
+
+        private void HighlightRow(DataGridViewRow row)
+        {
+            row.DefaultCellStyle.BackColor = ColourService.CrimsonRed;
+        }
+
+        private void AddHighlightedRowToCurrentHighlightedRows(DataGridViewRow row)
+        {
+            _currentHighlightedRows.Add(row.Index);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // DataGridView Event Handlers.
+
         private void EditModeDataGridView_CellClick(object sender, DataGridViewCellEventArgs dataGridViewArgs)
         {
-            if(!ChangeRowSelectionColourForEditMode(dataGridViewArgs.RowIndex))
+            if (!CheckValidRowSelectedDuringEditSession(dataGridViewArgs.RowIndex))
             {
                 return;
             }
-        
+
             using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
             {
-                if (IsEditSession)
+                if (_isEditSession)
                 {
                     HandleEditModeClick(dataGridViewArgs.RowIndex);
                 }
@@ -110,12 +173,6 @@ namespace CodingTracker.View
                 }
             }
         }
-
-        private bool ChangeRowSelectionColourForEditMode(int rowIndex)
-        {
-            return IsEditSession && rowIndex >= 0;
-        }
-
 
         private void HandleEditModeClick(int rowIndex)
         {
@@ -128,101 +185,137 @@ namespace CodingTracker.View
         }
 
 
+
+ 
+
+ 
+
+
+        // Colour Management
+
+
         private void UpdateDefaultSelectionColors()
         {
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(35, 34, 50);
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = Color.FromArgb(35, 34, 50);
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = ColourService.DarkerGrey;
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = ColourService.DarkerGrey;
         }
 
-
-        private void HighlightRow(DataGridViewRow row)
+        private void SetEditSessionNotificationPaintColours()
         {
-            row.DefaultCellStyle.BackColor = Color.FromArgb(220, 20, 60);// Crimson red.
-            
+            if (_isEditSession)
+            {
+                EditSessionPageNotificationPaint.Text = "On";
+                EditSessionPageNotificationPaint.FillColor = ColourService.Teal;
+                EditSessionPageNotificationPaint.BorderColor = ColourService.LightTeal;
+                EditSessionPageNotificationPaint.ForeColor = ColourService.White;
+            }
+            else
+            {
+                EditSessionPageNotificationPaint.Text = "Off";
+                EditSessionPageNotificationPaint.FillColor = ColourService.DarkGrey;
+                EditSessionPageNotificationPaint.BorderColor = ColourService.MediumGrey;
+                EditSessionPageNotificationPaint.ForeColor = ColourService.LightGrey;
+            }
         }
 
-        private void AddHighlightedRowToCurrentHighlightedRows(DataGridViewRow row)
+        private void SetEditSessionButtonColours()
         {
-            _currentHighlightedRows.Add(row.Index);
+            if (_isEditSession)
+            {
+                TestEditSessionButton2.FillColor = ColourService.Teal;
+                TestEditSessionButton2.BorderColor = ColourService.LightTeal;
+                TestEditSessionButton2.ForeColor = ColourService.White;
+            }
+            else
+            {
+                TestEditSessionButton2.FillColor = ColourService.DarkGrey;
+                TestEditSessionButton2.BorderColor = ColourService.MediumGrey;
+                TestEditSessionButton2.ForeColor = ColourService.LightGrey;
+            }
         }
+
+
+
+ 
+
+        /// <summary>
+        /// These methods are needed to modify the selection colour behaviour.
+        ///  DisableDataGridViewSelectionHighlighting makes selection invisible by matching it to the background.
+        ///  UniformDataGridViewRowColors makes all rows uniform by removing the alternating row pattern.
+
+        /// </summary>
+        private void DisableDataGridViewSelectionHighlighting()
+        {
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = EditSessionPageDataGridView.DefaultCellStyle.ForeColor;
+        }
+
+        private void UniformDataGridViewRowColors()
+        {
+            EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.BackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
+            EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
+        }
+
+
+
+
 
 
         private void ResetDataGridRowColoursWhenEditSessionOff()
         {
             foreach (int rowIndex in _currentHighlightedRows)
             {
-                var tartgetRow = EditSessionPageDataGridView.Rows[rowIndex];
-
+                var targetRow = EditSessionPageDataGridView.Rows[rowIndex];
+                targetRow.DefaultCellStyle.BackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
             }
+            _currentHighlightedRows.Clear();
         }
 
+   
 
 
 
 
-        private void EditSessionExitControlBox_Click(object sender, EventArgs e)
-        {
-            _formController.CloseCurrentForm();
-        }
 
   
 
 
-        private void UpdateDeleteSessionButtonVisibility(bool visible)
-        {
-            if (visible)
-            {
-                DeleteSessionButton.Visible = true;
-                return;
-            }
-
-            DeleteSessionButton.Visible = false;
-        }
-
-        private void UpdateDeleteSessionButtonEnabled(bool enabled)
-        {
-            if(enabled) 
-            {
-                DeleteSessionButton.Enabled = true;
-                return;
-            }
-            DeleteSessionButton.Enabled = false;
-        }
 
 
 
 
-
+        // Session Deletion.
 
         private async void DeleteSessionButton_Click(object sender, EventArgs e)
         {
-            if (!IsEditSession)
+            if (!_isEditSession)
             {
-                throw new InvalidOperationException($"Error for {nameof(DeleteSessionButton_Click)}. IsEditSession is set to {IsEditSession.ToString()}, session editing must be enabled to delete sessions.");
+                throw new InvalidOperationException($"Error for {nameof(DeleteSessionButton_Click)}. _isEditSession is set to {_isEditSession.ToString()}, session editing must be enabled to delete sessions.");
             }
 
-            DeleteSessionButton.Enabled = false; // Disabled during deletion to prevent multiple clicks etc.
+            UpdateDeleteSessionButtonEnabled(false); // Disabled during deletion to prevent multiple clicks etc.
+            int deletedSessions = await _editSessionPageContextManager.DeleteSessionsInSessionIdsForDeletion();
 
-            HashSet<int> deletedSessionIds = _editSessionPageContextManager.GetSessionIdsForDeletion();
+            string message = string.Empty;
 
-            _appLogger.Debug($"Sessionids for deletion: {string.Join(", ", deletedSessionIds)}");
-
-            int deletedSessions = await _codingSessionRepository.DeleteSessionsByIdAsync(deletedSessionIds);
-
-            if (deletedSessions > 0)
+            if (deletedSessions == 0)
             {
-                string message = $"Deleted sessions for session ids: {string.Join(", ", deletedSessionIds)}";
-                ShowMessageInEditSessionDialogBox(this, EventArgs.Empty, message);
+                message = $"No sessions deleted";
             }
             else
             {
-                ShowMessageInEditSessionDialogBox(this, EventArgs.Empty, "No sessions were deleted.");
+                message = $"{deletedSessions} sessions deleted.";
             }
+
+            ShowNotificationDialog(this, EventArgs.Empty, message);
         }
 
 
 
-        private void ShowMessageInEditSessionDialogBox(object sender, EventArgs e, string message)
+
+
+
+        private void ShowNotificationDialog(object sender, EventArgs e, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
@@ -247,6 +340,12 @@ namespace CodingTracker.View
 
 
 
+
+
+
+
+        // Navigation & Form Controlls
+
         private void EditSessionPageBackButton_Click(object sender, EventArgs e)
         {
             _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
@@ -262,68 +361,113 @@ namespace CodingTracker.View
             this.Hide();
         }
 
-
-        private void SetEditMode(bool isEnabled)
+        private void EditSessionExitControlBox_Click(object sender, EventArgs e)
         {
-            IsEditSession = isEnabled;
+            _formController.CloseCurrentForm();
+        }
 
-            // Update UI appearance
-            if (isEnabled)
+
+
+
+
+
+
+
+
+
+        // Edit Mode Management
+        private void TestEditSessionButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateIsEditSession(TestEditSessionButton2.Checked);
+            SetEditMode();
+        }
+
+        private void SetEditMode()
+        {
+            SetEditSessionNotificationPaintColours();
+            SetEditSessionButtonColours();
+
+            if (_isEditSession) 
             {
-                EditSessionPageNotificationPaint.Text = "On";
-                EditSessionPageNotificationPaint.FillColor = Color.FromArgb(0, 128, 128);  // Teal
-                EditSessionPageNotificationPaint.BorderColor = Color.FromArgb(0, 180, 180);
-                EditSessionPageNotificationPaint.ForeColor = Color.White;
-
-                TestEditSessionButton2.FillColor = Color.FromArgb(0, 128, 128);
-                TestEditSessionButton2.BorderColor = Color.FromArgb(0, 180, 180);
-                TestEditSessionButton2.ForeColor = Color.White;
-
-                EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
-                EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = EditSessionPageDataGridView.DefaultCellStyle.ForeColor;
-
-
-                EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.BackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
-                EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
-
+                DisableDataGridViewSelectionHighlighting();
+                UniformDataGridViewRowColors();
             }
             else
             {
-                EditSessionPageNotificationPaint.Text = "Off";
-                EditSessionPageNotificationPaint.FillColor = Color.FromArgb(64, 63, 79);
-                EditSessionPageNotificationPaint.BorderColor = Color.FromArgb(128, 127, 145);
-                EditSessionPageNotificationPaint.ForeColor = Color.FromArgb(200, 200, 220);
+                _editSessionPageContextManager.ClearSessionIdsForDeletion();
+                ResetDataGridRowColoursWhenEditSessionOff();
 
-                TestEditSessionButton2.FillColor = Color.FromArgb(64, 63, 79);
-                TestEditSessionButton2.BorderColor = Color.FromArgb(128, 127, 145);
-                TestEditSessionButton2.ForeColor = Color.FromArgb(200, 200, 220);
-
-                EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(35, 34, 50);
-                EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = Color.FromArgb(35, 34, 50);
-
-                ClearSessionIdsForDeletion();
             }
+
             UpdateDeleteSessionButtonEnabled(Enabled);
             UpdateDeleteSessionButtonVisibility(Enabled);
         }
 
 
-    
 
-        private void ClearSessionIdsForDeletion()
+
+
+
+
+
+        // ComboBox DropDown logic
+
+        private void InitializeComboBoxDropDowns()
         {
-            _editSessionPageContextManager.ClearSessionIdsForDeletion();
-            foreach (DataGridViewRow row in EditSessionPageDataGridView.Rows)
+           string[] sortOptions = new string[]
             {
-                row.DefaultCellStyle.BackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
+                    "Session Id",
+                    "Duration",
+                    "Start Date",
+                    "Start Time",
+                    "End Date",
+                    "End Time"
+                };
+
+            EditSessionPageComboBox.Items.AddRange(sortOptions); 
+
+
+        }
+
+        private void InitializeComboBoxOptionToSortCriteria()
+        {
+            Dictionary<string, SessionSortCriteria> comboBoxOptionToSortCriteria = new Dictionary<string, SessionSortCriteria>
+            {
+                {"Session Id", SessionSortCriteria.SessionId},
+                { "Duration", SessionSortCriteria.Duration },
+                { "Start Date", SessionSortCriteria.StartDate },
+                { "Start Time", SessionSortCriteria.StartTime },
+                { "End Date", SessionSortCriteria.EndDate },
+                { "End Time", SessionSortCriteria.EndTime }
+            };
+        }
+
+
+        public SessionSortCriteria GetSortCriteriaFromComboBoxSelection(string selectedOption)
+        {
+            return ComboBoxOptionToSortCriteria.TryGetValue(selectedOption, out SessionSortCriteria criteria)
+                ? criteria
+                : SessionSortCriteria.None;
+        }
+
+
+        private async Task HandleEditSessionPageComboBoxSelection(object sender, EventArgs e)
+        {
+            string selectedOption = (string)EditSessionPageComboBox.SelectedItem;
+            SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
+
+            using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
+            {
+                await LoadSessionsIntoDataGridView(selectedCriteria);
             }
         }
 
-
-        private void TestEditSessionButton2_CheckedChanged(object sender, EventArgs e)
+        private async void EditSessionPageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetEditMode(TestEditSessionButton2.Checked);
+            await HandleEditSessionPageComboBoxSelection(sender, e);
         }
+
+
 
     }
 }

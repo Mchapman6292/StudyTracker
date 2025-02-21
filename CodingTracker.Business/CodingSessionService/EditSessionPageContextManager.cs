@@ -1,4 +1,6 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.CommonEnums;
 
 namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers
 {
@@ -6,12 +8,14 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
     {
         private readonly IApplicationLogger _appLogger;
         private readonly HashSet<int> _sessionIdsForDeletion;
-  
+        private readonly ICodingSessionRepository _codingSessionRepository;
 
 
-        public EditSessionPageContextManager(IApplicationLogger appLogger)
+
+        public EditSessionPageContextManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository)
         {
             _appLogger = appLogger;
+            _codingSessionRepository = codingSessionRepository;
             _sessionIdsForDeletion = new HashSet<int>();
         }
 
@@ -41,7 +45,14 @@ namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextMana
             return _sessionIdsForDeletion;
         }
 
-   
+        public async Task<int> DeleteSessionsInSessionIdsForDeletion()
+        {
+           return await _codingSessionRepository.DeleteSessionsByIdAsync(_sessionIdsForDeletion);
+        }
+
+
+
+
 
 
 
