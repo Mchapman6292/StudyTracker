@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.Entities.CodingSessionEntities;
+﻿using CodingTracker.Common.CommonEnums;
+using CodingTracker.Common.Entities.CodingSessionEntities;
 
 namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
 {
@@ -10,6 +11,8 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
         Task<int> DeleteSessionsByIdAsync(HashSet<int> sessionIds);
 
         Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions);
+
+        Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria sortBy);
 
         Task<List<CodingSessionEntity>> GetSessionsForLastDaysAsync(int numberOfDays);
 

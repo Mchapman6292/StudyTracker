@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+﻿using CodingTracker.Common.CommonEnums;
+using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
@@ -88,6 +89,27 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                     .ToListAsync();
         }
 
+        public async Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria sortBy)
+        {
+            IQueryable<CodingSessionEntity> query = _dbContext.CodingSessions;
+
+            query = sortBy switch
+            {
+                SessionSortCriteria.SessionId => query.OrderByDescending(s => s.SessionId),
+                SessionSortCriteria.Duration => query.OrderByDescending(s => s.DurationHHMM),
+                SessionSortCriteria.StartDate => query.OrderByDescending(s => s.StartDate),
+                SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDate),
+                SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDate),
+                SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDate),
+                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate), // Default sorting
+                _ => query.OrderByDescending(s => s.StartDate)  // Fallback
+            };
+
+            return await query
+                .Take(numberOfSessions)
+                .ToListAsync();
+        }
+
         public async Task<List<CodingSessionEntity>> GetSessionsForLastDaysAsync(int numberOfDays)
         {
             DateOnly targetDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-numberOfDays));
@@ -119,5 +141,6 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             return await _dbContext.CodingSessions
                 .AnyAsync(s => s.StartDate == today || s.EndDate == today);
         }
+
     }
 }

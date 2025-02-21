@@ -131,7 +131,7 @@
             EditSessionPageComboBox.Font = new Font("Segoe UI", 10F);
             EditSessionPageComboBox.ForeColor = Color.Silver;
             EditSessionPageComboBox.ItemHeight = 30;
-            EditSessionPageComboBox.Items.AddRange(new object[] { "Last Session", "Recent Session", "Duration" });
+            EditSessionPageComboBox.Items.AddRange(new object[] { "Session Id", "Duration", "Start Date", "Start Time", "End Date", "End Time" });
             EditSessionPageComboBox.Location = new Point(466, 0);
             EditSessionPageComboBox.Name = "EditSessionPageComboBox";
             EditSessionPageComboBox.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -313,11 +313,8 @@
             // EditSessionPageDataGridView
             // 
             EditSessionPageDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.Empty;
             dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle1.ForeColor = Color.Honeydew;
-            dataGridViewCellStyle1.SelectionBackColor = Color.Empty;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Empty;
             EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             EditSessionPageDataGridView.BackgroundColor = Color.FromArgb(35, 34, 50);
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;

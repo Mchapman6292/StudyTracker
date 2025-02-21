@@ -1,10 +1,4 @@
-﻿using Guna.UI2.AnimatorNS;
-using Guna.UI2.WinForms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.FormService.FormAnimationHandlers
 {

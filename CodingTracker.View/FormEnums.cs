@@ -15,4 +15,5 @@ namespace CodingTracker.View.FormPageEnums
         CreateAccountPage,
         CodingSessionTimerPage
     }
+
 }

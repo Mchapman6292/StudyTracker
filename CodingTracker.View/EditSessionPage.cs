@@ -7,6 +7,8 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.ColourServices;
+using CodingTracker.Common.CommonEnums;
+using System.DirectoryServices;
 
 namespace CodingTracker.View
 {
@@ -23,12 +25,15 @@ namespace CodingTracker.View
         private readonly EditSessionPageContextManager _editSessionPageContextManager;
         private readonly ILayoutService _layoutService;
 
+
         private Dictionary<int, int> _rowIndexToSessionId = new Dictionary<int, int>();
         private bool _isEditSession { get; set; } = false;
-
         private List<int> _currentHighlightedRows = new List<int>();
-
         private int _numberOfSessions = 10;
+        public string DisplayText { get; set; }
+        public SessionSortCriteria SortCriteria { get; set; }
+
+        public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
         public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, EditSessionPageContextManager editContextManager, ILayoutService layoutService)
@@ -40,11 +45,12 @@ namespace CodingTracker.View
             _editSessionPageContextManager = editContextManager;
             _layoutService = layoutService;
             InitializeComponent();
+            InitializeComboBoxDropDowns();
         }
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await LoadSessionsIntoDataGridView();
+            await LoadSessionsIntoDataGridView(SessionSortCriteria.None);
         }
 
         // Methods to update properties, button behaviour.
@@ -80,12 +86,12 @@ namespace CodingTracker.View
 
 
         // Data grid viewing loading methods.
-        private async Task LoadSessionsIntoDataGridView()
+        private async Task LoadSessionsIntoDataGridView(SessionSortCriteria sortCriteria)
         {
             EditSessionPageDataGridView.Rows.Clear();
             _rowIndexToSessionId.Clear();
 
-            List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsAsync(_numberOfSessions);
+            List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsOrderedBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
 
             foreach (var session in sessions)
             {
@@ -395,6 +401,70 @@ namespace CodingTracker.View
 
             UpdateDeleteSessionButtonEnabled(Enabled);
             UpdateDeleteSessionButtonVisibility(Enabled);
+        }
+
+
+
+
+
+
+
+
+        // ComboBox DropDown logic
+
+        private void InitializeComboBoxDropDowns()
+        {
+           string[] sortOptions = new string[]
+            {
+                    "Session Id",
+                    "Duration",
+                    "Start Date",
+                    "Start Time",
+                    "End Date",
+                    "End Time"
+                };
+
+            EditSessionPageComboBox.Items.AddRange(sortOptions); 
+
+
+        }
+
+        private void InitializeComboBoxOptionToSortCriteria()
+        {
+            Dictionary<string, SessionSortCriteria> comboBoxOptionToSortCriteria = new Dictionary<string, SessionSortCriteria>
+            {
+                {"Session Id", SessionSortCriteria.SessionId},
+                { "Duration", SessionSortCriteria.Duration },
+                { "Start Date", SessionSortCriteria.StartDate },
+                { "Start Time", SessionSortCriteria.StartTime },
+                { "End Date", SessionSortCriteria.EndDate },
+                { "End Time", SessionSortCriteria.EndTime }
+            };
+        }
+
+
+        public SessionSortCriteria GetSortCriteriaFromComboBoxSelection(string selectedOption)
+        {
+            return ComboBoxOptionToSortCriteria.TryGetValue(selectedOption, out SessionSortCriteria criteria)
+                ? criteria
+                : SessionSortCriteria.None;
+        }
+
+
+        private async Task HandleEditSessionPageComboBoxSelection(object sender, EventArgs e)
+        {
+            string selectedOption = (string)EditSessionPageComboBox.SelectedItem;
+            SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
+
+            using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
+            {
+                await LoadSessionsIntoDataGridView(selectedCriteria);
+            }
+        }
+
+        private async void EditSessionPageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await HandleEditSessionPageComboBoxSelection(sender, e);
         }
 
 
