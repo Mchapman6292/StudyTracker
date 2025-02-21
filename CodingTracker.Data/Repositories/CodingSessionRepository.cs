@@ -65,7 +65,8 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
             if(!sessionsToDelete.Any())
             {
-                throw new InvalidOperationException($"No sessions found in database for {string.Join(", ", sessionIds)}.");
+                _appLogger.Error($"No session ids for deletion in {nameof(DeleteSessionsByIdAsync)}");
+                return 0;
             }
 
             int deletedSessions = await _dbContext.CodingSessions
@@ -75,6 +76,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             _appLogger.Info($"{deletedSessions} sessions deleted. Session IDs: {string.Join(", ", sessionsToDelete)}");
 
             return deletedSessions;
+
         }
 
 
