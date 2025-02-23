@@ -42,17 +42,12 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
 
 /// To do
-/// Change get validDate & Time inputvalidator
-/// Consistent appraoch to DTO
-/// Add event logic to show account created succesfully in loginpage.
-/// Check all methods end stopwatch timing when error is thrown
-/// Review database methods to add more sql lite exceptions. 
-/// Review all methods were thrown is used. 
-/// Centralize errorboxmessage logic.
-/// Add tests to ensure that the labels and panel days correspond.
-/// Change CatchErrorsAndLogWithStopwatch so that it does not call the method itself. 
-/// Logic for remember me to read stored password from sql lite db/other
-/// get user id & session id both use most recent login. CHANGE
+
+/// Change date to Today 18:15 etc
+/// Categories for Study type. 
+
+
+
 
 namespace CodingTracker.View.Program
 {

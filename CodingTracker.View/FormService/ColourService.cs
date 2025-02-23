@@ -15,7 +15,7 @@ namespace CodingTracker.View.FormService.ColourServices
         public static Color LightGrey => Color.FromArgb(200, 200, 220);
 
         // Selection and highlight colors
-        public static Color DarkerGrey => Color.FromArgb(35, 34, 50);
+        public static Color DarkerGrey => Color.FromArgb(35, 34, 50); // Primary background/display colour.
         public static Color CrimsonRed => Color.FromArgb(220, 20, 60);
     }
 }

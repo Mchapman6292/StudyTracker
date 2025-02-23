@@ -114,21 +114,14 @@ namespace CodingTracker.View
 
         private void LoadSavedCredentials()
         {
-            try
+            if (Properties.Settings.Default.RememberMe)
             {
-                if (Properties.Settings.Default.RememberMe)
+                var lastUsername = Properties.Settings.Default.LastUsername;
+                if (!string.IsNullOrEmpty(lastUsername))
                 {
-                    var lastUsername = Properties.Settings.Default.LastUsername;
-                    if (!string.IsNullOrEmpty(lastUsername))
-                    {
-                        loginPageUsernameTextbox.Text = lastUsername;
-                        LoginPageRememberMeToggle.Checked = true;
-                    }
+                    loginPageUsernameTextbox.Text = lastUsername;
+                    LoginPageRememberMeToggle.Checked = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                _appLogger.Error($"Error loading saved credentials: {ex.Message}");
             }
         }
 
