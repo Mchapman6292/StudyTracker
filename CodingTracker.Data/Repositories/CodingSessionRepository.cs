@@ -89,7 +89,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                     .ToListAsync();
         }
 
-        public async Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria sortBy)
+        public async Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy)
         {
             IQueryable<CodingSessionEntity> query = _dbContext.CodingSessions;
 
@@ -101,7 +101,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDate),
                 SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDate),
                 SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDate),
-                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate), // Default sorting
+                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate), 
                 _ => query.OrderByDescending(s => s.StartDate)  // Fallback
             };
 
@@ -140,6 +140,14 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _dbContext.CodingSessions
                 .AnyAsync(s => s.StartDate == today || s.EndDate == today);
+        }
+
+
+        public async Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateTimeForStartDate(DateOnly date)
+        {
+            return await _dbContext.CodingSessions
+                .Where(s => s.StartDate == date)
+                .ToListAsync();
         }
 
     }

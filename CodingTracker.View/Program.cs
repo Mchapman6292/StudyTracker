@@ -40,6 +40,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
+using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 
 /// To do
 
@@ -108,6 +109,8 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
                     .AddSingleton<IUserIdService, UserIdService>()
                     .AddSingleton<ILayoutService, LayoutService>()
+                    .AddSingleton<IEditSessionPageContextManager, EditSessionPageContextManager>()
+                    .AddSingleton<IDataGridViewManager , DataGridViewManager>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()
