@@ -1,16 +1,16 @@
 ﻿using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
+using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormPageEnums;
-using CodingTracker.View.FormService.LayoutServices;
-using CodingTracker.View.FormService.ColourServices;
-using CodingTracker.Common.CommonEnums;
-using System.DirectoryServices;
-using Newtonsoft.Json.Linq;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
+using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ColourServices;
+using CodingTracker.View.FormService.LayoutServices;
+using CodingTracker.View.EditSessionPageService.DataGridRowStates;
+using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 
 namespace CodingTracker.View
 {
@@ -27,9 +27,9 @@ namespace CodingTracker.View
         private readonly IEditSessionPageContextManager _editSessionPageContextManager;
         private readonly ILayoutService _layoutService;
         private readonly IDataGridViewManager _dataGridViewManager;
+        private readonly IDataGridRowStateManager _dataGridRowStateManager;
 
         // Maps the sessionId to the datagridview display, used to tracking session ids which are added to EditSessionPageContextManager SessionIdsForDeletion. 
-        private Dictionary<int, int> _rowIndexToSessionId = new Dictionary<int, int>();
         private bool IsEditSession { get; set; } = false;
         private List<int> _currentHighlightedRows = new List<int>();
         private int _numberOfSessions = 10;
@@ -46,7 +46,7 @@ namespace CodingTracker.View
         public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IEditSessionPageContextManager editContextManager, ILayoutService layoutService, IDataGridViewManager dataGridViewManager)
+        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IEditSessionPageContextManager editContextManager, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, IDataGridRowStateManager dataGridRowStateManager)
         {
             _appLogger = appLogger;
             _appControl = appControl;
@@ -162,14 +162,6 @@ namespace CodingTracker.View
 
 
 
-        private void AddToRowIndexToSessionId(int rowIndex, int sessionId)
-        {
-            if (_rowIndexToSessionId.ContainsKey(rowIndex))
-            {
-                throw new ArgumentException($"RowIndex key: {rowIndex} already exists in {nameof(_rowIndexToSessionId)}");
-            }
-            _rowIndexToSessionId.Add(rowIndex, sessionId);
-        }
 
         private void PopulateGridWithSessions(List<CodingSessionEntity> sessions)
         {
@@ -181,7 +173,7 @@ namespace CodingTracker.View
                 // Skip if row addition failed
                 _appLogger.Error($"Unable to populate session {session.SessionId} for row index: {rowIndex}.");
 
-                AddToRowIndexToSessionId(rowIndex, session.SessionId);
+                _dataGridViewManager.AddToRowIndexToSessionId(rowIndex, session.SessionId);
                 PopulateDataGridViewRowCells(rowIndex, session);
             }
         }
@@ -197,6 +189,9 @@ namespace CodingTracker.View
             }
             return rowIndex;
         }
+
+
+
 
 
         private async Task UpdateDataViewGrid(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
@@ -276,7 +271,7 @@ namespace CodingTracker.View
             {
                 if (IsEditSession)
                 {
-                    HandleEditModeClick(dataGridViewArgs.RowIndex);
+                    HandleEditModeDataGridViewClick(dataGridViewArgs.RowIndex);
                 }
                 else
                 {
@@ -285,13 +280,19 @@ namespace CodingTracker.View
             }
         }
 
-        private void HandleEditModeClick(int rowIndex)
+        private void HandleEditModeDataGridViewClick(int rowIndex)
         {
-            int selectedRowSessionId = _rowIndexToSessionId[rowIndex];
+            int selectedRowSessionId = _dataGridViewManager.GetSessionIdForRowIndex(EditSessionPageDataGridView.Rows[rowIndex]);
+
             DataGridViewRow selectedRow = EditSessionPageDataGridView.Rows[rowIndex];
+
 
             HighlightRow(selectedRow);
             AddHighlightedRowToCurrentHighlightedRows(selectedRow);
+
+            _dataGridViewManager.UpdateMarkedDeletionByRow(selectedRow, true);
+
+            // Remove once bool logic fixed. 
             _editSessionPageContextManager.AddSessionIdForDeletion(selectedRowSessionId);
         }
 

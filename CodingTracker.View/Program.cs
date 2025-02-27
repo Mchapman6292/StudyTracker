@@ -41,6 +41,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
+using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 
 /// To do
 
@@ -111,6 +112,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IEditSessionPageContextManager, EditSessionPageContextManager>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
+                    .AddSingleton<IDataGridRowStateManager, DataGridRowStateManager>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()
