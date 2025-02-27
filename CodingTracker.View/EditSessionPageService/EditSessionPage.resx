@@ -137,7 +137,7 @@
   <data name="EditSessionPageDeleteButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        EAAACxABrSO9dQAAAslJREFUaEPNmc+LTWEcxu9MzWykWFDyB1BSEpthUlLYs2AhJSsWLFjIigWSBcsp
+        DAAACwwBP0AiyAAAAslJREFUaEPNmc+LTWEcxu9MzWykWFDyB1BSEpthUlLYs2AhJSsWLFjIigWSBcsp
         KSlZsZCSkvwWCxayYkGDxF6R6znn+5ly57znztw5z+ueT701zvnM87yPDXOn46Lb7Y7rnNP5rDMX0zpn
         dcb59vbAxQblDN/eHnSp4m+5YIJHtcjZHGp3mkftgYt1+eOcoM/b/29wr3YOUc+TqGsFj7nW4OibH0VG
         K3jItRaOQj5E1lB4zzWao7BnkTkUnnKN5ijsVmQOhZtcozkKm4rMvkzozPz78C/9nm+KL/syxTWao7DT
@@ -150,20 +150,6 @@
         dT5U8i66euG1a8hbXudDJQ+iqxdeu4bc53U+VHIjunrhtWvIdV7nQyWXoqtC8dunyfiyh37PU7/JKrhI
         XT5UcjK6snKCunyo5GB0ZeUAdflQyY7oykq+/57MoJLFOt/KujwUP04voi4vKtqo80Kn9sOIBVBkPdfZ
         QM0AdDp/ATHK3/bHH5zuAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="EditSessionPageSaveChangesButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DwAACw8BkvkDpQAAAdRJREFUaEPt2k1OKzEQAOFsEBwiOTEgjsGKHT8nAm5BaMcVC6HUTMaihRHzSd6Y
-        Grett2DB26xWq+X2+/1VrLtY77F+y32sC67UJw4ojxjBQ6z+x8THk/8SZGkYc/QY65IfLVO/d2RpGPNV
-        32Pqt44sDWO+W/6Y+p0j68YxDdsN26cse0z9xpF145iG7YZtc/5jau/IunFMw3bD9pTzHlNbR9aNYxq2
-        G7bn3JM7QkXWjWMathu253yQO0JF1o1jGrYbtmeROzpF1o1jGrYbtmeROzpF1o1jGrYbtmeROzpFloYx
-        s8gd3ZQt6Y+Ls3d1xDw+cXRTnmPtyH9MOTPWSxlwDj5zdMPjuo5ueFzX0Q2P6zq64XFdRzc8ruvohsd1
-        Hd3wuK6jm/IUK/OX4jZW+V01idzRTUl7xFHMmP0NT+roFFk6xikyR6fI0jFOkTk6RZaOcYrM0SmydIxT
-        ZI5OkaVjnCJzdIosHeMUmaNTZOkYp8gcnSJLxzhF5ugUWTrGKTJHp8jSMU6ROTpFlo5xiszRKbJ0jFNk
-        ju6ArZN72Rh3wNaye9AdsPVnH/Krfww9Ypx5JXMR3dZ2aNdc10VU/sNAecxb+WIw5U43sZb/lXe1+rc2
-        m09EAWB0jfanawAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="TestEditSessionButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

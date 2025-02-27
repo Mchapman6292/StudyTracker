@@ -4,7 +4,18 @@ using CodingTracker.Common.CommonEnums;
 
 namespace CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers
 {
-    public class EditSessionPageContextManager
+
+    public interface IEditSessionPageContextManager
+    {
+        void AddSessionIdForDeletion(int sessionId);
+        void RemoveSessionIdForDeletion(int sessionId);
+        void ClearSessionIdsForDeletion();
+        bool CheckForSessionId(int sessionId);
+        HashSet<int> GetSessionIdsForDeletion();
+        Task<int> DeleteSessionsInSessionIdsForDeletion();
+    }
+
+    public class EditSessionPageContextManager : IEditSessionPageContextManager
     {
         private readonly IApplicationLogger _appLogger;
         private readonly HashSet<int> _sessionIdsForDeletion;
