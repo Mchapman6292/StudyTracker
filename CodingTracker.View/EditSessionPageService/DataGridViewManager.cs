@@ -7,14 +7,14 @@ using Guna.UI2.WinForms;
 using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
+using System.Text;
 
 namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 {
     public interface IDataGridViewManager
     {
+        void CreateMultipleRowsInGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
         void ClearRowsMarkedForDeletion(DataGridView dataGrid);
-        void AddToRowIndexToSessionId(int rowIndex, int sessionId);
-        Dictionary<int, int> ReturnRowIndexToSessionIdDict();
         void AddPairToRowToInfoMapping(DataGridViewRow row, RowState rowState);
         void ClearAllInRowToInfoMapping();
         void ClearEntryInRowToInfoMapping(DataGridViewRow row);
@@ -50,34 +50,47 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             _layoutService = layoutService;
             _editSessionPageContextManager = editSessionPageContextManager;
             _dataGridRowStateManager = dataGridRowStateManager;
+            _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
         }
 
 
 
         // Data grid viewing loading methods.
 
-        // Creates a row in the grid and returns both the row and rowIndex
+
+        public void CreateMultipleRowsInGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
+        {
+            foreach (CodingSessionEntity codingSession in codingSessions)
+            {
+                CreateRowInGrid(codingSession, dataGridView);
+            }
+        }
+
+        // Creates a dataGridRow in the grid and returns both the dataGridRow and rowIndex
 
         private void CreateRowInGrid(CodingSessionEntity session, Guna2DataGridView dataGridView)
         {
             int rowIndex = dataGridView.Rows.Add();
             if (rowIndex < 0)
             {
-                _appLogger.Error($"Failed to add row for SessionID {session.SessionId}. Invalid row index returned.");
+                _appLogger.Error($"Failed to add dataGridRow for SessionID {session.SessionId}. Invalid dataGridRow index returned.");
                 throw new ArgumentException($"Invalid index for {nameof(CreateRowInGrid)}, index: {rowIndex}.");
  
             }
-            // Create the RowState which holds row index, session id & marked for deletion.
-            RowState rowState = _dataGridRowStateManager.CreateDataGridRowInfo(rowIndex, session.SessionId);
 
-            // Assign the row to a variable so we can pass it to AddPairToRowToInfoMapping
+            // Assign the dataGridRow to a variable so we can pass it to AddPairToRowToInfoMapping
             DataGridViewRow row = dataGridView.Rows[rowIndex];
 
-           
-            if(PopulateDataGridRow(row, session, dataGridView))
-            {
-                AddPairToRowToInfoMapping(row, rowState);
-            }
+
+            // Create the RowState which holds dataGridRow index, session id & marked for deletion.
+            RowState rowState = _dataGridRowStateManager.CreateDataGridRowState(rowIndex, session.SessionId);
+
+       
+            // This will throw an exception if any of rows do not populate. 
+             TryPopulateDataGridRow(row, session, dataGridView);
+
+             AddPairToRowToInfoMapping(row, rowState);
+
 
         }
 
@@ -95,16 +108,23 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        private bool PopulateDataGridRow(DataGridViewRow row, CodingSessionEntity session, DataGridView dataGridView)
+        private bool TryPopulateDataGridRow(DataGridViewRow row, CodingSessionEntity session, DataGridView dataGridView)
         {
             bool success = true;
+            List<string> failedFields = new List<string>();
 
-            if (!SetDataGridViewCell(row, 0, session.SessionId.ToString())) success = false;
-            if (!SetDataGridViewCell(row, 1, session.DurationHHMM)) success = false;
-            if (!SetDataGridViewCell(row, 2, session.StartDate.ToShortDateString())) success = false;
-            if (!SetDataGridViewCell(row, 3, session.StartTime.ToString())) success = false;
-            if (!SetDataGridViewCell(row, 4, session.EndDate.ToShortDateString())) success = false;
-            if (!SetDataGridViewCell(row, 5, session.EndTime.ToString())) success = false;
+            if (!SetDataGridViewCell(row, 0, session.SessionId.ToString())) { success = false; failedFields.Add("SessionId"); }
+            if (!SetDataGridViewCell(row, 1, session.DurationHHMM)) { success = false; failedFields.Add("Duration"); }
+            if (!SetDataGridViewCell(row, 2, session.StartDate.ToShortDateString())) { success = false; failedFields.Add("StartDate"); }
+            if (!SetDataGridViewCell(row, 3, session.StartTime.ToString())) { success = false; failedFields.Add("StartTime"); }
+            if (!SetDataGridViewCell(row, 4, session.EndDate.ToShortDateString())) { success = false; failedFields.Add("EndDate"); }
+            if (!SetDataGridViewCell(row, 5, session.EndTime.ToString())) { success = false; failedFields.Add("EndTime"); }
+
+            if (!success)
+            {
+                _appLogger.Error($"Failed to populate cells for SessionId {session.SessionId}: {string.Join(", ", failedFields)}");
+                throw new InvalidOperationException($"Unable to populate DataGridView for {nameof(TryPopulateDataGridRow)}.");
+            }
 
             return success;
         }
@@ -113,13 +133,12 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-
         // Methods for altering _rowToInfoMapping
 
 
-        public void AddPairToRowToInfoMapping(DataGridViewRow row, RowState rowState)
+        public void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState)
         {
-            _rowToInfoMapping.Add(row, rowState);
+            _rowToInfoMapping.Add(dataGridRow, rowState);
         }
 
         public void ClearAllInRowToInfoMapping()
@@ -134,6 +153,16 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         public int GetSessionIdForRowIndex(DataGridViewRow selectedRow)
         {
+            if(_rowToInfoMapping.Count < 1)
+            {
+                throw new KeyNotFoundException($"Count of entries in {nameof(_rowToInfoMapping)} is < 1, Count: {_rowToInfoMapping.Count}.");
+            }
+
+            if (!_rowToInfoMapping.TryGetValue(selectedRow, out var rowState))
+            {
+                throw new KeyNotFoundException($"Unable to find {nameof(RowState)} object in {nameof(_rowToInfoMapping)} for selectedRow.");
+            }
+
             return _rowToInfoMapping[selectedRow].SessionId;
         }
 
@@ -164,7 +193,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         /// <summary>
         /// These methods are needed to modify the selection colour behaviour.
         ///  DisableDataGridViewSelectionHighlighting makes selection invisible by matching it to the background.
-        ///  UniformDataGridViewRowColors makes all rows uniform by removing the alternating row pattern.
+        ///  UniformDataGridViewRowColors makes all rows uniform by removing the alternating dataGridRow pattern.
 
         /// </summary>
         private void DisableDataGridViewSelectionHighlighting(Guna2DataGridView dataGridView)
@@ -190,8 +219,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             }
             _currentHighlightedRows.Clear();
         }
-
-
 
 
 
@@ -256,6 +283,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             sortedIndexes.Sort((a, b) => b.CompareTo(a)); // Sort descending
             return sortedIndexes;
         }
+
+
 
 
 

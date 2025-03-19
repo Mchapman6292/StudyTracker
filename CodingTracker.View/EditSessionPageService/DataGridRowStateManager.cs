@@ -4,7 +4,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridRowManagers
 {
     public interface IDataGridRowStateManager
     {
-        RowState CreateDataGridRowInfo(int rowIndex, int sessionId);
+        RowState CreateDataGridRowState(int rowIndex, int sessionId);
         List<RowState> CreateListOfCreateDataGridRowInfo(List<int> rowIndexes, List<int> sessionIds);
         void UpdateMarkedForDeletionBool(RowState row, bool marked);
     }
@@ -13,7 +13,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridRowManagers
     public class DataGridRowStateManager : IDataGridRowStateManager
     {
 
-        public RowState CreateDataGridRowInfo(int rowIndex, int sessionId)
+        public RowState CreateDataGridRowState(int rowIndex, int sessionId)
         {
             return new RowState(rowIndex, sessionId);
         }

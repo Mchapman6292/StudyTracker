@@ -117,10 +117,11 @@ namespace CodingTracker.View
             });
         }
 
+
+
         // Calls either GetRecentSessionsOrderedBySessionSortCriteriaAsync or takes a list of coding sessions to load the DatagridView with. This is called by RefreshDataGridViewWithDropBoxFilter which suspends the layout and refreshes the page. 
         private async Task LoadSessionsIntoDataGridViewAsync(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
         {
-            ClearAllRowsAndRowIndexToSessionIdDictionary();
 
             if (sessionsForOneDay == null && sortCriteria != null)
             {
@@ -135,11 +136,8 @@ namespace CodingTracker.View
         }
 
 
-        private void ClearAllRowsAndRowIndexToSessionIdDictionary()
-        {
-            EditSessionPageDataGridView.Rows.Clear();
-            _rowIndexToSessionId.Clear();
-        }
+
+
 
 
         private void SetDataGridViewCell(DataGridViewRow row, int cellIndex, string value)
@@ -168,12 +166,11 @@ namespace CodingTracker.View
             foreach (var session in sessions)
             {
                 int rowIndex = AddNewRowToGrid(session);
-                if (rowIndex < 0) continue;
+                RowState rowState = _dataGridRowStateManager.CreateDataGridRowState(rowIndex, session.SessionId);
+                DataGridViewRow dataGridRow = EditSessionPageDataGridView.Rows[rowIndex];
 
-                // Skip if row addition failed
-                _appLogger.Error($"Unable to populate session {session.SessionId} for row index: {rowIndex}.");
+                _dataGridViewManager.AddPairToRowToInfoMapping(dataGridRow, rowState);
 
-                _dataGridViewManager.AddToRowIndexToSessionId(rowIndex, session.SessionId);
                 PopulateDataGridViewRowCells(rowIndex, session);
             }
         }
@@ -189,6 +186,8 @@ namespace CodingTracker.View
             }
             return rowIndex;
         }
+
+
 
 
 
