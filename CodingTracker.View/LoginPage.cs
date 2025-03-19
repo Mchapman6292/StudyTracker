@@ -151,9 +151,11 @@ namespace CodingTracker.View
 
 
 
-
-        private async void loginPageLoginButton_Click(object sender, EventArgs e)
+        
+        private async void loginPageLoginButton_Click(object sender, EventArgs e )
         {
+   
+
             _appLogger.Info($"Starting {nameof(loginPageLoginButton_Click)}.");
 
             string username = loginPageUsernameTextbox.Text;

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodingTracker.Data.Migrations
 {
     [DbContext(typeof(CodingTrackerDbContext))]
-    [Migration("20241226091635_RemoveModelBuilder")]
-    partial class RemoveModelBuilder
+    [Migration("20250319085336_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,22 +34,35 @@ namespace CodingTracker.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SessionId"));
 
                     b.Property<string>("DurationHHMM")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double?>("DurationSeconds")
+                    b.Property<double>("DurationSeconds")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("GoalHHMM")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("GoalReached")
+                    b.Property<int>("GoalMinutes")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<bool>("GoalReached")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("GoalSet")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("SessionId");
 

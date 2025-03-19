@@ -42,8 +42,10 @@ namespace CodingTracker.Data.Repositories.UserCredentialRepositories
             return userCredential;
         }
 
+        
         public async Task<bool> UsernameExistsAsync(string username)
         {
+
             return await _dbContext.UserCredentials
                 .AnyAsync(u => u.Username == username);
         }

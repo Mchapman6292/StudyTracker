@@ -75,6 +75,8 @@ namespace CodingTracker.View.Program
    
 
             Application.Run(loginPage);
+
+
         }
 
         private static void ConfigureServices(IServiceCollection services)

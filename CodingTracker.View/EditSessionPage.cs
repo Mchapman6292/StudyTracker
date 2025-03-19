@@ -175,7 +175,6 @@ namespace CodingTracker.View
                 DeleteSessionButton.Visible = true;
                 return;
             }
-
             DeleteSessionButton.Visible = false;
         }
 
