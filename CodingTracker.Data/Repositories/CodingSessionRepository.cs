@@ -89,7 +89,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                     .ToListAsync();
         }
 
-        public async Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy)
+        public async Task<List<CodingSessionEntity>> GetSessionBySessionSortCriteria(int numberOfSessions, SessionSortCriteria? sortBy)
         {
             IQueryable<CodingSessionEntity> query = _dbContext.CodingSessions;
 

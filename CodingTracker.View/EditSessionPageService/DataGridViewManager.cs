@@ -8,18 +8,20 @@ using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using System.Text;
+using CodingTracker.Common.CommonEnums;
 
 namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 {
     public interface IDataGridViewManager
     {
-        void CreateMultipleRowsInGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
+        void CONTROLLERUpdateDataGridViewWithCodingSessionList(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
+        void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
         void ClearRowsMarkedForDeletion(DataGridView dataGrid);
-        void AddPairToRowToInfoMapping(DataGridViewRow row, RowState rowState);
-        void ClearAllInRowToInfoMapping();
+
         void ClearEntryInRowToInfoMapping(DataGridViewRow row);
         int GetSessionIdForRowIndex(DataGridViewRow selectedRow);
         void UpdateMarkedDeletionByRow(DataGridViewRow row, bool marked);
+        void ResetDataGridAndRowInfoDict(DataGridView dataGridView);
         void SetAllMarkedDeletionToFalse();
 
     }
@@ -31,7 +33,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ILayoutService _layoutService;
         private readonly IEditSessionPageContextManager _editSessionPageContextManager;
-        private readonly IDataGridRowStateManager _dataGridRowStateManager;
+        private readonly IRowStateManager _dataGridRowStateManager;
 
 
 
@@ -43,7 +45,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IEditSessionPageContextManager editSessionPageContextManager, IDataGridRowStateManager dataGridRowStateManager)
+        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IEditSessionPageContextManager editSessionPageContextManager, IRowStateManager dataGridRowStateManager)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
@@ -55,10 +57,26 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
+
+
         // Data grid viewing loading methods.
 
+        public void CONTROLLERUpdateDataGridViewWithCodingSessionList(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
+        {
+            using (_layoutService.SuspendLayout(dataGridView))
+            {
+                if (codingSessions == null || codingSessions.Count == 0)
+                {
+                    throw new ArgumentException($"Invalid list passed to {nameof(CONTROLLERUpdateDataGridViewWithCodingSessionList)}", nameof(codingSessions));
+                }
 
-        public void CreateMultipleRowsInGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
+                ResetDataGridAndRowInfoDict(dataGridView);
+                AddSessionsToDataGrid(codingSessions, dataGridView);
+            }
+        }
+
+
+        public void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
         {
             foreach (CodingSessionEntity codingSession in codingSessions)
             {
@@ -77,10 +95,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 throw new ArgumentException($"Invalid index for {nameof(CreateRowInGrid)}, index: {rowIndex}.");
  
             }
-
             // Assign the dataGridRow to a variable so we can pass it to AddPairToRowToInfoMapping
             DataGridViewRow row = dataGridView.Rows[rowIndex];
-
 
             // Create the RowState which holds dataGridRow index, session id & marked for deletion.
             RowState rowState = _dataGridRowStateManager.CreateDataGridRowState(rowIndex, session.SessionId);
@@ -141,7 +157,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             _rowToInfoMapping.Add(dataGridRow, rowState);
         }
 
-        public void ClearAllInRowToInfoMapping()
+        private void ClearAllInRowToInfoMapping()
         {
             _rowToInfoMapping.Clear();
         }
@@ -150,6 +166,36 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         {
            _rowToInfoMapping.Remove(row);
         }
+
+        public void ResetDataGridAndRowInfoDict(DataGridView dataGridView)
+        {
+            ClearALlDataGridRows(dataGridView);
+            ClearAllInRowToInfoMapping();
+        }
+
+        // Blanket deletion of all rows
+        private void ClearALlDataGridRows(DataGridView dataGridView)
+        {
+            int rowCount = dataGridView.Rows.Count;
+            dataGridView.Rows.Clear();
+            _appLogger.Info($"{rowCount} rows deleted in DataGridView for {nameof(ClearALlDataGridRows)}.");
+        }
+
+
+
+        public void ClearRowsMarkedForDeletion(DataGridView dataGrid)
+        {
+            List<int> rowsToDelete = GetIndexesMarkedInRowDeletionColour(dataGrid);
+            List<int> sortedRowsToDelete = SortRowIndexesDescending(rowsToDelete);
+
+            using (_layoutService.SuspendLayout(dataGrid))
+            {
+                SetDataGridViewCellToEmptyByRowIndex(dataGrid, sortedRowsToDelete);
+
+            }
+        }
+
+
 
         public int GetSessionIdForRowIndex(DataGridViewRow selectedRow)
         {
@@ -184,6 +230,22 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
+        private async Task UpdateDataViewGrid(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
+        {
+            using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
+            {
+                if (sessionsForOneDay == null && sortCriteria != null)
+                {
+                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sortCriteria);
+                    PopulateGridWithSessions(sessions);
+                    return;
+                }
+                if (sessionsForOneDay != null && sortCriteria == null)
+                {
+                    PopulateGridWithSessions(sessionsForOneDay);
+                }
+            }
+        }
 
 
 
@@ -240,12 +302,13 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        private void ClearDataGridViewCell(DataGridViewRow row, int cellIndex)
+        private void ClearDataGridViewCell(DataGridViewRow row, int rowIndex)
         {
-            row.Cells[cellIndex].Value = string.Empty;
+            row.Cells[rowIndex].Value = string.Empty;
         }
 
-        private void ClearMultipleDataGridViewCells(DataGridView dataGrid, List<int> rowIndexes)
+        // This takes a list of row indexes instead of a RowState object as the DataGridRows need to be sorted by Ascending
+        private void SetDataGridViewCellToEmptyByRowIndex(DataGridView dataGrid, List<int> rowIndexes)
         {
             foreach(int index in rowIndexes)
             {
@@ -258,6 +321,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 }
             }
         }
+
+
 
 
         // Old logic remove when working
@@ -287,18 +352,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-
-        public void ClearRowsMarkedForDeletion(DataGridView dataGrid)
-        {
-            List<int> rowsToDelete = GetIndexesMarkedInRowDeletionColour(dataGrid);
-            List<int> sortedRowsToDelete = SortRowIndexesDescending(rowsToDelete);
-
-            using (_layoutService.SuspendLayout(dataGrid))
-            {
-                ClearMultipleDataGridViewCells(dataGrid, sortedRowsToDelete);
-
-            }
-        }
 
 
 
