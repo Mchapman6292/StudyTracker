@@ -641,7 +641,10 @@ namespace CodingTracker.View
 
             try
             {
-                int deletedSessions = await _editSessionPageContextManager.DeleteSessionsInSessionIdsForDeletion();
+                HashSet<int> sessionsForDeletion = _dataGridViewManager.GetSessionIdsMarkedForDeletion();
+                int deletedSessions = await _codingSessionRepository.DeleteSessionsByIdAsync(sessionsForDeletion);
+                _dataGridViewManager.DeleteRowInfoMarkedForDeletion();
+
                 string message = string.Empty;
 
                 if (deletedSessions == 0)
@@ -654,16 +657,14 @@ namespace CodingTracker.View
                 }
 
                 ShowNotificationDialog(this, EventArgs.Empty, message);
-                _dataGridViewManager.ClearRowsMarkedForDeletion(EditSessionPageDataGridView);
                 ClearCurrentHighlightedRows();
             }
 
             finally
             {
                 UpdateDeleteSessionButtonEnabled(IsEditSession);
+                _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
             }
-
-
 
         }
 

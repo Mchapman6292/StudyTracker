@@ -9,6 +9,7 @@ using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using Guna.UI2.WinForms;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 
 
@@ -42,6 +43,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         void RenameDataGridColumns(DataGridView dataGrid);
         void FormatDataGridViewDateData(DataGridView dataGrid);
         Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
+        HashSet<int> GetSessionIdsMarkedForDeletion();
+        void DeleteRowInfoMarkedForDeletion();
 
     }
 
@@ -250,11 +253,10 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         public void ClearRowsMarkedForDeletion(DataGridView dataGrid)
         {
             List<int> rowsToDelete = GetIndexesMarkedInRowDeletionColour(dataGrid);
-            List<int> sortedRowsToDelete = SortRowIndexesDescending(rowsToDelete);
 
             using (_layoutService.SuspendLayout(dataGrid))
             {
-                SetDataGridViewCellToEmptyByRowIndex(dataGrid, sortedRowsToDelete);
+        
 
             }
         }
@@ -518,12 +520,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         }
 
         // When deleting from an array using indexes deletion changes the index of all values above, by sorting from highest to lowest this means the indexes of the rows we still need to change are not affected.
-        private List<int> SortRowIndexesDescending(List<int> rowIndexes)
-        {
-            List<int> sortedIndexes = new List<int>(rowIndexes);
-            sortedIndexes.Sort((a, b) => b.CompareTo(a)); // Sort descending
-            return sortedIndexes;
-        }
+
 
 
 
@@ -590,7 +587,45 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         }
 
 
-        
+
+        public HashSet<int> GetSessionIdsMarkedForDeletion()
+        {
+            HashSet<int> sessionIdsToDelete = new HashSet<int>();
+            foreach (var entry in _rowToInfoMapping)
+            {
+                if (entry.Value.MarkedForDeletion == true)
+                {
+                    sessionIdsToDelete.Add(entry.Value.SessionId);
+                }
+            }
+            return sessionIdsToDelete;
+        }
+
+        public void DeleteRowInfoMarkedForDeletion()
+        {
+            // Cannot modify a collection while iterating through it, first find all rows then delete.
+            List<DataGridViewRow> keysToRemove = new List<DataGridViewRow>();
+
+            foreach (var entry in _rowToInfoMapping)
+            {
+                if (entry.Value.MarkedForDeletion == true)
+                {
+                    keysToRemove.Add(entry.Key);
+                }
+            }
+            foreach (var key in keysToRemove)
+            {
+                _rowToInfoMapping.Remove(key);
+            }
+        }
+
+
+
+
+
+
+
+
 
 
 

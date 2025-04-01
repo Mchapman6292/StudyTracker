@@ -77,7 +77,6 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             _appLogger.Info($"{deletedSessions} sessions deleted. Session IDs: {string.Join(", ", sessionsToDelete)}");
 
             return deletedSessions;
-
         }
 
 
