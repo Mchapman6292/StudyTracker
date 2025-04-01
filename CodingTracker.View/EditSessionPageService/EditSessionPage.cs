@@ -573,8 +573,10 @@ namespace CodingTracker.View
 
         private async void EditSessionPageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await CONTROLLERClearAndRefreshDataGridFromComboBoxAsync(sender, e);
-            _appLogger.Debug($"{nameof(EditSessionPageComboBox_SelectedIndexChanged)} completed.");
+            string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
+            SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
+
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteria(EditSessionPageDataGridView, selectedCriteria);
         }
 
 
@@ -676,6 +678,7 @@ namespace CodingTracker.View
             _dataGridViewManager.LoadDataGridViewWithSessions(EditSessionPageDataGridView, codingSessions);
             _dataGridViewManager.HideUnusuedColumns(EditSessionPageDataGridView);
             _dataGridViewManager.RenameDataGridColumns(EditSessionPageDataGridView);
+            _dataGridViewManager.FormatDataGridViewDateData(EditSessionPageDataGridView);
             _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
             _dataGridViewManager.CreateRowStateAndAddToDictWithDataGridRow(EditSessionPageDataGridView);
         }

@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
+using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
@@ -39,6 +40,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         void CreateRowStateAndAddToDictWithDataGridRow(DataGridView dataGrid);
         void RefreshDataGridView(DataGridView dataGrid);
         void RenameDataGridColumns(DataGridView dataGrid);
+        void FormatDataGridViewDateData(DataGridView dataGrid);
+        Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
 
     }
 
@@ -72,7 +75,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             _dataGridRowStateManager = dataGridRowStateManager;
             _configuration = configuration;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
-            _visibleColumns = new List<String>    
+            _visibleColumns = new List<string>    
                 {
                     "SessionId",
                     "DurationHHMM",
@@ -413,7 +416,46 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             }
             dataGrid.AutoResizeColumns();
         }
-        
+
+        public void FormatDataGridViewDateData(DataGridView dataGrid)
+        {
+            if (dataGrid.Columns.Contains("SessionId"))
+            {
+                dataGrid.Columns["SessionId"].HeaderText = "Session Id";
+            }
+
+            if (dataGrid.Columns.Contains("DurationHHMM"))
+            {
+                dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
+            }
+
+            if (dataGrid.Columns.Contains("StartDate"))
+            {
+                dataGrid.Columns["StartDate"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["StartDate"].HeaderText = "Start Date";
+            }
+
+            if (dataGrid.Columns.Contains("EndDate"))
+            {
+                dataGrid.Columns["EndDate"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["EndDate"].HeaderText = "End Date";
+            }
+
+            if (dataGrid.Columns.Contains("StartTime"))
+            {
+                dataGrid.Columns["StartTime"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["StartTime"].HeaderText = "Start Time";
+            }
+
+            if (dataGrid.Columns.Contains("EndTime"))
+            {
+                dataGrid.Columns["EndTime"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["EndTime"].HeaderText = "End Time";
+            }
+        }
+
+
+
 
 
 
@@ -487,7 +529,21 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
         ////////////// NEW METHODS WHICH USE DATASOURCE
-        ///
+        
+        
+        public async Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria)
+        {
+            ClearDataGridViewDataSource(dataGridView);
+            ClearDataGridViewColumns(dataGridView);
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sessionSortCriteria);
+
+            LoadDataGridViewWithSessions(dataGridView, codingSessions);
+            HideUnusuedColumns(dataGridView);
+            RenameDataGridColumns(dataGridView);
+            FormatDataGridViewDateData(dataGridView);
+            RefreshDataGridView(dataGridView);
+            CreateRowStateAndAddToDictWithDataGridRow(dataGridView);
+        }
 
         public void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)
         {
@@ -497,7 +553,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             }
 
             dataGrid.DataSource = codingSessions;
-            ReSizeColumns(dataGrid);
             RefreshDataGridView(dataGrid);
         }
 
@@ -533,6 +588,9 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             }
             _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries after {nameof(CreateRowStateAndAddToDictWithDataGridRow)} called: {_rowToInfoMapping.Count}");
         }
+
+
+        
 
 
 
