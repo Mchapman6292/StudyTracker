@@ -1,14 +1,19 @@
 ﻿using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
+using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using Guna.UI2.WinForms;
-using CodingTracker.View.EditSessionPageService.DataGridRowStates;
-using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
-using System.Text;
-using CodingTracker.Common.CommonEnums;
+using Microsoft.Extensions.Configuration;
+
+
+
+// **IMPORTANT
+// The DataGridView object will always have a row even when row.Clear is called, this is an empty row for new records which typically has null values until edited. 
+// This means any attempted to edit/clear the DataGrid must check for this and skip using if(row.IsNewRow).
 
 namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 {
@@ -18,11 +23,22 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
         void ClearRowsMarkedForDeletion(DataGridView dataGrid);
 
+        void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState);
+
         void ClearEntryInRowToInfoMapping(DataGridViewRow row);
+        void ClearAllInRowToInfoMapping();
+        void HideUnusuedColumns(DataGridView dataGrid);
+        void ReSizeColumns(DataGridView dataGrid);
         int GetSessionIdForRowIndex(DataGridViewRow selectedRow);
         void UpdateMarkedDeletionByRow(DataGridViewRow row, bool marked);
         void ResetDataGridAndRowInfoDict(DataGridView dataGridView);
         void SetAllMarkedDeletionToFalse();
+        void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions);
+        void ClearDataGridViewDataSource(DataGridView dataGrid);
+        void ClearDataGridViewColumns(DataGridView dataGrid);
+        void CreateRowStateAndAddToDictWithDataGridRow(DataGridView dataGrid);
+        void RefreshDataGridView(DataGridView dataGrid);
+        void RenameDataGridColumns(DataGridView dataGrid);
 
     }
 
@@ -34,25 +50,37 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         private readonly ILayoutService _layoutService;
         private readonly IEditSessionPageContextManager _editSessionPageContextManager;
         private readonly IRowStateManager _dataGridRowStateManager;
+        private readonly IConfiguration _configuration;
 
 
 
 
         // Maps the sessionId to the datagridview display, used to tracking session ids for deletion
         private Dictionary<DataGridViewRow, RowState> _rowToInfoMapping { get; set; }
+        private List<String> _visibleColumns; 
         private int _numberOfSessions = 10;
         private List<int> _currentHighlightedRows = new List<int>();
 
 
 
-        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IEditSessionPageContextManager editSessionPageContextManager, IRowStateManager dataGridRowStateManager)
+        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IEditSessionPageContextManager editSessionPageContextManager, IRowStateManager dataGridRowStateManager, IConfiguration configuration)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
             _layoutService = layoutService;
             _editSessionPageContextManager = editSessionPageContextManager;
             _dataGridRowStateManager = dataGridRowStateManager;
+            _configuration = configuration;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
+            _visibleColumns = new List<String>    
+                {
+                    "SessionId",
+                    "DurationHHMM",
+                    "StartDate",
+                    "StartTime",
+                    "EndDate",
+                    "EndTime"
+                };
         }
 
 
@@ -61,6 +89,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         // Data grid viewing loading methods.
 
+
+        // Deletes datagrid rows and clears _rowToInfoMapping before adding coding sessions to datagrid. 
         public void CONTROLLERUpdateDataGridViewWithCodingSessionList(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
         {
             using (_layoutService.SuspendLayout(dataGridView))
@@ -69,12 +99,20 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 {
                     throw new ArgumentException($"Invalid list passed to {nameof(CONTROLLERUpdateDataGridViewWithCodingSessionList)}", nameof(codingSessions));
                 }
-
                 ResetDataGridAndRowInfoDict(dataGridView);
+                if (dataGridView.Rows.Count > 1)
+                {
+                    foreach (DataGridViewRow row in dataGridView.Rows)
+                    {
+                        string cellValues = string.Join(", ", Enumerable.Range(0, row.Cells.Count)
+                            .Select(i => $"Cell[{i}]={row.Cells[i].Value ?? "null"}"));
+                        _appLogger.Debug($"Remaining row found - Index: {row.Index}, IsNew: {row.IsNewRow}, Values: {cellValues}");
+                    }
+                    throw new InvalidOperationException($"Row count = {dataGridView.Rows.Count}");
+                }
                 AddSessionsToDataGrid(codingSessions, dataGridView);
             }
         }
-
 
         public void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
         {
@@ -142,6 +180,15 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 throw new InvalidOperationException($"Unable to populate DataGridView for {nameof(TryPopulateDataGridRow)}.");
             }
 
+            _appLogger.Debug($"DataGridRow expected values for Session: {session.SessionId}, row index: {row.Index}.");
+            _appLogger.Debug($"Actual values for Index:{row.Index} sessionId: {row.Cells[0].Value}, " +
+                 $"duration: {row.Cells[1].Value}, " +
+                 $"startDate: {row.Cells[2].Value}, " +
+                 $"startTime: {row.Cells[3].Value}, " +
+                 $"endDate: {row.Cells[4].Value}, " +
+                 $"endTime: {row.Cells[5].Value}");
+
+
             return success;
         }
 
@@ -157,16 +204,19 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             _rowToInfoMapping.Add(dataGridRow, rowState);
         }
 
-        private void ClearAllInRowToInfoMapping()
+        public void ClearAllInRowToInfoMapping()
         {
+            _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries before {nameof(ClearAllInRowToInfoMapping)} called: {_rowToInfoMapping.Count}");
             _rowToInfoMapping.Clear();
+            _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries after {nameof(ClearAllInRowToInfoMapping)} called: {_rowToInfoMapping.Count}");
         }
+
 
         public void ClearEntryInRowToInfoMapping(DataGridViewRow row)
         {
            _rowToInfoMapping.Remove(row);
         }
-
+        
         public void ResetDataGridAndRowInfoDict(DataGridView dataGridView)
         {
             ClearALlDataGridRows(dataGridView);
@@ -176,9 +226,20 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         // Blanket deletion of all rows
         private void ClearALlDataGridRows(DataGridView dataGridView)
         {
+            _appLogger.Info($"Predeletion row count: {dataGridView.RowCount}.");
+            bool originalAllowAddRows = dataGridView.AllowUserToAddRows;
+
+            // Temporarily disable the "new row" feature
+            dataGridView.AllowUserToAddRows = false;
+
             int rowCount = dataGridView.Rows.Count;
             dataGridView.Rows.Clear();
+
+            // Restore the original setting
+            dataGridView.AllowUserToAddRows = originalAllowAddRows;
+
             _appLogger.Info($"{rowCount} rows deleted in DataGridView for {nameof(ClearALlDataGridRows)}.");
+            _appLogger.Info($"Remaining rows: {dataGridView.Rows.Count}.");
         }
 
 
@@ -230,22 +291,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        private async Task UpdateDataViewGrid(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
-        {
-            using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
-            {
-                if (sessionsForOneDay == null && sortCriteria != null)
-                {
-                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sortCriteria);
-                    PopulateGridWithSessions(sessions);
-                    return;
-                }
-                if (sessionsForOneDay != null && sortCriteria == null)
-                {
-                    PopulateGridWithSessions(sessionsForOneDay);
-                }
-            }
-        }
+
 
 
 
@@ -281,6 +327,94 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             }
             _currentHighlightedRows.Clear();
         }
+
+        // This alters the DisplayIndex and not the RowIndex so the mapping in _rowToInfo remains unaltered. 
+      
+        public void HideUnusuedColumns(DataGridView dataGrid)
+        {
+            foreach (DataGridViewColumn column in dataGrid.Columns)
+            {
+                if (!_visibleColumns.Contains(column.Name))
+                {
+                    column.Visible = false;
+                }
+            }
+
+            if (dataGrid.Columns.Contains("SessionId"))
+                dataGrid.Columns["SessionId"].DisplayIndex = 0;
+
+            if (dataGrid.Columns.Contains("DurationHHMM"))
+                dataGrid.Columns["DurationHHMM"].DisplayIndex = 1;
+
+            if (dataGrid.Columns.Contains("StartDate"))
+                dataGrid.Columns["StartDate"].DisplayIndex = 2;
+
+            if (dataGrid.Columns.Contains("StartTime"))
+                dataGrid.Columns["StartTime"].DisplayIndex = 3;
+
+            if (dataGrid.Columns.Contains("EndDate"))
+                dataGrid.Columns["EndDate"].DisplayIndex = 4;
+
+            if (dataGrid.Columns.Contains("EndTime"))
+                dataGrid.Columns["EndTime"].DisplayIndex = 5;
+
+        }
+
+        public void RenameDataGridColumns(DataGridView dataGrid)
+        {
+            if (dataGrid.Columns.Contains("SessionId"))
+                dataGrid.Columns["SessionId"].HeaderText = "Session ID";
+
+            if (dataGrid.Columns.Contains("DurationHHMM"))
+                dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
+
+            if (dataGrid.Columns.Contains("StartDate"))
+                dataGrid.Columns["StartDate"].HeaderText = "Start Date";
+
+            if (dataGrid.Columns.Contains("StartTime"))
+                dataGrid.Columns["StartTime"].HeaderText = "Start Time";
+
+            if (dataGrid.Columns.Contains("EndDate"))
+                dataGrid.Columns["EndDate"].HeaderText = "End Date";
+
+            if (dataGrid.Columns.Contains("EndTime"))
+                dataGrid.Columns["EndTime"].HeaderText = "End Time";
+        }
+
+        public void ReSizeColumns(DataGridView dataGrid)
+        {
+            foreach (string columnName in _visibleColumns)
+            {
+                if (dataGrid.Columns.Contains(columnName))
+                {
+                    DataGridViewColumn column = dataGrid.Columns[columnName];
+
+                    if (columnName == "SessionId")
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    else if (columnName == "StartDate" || columnName == "EndDate")
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    else if (columnName == "StartTime" || columnName == "EndTime")
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    else if (columnName == "DurationHHMM")
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    }
+                    else
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                }
+            }
+            dataGrid.AutoResizeColumns();
+        }
+        
+
 
 
 
@@ -330,7 +464,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         {
             List<int> indexesForDeletion = new List<int>(); 
 
-            for(int i = 1; i < dataGrid.Rows.Count; i++) 
+            for(int i = 0; i < dataGrid.Rows.Count; i++) 
             {
                 DataGridViewRow row = dataGrid.Rows[i];
                 if(row.DefaultCellStyle.BackColor == ColourService.RowDeletionCrimsonRed)
@@ -348,6 +482,61 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             sortedIndexes.Sort((a, b) => b.CompareTo(a)); // Sort descending
             return sortedIndexes;
         }
+
+
+
+
+        ////////////// NEW METHODS WHICH USE DATASOURCE
+        ///
+
+        public void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)
+        {
+            if(!codingSessions.Any())
+            {
+                _appLogger.Debug($"No coding sessions passed to {nameof(LoadDataGridViewWithSessions)}.");
+            }
+
+            dataGrid.DataSource = codingSessions;
+            ReSizeColumns(dataGrid);
+            RefreshDataGridView(dataGrid);
+        }
+
+        public void RefreshDataGridView(DataGridView dataGrid)
+        {
+            dataGrid.Refresh();
+        }
+
+        public void ClearDataGridViewDataSource(DataGridView dataGrid)
+        {
+            dataGrid.DataSource = null;
+            dataGrid.Rows.Clear();
+        }
+
+        public void ClearDataGridViewColumns(DataGridView dataGrid)
+        {
+            dataGrid.Columns.Clear();
+        }
+
+        public void CreateRowStateAndAddToDictWithDataGridRow(DataGridView dataGrid)
+        {
+            _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries before {nameof(CreateRowStateAndAddToDictWithDataGridRow)} called: {_rowToInfoMapping.Count}");
+            foreach (DataGridViewRow row in dataGrid.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                if (row.Cells["SessionId"].Value is int sessionId)
+                {
+                    RowState rowState = (_dataGridRowStateManager.CreateDataGridRowState(row.Index, sessionId));
+                    AddPairToRowToInfoMapping(row, rowState);
+                }
+            }
+            _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries after {nameof(CreateRowStateAndAddToDictWithDataGridRow)} called: {_rowToInfoMapping.Count}");
+        }
+
+
+
+
 
 
 
