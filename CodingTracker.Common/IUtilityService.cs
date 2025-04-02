@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CodingTracker.Common.IUtilityServices
+﻿namespace CodingTracker.Common.IUtilityServices
 {
     public interface IUtilityService
     {
@@ -14,6 +7,8 @@ namespace CodingTracker.Common.IUtilityServices
         bool TryParseDate(string input, out DateTime result);
 
         string HashPassword(string password);
+
+        string ConvertDurationToHHMM(double duration);
 
 
     }

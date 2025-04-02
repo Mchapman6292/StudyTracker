@@ -56,5 +56,11 @@ namespace CodingTracker.Business.ApplicationControls
                 _appLogger.Error($"An error occurred during {nameof(ExitApplicationAsync)}. Error: {ex.Message}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}", ex);
             }
         }
+
+
+        public async Task ExitCodingTrackerAsync()
+        {
+            // Add check/bool for coding session timer true/false.
+        }
     }
 }

@@ -12,4 +12,11 @@ namespace CodingTracker.Common.CommonEnums
         EndDate,
         EndTime
     }
+
+    public enum MainPageLabels
+    {
+        TodaySessionLabel,
+        WeekTotalLabel,
+        AverageSessionLabel
+    }
 }

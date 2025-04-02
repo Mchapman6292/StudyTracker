@@ -149,5 +149,17 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .ToListAsync();
         }
 
+        public async Task<double> GetAverageDurationOfAllSessionsAsync()
+        {
+            if(!await _dbContext.CodingSessions.AnyAsync())
+            {
+                return 0.0;
+            }
+
+            return await _dbContext.CodingSessions
+                .Select(s => s.DurationSeconds)
+                .AverageAsync();     
+        }
+
     }
 }

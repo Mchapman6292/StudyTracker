@@ -121,7 +121,7 @@ namespace CodingTracker.View
 
         private async Task UpdatedateTodaySessionLabel()
         {
-            await _labelAssignment.UpdateTodayLabel(TodaySessionLabel);
+            await _labelAssignment.UpdateTodayLabel(LastSessionLabel);
 
         }
 

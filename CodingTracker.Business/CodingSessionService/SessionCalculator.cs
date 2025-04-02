@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Business.CodingSessionManagers;
-using CodingTracker.Common.CodingSessionDTOs;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.IApplicationLoggers;
 
 
 namespace CodingTracker.Business.CodingSessionService.SessionCalculators
