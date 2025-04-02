@@ -23,7 +23,7 @@ namespace CodingTracker.View
 
 
 
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IErrorHandler errorHandler,IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IErrorHandler errorHandler, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
         {
             InitializeComponent();
             _appLogger = appLogger;
@@ -119,13 +119,18 @@ namespace CodingTracker.View
 
 
 
-        private async Task UpdatedateTodaySessionLabel() 
+        private async Task UpdatedateTodaySessionLabel()
         {
-           await  _labelAssignment.UpdateTodayLabel(TodaySessionLabel);
+            await _labelAssignment.UpdateTodayLabel(TodaySessionLabel);
 
         }
 
         private void Day2Label_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainPageExitControlBox_Click(object sender, EventArgs e)
         {
 
         }
