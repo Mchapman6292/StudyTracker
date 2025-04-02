@@ -125,13 +125,13 @@ namespace CodingTracker.View
 
 
 
-        // Calls either GetSessionBySessionSortCriteria or takes a list of coding sessions to load the DatagridView with. This is called by RefreshDataGridViewWithDropBoxFilter which suspends the layout and refreshes the page. 
+        // Calls either GetSessionBySessionSortCriteriaAsync or takes a list of coding sessions to load the DatagridView with. This is called by RefreshDataGridViewWithDropBoxFilter which suspends the layout and refreshes the page. 
         private async Task LoadSessionsIntoDataGridViewAsync(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
         {
 
             if (sessionsForOneDay == null && sortCriteria != null)
             {
-                List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sortCriteria);
+                List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
                 PopulateGridWithSessions(sessions);
                 return;
             }
@@ -203,7 +203,7 @@ namespace CodingTracker.View
             {
                 if (sessionsForOneDay == null && sortCriteria != null)
                 {
-                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sortCriteria);
+                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
                     PopulateGridWithSessions(sessions);
                     return;
                 }
@@ -549,22 +549,6 @@ namespace CodingTracker.View
         }
 
 
-        private async Task CONTROLLERClearAndRefreshDataGridFromComboBoxAsync(object sender, EventArgs e)
-        {
-            using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
-            {
-                _dataGridViewManager.ResetDataGridAndRowInfoDict(EditSessionPageDataGridView);
-                string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
-                SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
-                _appLogger.Debug($"SelectionCriteria: {selectedCriteria.ToString()}");
-
-                List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, selectedCriteria);
-
-                _dataGridViewManager.CONTROLLERUpdateDataGridViewWithCodingSessionList(codingSessions, EditSessionPageDataGridView);
-
-                EditSessionPageDataGridView.Refresh();
-            }
-        }
 
 
 
@@ -607,20 +591,12 @@ namespace CodingTracker.View
 
         }
 
-        private DateOnly GetDateTimeFromDateTimePicker()
-        {
-            var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
-            _appLogger.Debug($"Date retrieved from DateTimePicker: {date}.");
-            return date;
 
-        }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            DateOnly targetDate = GetDateTimeFromDateTimePicker();
-            List<CodingSessionEntity>? targetSessions = await _codingSessionRepository.GetAllCodingSessionsByDateTimeForStartDate(targetDate);
-            _appLogger.Debug($"{targetSessions.Count} coding sessions retrieved for {nameof(EditSessionPageTimePicker)}.");
-            await LoadSessionsIntoDataGridViewAsync(null, targetSessions);
+            var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDate(EditSessionPageDataGridView, date);
         }
 
 
@@ -674,7 +650,7 @@ namespace CodingTracker.View
             _dataGridViewManager.ClearDataGridViewColumns(EditSessionPageDataGridView);
             _dataGridViewManager.ClearAllInRowToInfoMapping();
 
-            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, SessionSortCriteria.Duration);
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, SessionSortCriteria.Duration);
 
             _dataGridViewManager.LoadDataGridViewWithSessions(EditSessionPageDataGridView, codingSessions);
             _dataGridViewManager.HideUnusuedColumns(EditSessionPageDataGridView);

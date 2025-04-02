@@ -10,6 +10,7 @@ using CodingTracker.View.FormService.LayoutServices;
 using Guna.UI2.WinForms;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 
 
@@ -43,6 +44,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         void RenameDataGridColumns(DataGridView dataGrid);
         void FormatDataGridViewDateData(DataGridView dataGrid);
         Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
+        Task CONTROLLERClearAndRefreshDataGridByDate(DataGridView dataGrid, DateOnly date);
         HashSet<int> GetSessionIdsMarkedForDeletion();
         void DeleteRowInfoMarkedForDeletion();
 
@@ -528,18 +530,32 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         ////////////// NEW METHODS WHICH USE DATASOURCE
         
         
-        public async Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria)
+        public async Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria)
         {
-            ClearDataGridViewDataSource(dataGridView);
-            ClearDataGridViewColumns(dataGridView);
-            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteria(_numberOfSessions, sessionSortCriteria);
+            ClearDataGridViewDataSource(dataGrid);
+            ClearDataGridViewColumns(dataGrid);
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sessionSortCriteria);
+            LoadDataGridViewWithSessions(dataGrid, codingSessions);
+            HideUnusuedColumns(dataGrid);
+            RenameDataGridColumns(dataGrid);
+            FormatDataGridViewDateData(dataGrid);
+            RefreshDataGridView(dataGrid);
+            CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
+        }
 
-            LoadDataGridViewWithSessions(dataGridView, codingSessions);
-            HideUnusuedColumns(dataGridView);
-            RenameDataGridColumns(dataGridView);
-            FormatDataGridViewDateData(dataGridView);
-            RefreshDataGridView(dataGridView);
-            CreateRowStateAndAddToDictWithDataGridRow(dataGridView);
+        public async Task CONTROLLERClearAndRefreshDataGridByDate(DataGridView dataGrid, DateOnly date)
+        {
+            ClearDataGridViewDataSource(dataGrid);
+            ClearDataGridViewColumns(dataGrid);
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetAllCodingSessionsByDateOnlyForStartDateAsync(date);
+            _appLogger.Debug($"Number of sessions retrieved: {codingSessions.Count}.");
+            LoadDataGridViewWithSessions(dataGrid, codingSessions);
+            HideUnusuedColumns(dataGrid);
+            RenameDataGridColumns(dataGrid);
+            FormatDataGridViewDateData(dataGrid);
+            RefreshDataGridView(dataGrid);
+            CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
+
         }
 
         public void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)

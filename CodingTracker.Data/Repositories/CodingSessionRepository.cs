@@ -88,7 +88,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                     .ToListAsync();
         }
 
-        public async Task<List<CodingSessionEntity>> GetSessionBySessionSortCriteria(int numberOfSessions, SessionSortCriteria? sortBy)
+        public async Task<List<CodingSessionEntity>> GetSessionBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy)
         {
             IQueryable<CodingSessionEntity> query = _dbContext.CodingSessions;
 
@@ -134,7 +134,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .ToListAsync();
         }
 
-        public async Task<bool> CheckTodayCodingSessions()
+        public async Task<bool> CheckTodayCodingSessionsAsync()
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _dbContext.CodingSessions
@@ -142,7 +142,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         }
 
 
-        public async Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateTimeForStartDate(DateOnly date)
+        public async Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateOnlyForStartDateAsync(DateOnly date)
         {
             return await _dbContext.CodingSessions
                 .Where(s => s.StartDate == date)
