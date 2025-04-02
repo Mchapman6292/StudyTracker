@@ -11,6 +11,12 @@ using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
+using System.Windows.Forms;
+
+
+// Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
+// Maybe try refreshing entire page instead of datagrid once combo box changed?
+
 
 namespace CodingTracker.View
 {
@@ -27,7 +33,7 @@ namespace CodingTracker.View
         private readonly IEditSessionPageContextManager _editSessionPageContextManager;
         private readonly ILayoutService _layoutService;
         private readonly IDataGridViewManager _dataGridViewManager;
-        private readonly IDataGridRowStateManager _dataGridRowStateManager;
+        private readonly IRowStateManager _dataGridRowStateManager;
 
         // Maps the sessionId to the datagridview display, used to tracking session ids which are added to EditSessionPageContextManager SessionIdsForDeletion. 
         private bool IsEditSession { get; set; } = false;
@@ -46,7 +52,7 @@ namespace CodingTracker.View
         public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IEditSessionPageContextManager editContextManager, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, IDataGridRowStateManager dataGridRowStateManager)
+        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IEditSessionPageContextManager editContextManager, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, IRowStateManager dataGridRowStateManager)
         {
             _appLogger = appLogger;
             _appControl = appControl;
@@ -55,16 +61,16 @@ namespace CodingTracker.View
             _editSessionPageContextManager = editContextManager;
             _layoutService = layoutService;
             _dataGridViewManager = dataGridViewManager;
+            _dataGridRowStateManager = dataGridRowStateManager;
             InitializeComponent();
             InitializeComboBoxDropDowns();
             InitializeComboBoxOptionToSortCriteria();
             CustomizeDatePicker();
 
             // InitializeDataGridViewColumns needs to be called before LoadSessionsIntoDataGridViewAsync
-            InitializeDataGridViewColumns(); 
+            //InitializeDataGridViewColumns();//
             UpdateDeleteSessionButtonVisibility();
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
-            CustomizeDatePicker();
         }
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
@@ -85,7 +91,7 @@ namespace CodingTracker.View
         }
 
         private void UpdateDeleteSessionButtonVisibility()
-        {  
+        {
             EditSessionPageDeleteButton.Visible = IsEditSession;
         }
 
@@ -119,17 +125,17 @@ namespace CodingTracker.View
 
 
 
-        // Calls either GetRecentSessionsOrderedBySessionSortCriteriaAsync or takes a list of coding sessions to load the DatagridView with. This is called by RefreshDataGridViewWithDropBoxFilter which suspends the layout and refreshes the page. 
+        // Calls either GetSessionBySessionSortCriteriaAsync or takes a list of coding sessions to load the DatagridView with. This is called by RefreshDataGridViewWithDropBoxFilter which suspends the layout and refreshes the page. 
         private async Task LoadSessionsIntoDataGridViewAsync(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
         {
 
             if (sessionsForOneDay == null && sortCriteria != null)
             {
-                List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsOrderedBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
+                List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
                 PopulateGridWithSessions(sessions);
                 return;
             }
-            if(sessionsForOneDay != null && sortCriteria == null)
+            if (sessionsForOneDay != null && sortCriteria == null)
             {
                 PopulateGridWithSessions(sessionsForOneDay);
             }
@@ -176,7 +182,7 @@ namespace CodingTracker.View
         }
 
 
-
+        // Duplicate with DataGridViewManager?
         private int AddNewRowToGrid(CodingSessionEntity session)
         {
             int rowIndex = EditSessionPageDataGridView.Rows.Add();
@@ -191,15 +197,13 @@ namespace CodingTracker.View
 
 
 
-
-
         private async Task UpdateDataViewGrid(SessionSortCriteria? sortCriteria = null, List<CodingSessionEntity>? sessionsForOneDay = null)
         {
             using (_layoutService.SuspendLayout(EditSessionPageDataGridView))
             {
                 if (sessionsForOneDay == null && sortCriteria != null)
                 {
-                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetRecentSessionsOrderedBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
+                    List<CodingSessionEntity> sessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sortCriteria);
                     PopulateGridWithSessions(sessions);
                     return;
                 }
@@ -211,7 +215,13 @@ namespace CodingTracker.View
         }
 
 
- 
+
+
+
+
+
+
+
 
 
 
@@ -534,12 +544,23 @@ namespace CodingTracker.View
         {
             string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
-            await UpdateDataViewGrid(selectedCriteria);
+
+
         }
+
+
+
+
+
+
+
 
         private async void EditSessionPageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            await RefreshDataGridViewWithDropBoxFilter(sender, e);
+            string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
+            SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
+
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteria(EditSessionPageDataGridView, selectedCriteria);
         }
 
 
@@ -570,25 +591,17 @@ namespace CodingTracker.View
 
         }
 
-        private DateOnly GetDateTimeFromDateTimePicker()
-        {
-            var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
-            _appLogger.Debug($"Date retrieved from DateTimePicker: {date}.");
-            return date;
 
-        }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            DateOnly targetDate = GetDateTimeFromDateTimePicker();
-            List<CodingSessionEntity>? targetSessions = await _codingSessionRepository.GetAllCodingSessionsByDateTimeForStartDate(targetDate);
-            _appLogger.Debug($"{targetSessions.Count} coding sessions retrieved for {nameof(EditSessionPageTimePicker)}.");
-            await LoadSessionsIntoDataGridViewAsync(null, targetSessions);
+            var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDate(EditSessionPageDataGridView, date);
         }
 
 
 
-        
+
 
 
 
@@ -604,7 +617,10 @@ namespace CodingTracker.View
 
             try
             {
-                int deletedSessions = await _editSessionPageContextManager.DeleteSessionsInSessionIdsForDeletion();
+                HashSet<int> sessionsForDeletion = _dataGridViewManager.GetSessionIdsMarkedForDeletion();
+                int deletedSessions = await _codingSessionRepository.DeleteSessionsByIdAsync(sessionsForDeletion);
+                _dataGridViewManager.DeleteRowInfoMarkedForDeletion();
+
                 string message = string.Empty;
 
                 if (deletedSessions == 0)
@@ -617,17 +633,31 @@ namespace CodingTracker.View
                 }
 
                 ShowNotificationDialog(this, EventArgs.Empty, message);
-                _dataGridViewManager.ClearRowsMarkedForDeletion(EditSessionPageDataGridView);
                 ClearCurrentHighlightedRows();
             }
 
             finally
             {
                 UpdateDeleteSessionButtonEnabled(IsEditSession);
+                _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
             }
 
+        }
 
-     
+        private async void TestButton_Click(object sender, EventArgs e)
+        {
+            _dataGridViewManager.ClearDataGridViewDataSource(EditSessionPageDataGridView);
+            _dataGridViewManager.ClearDataGridViewColumns(EditSessionPageDataGridView);
+            _dataGridViewManager.ClearAllInRowToInfoMapping();
+
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, SessionSortCriteria.Duration);
+
+            _dataGridViewManager.LoadDataGridViewWithSessions(EditSessionPageDataGridView, codingSessions);
+            _dataGridViewManager.HideUnusuedColumns(EditSessionPageDataGridView);
+            _dataGridViewManager.RenameDataGridColumns(EditSessionPageDataGridView);
+            _dataGridViewManager.FormatDataGridViewDateData(EditSessionPageDataGridView);
+            _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
+            _dataGridViewManager.CreateRowStateAndAddToDictWithDataGridRow(EditSessionPageDataGridView);
         }
     }
 }

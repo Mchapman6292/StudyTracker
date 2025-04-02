@@ -27,7 +27,7 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
 
         public async Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel)
         {
-            if(! await _codingSessionRepository.CheckTodayCodingSessions())
+            if(! await _codingSessionRepository.CheckTodayCodingSessionsAsync())
             {
                 TodaySessionLabel.Text = "Today's Total: 0";
                 return;

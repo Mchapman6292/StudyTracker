@@ -12,7 +12,7 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
 
         Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions);
 
-        Task<List<CodingSessionEntity>> GetRecentSessionsOrderedBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy);
+        Task<List<CodingSessionEntity>> GetSessionBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy);
 
         Task<List<CodingSessionEntity>> GetSessionsForLastDaysAsync(int numberOfDays);
 
@@ -20,8 +20,8 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
 
         Task<List<CodingSessionEntity>> GetAllCodingSessionAsync();
 
-        Task<bool> CheckTodayCodingSessions();
+        Task<bool> CheckTodayCodingSessionsAsync();
 
-        Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateTimeForStartDate(DateOnly date);
+        Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateOnlyForStartDateAsync(DateOnly date);
     }
 }

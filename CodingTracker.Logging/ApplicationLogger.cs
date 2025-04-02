@@ -12,11 +12,16 @@ namespace CodingTracker.Logging.ApplicationLoggers
 
         public ApplicationLogger()
         {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string logPath = Path.Combine(desktopPath, "CodingTrackerLogs", "myapp.txt");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(logPath));
+
             _logger = new LoggerConfiguration()
-                .MinimumLevel.Debug() 
-                .Enrich.FromLogContext() 
-                .WriteTo.Console() 
-                .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day) 
+                .MinimumLevel.Debug()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
 

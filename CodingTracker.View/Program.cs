@@ -112,7 +112,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IEditSessionPageContextManager, EditSessionPageContextManager>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
-                    .AddSingleton<IDataGridRowStateManager, DataGridRowStateManager>()
+                    .AddSingleton<IRowStateManager, RowStateManager>()
 
 
                     .AddSingleton<EditSessionPageContextManager>()

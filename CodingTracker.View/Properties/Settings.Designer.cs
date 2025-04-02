@@ -12,7 +12,7 @@ namespace CodingTracker.View.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,8 +25,7 @@ namespace CodingTracker.View.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\mchap\\source\\repos\\CodingTrackerSolutionClone2\\CodingTracker.View\\FormMe" +
-            "dia\\PcScreenPixelArt.mp4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\mchap\\Downloads\\CodingTrackerLoginPagePlaceHolderMp4.mp4")]
         public string VideoPath {
             get {
                 return ((string)(this["VideoPath"]));
@@ -35,8 +34,7 @@ namespace CodingTracker.View.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\mchap\\source\\repos\\CodingTrackerSolutionClone2\\CodingTracker.View\\FormMe" +
-            "dia\\PcScreenPixelArt.mp4")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\mchap\\Downloads\\CodingTrackerLoginPagePlaceHolderMp4.mp4")]
         public string VLCPath {
             get {
                 return ((string)(this["VLCPath"]));

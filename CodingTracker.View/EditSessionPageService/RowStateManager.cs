@@ -2,7 +2,7 @@
 
 namespace CodingTracker.View.EditSessionPageService.DataGridRowManagers
 {
-    public interface IDataGridRowStateManager
+    public interface IRowStateManager
     {
         RowState CreateDataGridRowState(int rowIndex, int sessionId);
         List<RowState> CreateListOfCreateDataGridRowInfo(List<int> rowIndexes, List<int> sessionIds);
@@ -10,7 +10,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridRowManagers
     }
     
 
-    public class DataGridRowStateManager : IDataGridRowStateManager
+    public class RowStateManager : IRowStateManager
     {
 
         public RowState CreateDataGridRowState(int rowIndex, int sessionId)
