@@ -23,5 +23,7 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
         Task<bool> CheckTodayCodingSessionsAsync();
 
         Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateOnlyForStartDateAsync(DateOnly date);
+
+        Task<double> GetAverageDurationOfAllSessionsAsync();
     }
 }

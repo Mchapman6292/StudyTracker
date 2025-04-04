@@ -2,7 +2,6 @@ using CodingTracker.Business.ApplicationControls;
 using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
 using CodingTracker.Business.CodingSessionService;
-using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
 using CodingTracker.Business.CodingSessionService.SessionCalculators;
 using CodingTracker.Business.CodingSessionService.UserIdServices;
 using CodingTracker.Business.InputValidators;
@@ -110,12 +109,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
                     .AddSingleton<IUserIdService, UserIdService>()
                     .AddSingleton<ILayoutService, LayoutService>()
-                    .AddSingleton<IEditSessionPageContextManager, EditSessionPageContextManager>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
 
 
-                    .AddSingleton<EditSessionPageContextManager>()
                     .AddSingleton<UserIdService , UserIdService>()
 
 

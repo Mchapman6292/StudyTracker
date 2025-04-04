@@ -1,5 +1,4 @@
-﻿using CodingTracker.Business.CodingSessionService.EditSessionPageContextManagers;
-using CodingTracker.Common.CommonEnums;
+﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
@@ -9,8 +8,6 @@ using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using Guna.UI2.WinForms;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 
 
@@ -56,7 +53,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         private readonly IApplicationLogger _appLogger;
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ILayoutService _layoutService;
-        private readonly IEditSessionPageContextManager _editSessionPageContextManager;
         private readonly IRowStateManager _dataGridRowStateManager;
         private readonly IConfiguration _configuration;
 
@@ -71,12 +67,11 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IEditSessionPageContextManager editSessionPageContextManager, IRowStateManager dataGridRowStateManager, IConfiguration configuration)
+        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IRowStateManager dataGridRowStateManager, IConfiguration configuration)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
             _layoutService = layoutService;
-            _editSessionPageContextManager = editSessionPageContextManager;
             _dataGridRowStateManager = dataGridRowStateManager;
             _configuration = configuration;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
@@ -564,7 +559,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             {
                 _appLogger.Debug($"No coding sessions passed to {nameof(LoadDataGridViewWithSessions)}.");
             }
-
             dataGrid.DataSource = codingSessions;
             RefreshDataGridView(dataGrid);
         }
