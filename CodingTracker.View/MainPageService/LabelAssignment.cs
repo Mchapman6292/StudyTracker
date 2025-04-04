@@ -9,7 +9,8 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
 {
     public interface ILabelAssignment
     {
-        Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel);
+        void UpdateMainPageLabel(Guna2HtmlLabel label, string text);
+        Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum);
     }
 
     public class LabelAssignment : ILabelAssignment
@@ -30,16 +31,7 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         }
 
 
-        public async Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel)
-        {
-            if(! await _codingSessionRepository.CheckTodayCodingSessionsAsync())
-            {
-                TodaySessionLabel.Text = "Today's Total: 0";
-                return;
-            }
-            double todayTotal = await _sessionCalculator.GetTodayTotalSession();
-            TodaySessionLabel.Text = $"Today's Total: {todayTotal}";
-        }
+
 
         public void ClearMainPageLabel(Guna2HtmlLabel label)
         {
@@ -52,17 +44,36 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             label.Text = text;
         }
 
-        public async string GetCodingSessionDataForLabelAsync(MainPageLabels labelEnum)
+        public async Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum)
         {
+            string labelMessage = string.Empty;
+
             switch (labelEnum)
             {
                 case MainPageLabels.TodaySessionLabel:
-                    double 
+                    double todayTotal = await _codingSessionRepository.GetTodaysTotalDurationAsync();
+                    labelMessage = _utilityService.ConvertDurationToHHMM(todayTotal);
+                    break;
+
+                case MainPageLabels.AverageSessionLabel:
+                    double totalAverage = await _codingSessionRepository.GetAverageDurationOfAllSessionsAsync();
+                    labelMessage = _utilityService.ConvertDurationToHHMM(totalAverage);
+                    break;
+
+                case MainPageLabels.WeekTotalLabel:
+                    double weekTotal = await _codingSessionRepository.GetWeekTotalDurationAsync();
+                    labelMessage = _utilityService.ConvertDurationToHHMM(weekTotal);
+                    break;
             }
+            return labelMessage;
         }
 
+       
 
-        
 
     }
 }
+
+
+
+

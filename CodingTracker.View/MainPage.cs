@@ -5,6 +5,7 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.Common.CommonEnums;
 using System.Diagnostics;
 
 
@@ -36,12 +37,16 @@ namespace CodingTracker.View
             _labelAssignment = labelAssignment;
         }
 
-        private void MainPage_Load(object sender, EventArgs e)
+        private async void MainPage_Load(object sender, EventArgs e)
         {
-            UpdateLabels(Last28DaysPanel);
-            UpDateLast28Days(Last28DaysPanel);
+            string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodaySessionLabel);
+            _labelAssignment.UpdateMainPageLabel(TodayTotalLabel, todayText);
 
-            UpdatedateTodaySessionLabel();
+            string weekText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.WeekTotalLabel);
+            _labelAssignment.UpdateMainPageLabel(WeekTotalLabel, weekText);
+
+            string averageText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.AverageSessionLabel);
+            _labelAssignment.UpdateMainPageLabel(AverageSessionLabel, averageText);
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -121,8 +126,7 @@ namespace CodingTracker.View
 
         private async Task UpdatedateTodaySessionLabel()
         {
-            await _labelAssignment.UpdateTodayLabel(LastSessionLabel);
-
+      
         }
 
         private void Day2Label_Click(object sender, EventArgs e)

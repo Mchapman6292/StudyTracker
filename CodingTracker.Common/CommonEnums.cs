@@ -19,4 +19,6 @@ namespace CodingTracker.Common.CommonEnums
         WeekTotalLabel,
         AverageSessionLabel
     }
-}
+
+ 
+    }
