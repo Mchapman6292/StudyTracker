@@ -1,10 +1,9 @@
-﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Business.CodingSessionService.SessionCalculators;
-using Guna.UI2.WinForms;
-using System.Runtime.CompilerServices;
-using CodingTracker.Common.IUtilityServices;
+﻿using CodingTracker.Business.CodingSessionService.SessionCalculators;
 using CodingTracker.Common.CommonEnums;
+using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.IUtilityServices;
+using Guna.UI2.WinForms;
 
 namespace CodingTracker.Business.MainPageService.LabelAssignments
 {
