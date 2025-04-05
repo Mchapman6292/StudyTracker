@@ -100,7 +100,7 @@ namespace CodingTracker.View
                 return false;
             }
 
-            _appLogger.Info($"Goal time validated successfully. Total time: {totalMinutes} minutes. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
+            _appLogger.Info($"TimeGoal time validated successfully. Total time: {totalMinutes} minutes. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
 
             stopwatch.Stop();
             activity.Stop();

@@ -29,6 +29,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         private readonly IUserIdService _userIdService;
 
         private bool IsCodingSessionActive { get; set; } = false;
+        private bool IsSessionTimerActive { get; set; } = false;
 
         public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
         {
@@ -49,6 +50,11 @@ namespace CodingTracker.Business.CodingSessionManagers
         public void UpdateISCodingSessionActive(bool active) 
         {
             IsCodingSessionActive = active; 
+        }
+
+        public void UpdateIsSessionTimerActive(bool active)
+        {
+            IsSessionTimerActive = active;
         }
 
         public bool CheckIfCodingSessionActive()

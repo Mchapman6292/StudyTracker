@@ -5,6 +5,8 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
     public interface ICodingSessionManager
     {
         void Initialize_CurrentCodingSession(int userId);
+        void UpdateISCodingSessionActive(bool active);
+        void UpdateIsSessionTimerActive(bool active);
         Task StartCodingSession(string username);
         void StartCodingSessionTimer();
         Task EndCodingSessionAsync();

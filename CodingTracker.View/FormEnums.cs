@@ -8,7 +8,8 @@
         EditSessionPage,
         CreateAccountPage,
         CodingSessionTimerPage,
-        PopUpForm
+        SessionGoalPage,
+        TimerDisplayPage
     }
 
 }

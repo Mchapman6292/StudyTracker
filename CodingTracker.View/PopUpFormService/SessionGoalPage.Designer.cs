@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.PopUpFormService
 {
-    partial class PopUpForm
+    partial class SessionGoalForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,14 @@
         {
             SuspendLayout();
             // 
-            // PopUpForm
+            // SessionGoalPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 450);
-            Name = "PopUpForm";
-            Text = "PopUpForm";
+            Name = "SessionGoalPage";
+            Text = "SessionGoalPage";
             Load += PopUpForm_Load;
             ResumeLayout(false);
         }

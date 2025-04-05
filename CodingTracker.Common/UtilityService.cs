@@ -59,7 +59,7 @@ namespace CodingTracker.Common.UtilityServices
             }
         }
 
-        public string ConvertDurationToHHMM(double duration)
+        public string ConvertDoubleToHHMM(double duration)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(duration);
             int totalHours = (int)timeSpan.TotalHours;

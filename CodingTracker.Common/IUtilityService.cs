@@ -8,7 +8,7 @@
 
         string HashPassword(string password);
 
-        string ConvertDurationToHHMM(double duration);
+        string ConvertDoubleToHHMM(double duration);
 
 
     }

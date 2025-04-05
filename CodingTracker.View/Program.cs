@@ -125,7 +125,8 @@ namespace CodingTracker.View.Program
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CodingSessionTimerForm>()
                     .AddTransient<CreateAccountPage>()
-                    .AddTransient<PopUpForm>()
+                    .AddTransient<SessionGoalForm>()
+                    .AddTransient<TimerDisplayForm>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddScoped<ICodingTrackerDbContext, CodingTrackerDbContext>();

@@ -148,12 +148,17 @@ namespace CodingTracker.View
 
         }
 
- 
+
 
         private void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.PopUpForm);
+            _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
+        }
+
+        private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
