@@ -5,6 +5,7 @@ using System.Diagnostics;
 using CodingTracker.View.FormPageEnums;
 using System.Windows.Forms;
 using LibVLCSharp.Shared;
+using CodingTracker.View.PopUpFormService;
 
 namespace CodingTracker.View.FormService
 {
@@ -41,6 +42,7 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.EditSessionPage => typeof(EditSessionPage),
                 FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
                 FormPageEnum.CodingSessionTimerPage => typeof(CodingSessionTimerForm),
+                FormPageEnum.PopUpForm => typeof(PopUpForm),
                 _ => throw new ArgumentException($"Unknown form type: {formType}")
             };
 

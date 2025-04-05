@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.View.IMessageBoxManagers;
+﻿using CodingTracker.View.IMessageBoxManagers;
 
 namespace CodingTracker.View.MessageBoxManagers
 {

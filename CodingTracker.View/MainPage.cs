@@ -6,6 +6,8 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ColourServices;
+using Guna.UI2.WinForms;
 using System.Diagnostics;
 
 
@@ -21,6 +23,9 @@ namespace CodingTracker.View
         private readonly IFormSwitcher _formSwitcher;
         private readonly ISessionCalculator _sessionCalculator;
         private readonly ILabelAssignment _labelAssignment;
+
+
+        private bool isActionPanelVisible = false;
 
 
 
@@ -41,7 +46,7 @@ namespace CodingTracker.View
         {
             string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodayTotalLabel);
             _labelAssignment.FormatTodayLabelText(TodayTotalLabel, todayText);
-    
+
             string weekText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.WeekTotalLabel);
             _labelAssignment.FormatWeekTotalLabel(WeekTotalLabel, weekText);
 
@@ -50,7 +55,7 @@ namespace CodingTracker.View
 
             UpdateLabels(Last28DaysPanel);
             await UpDateLast28Days(Last28DaysPanel);
-            
+
 
         }
 
@@ -127,7 +132,7 @@ namespace CodingTracker.View
         }
 
 
- 
+
 
 
 
@@ -141,6 +146,14 @@ namespace CodingTracker.View
         private void MainPageExitControlBox_Click(object sender, EventArgs e)
         {
 
+        }
+
+ 
+
+        private void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            _formSwitcher.SwitchToForm(FormPageEnum.PopUpForm);
         }
     }
 }

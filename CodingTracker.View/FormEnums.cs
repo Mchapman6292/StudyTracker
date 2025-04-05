@@ -7,7 +7,8 @@
         CodingSessionPage,
         EditSessionPage,
         CreateAccountPage,
-        CodingSessionTimerPage
+        CodingSessionTimerPage,
+        PopUpForm
     }
 
 }

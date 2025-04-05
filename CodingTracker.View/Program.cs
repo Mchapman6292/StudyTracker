@@ -41,6 +41,7 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
+using CodingTracker.View.PopUpFormService;
 
 /// To do
 
@@ -124,6 +125,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CodingSessionTimerForm>()
                     .AddTransient<CreateAccountPage>()
+                    .AddTransient<PopUpForm>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddScoped<ICodingTrackerDbContext, CodingTrackerDbContext>();
