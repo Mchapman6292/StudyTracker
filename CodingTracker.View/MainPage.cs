@@ -1,11 +1,11 @@
 ﻿using CodingTracker.Business.CodingSessionService.SessionCalculators;
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
+using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using CodingTracker.Common.CommonEnums;
 using System.Diagnostics;
 
 
@@ -39,14 +39,19 @@ namespace CodingTracker.View
 
         private async void MainPage_Load(object sender, EventArgs e)
         {
-            string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodaySessionLabel);
-            _labelAssignment.UpdateMainPageLabel(TodayTotalLabel, todayText);
-
+            string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodayTotalLabel);
+            _labelAssignment.FormatTodayLabelText(TodayTotalLabel, todayText);
+    
             string weekText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.WeekTotalLabel);
-            _labelAssignment.UpdateMainPageLabel(WeekTotalLabel, weekText);
+            _labelAssignment.FormatWeekTotalLabel(WeekTotalLabel, weekText);
 
             string averageText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.AverageSessionLabel);
-            _labelAssignment.UpdateMainPageLabel(AverageSessionLabel, averageText);
+            _labelAssignment.FormatAverageSessionLabel(AverageSessionLabel, averageText);
+
+            UpdateLabels(Last28DaysPanel);
+            await UpDateLast28Days(Last28DaysPanel);
+            
+
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -122,12 +127,11 @@ namespace CodingTracker.View
         }
 
 
+ 
 
 
-        private async Task UpdatedateTodaySessionLabel()
-        {
-      
-        }
+
+
 
         private void Day2Label_Click(object sender, EventArgs e)
         {
