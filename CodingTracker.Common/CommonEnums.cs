@@ -15,8 +15,10 @@ namespace CodingTracker.Common.CommonEnums
 
     public enum MainPageLabels
     {
-        TodaySessionLabel,
+        TodayTotalLabel,
         WeekTotalLabel,
         AverageSessionLabel
     }
+
+ 
 }

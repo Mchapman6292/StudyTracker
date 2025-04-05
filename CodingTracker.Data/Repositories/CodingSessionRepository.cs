@@ -161,5 +161,34 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .AverageAsync();     
         }
 
+        public async Task<double> GetTodaysTotalDurationAsync()
+        {
+            if (!await _dbContext.CodingSessions.AnyAsync())
+            {
+                return 0.0;
+            }
+
+            DateOnly todayUTC = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            return await _dbContext.CodingSessions
+                .Where(s => s.StartDate == todayUTC)
+                .SumAsync(s => s.DurationSeconds);
+        }
+
+        public async Task<double> GetWeekTotalDurationAsync()
+        {
+            if (!await _dbContext.CodingSessions.AnyAsync())
+            {
+                return 0.0;
+            }
+
+            DateOnly startDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(-7);
+            DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            return await _dbContext.CodingSessions
+                .Where(s => s.StartDate >= todayDate)
+                .SumAsync(s => s.DurationSeconds);
+        }
+
     }
 }

@@ -1,13 +1,12 @@
-﻿using CodingTracker.Business.CodingSessionService.UserIdServices;
-using CodingTracker.Common.BusinessInterfaces;
+﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
-using CodingTracker.View.FormPageEnums;
 
 
 namespace CodingTracker.View
@@ -64,7 +63,7 @@ namespace CodingTracker.View
 
         private async void CodingSesionPageEndSessionButton_Click(object sender, EventArgs e)
         {
-            _appLogger.Debug($"Coding session EndSession button clicked for {nameof(CodingSesionPageEndSessionButton)}.");
+            _appLogger.Debug($"Coding session EndSession button clicked for {nameof(StartSessionButton)}.");
 
             _codingSessionManager.EndCodingSessionTimer();
         }
@@ -101,7 +100,7 @@ namespace CodingTracker.View
                 return false;
             }
 
-            _appLogger.Info($"Goal time validated successfully. Total time: {totalMinutes} minutes. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
+            _appLogger.Info($"TimeGoal time validated successfully. Total time: {totalMinutes} minutes. Execution Time: {stopwatch.ElapsedMilliseconds}ms, TraceID: {activity.TraceId}");
 
             stopwatch.Stop();
             activity.Stop();

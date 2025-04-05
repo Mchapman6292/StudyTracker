@@ -1,10 +1,13 @@
 ﻿using CodingTracker.Business.CodingSessionService.SessionCalculators;
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
+using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ColourServices;
+using Guna.UI2.WinForms;
 using System.Diagnostics;
 
 
@@ -22,6 +25,9 @@ namespace CodingTracker.View
         private readonly ILabelAssignment _labelAssignment;
 
 
+        private bool isActionPanelVisible = false;
+
+
 
         public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IErrorHandler errorHandler, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
         {
@@ -36,12 +42,21 @@ namespace CodingTracker.View
             _labelAssignment = labelAssignment;
         }
 
-        private void MainPage_Load(object sender, EventArgs e)
+        private async void MainPage_Load(object sender, EventArgs e)
         {
-            UpdateLabels(Last28DaysPanel);
-            UpDateLast28Days(Last28DaysPanel);
+            string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodayTotalLabel);
+            _labelAssignment.FormatTodayLabelText(TodayTotalLabel, todayText);
 
-            UpdatedateTodaySessionLabel();
+            string weekText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.WeekTotalLabel);
+            _labelAssignment.FormatWeekTotalLabel(WeekTotalLabel, weekText);
+
+            string averageText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.AverageSessionLabel);
+            _labelAssignment.FormatAverageSessionLabel(AverageSessionLabel, averageText);
+
+            UpdateLabels(Last28DaysPanel);
+            await UpDateLast28Days(Last28DaysPanel);
+
+
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -119,11 +134,9 @@ namespace CodingTracker.View
 
 
 
-        private async Task UpdatedateTodaySessionLabel()
-        {
-            await _labelAssignment.UpdateTodayLabel(LastSessionLabel);
 
-        }
+
+
 
         private void Day2Label_Click(object sender, EventArgs e)
         {
@@ -131,6 +144,19 @@ namespace CodingTracker.View
         }
 
         private void MainPageExitControlBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        private void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
+        }
+
+        private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
         {
 
         }

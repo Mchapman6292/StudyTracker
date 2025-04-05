@@ -9,7 +9,6 @@ using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
-using System.Diagnostics;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {
@@ -30,6 +29,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         private readonly IUserIdService _userIdService;
 
         private bool IsCodingSessionActive { get; set; } = false;
+        private bool IsSessionTimerActive { get; set; } = false;
 
         public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
         {
@@ -42,25 +42,27 @@ namespace CodingTracker.Business.CodingSessionManagers
             _userIdService = userIdService;
         }
 
-        public CodingSession ReturnCurrentCodingSession(Activity activity)
+        public CodingSession ReturnCurrentCodingSession()
         {
-            if(activity == null)
-            {
-                _appLogger.Error($"Error during {nameof(ReturnCurrentCodingSession)} activity = null");
-            }
-            _appLogger.Info($"Starting {nameof(ReturnCurrentCodingSession)} traceId: {activity.TraceId}.");
             return _currentCodingSession;
         }
 
-        public void ChangeCodingSessionActiveTrue()
+        public void UpdateISCodingSessionActive(bool active) 
         {
-            IsCodingSessionActive = true;
+            IsCodingSessionActive = active; 
         }
 
-        public void ChangeCodingSessionActiveFalse()
+        public void UpdateIsSessionTimerActive(bool active)
         {
-            IsCodingSessionActive = false;
+            IsSessionTimerActive = active;
         }
+
+        public bool CheckIfCodingSessionActive()
+        {
+            return IsCodingSessionActive;
+        }
+
+
 
 
         public void Initialize_CurrentCodingSession(int userId)
@@ -85,7 +87,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             _appLogger.Info($"New coding session created. UserId: {codingSession.UserId}, SessionId: {codingSession.SessionId}, StartDate: {codingSession.StartDate}, StartTime: {codingSession.StartTime}");
             _currentCodingSession = codingSession;
 
-            ChangeCodingSessionActiveTrue();
+            UpdateISCodingSessionActive(true);
         }
 
         public async Task SetCurrentSessionUserIdAsync(string username)
@@ -117,7 +119,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             Initialize_CurrentCodingSession(userCredential.UserId);
 
-            ChangeCodingSessionActiveTrue(); // This is when have start a second/third session etc, a new CodingSession object is created, only when the a user completes a timed study session is this converted to a CodingSesisonEntity and added to the database. 
+            UpdateISCodingSessionActive(true); // This is when have start a second/third session etc, a new CodingSession object is created, only when the a user completes a timed study session is this converted to a CodingSesisonEntity and added to the database. 
 
             _appLogger.Info($"Coding session started CurrentCodingSession user id = {_currentCodingSession.UserId}.");
         }
@@ -164,7 +166,6 @@ namespace CodingTracker.Business.CodingSessionManagers
             _currentCodingSession.GoalMinutes = 0;
             _appLogger.Debug($"CurrentCdoingSession GoalMins set to {_currentCodingSession.GoalMinutes}, default for not set.");
 
-
         }
 
 
@@ -189,10 +190,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
 
-            if(sessionAddedToDb)
-            {
-
-            }
+            UpdateISCodingSessionActive(false);
 
         }
 
@@ -223,7 +221,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         public CodingSessionEntity ConvertCodingSessionToCodingSessionEntity()
         {
-            CodingSessionEntity codingSessionEntity = new CodingSessionEntity
+            return new CodingSessionEntity
             {
                 UserId = _currentCodingSession.UserId,
                 StartDate = _currentCodingSession.StartDate ?? throw new ArgumentNullException($"StartDate cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
@@ -235,7 +233,6 @@ namespace CodingTracker.Business.CodingSessionManagers
                 GoalMinutes = _currentCodingSession.GoalMinutes ?? throw new ArgumentNullException($"GoalMinutes cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
             };
-            return codingSessionEntity;
         }
 
 
@@ -327,21 +324,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             return durationSeconds;
         }
 
-        public bool CheckIfCodingSessionActive()
-        {
-            using (var activity = new Activity(nameof(CheckIfCodingSessionActive)).Start())
-            {
-                var stopwatch = Stopwatch.StartNew();
-                _appLogger.Debug($"Checking if session is active. TraceID: {activity.TraceId}");
-
-                bool isActive = IsCodingSessionActive;
-
-                stopwatch.Stop();
-                _appLogger.Info($"Coding session active status: {isActive}, Execution Time: {stopwatch.ElapsedMilliseconds}ms, Trace ID: {activity.TraceId}");
-
-                return isActive;
-            }
-        }
+ 
 
 
     }

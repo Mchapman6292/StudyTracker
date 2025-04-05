@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
-using CodingTracker.Common.IApplicationLoggers;
+using System.Globalization;
 using System.Security.Cryptography;
+using System.Text;
 
 
 
@@ -64,7 +59,7 @@ namespace CodingTracker.Common.UtilityServices
             }
         }
 
-        public string ConvertDurationToHHMM(double duration)
+        public string ConvertDoubleToHHMM(double duration)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(duration);
             int totalHours = (int)timeSpan.TotalHours;

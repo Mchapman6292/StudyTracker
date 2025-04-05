@@ -1,6 +1,5 @@
 ﻿
 
-
 namespace CodingTracker.Common.CodingSessions
 {
     public class CodingSession

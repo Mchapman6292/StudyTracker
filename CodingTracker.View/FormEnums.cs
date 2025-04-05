@@ -7,7 +7,9 @@
         CodingSessionPage,
         EditSessionPage,
         CreateAccountPage,
-        CodingSessionTimerPage
+        CodingSessionTimerPage,
+        SessionGoalPage,
+        TimerDisplayPage
     }
 
 }

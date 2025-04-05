@@ -9,7 +9,11 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
 {
     public interface ILabelAssignment
     {
-        Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel);
+        void UpdateMainPageLabel(Guna2HtmlLabel label, string text);
+        Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum);
+        void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
+        void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
+        void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime);
     }
 
     public class LabelAssignment : ILabelAssignment
@@ -30,16 +34,7 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         }
 
 
-        public async Task UpdateTodayLabel(Guna2HtmlLabel TodaySessionLabel)
-        {
-            if(! await _codingSessionRepository.CheckTodayCodingSessionsAsync())
-            {
-                TodaySessionLabel.Text = "Today's Total: 0";
-                return;
-            }
-            double todayTotal = await _sessionCalculator.GetTodayTotalSession();
-            TodaySessionLabel.Text = $"Today's Total: {todayTotal}";
-        }
+
 
         public void ClearMainPageLabel(Guna2HtmlLabel label)
         {
@@ -52,17 +47,76 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             label.Text = text;
         }
 
-        public async string GetCodingSessionDataForLabelAsync(MainPageLabels labelEnum)
+        public async Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum)
         {
+            string labelMessage = string.Empty;
+            string prefix = string.Empty;
+
             switch (labelEnum)
             {
-                case MainPageLabels.TodaySessionLabel:
-                    double 
+                case MainPageLabels.TodayTotalLabel:
+                    prefix = "Today's Total";
+                    double todayTotal = await _codingSessionRepository.GetTodaysTotalDurationAsync();
+                    labelMessage = _utilityService.ConvertDoubleToHHMM(todayTotal);
+                    break;
+
+                case MainPageLabels.AverageSessionLabel:
+                    prefix = "Average Session";
+                    double totalAverage = await _codingSessionRepository.GetAverageDurationOfAllSessionsAsync();
+                    labelMessage = _utilityService.ConvertDoubleToHHMM(totalAverage);
+                    break;
+
+                case MainPageLabels.WeekTotalLabel:
+                    prefix = "Week Total";
+                    double weekTotal = await _codingSessionRepository.GetWeekTotalDurationAsync();
+                    labelMessage = _utilityService.ConvertDoubleToHHMM(weekTotal);
+                    break;
             }
+            return labelMessage;
         }
 
 
-        
+        public void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime)
+        {
+            string html = $@"
+            <div style='font-family: Segoe UI;'>
+                <div style='font-size: 14px; font-weight: 600; color: white; text-transform: uppercase;'>Today's Total</div>
+                <div style='font-size: 24px; font-weight: 700; color: white;'>{formattedTime}</div>
+            </div>";
+
+            label.Text = html;
+            label.BackColor = Color.Transparent;
+        }
+
+        public void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime)
+        {
+            string html = $@"
+            <div style='font-family: Segoe UI;'>
+                <div style='font-size: 14px; font-weight: 600; color: white; text-transform: uppercase;'>Week Total</div>
+                <div style='font-size: 24px; font-weight: 700; color: white;'>{formattedTime}</div>
+            </div>";
+
+            label.Text = html;
+            label.BackColor = Color.Transparent;
+        }
+
+        public void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime)
+        {
+            string html = $@"
+            <div style='font-family: Segoe UI;'>
+                <div style='font-size: 14px; font-weight: 600; color: white; text-transform: uppercase;'>Average Session</div>
+                <div style='font-size: 24px; font-weight: 700; color: white;'>{formattedTime}</div>
+            </div>";
+
+            label.Text = html;
+            label.BackColor = Color.Transparent;
+        }
+
+
 
     }
 }
+
+
+
+

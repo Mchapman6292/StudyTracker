@@ -1,10 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
-using CodingTracker.Common.IApplicationLoggers;
-using System.Diagnostics;
+﻿using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
-using System.Windows.Forms;
-using LibVLCSharp.Shared;
+using CodingTracker.View.PopUpFormService;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CodingTracker.View.FormService
 {
@@ -13,6 +10,7 @@ namespace CodingTracker.View.FormService
         Form CreateForm(FormPageEnum formType);
         Form GetOrCreateForm(FormPageEnum formType);
         Form GetOrCreateLoginPage();
+        Form GetOrCreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null);
 
 
     }
@@ -41,6 +39,9 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.EditSessionPage => typeof(EditSessionPage),
                 FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
                 FormPageEnum.CodingSessionTimerPage => typeof(CodingSessionTimerForm),
+                FormPageEnum.SessionGoalPage => typeof(SessionGoalForm),
+                FormPageEnum.TimerDisplayPage => typeof(TimerDisplayForm),
+
                 _ => throw new ArgumentException($"Unknown form type: {formType}")
             };
 
@@ -60,6 +61,12 @@ namespace CodingTracker.View.FormService
             return existingForm;
         }
 
+        public TimerDisplayForm CreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
+        {
+            return new TimerDisplayForm(goalSet, goalTimeHHMM);
+        }
+
+
         public Form GetOrCreateLoginPage()
         {
             var loginForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.LoginPage);
@@ -72,10 +79,23 @@ namespace CodingTracker.View.FormService
             loginForm.StartPosition = FormStartPosition.CenterScreen;
             loginForm.BringToFront();
             loginForm.TopLevel = true;
-
-
             return loginForm;
         }
+
+        public Form GetOrCreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
+        {
+            var existingForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.TimerDisplayPage);
+
+            if (existingForm == null || existingForm.IsDisposed)
+            {
+                var newForm = CreateForm(FormPageEnum.TimerDisplayPage);
+                _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerDisplayPage, newForm);
+                return newForm;
+            }
+            return existingForm;
+        }
+
+      
     }
 }
 

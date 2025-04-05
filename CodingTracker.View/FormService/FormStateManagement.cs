@@ -1,4 +1,5 @@
 ﻿using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.PopUpFormService;
 
 namespace CodingTracker.View.FormService
 {
@@ -24,6 +25,8 @@ namespace CodingTracker.View.FormService
         private CodingSessionTimerForm _codingSessionTimerInstance;
         private CreateAccountPage _createAccountPageInstance;
         private LoginPage _loginPageInstance;
+        private SessionGoalForm _popUpPageInstance;
+        private TimerDisplayForm _timerDisplayPageInstance;
 
 
         private bool _mainPageCreated = false;
@@ -86,6 +89,12 @@ namespace CodingTracker.View.FormService
                     break;
                 case FormPageEnum.LoginPage:
                     _loginPageInstance = instance as LoginPage;
+                    break;
+                case FormPageEnum.SessionGoalPage:
+                    _popUpPageInstance = instance as SessionGoalForm;
+                    break;
+                case FormPageEnum.TimerDisplayPage:
+                    _timerDisplayPageInstance = instance as TimerDisplayForm;
                     break;
             }
         }
