@@ -1,10 +1,13 @@
-﻿using CodingTracker.View.FormPageEnums;
+﻿using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.PopUpFormService;
 
 namespace CodingTracker.View.FormService
 {
     public interface IFormStateManagement
     {
+        Form GetCurrentForm();
+        void SetCurrentForm(Form form);
         Form GetFormByFormPageEnum(FormPageEnum form);
 
         void SetFormByFormPageEnum(FormPageEnum form, Form instance);
@@ -27,6 +30,7 @@ namespace CodingTracker.View.FormService
         private LoginPage _loginPageInstance;
         private SessionGoalForm _popUpPageInstance;
         private TimerDisplayForm _timerDisplayPageInstance;
+        private readonly IApplicationLogger _appLogger;
 
 
         private bool _mainPageCreated = false;
@@ -35,6 +39,13 @@ namespace CodingTracker.View.FormService
         private bool _codingSessionTimerCreated = false;
         private bool _createAccountPageCreated = false;
         private bool _loginPageCreated = false;
+
+        Form _currentForm;
+
+        public FormStateManagement(IApplicationLogger appLogger)
+        {
+            _appLogger = appLogger;
+        }
 
 
         private readonly Dictionary<FormPageEnum, Type> _formTypes = new Dictionary<FormPageEnum, Type>
@@ -46,6 +57,17 @@ namespace CodingTracker.View.FormService
             { FormPageEnum.CreateAccountPage, typeof(PassWordTextBox) },
             { FormPageEnum.CodingSessionTimerPage, typeof(CodingSessionTimerForm) }
         };
+
+        public Form GetCurrentForm()
+        {
+            return _currentForm;
+        }
+
+        public void SetCurrentForm(Form form)
+        {
+            _currentForm = form;
+            _appLogger.Debug($"Current form set to: {form.GetType().Name}");
+        }
 
 
         public Form GetFormByFormPageEnum(FormPageEnum form)

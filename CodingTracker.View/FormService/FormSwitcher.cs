@@ -17,7 +17,6 @@ namespace CodingTracker.View.FormService
         private readonly IFormController _formController;
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
-        private Form _currentForm;
 
         public FormSwitcher(IFormController formController, IFormFactory formFactory, IFormStateManagement formStateManagement)
         {
@@ -35,18 +34,21 @@ namespace CodingTracker.View.FormService
 
         public Form SwitchToForm(FormPageEnum formType)
         {
-            var form = _formFactory.GetOrCreateForm(formType);
+            var oldForm = _formStateManagement.GetCurrentForm();
+            var newForm = _formFactory.GetOrCreateForm(formType);
 
-            if (_currentForm != null)
+            if (oldForm != null)
             {
-                _currentForm.Hide();
+                oldForm.Hide();
             }
-            _currentForm = form;
+            
+            _formStateManagement.SetCurrentForm(newForm);
 
-            form.Show();
+            newForm.Show();
 
-            return form;
+            return newForm;
         }
+
 
         public void CloseLoginPage()
         {

@@ -47,6 +47,9 @@ namespace CodingTracker.View
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
             _formFactory = formFactory;
+            
+            // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
+            _formStateManagement.SetCurrentForm(this);
         }
 
 
