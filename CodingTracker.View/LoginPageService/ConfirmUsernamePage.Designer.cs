@@ -28,22 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmUsernamePage));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             TextBoxPanel = new Guna.UI2.WinForms.Guna2Panel();
             ConfirmUsernameButton = new Guna.UI2.WinForms.Guna2Button();
             UsernameTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
-            MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
+            ConfirmUsernamePageExitButton = new Guna.UI2.WinForms.Guna2ControlBox();
             DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            ConfirmUsernameHomeButton = new Guna.UI2.WinForms.Guna2GradientButton();
             TextBoxPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -51,10 +55,10 @@
             // 
             TextBoxPanel.Controls.Add(ConfirmUsernameButton);
             TextBoxPanel.Controls.Add(UsernameTextBox);
-            TextBoxPanel.CustomizableEdges = customizableEdges15;
+            TextBoxPanel.CustomizableEdges = customizableEdges5;
             TextBoxPanel.Location = new Point(183, 111);
             TextBoxPanel.Name = "TextBoxPanel";
-            TextBoxPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            TextBoxPanel.ShadowDecoration.CustomizableEdges = customizableEdges6;
             TextBoxPanel.Size = new Size(385, 280);
             TextBoxPanel.TabIndex = 0;
             // 
@@ -64,7 +68,7 @@
             ConfirmUsernameButton.AutoRoundedCorners = true;
             ConfirmUsernameButton.BorderRadius = 18;
             ConfirmUsernameButton.BorderThickness = 2;
-            ConfirmUsernameButton.CustomizableEdges = customizableEdges11;
+            ConfirmUsernameButton.CustomizableEdges = customizableEdges1;
             ConfirmUsernameButton.DisabledState.BorderColor = Color.DarkGray;
             ConfirmUsernameButton.DisabledState.CustomBorderColor = Color.DarkGray;
             ConfirmUsernameButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -74,7 +78,7 @@
             ConfirmUsernameButton.ForeColor = Color.White;
             ConfirmUsernameButton.Location = new Point(83, 142);
             ConfirmUsernameButton.Name = "ConfirmUsernameButton";
-            ConfirmUsernameButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            ConfirmUsernameButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
             ConfirmUsernameButton.Size = new Size(200, 38);
             ConfirmUsernameButton.TabIndex = 21;
             ConfirmUsernameButton.Text = "Confirm Username";
@@ -85,7 +89,7 @@
             UsernameTextBox.AutoRoundedCorners = true;
             UsernameTextBox.BorderColor = Color.FromArgb(234, 153, 149);
             UsernameTextBox.BorderRadius = 17;
-            UsernameTextBox.CustomizableEdges = customizableEdges13;
+            UsernameTextBox.CustomizableEdges = customizableEdges3;
             UsernameTextBox.DefaultText = "";
             UsernameTextBox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             UsernameTextBox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -102,7 +106,7 @@
             UsernameTextBox.PlaceholderForeColor = Color.Azure;
             UsernameTextBox.PlaceholderText = "Username";
             UsernameTextBox.SelectedText = "";
-            UsernameTextBox.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            UsernameTextBox.ShadowDecoration.CustomizableEdges = customizableEdges4;
             UsernameTextBox.Size = new Size(200, 36);
             UsernameTextBox.TabIndex = 17;
             // 
@@ -110,29 +114,30 @@
             // 
             MainPageExitControlMinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             MainPageExitControlMinimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges17;
+            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges7;
             MainPageExitControlMinimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             MainPageExitControlMinimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             MainPageExitControlMinimizeButton.HoverState.IconColor = Color.White;
             MainPageExitControlMinimizeButton.IconColor = Color.White;
             MainPageExitControlMinimizeButton.Location = new Point(717, 0);
             MainPageExitControlMinimizeButton.Name = "MainPageExitControlMinimizeButton";
-            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             MainPageExitControlMinimizeButton.Size = new Size(45, 29);
             MainPageExitControlMinimizeButton.TabIndex = 28;
             // 
-            // MainPageExitControlBox
+            // ConfirmUsernamePageExitButton
             // 
-            MainPageExitControlBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            MainPageExitControlBox.CustomizableEdges = customizableEdges19;
-            MainPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
-            MainPageExitControlBox.HoverState.IconColor = Color.White;
-            MainPageExitControlBox.IconColor = Color.White;
-            MainPageExitControlBox.Location = new Point(759, 0);
-            MainPageExitControlBox.Name = "MainPageExitControlBox";
-            MainPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            MainPageExitControlBox.Size = new Size(45, 29);
-            MainPageExitControlBox.TabIndex = 29;
+            ConfirmUsernamePageExitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ConfirmUsernamePageExitButton.CustomizableEdges = customizableEdges9;
+            ConfirmUsernamePageExitButton.FillColor = Color.FromArgb(25, 24, 40);
+            ConfirmUsernamePageExitButton.HoverState.IconColor = Color.White;
+            ConfirmUsernamePageExitButton.IconColor = Color.White;
+            ConfirmUsernamePageExitButton.Location = new Point(759, 0);
+            ConfirmUsernamePageExitButton.Name = "ConfirmUsernamePageExitButton";
+            ConfirmUsernamePageExitButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            ConfirmUsernamePageExitButton.Size = new Size(45, 29);
+            ConfirmUsernamePageExitButton.TabIndex = 29;
+            ConfirmUsernamePageExitButton.Click += ConfirmUsernameExitButtonControlBox_Click;
             // 
             // DisplayMessageBox
             // 
@@ -143,13 +148,34 @@
             DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
             // 
+            // ConfirmUsernameHomeButton
+            // 
+            ConfirmUsernameHomeButton.CustomizableEdges = customizableEdges11;
+            ConfirmUsernameHomeButton.DisabledState.BorderColor = Color.DarkGray;
+            ConfirmUsernameHomeButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            ConfirmUsernameHomeButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            ConfirmUsernameHomeButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            ConfirmUsernameHomeButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            ConfirmUsernameHomeButton.FillColor = Color.FromArgb(25, 24, 40);
+            ConfirmUsernameHomeButton.FillColor2 = Color.FromArgb(25, 24, 40);
+            ConfirmUsernameHomeButton.Font = new Font("Segoe UI", 9F);
+            ConfirmUsernameHomeButton.ForeColor = Color.White;
+            ConfirmUsernameHomeButton.Image = (Image)resources.GetObject("ConfirmUsernameHomeButton.Image");
+            ConfirmUsernameHomeButton.Location = new Point(676, 0);
+            ConfirmUsernameHomeButton.Name = "ConfirmUsernameHomeButton";
+            ConfirmUsernameHomeButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            ConfirmUsernameHomeButton.Size = new Size(45, 29);
+            ConfirmUsernameHomeButton.TabIndex = 33;
+            ConfirmUsernameHomeButton.Click += ConfirmUsernameHomeButton_Click;
+            // 
             // ConfirmUsernamePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 450);
-            Controls.Add(MainPageExitControlBox);
+            Controls.Add(ConfirmUsernameHomeButton);
+            Controls.Add(ConfirmUsernamePageExitButton);
             Controls.Add(MainPageExitControlMinimizeButton);
             Controls.Add(TextBoxPanel);
             FormBorderStyle = FormBorderStyle.None;
@@ -165,8 +191,9 @@
         private Guna.UI2.WinForms.Guna2TextBox UsernameTextBox;
         private Guna.UI2.WinForms.Guna2TextBox PasswordTextBox;
         private Guna.UI2.WinForms.Guna2ControlBox MainPageExitControlMinimizeButton;
-        private Guna.UI2.WinForms.Guna2ControlBox MainPageExitControlBox;
+        private Guna.UI2.WinForms.Guna2ControlBox ConfirmUsernamePageExitButton;
         private Guna.UI2.WinForms.Guna2Button ConfirmUsernameButton;
         private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
+        private Guna.UI2.WinForms.Guna2GradientButton ConfirmUsernameHomeButton;
     }
 }

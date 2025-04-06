@@ -113,6 +113,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
+                    .AddSingleton<LoginPage>()
 
 
                     .AddSingleton<UserIdService , UserIdService>()
@@ -120,7 +121,7 @@ namespace CodingTracker.View.Program
 
                     // Transient services.
                     .AddTransient<ISessionGoalCountDownTimer, SessionGoalCountdownTimer>()
-                    .AddTransient<LoginPage>()
+   
                     .AddTransient<MainPage>()
                     .AddTransient<CodingSessionPage>()
                     .AddTransient<EditSessionPage>()

@@ -64,6 +64,7 @@ namespace CodingTracker.View.FormService
             return existingForm;
         }
 
+        // This is needed as the generic form creation method (GetOrCreateForm) does not work with the goalTime parameter required for TimerDisplayForm.
         public TimerDisplayForm CreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
         {
             return new TimerDisplayForm(goalSet, goalTimeHHMM);

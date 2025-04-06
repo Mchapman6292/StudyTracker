@@ -2,6 +2,8 @@
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using CodingTracker.Common.IApplicationLoggers;
 
 namespace CodingTracker.View.LoginPageService
 {
@@ -10,16 +12,21 @@ namespace CodingTracker.View.LoginPageService
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUserCredentialRepository _userCredentialRepository;
         private readonly IFormSwitcher _formSwitcher;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IApplicationLogger _appLogger;
 
-        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormSwitcher formSwitcher)
+        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormSwitcher formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger)
         {
             _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
             _formSwitcher = formSwitcher;
+            _authenticationService = authenticationService;
+            _appLogger = appLogger;
+
             InitializeComponent();
         }
 
-        private void ForgotPassWordPage_Load(object sender, EventArgs e)
+        private void ConfirmUsernamePage_Load(object sender, EventArgs e)
         {
             ConfirmUsernameButton.Visible = false;
         }
@@ -36,7 +43,7 @@ namespace CodingTracker.View.LoginPageService
                 return;
             }
 
-            if(!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
+            if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
             {
                 message = "No username located";
                 ShowNotificationDialog(this, EventArgs.Empty, message);
@@ -44,6 +51,8 @@ namespace CodingTracker.View.LoginPageService
             }
 
             _formSwitcher.SwitchToForm(FormPageEnum.ResetPasswordPage);
+            _authenticationService.SetUsernameForPasswordReset(textBoxUsername);
+
         }
 
 
@@ -59,7 +68,6 @@ namespace CodingTracker.View.LoginPageService
                 DisplayMessageBox.Text = message;
             }
 
-            // Set button text to make it obvious
             DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
             DisplayMessageBox.Caption = "Notification";
             DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
@@ -69,6 +77,14 @@ namespace CodingTracker.View.LoginPageService
 
         }
 
+        private void ConfirmUsernameExitButtonControlBox_Click(object sender, EventArgs e)
+        {
+            
+        }
 
+        private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+        }
     }
 }

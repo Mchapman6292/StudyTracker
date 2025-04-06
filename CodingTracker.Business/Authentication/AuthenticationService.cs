@@ -1,5 +1,4 @@
-﻿
-using CodingTracker.Business.CodingSessionService.UserIdServices;
+﻿using CodingTracker.Business.CodingSessionService.UserIdServices;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
@@ -18,12 +17,25 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         private readonly IUtilityService _utilityService;
         private readonly UserIdService _userIdService;
 
+        private string _usernameForPasswordReset {  get; set; }
+
         public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, UserIdService userIdService)
         {
             _appLogger = appLogger;
             _userCredentialRepository = userCredentialRepository;
             _utilityService = utilityService;
             _userIdService = userIdService;
+        }
+
+        public void SetUsernameForPasswordReset(string username) 
+        {
+            _usernameForPasswordReset = username;
+            _appLogger.Debug($"{nameof(_usernameForPasswordReset)} set to {_usernameForPasswordReset}.");
+        }
+
+        public string GetUsernameForPasswordReset() 
+        {
+            return _usernameForPasswordReset;
         }
 
 
@@ -147,6 +159,26 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             bool success = await _userCredentialRepository.DeleteAllUsers();
             string logMessage = success ? "All UserCredentials deleted" : "Failure to delete UserCredentials.";
             _appLogger.Debug(logMessage);
+        }
+
+
+
+        public bool CheckPasswordValid(string password,out string? message)
+        {
+            if(!password.Any(c => Char.IsUpper(c)))
+            {
+                message = "Password must contain at least one capital.";
+                return false;
+            }
+
+            if(password.Length < 7)
+            {
+                message = "Password length must be greater than 7";
+                return false;
+            }
+
+            message = "Password validated";
+            return true;
         }
     }
 }
