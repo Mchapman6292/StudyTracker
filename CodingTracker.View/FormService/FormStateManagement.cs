@@ -23,7 +23,7 @@ namespace CodingTracker.View.FormService
         private CodingSessionPage _codingSessionPageInstance;
         private EditSessionPage _editSessionPageInstance;
         private CodingSessionTimerForm _codingSessionTimerInstance;
-        private CreateAccountPage _createAccountPageInstance;
+        private PassWordTextBox _createAccountPageInstance;
         private LoginPage _loginPageInstance;
         private SessionGoalForm _popUpPageInstance;
         private TimerDisplayForm _timerDisplayPageInstance;
@@ -43,7 +43,7 @@ namespace CodingTracker.View.FormService
             { FormPageEnum.MainPage, typeof(MainPage) },
             { FormPageEnum.CodingSessionPage, typeof(CodingSessionPage) },
             { FormPageEnum.EditSessionPage, typeof(EditSessionPage) },
-            { FormPageEnum.CreateAccountPage, typeof(CreateAccountPage) },
+            { FormPageEnum.CreateAccountPage, typeof(PassWordTextBox) },
             { FormPageEnum.CodingSessionTimerPage, typeof(CodingSessionTimerForm) }
         };
 
@@ -85,7 +85,7 @@ namespace CodingTracker.View.FormService
                     _codingSessionTimerInstance = instance as CodingSessionTimerForm;
                     break;
                 case FormPageEnum.CreateAccountPage:
-                    _createAccountPageInstance = instance as CreateAccountPage;
+                    _createAccountPageInstance = instance as PassWordTextBox;
                     break;
                 case FormPageEnum.LoginPage:
                     _loginPageInstance = instance as LoginPage;

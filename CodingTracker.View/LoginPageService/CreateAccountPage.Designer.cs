@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View
 {
-    partial class CreateAccountPage
+    partial class PassWordTextBox
     {
         /// <summary>
         /// Required designer variable.
@@ -28,27 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             CreateAccountPageUsernameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             CreateAccountPasswordTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             CreateAccountPageCreateAccountButton = new Guna.UI2.WinForms.Guna2Button();
             CreateAccountPageErrorTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
+            MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             guna2Panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,7 +57,7 @@
             CreateAccountPageUsernameTextbox.AutoRoundedCorners = true;
             CreateAccountPageUsernameTextbox.BorderColor = Color.FromArgb(234, 153, 149);
             CreateAccountPageUsernameTextbox.BorderRadius = 17;
-            CreateAccountPageUsernameTextbox.CustomizableEdges = customizableEdges1;
+            CreateAccountPageUsernameTextbox.CustomizableEdges = customizableEdges15;
             CreateAccountPageUsernameTextbox.DefaultText = "";
             CreateAccountPageUsernameTextbox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             CreateAccountPageUsernameTextbox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -68,13 +68,13 @@
             CreateAccountPageUsernameTextbox.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             CreateAccountPageUsernameTextbox.ForeColor = Color.White;
             CreateAccountPageUsernameTextbox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            CreateAccountPageUsernameTextbox.Location = new Point(450, 221);
+            CreateAccountPageUsernameTextbox.Location = new Point(450, 230);
             CreateAccountPageUsernameTextbox.Name = "CreateAccountPageUsernameTextbox";
             CreateAccountPageUsernameTextbox.PasswordChar = '\0';
             CreateAccountPageUsernameTextbox.PlaceholderForeColor = Color.Azure;
             CreateAccountPageUsernameTextbox.PlaceholderText = "Username";
             CreateAccountPageUsernameTextbox.SelectedText = "";
-            CreateAccountPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            CreateAccountPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges16;
             CreateAccountPageUsernameTextbox.Size = new Size(200, 36);
             CreateAccountPageUsernameTextbox.TabIndex = 16;
             // 
@@ -83,7 +83,7 @@
             CreateAccountPasswordTextbox.AutoRoundedCorners = true;
             CreateAccountPasswordTextbox.BorderColor = Color.FromArgb(234, 153, 149);
             CreateAccountPasswordTextbox.BorderRadius = 17;
-            CreateAccountPasswordTextbox.CustomizableEdges = customizableEdges3;
+            CreateAccountPasswordTextbox.CustomizableEdges = customizableEdges17;
             CreateAccountPasswordTextbox.DefaultText = "";
             CreateAccountPasswordTextbox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             CreateAccountPasswordTextbox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -100,7 +100,7 @@
             CreateAccountPasswordTextbox.PlaceholderForeColor = Color.Azure;
             CreateAccountPasswordTextbox.PlaceholderText = "Password";
             CreateAccountPasswordTextbox.SelectedText = "";
-            CreateAccountPasswordTextbox.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            CreateAccountPasswordTextbox.ShadowDecoration.CustomizableEdges = customizableEdges18;
             CreateAccountPasswordTextbox.Size = new Size(200, 36);
             CreateAccountPasswordTextbox.TabIndex = 17;
             // 
@@ -110,7 +110,7 @@
             CreateAccountPageCreateAccountButton.AutoRoundedCorners = true;
             CreateAccountPageCreateAccountButton.BorderRadius = 18;
             CreateAccountPageCreateAccountButton.BorderThickness = 2;
-            CreateAccountPageCreateAccountButton.CustomizableEdges = customizableEdges5;
+            CreateAccountPageCreateAccountButton.CustomizableEdges = customizableEdges19;
             CreateAccountPageCreateAccountButton.DisabledState.BorderColor = Color.DarkGray;
             CreateAccountPageCreateAccountButton.DisabledState.CustomBorderColor = Color.DarkGray;
             CreateAccountPageCreateAccountButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -120,7 +120,7 @@
             CreateAccountPageCreateAccountButton.ForeColor = Color.White;
             CreateAccountPageCreateAccountButton.Location = new Point(450, 431);
             CreateAccountPageCreateAccountButton.Name = "CreateAccountPageCreateAccountButton";
-            CreateAccountPageCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            CreateAccountPageCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
             CreateAccountPageCreateAccountButton.Size = new Size(120, 38);
             CreateAccountPageCreateAccountButton.TabIndex = 20;
             CreateAccountPageCreateAccountButton.Text = "Create account";
@@ -129,7 +129,7 @@
             // CreateAccountPageErrorTextBox
             // 
             CreateAccountPageErrorTextBox.BorderColor = Color.FromArgb(35, 34, 50);
-            CreateAccountPageErrorTextBox.CustomizableEdges = customizableEdges7;
+            CreateAccountPageErrorTextBox.CustomizableEdges = customizableEdges21;
             CreateAccountPageErrorTextBox.DefaultText = "Invalid username ";
             CreateAccountPageErrorTextBox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             CreateAccountPageErrorTextBox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -146,7 +146,7 @@
             CreateAccountPageErrorTextBox.PlaceholderForeColor = Color.FromArgb(35, 34, 50);
             CreateAccountPageErrorTextBox.PlaceholderText = "";
             CreateAccountPageErrorTextBox.SelectedText = "";
-            CreateAccountPageErrorTextBox.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            CreateAccountPageErrorTextBox.ShadowDecoration.CustomizableEdges = customizableEdges22;
             CreateAccountPageErrorTextBox.Size = new Size(200, 36);
             CreateAccountPageErrorTextBox.TabIndex = 21;
             // 
@@ -154,43 +154,43 @@
             // 
             guna2Panel1.Controls.Add(MainPageExitControlMinimizeButton);
             guna2Panel1.Controls.Add(MainPageExitControlBox);
-            guna2Panel1.CustomizableEdges = customizableEdges13;
+            guna2Panel1.CustomizableEdges = customizableEdges27;
             guna2Panel1.Dock = DockStyle.Top;
             guna2Panel1.Location = new Point(0, 0);
             guna2Panel1.Name = "guna2Panel1";
-            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges28;
             guna2Panel1.Size = new Size(1284, 73);
             guna2Panel1.TabIndex = 22;
-            // 
-            // MainPageExitControlBox
-            // 
-            MainPageExitControlBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            MainPageExitControlBox.CustomizableEdges = customizableEdges11;
-            MainPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
-            MainPageExitControlBox.HoverState.IconColor = Color.White;
-            MainPageExitControlBox.IconColor = Color.White;
-            MainPageExitControlBox.Location = new Point(1239, 0);
-            MainPageExitControlBox.Name = "MainPageExitControlBox";
-            MainPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            MainPageExitControlBox.Size = new Size(45, 29);
-            MainPageExitControlBox.TabIndex = 26;
             // 
             // MainPageExitControlMinimizeButton
             // 
             MainPageExitControlMinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             MainPageExitControlMinimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges9;
+            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges23;
             MainPageExitControlMinimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             MainPageExitControlMinimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             MainPageExitControlMinimizeButton.HoverState.IconColor = Color.White;
             MainPageExitControlMinimizeButton.IconColor = Color.White;
             MainPageExitControlMinimizeButton.Location = new Point(1198, 0);
             MainPageExitControlMinimizeButton.Name = "MainPageExitControlMinimizeButton";
-            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges24;
             MainPageExitControlMinimizeButton.Size = new Size(45, 29);
             MainPageExitControlMinimizeButton.TabIndex = 27;
             // 
-            // CreateAccountPage
+            // MainPageExitControlBox
+            // 
+            MainPageExitControlBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            MainPageExitControlBox.CustomizableEdges = customizableEdges25;
+            MainPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
+            MainPageExitControlBox.HoverState.IconColor = Color.White;
+            MainPageExitControlBox.IconColor = Color.White;
+            MainPageExitControlBox.Location = new Point(1239, 0);
+            MainPageExitControlBox.Name = "MainPageExitControlBox";
+            MainPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            MainPageExitControlBox.Size = new Size(45, 29);
+            MainPageExitControlBox.TabIndex = 26;
+            // 
+            // PassWordTextBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -202,7 +202,7 @@
             Controls.Add(CreateAccountPasswordTextbox);
             Controls.Add(CreateAccountPageUsernameTextbox);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "CreateAccountPage";
+            Name = "PassWordTextBox";
             guna2Panel1.ResumeLayout(false);
             ResumeLayout(false);
         }

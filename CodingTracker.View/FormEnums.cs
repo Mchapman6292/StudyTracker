@@ -9,7 +9,9 @@
         CreateAccountPage,
         CodingSessionTimerPage,
         SessionGoalPage,
-        TimerDisplayPage
+        TimerDisplayPage,
+        ConfirmUsernamePage,
+        ResetPasswordPage
     }
 
 }
