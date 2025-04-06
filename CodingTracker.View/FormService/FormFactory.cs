@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -37,10 +38,12 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.MainPage => typeof(MainPage),
                 FormPageEnum.CodingSessionPage => typeof(CodingSessionPage),
                 FormPageEnum.EditSessionPage => typeof(EditSessionPage),
-                FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
+                FormPageEnum.CreateAccountPage => typeof(PassWordTextBox),
                 FormPageEnum.CodingSessionTimerPage => typeof(CodingSessionTimerForm),
                 FormPageEnum.SessionGoalPage => typeof(SessionGoalForm),
                 FormPageEnum.TimerDisplayPage => typeof(TimerDisplayForm),
+                FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
+                FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
 
                 _ => throw new ArgumentException($"Unknown form type: {formType}")
             };

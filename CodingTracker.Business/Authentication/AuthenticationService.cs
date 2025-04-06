@@ -137,7 +137,6 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             string hashedPassword = _utilityService.HashPassword(newPassword);
 
             return await _userCredentialRepository.UpdatePassWord(username, hashedPassword);
-         
 
         }
 

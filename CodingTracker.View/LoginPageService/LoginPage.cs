@@ -220,7 +220,7 @@ namespace CodingTracker.View
 
         private void LoginPageForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _authenticationService.DeleteAllUserCredential();
+            _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
         }
 
         private void LoginPageRememberMeToggle_CheckedChanged(object sender, EventArgs e)
