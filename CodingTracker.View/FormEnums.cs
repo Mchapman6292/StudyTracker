@@ -11,7 +11,8 @@
         SessionGoalPage,
         TimerDisplayPage,
         ConfirmUsernamePage,
-        ResetPasswordPage
+        ResetPasswordPage,
+        FloatingBubblePage
     }
 
 }

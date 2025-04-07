@@ -149,8 +149,7 @@ namespace CodingTracker.View.PopUpFormService
             _codingSessionManager.UpdateIsSessionTimerActive(true);
             _codingSessionManager.StartCodingSessionTimer();
             this.DialogResult = DialogResult.OK;
-            _formSwitcher.SwitchToForm(FormPageEnum.TimerDisplayPage);
-            this.Close();
+            _formSwitcher.SwitchToForm(FormPageEnum.FloatingBubblePage);
         }
 
         private void NoButton_Click(object sender, EventArgs e)

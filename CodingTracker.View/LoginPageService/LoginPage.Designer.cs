@@ -81,6 +81,7 @@ namespace CodingTracker.View
             LoginPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             LoginPageCreationSuccessTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
+            guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
             LoginPageMediaPanel.SuspendLayout();
             guna2Panel1.SuspendLayout();
@@ -338,6 +339,10 @@ namespace CodingTracker.View
             LoginPageAnimateWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
             LoginPageAnimateWindow.TargetForm = this;
             // 
+            // guna2AnimateWindow1
+            // 
+            guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
+            // 
             // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -394,5 +399,6 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2TextBox LoginPageCreationSuccessTextBox;
         private Guna.UI2.WinForms.Guna2ControlBox LoginPageExitControlBox;
         private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
+        private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
     }
 }
