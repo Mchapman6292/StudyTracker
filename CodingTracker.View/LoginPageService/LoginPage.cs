@@ -54,6 +54,7 @@ namespace CodingTracker.View
 
 
 
+
         // Custom paint method: Draws the rounded corners for the form.
         protected override void OnPaint(PaintEventArgs e)
         {

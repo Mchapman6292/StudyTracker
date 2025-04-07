@@ -44,6 +44,9 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.TimerDisplayPage => typeof(TimerDisplayForm),
                 FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
                 FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
+                FormPageEnum.FloatingBubblePage => typeof(FloatingBubbleTimer),
+
+
 
                 _ => throw new ArgumentException($"Unknown form type: {formType}")
             };
@@ -67,7 +70,8 @@ namespace CodingTracker.View.FormService
         // This is needed as the generic form creation method (GetOrCreateForm) does not work with the goalTime parameter required for TimerDisplayForm.
         public TimerDisplayForm CreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
         {
-            return new TimerDisplayForm(goalSet, goalTimeHHMM);
+            
+            return new TimerDisplayForm();
         }
 
 

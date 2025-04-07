@@ -1,10 +1,13 @@
 ﻿using Guna.UI2.WinForms;
+using CodingTracker.View.TimerDisplayService.TimerFormCreationManagers;
 
 
 namespace CodingTracker.View.PopUpFormService
 {
     public partial class TimerDisplayForm : Form
     {
+        private readonly ITimerFormCreationManager _timerFormCreationManager;
+
         private Guna2Panel mainPanel;
         private Guna2HtmlLabel timerLabel;
         private Guna2HtmlLabel goalLabel;
@@ -21,23 +24,12 @@ namespace CodingTracker.View.PopUpFormService
         private bool isPaused = false;
         private TimeSpan pausedElapsedTime;
 
-        public TimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
+        public TimerDisplayForm()
         {
+
+
+           
             InitializeComponent();
-            
-            if(goalSet)
-            {
-                if (string.IsNullOrEmpty(goalTimeHHMM))
-                    throw new ArgumentException("Goal time is required when hasGoal is true", nameof(goalTimeHHMM));
-
-                ParseGoalTime(goalTimeHHMM);
-            }
-
-            else
-            {
-               // Indicates no goal set.
-                goalTime = TimeSpan.Zero;
-            }
             InitializeComponentsAndTools();
             StartTimer();
         }

@@ -19,6 +19,6 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         Task SetUserIdForCurrentSessionAsync(string username, string password);
         int GetCurrentUserId();
         int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate);
-        bool CheckIfCodingSessionActive();
+        bool ReturnIsCodingSessionActive();
     }
 }

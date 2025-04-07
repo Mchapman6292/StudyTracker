@@ -43,6 +43,7 @@ using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.LoginPageService;
+using CodingTracker.View.TimerDisplayService.TimerFormCreationManagers;
 
 /// To do
 
@@ -113,7 +114,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
+                    .AddSingleton<ITimerFormCreationManager, TimerFormCreationManager>()
                     .AddSingleton<LoginPage>()
+                    .AddSingleton<FloatingBubbleTimer>()
+
 
 
                     .AddSingleton<UserIdService , UserIdService>()

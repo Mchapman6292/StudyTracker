@@ -31,6 +31,10 @@ namespace CodingTracker.Business.CodingSessionManagers
         private bool IsCodingSessionActive { get; set; } = false;
         private bool IsSessionTimerActive { get; set; } = false;
 
+        // This is used to store the GoalTime that is passed to the TimerDisplayForm, not relevant to CodingSessionEntity goalTime.
+        private string _formGoalTimeHHMM { get; set; }   
+        private bool _isFormGoalSet { get; set; }
+
         public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
         {
             _errorHandler = errorHandler;
@@ -41,6 +45,8 @@ namespace CodingTracker.Business.CodingSessionManagers
             _userCredentialRepository = userCredentialRepository;
             _userIdService = userIdService;
         }
+
+
 
         public CodingSession ReturnCurrentCodingSession()
         {
@@ -57,7 +63,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             IsSessionTimerActive = active;
         }
 
-        public bool CheckIfCodingSessionActive()
+        public bool ReturnIsCodingSessionActive()
         {
             return IsCodingSessionActive;
         }
