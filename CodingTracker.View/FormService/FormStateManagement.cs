@@ -29,7 +29,7 @@ namespace CodingTracker.View.FormService
         private PassWordTextBox _createAccountPageInstance;
         private LoginPage _loginPageInstance;
         private SessionGoalForm _popUpPageInstance;
-        private TimerDisplayForm _timerDisplayPageInstance;
+        private SessionTimerForm _timerDisplayPageInstance;
         private readonly IApplicationLogger _appLogger;
 
 
@@ -115,8 +115,8 @@ namespace CodingTracker.View.FormService
                 case FormPageEnum.SessionGoalPage:
                     _popUpPageInstance = instance as SessionGoalForm;
                     break;
-                case FormPageEnum.TimerDisplayPage:
-                    _timerDisplayPageInstance = instance as TimerDisplayForm;
+                case FormPageEnum.SessionTimerPage:
+                    _timerDisplayPageInstance = instance as SessionTimerForm;
                     break;
             }
         }

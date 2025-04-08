@@ -57,19 +57,19 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
                 case MainPageLabels.TodayTotalLabel:
                     prefix = "Today's Total";
                     double todayTotal = await _codingSessionRepository.GetTodaysTotalDurationAsync();
-                    labelMessage = _utilityService.ConvertDoubleToHHMM(todayTotal);
+                    labelMessage = _utilityService.ConvertDoubleToHHMMString(todayTotal);
                     break;
 
                 case MainPageLabels.AverageSessionLabel:
                     prefix = "Average Session";
                     double totalAverage = await _codingSessionRepository.GetAverageDurationOfAllSessionsAsync();
-                    labelMessage = _utilityService.ConvertDoubleToHHMM(totalAverage);
+                    labelMessage = _utilityService.ConvertDoubleToHHMMString(totalAverage);
                     break;
 
                 case MainPageLabels.WeekTotalLabel:
                     prefix = "Week Total";
                     double weekTotal = await _codingSessionRepository.GetWeekTotalDurationAsync();
-                    labelMessage = _utilityService.ConvertDoubleToHHMM(weekTotal);
+                    labelMessage = _utilityService.ConvertDoubleToHHMMString(weekTotal);
                     break;
             }
             return labelMessage;

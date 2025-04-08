@@ -4,6 +4,7 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormService.NotificationManagers;
 
 namespace CodingTracker.View.LoginPageService
 {
@@ -14,8 +15,9 @@ namespace CodingTracker.View.LoginPageService
         private readonly IFormSwitcher _formSwitcher;
         private readonly IAuthenticationService _authenticationService;
         private readonly IApplicationLogger _appLogger;
+        private readonly INotificationManager _notificationManager;
 
-        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormSwitcher formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger)
+        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormSwitcher formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger, INotificationManager notificationManager)
         {
             _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
@@ -39,14 +41,14 @@ namespace CodingTracker.View.LoginPageService
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {
                 message = "Username cannot be blank.";
-                ShowNotificationDialog(this, EventArgs.Empty, message);
+                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
                 return;
             }
 
             if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
             {
                 message = "No username located";
-                ShowNotificationDialog(this, EventArgs.Empty, message);
+                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
                 return;
             }
 
@@ -57,25 +59,7 @@ namespace CodingTracker.View.LoginPageService
 
 
 
-        private void ShowNotificationDialog(object sender, EventArgs e, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                DisplayMessageBox.Text = "No message provided.";
-            }
-            else
-            {
-                DisplayMessageBox.Text = message;
-            }
-
-            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            DisplayMessageBox.Caption = "Notification";
-            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-
-
-            DisplayMessageBox.Show();
-
-        }
+ 
 
         private void ConfirmUsernameExitButtonControlBox_Click(object sender, EventArgs e)
         {

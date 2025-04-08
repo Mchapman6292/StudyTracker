@@ -1,13 +1,11 @@
-﻿using System.Globalization;
-using CodingTracker.Common.IInputValidators;
-using System.Text.RegularExpressions;
+﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IInputValidationResults;
-using System.Diagnostics;
-using System.Text;
-using System.ComponentModel.DataAnnotations;
 using CodingTracker.Common.IErrorHandlers;
-using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.IInputValidationResults;
+using CodingTracker.Common.IInputValidators;
+using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 
 
@@ -205,6 +203,21 @@ namespace CodingTracker.Business.InputValidators
 
                 Console.WriteLine("Invalid time format. Please try again.");
             }
+        }
+
+        // Covers basic validation for hhmm format. 
+        public bool ValidateTimeFormat(string time)
+        {
+            if (time.Length != 4 || !int.TryParse(time, out int _))
+                return false;
+
+            int hours = int.Parse(time.Substring(0, 2));
+            int minutes = int.Parse(time.Substring(2, 2));
+
+            if (hours > 23 || minutes > 59)
+                return false;
+
+            return true;
         }
     }
 }

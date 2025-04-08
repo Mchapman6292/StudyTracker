@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.TimerDisplayService
 {
-    partial class NEWCountdownTimerForm
+    partial class CountdownTimerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            guna2ProgressIndicator1 = new Guna.UI2.WinForms.Guna2ProgressIndicator();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            TestProgressBar = new Guna.UI2.WinForms.Guna2CircleProgressBar();
             SuspendLayout();
             // 
-            // guna2ProgressIndicator1
+            // TestProgressBar
             // 
-            guna2ProgressIndicator1.Location = new Point(0, 0);
-            guna2ProgressIndicator1.Name = "guna2ProgressIndicator1";
-            guna2ProgressIndicator1.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            guna2ProgressIndicator1.Size = new Size(90, 90);
-            guna2ProgressIndicator1.TabIndex = 0;
+            TestProgressBar.FillColor = Color.FromArgb(200, 213, 218, 223);
+            TestProgressBar.Font = new Font("Segoe UI", 12F);
+            TestProgressBar.ForeColor = Color.White;
+            TestProgressBar.Location = new Point(646, 124);
+            TestProgressBar.Minimum = 0;
+            TestProgressBar.Name = "TestProgressBar";
+            TestProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges1;
+            TestProgressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            TestProgressBar.Size = new Size(130, 130);
+            TestProgressBar.TabIndex = 0;
+            TestProgressBar.Text = "guna2CircleProgressBar1";
             // 
-            // NEWCountdownTimerForm
+            // CountdownTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 450);
-            Controls.Add(guna2ProgressIndicator1);
+            Controls.Add(TestProgressBar);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "NEWCountdownTimerForm";
-            Text = "NEWCountdownTimerForm";
+            Name = "CountdownTimerForm";
+            Text = "CountdownTimerForm";
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2ProgressIndicator guna2ProgressIndicator1;
+        private Guna.UI2.WinForms.Guna2CircleProgressBar TestProgressBar;
     }
 }

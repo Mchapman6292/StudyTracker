@@ -2,6 +2,11 @@
 using CodingTracker.View.FormService;
 using Guna.UI2.WinForms;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.Common.IInputValidators;
+using CodingTracker.View.FormService.NotificationManagers;
+using System.Diagnostics.Metrics;
+using System.Numerics;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 
 namespace CodingTracker.View.PopUpFormService
 {
@@ -11,19 +16,25 @@ namespace CodingTracker.View.PopUpFormService
         private Guna2HtmlLabel questionLabel;
         private Guna2TextBox timeGoalTextBox;
         private Guna2HtmlLabel formatLabel;
-        private Guna2Button yesButton;
-        private Guna2Button noButton;
+        private Guna2Button SetTimeGoalButton;
+        private Guna2Button SkipButton;
         private Guna2BorderlessForm borderlessForm;
+        private readonly INotificationManager _notificationManager;
 
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
+        private readonly IInputValidator _inputValidator;
+        private readonly IFormStatePropertyManager _formStatePropertyManager;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher)
+        public SessionGoalForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
+            _inputValidator = inputValidator;
+            _notificationManager = notificationManager;
+            _formStatePropertyManager = formStatePropertyManager;
 
             InitializeComponent();
             InitializeToolsAndComponents();
@@ -84,27 +95,27 @@ namespace CodingTracker.View.PopUpFormService
             formatLabel.TextAlignment = ContentAlignment.MiddleCenter;
             formatLabel.Location = new Point(25, 110);
 
-            yesButton = new Guna2Button();
-            yesButton.Text = "Set TimeGoal";
-            yesButton.FillColor = Color.FromArgb(94, 148, 255);
-            yesButton.BorderRadius = 8;
-            yesButton.Size = new Size(120, 45);
-            yesButton.Location = new Point(70, 150);
-            yesButton.Click += YesButton_Click;
+            SetTimeGoalButton = new Guna2Button();
+            SetTimeGoalButton.Text = "Set TimeGoal";
+            SetTimeGoalButton.FillColor = Color.FromArgb(94, 148, 255);
+            SetTimeGoalButton.BorderRadius = 8;
+            SetTimeGoalButton.Size = new Size(120, 45);
+            SetTimeGoalButton.Location = new Point(70, 150);
+            SetTimeGoalButton.Click += YesButton_Click;
 
-            noButton = new Guna2Button();
-            noButton.Text = "Skip";
-            noButton.FillColor = Color.FromArgb(72, 73, 77);
-            noButton.BorderRadius = 8;
-            noButton.Size = new Size(120, 45);
-            noButton.Location = new Point(210, 150);
-            noButton.Click += NoButton_Click;
+            SkipButton = new Guna2Button();
+            SkipButton.Text = "Skip";
+            SkipButton.FillColor = Color.FromArgb(72, 73, 77);
+            SkipButton.BorderRadius = 8;
+            SkipButton.Size = new Size(120, 45);
+            SkipButton.Location = new Point(210, 150);
+            SkipButton.Click += NoButton_Click;
 
             mainPanel.Controls.Add(questionLabel);
             mainPanel.Controls.Add(timeGoalTextBox);
             mainPanel.Controls.Add(formatLabel);
-            mainPanel.Controls.Add(yesButton);
-            mainPanel.Controls.Add(noButton);
+            mainPanel.Controls.Add(SetTimeGoalButton);
+            mainPanel.Controls.Add(SkipButton);
             this.Controls.Add(mainPanel);
         }
 
@@ -132,24 +143,25 @@ namespace CodingTracker.View.PopUpFormService
             return true;
         }
 
+        // Change input time values 
 
         private void YesButton_Click(object sender, EventArgs e)
         {
-            string timeInput = timeGoalTextBox.Text;
+            string timeInputString = timeGoalTextBox.Text;
 
-            if (!ValidateTimeFormat(timeInput))
+            if (!ValidateTimeFormat(timeInputString))
             {
-                MessageBox.Show("Please enter a valid time in HHMM format.\nHours: 00-23, Minutes: 00-59", "Invalid Format",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string message = "Please enter a valid time in HHMM format";
+                
                 return;
             }
 
-            TimeGoal = timeInput;
-            GoalSet = true;
+            int SessionGoal = Convert.ToInt32(timeInputString);
+            _formStatePropertyManager.SetFormGoalTimeHHMM(SessionGoal);
+            _formStatePropertyManager.SetIsFormGoalSet(true);
             _codingSessionManager.UpdateIsSessionTimerActive(true);
             _codingSessionManager.StartCodingSessionTimer();
-            this.DialogResult = DialogResult.OK;
-            _formSwitcher.SwitchToForm(FormPageEnum.FloatingBubblePage);
+            _formSwitcher.SwitchToForm(FormPageEnum.CountdownTimerPage);
         }
 
         private void NoButton_Click(object sender, EventArgs e)

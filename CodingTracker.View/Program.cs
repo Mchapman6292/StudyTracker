@@ -43,7 +43,9 @@ using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.LoginPageService;
-using CodingTracker.View.TimerDisplayService.TimerFormCreationManagers;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.TimerDisplayService;
 
 /// To do
 
@@ -70,6 +72,7 @@ namespace CodingTracker.View.Program
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
             var loginPage = formFactory.GetOrCreateLoginPage();
+            
 
    
 
@@ -114,9 +117,11 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager , DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
-                    .AddSingleton<ITimerFormCreationManager, TimerFormCreationManager>()
+                    .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
                     .AddSingleton<FloatingBubbleTimer>()
+                    .AddSingleton<CountdownTimerForm>()
+                    .AddSingleton<INotificationManager, NotificationManager>()
 
 
 
@@ -132,7 +137,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<CodingSessionTimerForm>()
                     .AddTransient<PassWordTextBox>()
                     .AddTransient<SessionGoalForm>()
-                    .AddTransient<TimerDisplayForm>()
+                    .AddTransient<SessionTimerForm>()
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
 

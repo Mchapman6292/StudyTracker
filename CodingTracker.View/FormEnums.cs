@@ -9,9 +9,10 @@
         CreateAccountPage,
         CodingSessionTimerPage,
         SessionGoalPage,
-        TimerDisplayPage,
         ConfirmUsernamePage,
         ResetPasswordPage,
+        SessionTimerPage,
+        CountdownTimerPage,
         FloatingBubblePage
     }
 
