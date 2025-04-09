@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+﻿using CodingTracker.Common.IApplicationLoggers;
+
+namespace CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 
 public interface IFormStatePropertyManager
 {
@@ -10,6 +12,13 @@ public interface IFormStatePropertyManager
 
 public class FormStatePropertyManger : IFormStatePropertyManager
 {
+    private readonly IApplicationLogger _appLogger;
+
+    public FormStatePropertyManger(IApplicationLogger applicationLogger)
+    {
+        _appLogger = applicationLogger;
+    }
+
     private int _formGoalTimeHHMM { get; set; }
     private bool _isFormGoalSet { get; set; }
 
@@ -31,6 +40,7 @@ public class FormStatePropertyManger : IFormStatePropertyManager
 
     public int ReturnFormGoalTimeHHMMAsInt()
     {
+        _appLogger.Debug($"FormGoalTimeHHMM value: {_formGoalTimeHHMM}"); 
         return _formGoalTimeHHMM;
     }
 

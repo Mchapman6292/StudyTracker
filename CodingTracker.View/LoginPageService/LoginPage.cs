@@ -54,7 +54,6 @@ namespace CodingTracker.View
 
 
 
-
         // Custom paint method: Draws the rounded corners for the form.
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -84,28 +83,24 @@ namespace CodingTracker.View
         {
             Core.Initialize();
             _libVLC = new LibVLC();
-
             _videoView = new VideoView
             {
                 MediaPlayer = new MediaPlayer(_libVLC)
             };
-
             _videoView.Location = new Point(0, 0);
-            _videoView.Size = new Size(888, 581); ; // This has been set manually through trial & error. If the size is set to a smaller figure black borders appear around the mp4 despite borders being disabled. 
-
+            _videoView.Size = new Size(888, 581);
             LoginPageMediaPanel.Controls.Add(_videoView);
             _videoView.BringToFront();
 
-            string videoFilePath = Properties.Settings.Default.VLCPath;
+            // Path is relative to the executable location
+            string videoFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FormMedia", "CodingTrackerLoginPagePlaceHolderMp4.mp4");
+
             if (File.Exists(videoFilePath))
             {
                 var media = new Media(_libVLC, new Uri(videoFilePath));
                 media.AddOption("input-repeat=65535"); // Loop the video indefinitely
                 _videoView.MediaPlayer.Play(media);
-
-                _videoView.MediaPlayer.Scale = 0; // = 0 so that it fills to the size of the MediaPanel.
-
-
+                _videoView.MediaPlayer.Scale = 0;
                 _appLogger.Info($"VLC player loaded video from {videoFilePath}");
             }
             else
@@ -114,6 +109,44 @@ namespace CodingTracker.View
                 MessageBox.Show("Video file not found at the specified path: " + videoFilePath);
             }
         }
+
+
+
+        private void NEWInitializeVLCPlayer()
+        {
+            Core.Initialize();
+            _libVLC = new LibVLC();
+            _videoView = new VideoView
+            {
+                MediaPlayer = new MediaPlayer(_libVLC)
+            };
+            _videoView.Location = new Point(0, 0);
+            _videoView.Size = new Size(888, 581);
+            LoginPageMediaPanel.Controls.Add(_videoView);
+            _videoView.BringToFront();
+
+            try
+            {
+                // Create a memory stream from the resource
+                using (MemoryStream ms = new MemoryStream(Properties.Resources.LoginScreenMedia))
+                {
+                    // For VLC 3.x and newer versions of LibVLCSharp
+                    // You may need to adjust this depending on your LibVLCSharp version
+                    var media = new Media(_libVLC, new StreamMediaInput(ms));
+                    media.AddOption("input-repeat=65535");
+                    _videoView.MediaPlayer.Play(media);
+                    _videoView.MediaPlayer.Scale = 0;
+
+                    _appLogger.Info("VLC player loaded video from resources");
+                }
+            }
+            catch (Exception ex)
+            {
+                _appLogger.Warning($"Error loading VLC video from resources: {ex.Message}");
+                MessageBox.Show("Error loading video resource: " + ex.Message);
+            }
+        }
+    
 
 
         private void LoadSavedCredentials()
@@ -280,10 +313,6 @@ namespace CodingTracker.View
             }
         }
 
-        private void b(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

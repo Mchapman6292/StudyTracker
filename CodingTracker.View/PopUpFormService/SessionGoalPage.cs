@@ -7,6 +7,7 @@ using CodingTracker.View.FormService.NotificationManagers;
 using System.Diagnostics.Metrics;
 using System.Numerics;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using CodingTracker.Common.IUtilityServices;
 
 namespace CodingTracker.View.PopUpFormService
 {
@@ -20,6 +21,7 @@ namespace CodingTracker.View.PopUpFormService
         private Guna2Button SkipButton;
         private Guna2BorderlessForm borderlessForm;
         private readonly INotificationManager _notificationManager;
+        private readonly IUtilityService _utilityService;
 
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
@@ -28,13 +30,14 @@ namespace CodingTracker.View.PopUpFormService
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager)
+        public SessionGoalForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
             _inputValidator = inputValidator;
             _notificationManager = notificationManager;
             _formStatePropertyManager = formStatePropertyManager;
+            _utilityService = utilityService;
 
             InitializeComponent();
             InitializeToolsAndComponents();
@@ -152,11 +155,10 @@ namespace CodingTracker.View.PopUpFormService
             if (!ValidateTimeFormat(timeInputString))
             {
                 string message = "Please enter a valid time in HHMM format";
-                
                 return;
             }
 
-            int SessionGoal = Convert.ToInt32(timeInputString);
+            int SessionGoal = _utilityService.ConvertHHMMStringToInt32NoSemiColon(timeInputString); 
             _formStatePropertyManager.SetFormGoalTimeHHMM(SessionGoal);
             _formStatePropertyManager.SetIsFormGoalSet(true);
             _codingSessionManager.UpdateIsSessionTimerActive(true);

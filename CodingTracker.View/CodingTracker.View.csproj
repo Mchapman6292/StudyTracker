@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="AppSettings.json" />
+    <None Remove="FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,9 @@
   <ItemGroup>
     <Content Include="AppSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

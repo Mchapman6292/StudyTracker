@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             TestProgressBar = new Guna.UI2.WinForms.Guna2CircleProgressBar();
             SuspendLayout();
             // 
@@ -37,10 +37,10 @@
             TestProgressBar.FillColor = Color.FromArgb(200, 213, 218, 223);
             TestProgressBar.Font = new Font("Segoe UI", 12F);
             TestProgressBar.ForeColor = Color.White;
-            TestProgressBar.Location = new Point(646, 124);
+            TestProgressBar.Location = new Point(532, 217);
             TestProgressBar.Minimum = 0;
             TestProgressBar.Name = "TestProgressBar";
-            TestProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges1;
+            TestProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges2;
             TestProgressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             TestProgressBar.Size = new Size(130, 130);
             TestProgressBar.TabIndex = 0;
@@ -56,6 +56,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "CountdownTimerForm";
             Text = "CountdownTimerForm";
+            TransparencyKey = Color.Black;
             ResumeLayout(false);
         }
 

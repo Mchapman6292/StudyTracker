@@ -68,5 +68,14 @@ namespace CodingTracker.Common.UtilityServices
         }
 
 
+        // Takes input hhmm
+        public int ConvertHHMMStringToInt32NoSemiColon(string input)
+        {
+            int hours = int.Parse(input.Substring(0, 2));
+            int minutes = int.Parse(input.Substring(2, 2));
+
+            return  hours * 60 + minutes;
+        }
+
     }
 }

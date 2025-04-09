@@ -65,7 +65,6 @@ namespace CodingTracker.View
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             loginPageErrorTextbox = new Label();
             label1 = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -83,7 +82,6 @@ namespace CodingTracker.View
             LoginPageCreationSuccessTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
-            guna2ProgressIndicator1 = new Guna.UI2.WinForms.Guna2ProgressIndicator();
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
             LoginPageMediaPanel.SuspendLayout();
             guna2Panel1.SuspendLayout();
@@ -345,21 +343,12 @@ namespace CodingTracker.View
             // 
             guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
             // 
-            // guna2ProgressIndicator1
-            // 
-            guna2ProgressIndicator1.Location = new Point(0, 0);
-            guna2ProgressIndicator1.Name = "guna2ProgressIndicator1";
-            guna2ProgressIndicator1.ShadowDecoration.CustomizableEdges = customizableEdges23;
-            guna2ProgressIndicator1.Size = new Size(90, 90);
-            guna2ProgressIndicator1.TabIndex = 25;
-            // 
             // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1284, 681);
-            Controls.Add(guna2ProgressIndicator1);
             Controls.Add(LoginPageCreationSuccessTextBox);
             Controls.Add(guna2Panel1);
             Controls.Add(LoginPageForgotPasswordButton);
@@ -411,6 +400,5 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox LoginPageExitControlBox;
         private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
-        private Guna.UI2.WinForms.Guna2ProgressIndicator guna2ProgressIndicator1;
     }
 }
