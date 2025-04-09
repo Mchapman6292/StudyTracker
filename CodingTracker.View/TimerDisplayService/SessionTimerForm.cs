@@ -1,12 +1,12 @@
 ﻿using Guna.UI2.WinForms;
-using CodingTracker.View.TimerDisplayService.TimerFormCreationManagers;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 
 
 namespace CodingTracker.View.PopUpFormService
 {
-    public partial class TimerDisplayForm : Form
+    public partial class SessionTimerForm : Form
     {
-        private readonly ITimerFormCreationManager _timerFormCreationManager;
+        private readonly IFormStatePropertyManager _formStatePropertyManager;
 
         private Guna2Panel mainPanel;
         private Guna2HtmlLabel timerLabel;
@@ -24,11 +24,9 @@ namespace CodingTracker.View.PopUpFormService
         private bool isPaused = false;
         private TimeSpan pausedElapsedTime;
 
-        public TimerDisplayForm()
+        public SessionTimerForm()
         {
 
-
-           
             InitializeComponent();
             InitializeComponentsAndTools();
             StartTimer();

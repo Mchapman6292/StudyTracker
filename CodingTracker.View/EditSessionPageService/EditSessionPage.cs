@@ -10,6 +10,7 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
+using CodingTracker.View.FormService.NotificationManagers;
 
 
 // Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
@@ -29,6 +30,7 @@ namespace CodingTracker.View
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ILayoutService _layoutService;
         private readonly IDataGridViewManager _dataGridViewManager;
+        private readonly INotificationManager _notificationManager;
 
         // Maps the sessionId to the datagridview display, used to tracking session ids which are added to EditSessionPageContextManager SessionIdsForDeletion. 
         private bool IsEditSession { get; set; } = false;
@@ -47,7 +49,7 @@ namespace CodingTracker.View
         public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager)
+        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, INotificationManager notificationManager)
         {
             _appLogger = appLogger;
             _appControl = appControl;
@@ -55,6 +57,7 @@ namespace CodingTracker.View
             _codingSessionRepository = codingSessionRepository;
             _layoutService = layoutService;
             _dataGridViewManager = dataGridViewManager;
+            _notificationManager = notificationManager;
 
             InitializeComponent();
             InitializeComboBoxDropDowns();
@@ -258,29 +261,6 @@ namespace CodingTracker.View
 
 
 
-        private void ShowNotificationDialog(object sender, EventArgs e, string message)
-        {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                DisplayMessageBox.Text = "No message provided.";
-            }
-            else
-            {
-                DisplayMessageBox.Text = message;
-            }
-
-            // Set button text to make it obvious
-            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            DisplayMessageBox.Caption = "Notification";
-            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-
-
-            DisplayMessageBox.Show();
-
-            SendKeys.Send("{ENTER}");
-        }
-
-
 
 
 
@@ -461,7 +441,7 @@ namespace CodingTracker.View
                     message = $"{deletedSessions} sessions deleted.";
                 }
 
-                ShowNotificationDialog(this, EventArgs.Empty, message);
+                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox,message);
                 ClearCurrentHighlightedRows();
             }
 

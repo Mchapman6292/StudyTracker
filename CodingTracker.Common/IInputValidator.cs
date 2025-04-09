@@ -24,6 +24,8 @@ namespace CodingTracker.Common.IInputValidators
         DateTime GetValidDateFromUser();
         DateTime GetValidTimeFromUser();
 
+        bool ValidateTimeFormat(string time);
+
 
 
     }

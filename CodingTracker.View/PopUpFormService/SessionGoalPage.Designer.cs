@@ -28,20 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
             SuspendLayout();
             // 
-            // SessionGoalPage
+            // DisplayMessageBox
+            // 
+            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            DisplayMessageBox.Caption = null;
+            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            DisplayMessageBox.Parent = null;
+            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
+            DisplayMessageBox.Text = null;
+            // 
+            // SessionGoalForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 450);
-            Name = "SessionGoalPage";
+            Name = "SessionGoalForm";
             Text = "SessionGoalPage";
             Load += PopUpForm_Load;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
     }
 }

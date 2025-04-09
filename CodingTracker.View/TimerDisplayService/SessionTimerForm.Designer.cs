@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.PopUpFormService
 {
-    partial class TimerDisplayForm
+    partial class SessionTimerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -67,7 +67,7 @@
             MainPageExitControlBox.Size = new Size(45, 29);
             MainPageExitControlBox.TabIndex = 28;
             // 
-            // TimerDisplayForm
+            // SessionTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -76,7 +76,7 @@
             Controls.Add(MainPageExitControlBox);
             Controls.Add(MainPageExitControlMinimizeButton);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "TimerDisplayForm";
+            Name = "SessionTimerForm";
             ResumeLayout(false);
         }
 

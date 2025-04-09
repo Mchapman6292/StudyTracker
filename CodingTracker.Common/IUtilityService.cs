@@ -8,7 +8,9 @@
 
         string HashPassword(string password);
 
-        string ConvertDoubleToHHMM(double duration);
+        string ConvertDoubleToHHMMString(double duration);
+
+        int ConvertHHMMStringToInt32NoSemiColon(string input);
 
 
     }

@@ -59,7 +59,7 @@ namespace CodingTracker.Common.UtilityServices
             }
         }
 
-        public string ConvertDoubleToHHMM(double duration)
+        public string ConvertDoubleToHHMMString(double duration)
         {
             TimeSpan timeSpan = TimeSpan.FromSeconds(duration);
             int totalHours = (int)timeSpan.TotalHours;
@@ -67,6 +67,15 @@ namespace CodingTracker.Common.UtilityServices
             return $"{totalHours} hours {minutes} minutes";
         }
 
+
+        // Takes input hhmm
+        public int ConvertHHMMStringToInt32NoSemiColon(string input)
+        {
+            int hours = int.Parse(input.Substring(0, 2));
+            int minutes = int.Parse(input.Substring(2, 2));
+
+            return  hours * 60 + minutes;
+        }
 
     }
 }
