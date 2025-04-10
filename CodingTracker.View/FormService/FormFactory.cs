@@ -45,7 +45,6 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.SessionTimerPage => typeof(SessionTimerForm),
                 FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
                 FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
-                FormPageEnum.FloatingBubblePage => typeof(FloatingBubbleTimer),
                 FormPageEnum.CountdownTimerPage => typeof(CountdownTimerForm),
 
 

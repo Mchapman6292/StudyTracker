@@ -37,7 +37,6 @@ using CodingTracker.View.SessionGoalCountDownTimers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
@@ -119,7 +118,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
-                    .AddSingleton<FloatingBubbleTimer>()
                     .AddSingleton<CountdownTimerForm>()
                     .AddSingleton<INotificationManager, NotificationManager>()
 

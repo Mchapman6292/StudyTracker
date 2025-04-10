@@ -1,6 +1,7 @@
 ﻿using Guna.UI2.WinForms;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 
 namespace CodingTracker.View.TimerDisplayService
 {
@@ -18,16 +19,22 @@ namespace CodingTracker.View.TimerDisplayService
         private Point dragStartPoint;
 
         private int progressValue = 0;
-        private int sessionGoal;
-        private DateTime startTime;
-        private readonly IFormStatePropertyManager _formStatePropertyManager;
+        private int formSessionGoal;
+        private DateTime formStartTime;
+        private DateTime endTime;
 
-        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager)
+
+        private readonly IFormStatePropertyManager _formStatePropertyManager;
+        private readonly ICodingSessionManager _codingSessionManager;
+
+        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager)
         {
             InitializeComponent();
             _formStatePropertyManager = formStatePropertyManager;
-            sessionGoal = _formStatePropertyManager.ReturnFormGoalTimeHHMMAsInt();
+            _codingSessionManager = codingSessionManager;
+            formSessionGoal = _formStatePropertyManager.ReturnFormGoalTimeHHMMAsInt();
             SetupProgressBar();
+            _codingSessionManager.StartCodingSessionWithGoal(formStartTime, formSessionGoal);
         }
 
         private void SetupProgressBar()
@@ -138,6 +145,11 @@ namespace CodingTracker.View.TimerDisplayService
             this.Load += CountdownTimerForm_Load;
         }
 
+        private void SetFormStartTime(DateTime startTime)
+        {
+            formStartTime = startTime;
+        }
+
 
         private void CountdownTimerForm_Load(object sender, EventArgs e)
         {
@@ -148,14 +160,15 @@ namespace CodingTracker.View.TimerDisplayService
             {
                 statusLabel.Text = "0%";
             }
-            startTime = DateTime.Now;
+            _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
+            SetFormStartTime(DateTime.Now);
             progressTimer.Start();
         }
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
-            TimeSpan elapsed = DateTime.Now - startTime;
-            double percentage = Math.Min(100, (elapsed.TotalSeconds / sessionGoal) * 100);
+            TimeSpan elapsed = DateTime.Now - formStartTime;
+            double percentage = Math.Min(100, (elapsed.TotalSeconds / formSessionGoal) * 100);
             progressValue = (int)percentage;
 
             progressBar.Value = progressValue;
@@ -222,11 +235,11 @@ namespace CodingTracker.View.TimerDisplayService
 
 
 
-        private void CloseControlBox_Click(object sender, EventArgs e)
+        private async void CloseControlBox_Click(object sender, EventArgs e)
         {
             progressTimer.Stop();
 
-            TimeSpan elapsed = DateTime.Now - startTime;
+            TimeSpan elapsed = DateTime.Now - formStartTime;
 
             DialogResult result = MessageBox.Show(
                 $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}",
@@ -237,6 +250,7 @@ namespace CodingTracker.View.TimerDisplayService
             if (result == DialogResult.Yes)
             {
                 this.DialogResult = DialogResult.OK;
+                await _codingSessionManager.EndCodingSessionWithGoalAsync(DateTime.Now);
                 this.Close();
             }
             else
@@ -252,15 +266,13 @@ namespace CodingTracker.View.TimerDisplayService
         {
             if (isPaused)
             {
-                // Resume timer
-                startTime = DateTime.Now.Subtract(TimeSpan.FromSeconds(sessionGoal * progressValue / 100.0));
+                formStartTime = DateTime.Now.Subtract(TimeSpan.FromSeconds(formSessionGoal * progressValue / 100.0));
                 progressTimer.Start();
-                pauseButton.Image = Properties.Resources.pause;// Unicode pause symbol
+                pauseButton.Image = Properties.Resources.pause;
                 isPaused = false;
             }
             else
             {
-                // Pause timer
                 progressTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
                 isPaused = true;

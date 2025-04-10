@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -73,8 +74,19 @@ namespace CodingTracker.Common.UtilityServices
         {
             int hours = int.Parse(input.Substring(0, 2));
             int minutes = int.Parse(input.Substring(2, 2));
+            var result =  hours * 60 + minutes;
 
-            return  hours * 60 + minutes;
+            _appLogger.Debug($"Result of {nameof(ConvertDoubleToHHMMString)}: {result}.");
+            return result;
+        }
+
+        // Ensures all session date and time values are explicitly converted to UTC for PostgreSQL compatibility.
+        public void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession)
+        {
+            codingSession.StartDate = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc));
+            codingSession.StartTime = codingSession.StartTime.ToUniversalTime();
+            codingSession.EndDate = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.EndDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc));
+            codingSession.EndTime = codingSession.EndTime.ToUniversalTime();
         }
 
     }

@@ -42,6 +42,8 @@ namespace CodingTracker.Logging.ApplicationLoggers
             }
         }
 
+
+
         public async Task LogActivityAsync(string methodName, Func<Activity, Task> logAction, Func<Activity, Task> action)
         {
             Activity activity = Activity.Current ?? new Activity(methodName).Start();
