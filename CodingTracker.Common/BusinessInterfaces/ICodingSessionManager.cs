@@ -10,6 +10,8 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void Initialize_CurrentCodingSession(int userId);
         void UpdateISCodingSessionActive(bool active);
         void UpdateIsSessionTimerActive(bool active);
+        void SetDurationSeconds(int durationSeconds);
+        void SetDurationHHMM(string durationHHMM);
         CodingSession ReturnCurrentCodingSession();
         void SetCodingSessionStartTimeAndDate( DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);

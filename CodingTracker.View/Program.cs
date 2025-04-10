@@ -118,7 +118,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
-                    .AddSingleton<CountdownTimerForm>()
+                    .AddSingleton<OrbitalTimerForm>()
                     .AddSingleton<INotificationManager, NotificationManager>()
 
 

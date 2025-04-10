@@ -13,7 +13,8 @@
         ResetPasswordPage,
         SessionTimerPage,
         CountdownTimerPage,
-        FloatingBubblePage
+        FloatingBubblePage,
+        OrbitalTimerPage
     }
 
 }
