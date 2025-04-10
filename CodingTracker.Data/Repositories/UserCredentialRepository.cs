@@ -2,14 +2,7 @@
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.UserCredentials.UserCredentialDTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodingTracker.Data.Repositories.UserCredentialRepositories
 {
@@ -44,7 +37,7 @@ namespace CodingTracker.Data.Repositories.UserCredentialRepositories
 
         public async Task<bool> UsernameExistsAsync(string username)
         {
-                return await _dbContext.UserCredentials
+                 return await _dbContext.UserCredentials
                 .AnyAsync(u => u.Username == username);
         }
 

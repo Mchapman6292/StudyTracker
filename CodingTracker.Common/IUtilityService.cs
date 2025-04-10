@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.Common.IUtilityServices
+﻿using CodingTracker.Common.Entities.CodingSessionEntities;
+
+namespace CodingTracker.Common.IUtilityServices
 {
     public interface IUtilityService
     {
@@ -11,6 +13,8 @@
         string ConvertDoubleToHHMMString(double duration);
 
         int ConvertHHMMStringToInt32NoSemiColon(string input);
+
+        void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession);
 
 
     }

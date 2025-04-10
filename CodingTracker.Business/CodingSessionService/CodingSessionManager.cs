@@ -9,6 +9,7 @@ using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
+using CodingTracker.Common.IUtilityServices;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {
@@ -27,6 +28,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         private readonly ICodingSessionTimer _sessionTimer;
         private readonly IUserCredentialRepository _userCredentialRepository;
         private readonly IUserIdService _userIdService;
+        private readonly IUtilityService _utilityService;
 
         private bool IsCodingSessionActive { get; set; } = false;
         private bool IsSessionTimerActive { get; set; } = false;
@@ -35,7 +37,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         private string _formGoalTimeHHMM { get; set; }   
         private bool _isFormGoalSet { get; set; }
 
-        public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService)
+        public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService, IUtilityService utilityService)
         {
             _errorHandler = errorHandler;
             _appLogger = appLogger;
@@ -44,9 +46,40 @@ namespace CodingTracker.Business.CodingSessionManagers
             _sessionTimer = sessionTimer;
             _userCredentialRepository = userCredentialRepository;
             _userIdService = userIdService;
+            _utilityService = utilityService;
         }
 
 
+        public void StartCodingSessionWithGoal(DateTime startTime, int sessionGoalMins)
+        {
+            SetCodingSessionStartTimeAndDate(startTime);
+            UpdateISCodingSessionActive(true);
+            SetGoalMinutes(sessionGoalMins);   
+        }
+
+        public async Task EndCodingSessionWithGoalAsync(DateTime endTime)
+        {
+            DateOnly currentendDate = DateOnly.FromDateTime(endTime);
+
+            int currentDurationSeconds = CalculateDurationSeconds(_currentCodingSession.StartTime, endTime);
+            string currentDurationHHMM = ConvertDurationSecondsToStringHHMM(currentDurationSeconds);
+            SetDurationHHMM(currentDurationHHMM);
+            SetDurationSeconds(currentDurationSeconds);
+
+
+            SetCodingSessionEndTimeAndDate(endTime);
+
+            CheckAllRequiredCodingSessionDetailsNotNull();
+
+            CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
+
+            _utilityService.ConvertCodingSessionDatesToUTC(currentCodingSessionEntity);
+
+            bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
+
+            UpdateISCodingSessionActive(false);
+
+        }
 
         public CodingSession ReturnCurrentCodingSession()
         {
@@ -67,6 +100,37 @@ namespace CodingTracker.Business.CodingSessionManagers
         {
             return IsCodingSessionActive;
         }
+
+        public void SetCodingSessionStartTimeAndDate(DateTime startTime)
+        {
+            _currentCodingSession.StartTime = startTime;
+            _currentCodingSession.StartDate = DateOnly.FromDateTime(startTime);
+        }
+
+        public void SetCodingSessionEndTimeAndDate( DateTime endTime)
+        {
+            _currentCodingSession.EndTime = endTime;
+            _currentCodingSession.EndDate = DateOnly.FromDateTime(endTime);
+        }
+
+        public void SetDurationSeconds(int durationSeconds)
+        {
+            _currentCodingSession.DurationSeconds = durationSeconds;
+        }
+
+        public void SetDurationHHMM(string durationHHMM) 
+        {
+            _currentCodingSession.DurationHHMM = durationHHMM;  
+        }
+
+        public void SetGoalMinutes(int goalMinutes)
+        {
+            _currentCodingSession.GoalMinutes = goalMinutes;
+        }
+
+
+
+
 
 
 
@@ -153,13 +217,6 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
 
-        public void SetCodingSessionStartTimeAndDate(DateTime currentDateTimeUtc)
-        {
-            _currentCodingSession.StartDate = DateOnly.FromDateTime(currentDateTimeUtc);
-            _currentCodingSession.StartTime = currentDateTimeUtc;
-
-            _appLogger.Debug($"Session StartDate: {_currentCodingSession.StartDate}, StartTime: {_currentCodingSession.StartTime}.");
-        }
 
         public void SetGoalHoursAndGoalMins(int goalMins, bool goalSet)
         {
@@ -308,6 +365,8 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         public int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate)
         {
+            _appLogger.Debug($"Values for {nameof(CalculateDurationSeconds)} startDate: {startDate}, endDate: {endDate}");
+
             if (startDate == null)
             {
                 _appLogger.Error($"StartDate is null for {nameof(CalculateDurationSeconds)}");

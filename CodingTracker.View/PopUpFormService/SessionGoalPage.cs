@@ -158,11 +158,13 @@ namespace CodingTracker.View.PopUpFormService
                 return;
             }
 
-            int SessionGoal = _utilityService.ConvertHHMMStringToInt32NoSemiColon(timeInputString); 
-            _formStatePropertyManager.SetFormGoalTimeHHMM(SessionGoal);
+            int sessionGoal = _utilityService.ConvertHHMMStringToInt32NoSemiColon(timeInputString);
+            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoal);
             _formStatePropertyManager.SetIsFormGoalSet(true);
-            _codingSessionManager.UpdateIsSessionTimerActive(true);
-            _codingSessionManager.StartCodingSessionTimer();
+            _formStatePropertyManager.SetFormGoalMins(sessionGoal);
+
+            _codingSessionManager.SetCurrentSessionGoalSet(true);
+
             _formSwitcher.SwitchToForm(FormPageEnum.CountdownTimerPage);
         }
 
@@ -170,7 +172,6 @@ namespace CodingTracker.View.PopUpFormService
         {
             GoalSet = false;
             _codingSessionManager.UpdateIsSessionTimerActive(true);
-            _codingSessionManager.StartCodingSessionTimer();
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }

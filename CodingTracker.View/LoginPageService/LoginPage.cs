@@ -112,41 +112,7 @@ namespace CodingTracker.View
 
 
 
-        private void NEWInitializeVLCPlayer()
-        {
-            Core.Initialize();
-            _libVLC = new LibVLC();
-            _videoView = new VideoView
-            {
-                MediaPlayer = new MediaPlayer(_libVLC)
-            };
-            _videoView.Location = new Point(0, 0);
-            _videoView.Size = new Size(888, 581);
-            LoginPageMediaPanel.Controls.Add(_videoView);
-            _videoView.BringToFront();
-
-            try
-            {
-                // Create a memory stream from the resource
-                using (MemoryStream ms = new MemoryStream(Properties.Resources.LoginScreenMedia))
-                {
-                    // For VLC 3.x and newer versions of LibVLCSharp
-                    // You may need to adjust this depending on your LibVLCSharp version
-                    var media = new Media(_libVLC, new StreamMediaInput(ms));
-                    media.AddOption("input-repeat=65535");
-                    _videoView.MediaPlayer.Play(media);
-                    _videoView.MediaPlayer.Scale = 0;
-
-                    _appLogger.Info("VLC player loaded video from resources");
-                }
-            }
-            catch (Exception ex)
-            {
-                _appLogger.Warning($"Error loading VLC video from resources: {ex.Message}");
-                MessageBox.Show("Error loading video resource: " + ex.Message);
-            }
-        }
-    
+ 
 
 
         private void LoadSavedCredentials()
