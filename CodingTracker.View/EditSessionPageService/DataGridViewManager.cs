@@ -2,6 +2,7 @@
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.FormService.ColourServices;
@@ -55,6 +56,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         private readonly ILayoutService _layoutService;
         private readonly IRowStateManager _dataGridRowStateManager;
         private readonly IConfiguration _configuration;
+        private readonly IUtilityService _utilityService;
 
 
 
@@ -67,13 +69,14 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IRowStateManager dataGridRowStateManager, IConfiguration configuration)
+        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IRowStateManager dataGridRowStateManager, IConfiguration configuration, IUtilityService utilityService)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
             _layoutService = layoutService;
             _dataGridRowStateManager = dataGridRowStateManager;
             _configuration = configuration;
+            _utilityService = utilityService;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
             _visibleColumns = new List<string>    
                 {
@@ -530,6 +533,9 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             ClearDataGridViewDataSource(dataGrid);
             ClearDataGridViewColumns(dataGrid);
             List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sessionSortCriteria);
+
+            // Convert dates to local time from utc. 
+            _utilityService.ConvertCodingSessionListDatesToLocal(codingSessions);
             LoadDataGridViewWithSessions(dataGrid, codingSessions);
             HideUnusuedColumns(dataGrid);
             RenameDataGridColumns(dataGrid);

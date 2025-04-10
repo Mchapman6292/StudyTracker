@@ -89,5 +89,22 @@ namespace CodingTracker.Common.UtilityServices
             codingSession.EndTime = codingSession.EndTime.ToUniversalTime();
         }
 
+        public void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions)
+        {
+            if(!codingSessions.Any())
+            {
+                _appLogger.Info($"CodingSession list empty for {nameof(ConvertCodingSessionListDatesToLocal)}");
+                return;
+            }
+
+            foreach(var codingSession in codingSessions)
+            {
+                codingSession.StartDate = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.StartTime = codingSession.StartTime.ToLocalTime();
+                codingSession.EndDate = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.EndDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.EndTime = codingSession.EndTime.ToLocalTime();
+            }
+        }
+
     }
 }

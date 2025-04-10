@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.TimerDisplayService
 {
-    partial class CountdownTimerForm
+    partial class OrbitalTimerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -13,9 +13,14 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                DisposeCustomResources();
             }
             base.Dispose(disposing);
         }
@@ -28,19 +33,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
-            // 
-            // CountdownTimerForm
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(800, 450);
-            FormBorderStyle = FormBorderStyle.None;
-            Name = "CountdownTimerForm";
-            Text = "CountdownTimerForm";
-            TransparencyKey = Color.Black;
-            ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+
         }
 
         #endregion

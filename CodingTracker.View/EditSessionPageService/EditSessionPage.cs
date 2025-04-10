@@ -3,8 +3,6 @@ using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
-using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
