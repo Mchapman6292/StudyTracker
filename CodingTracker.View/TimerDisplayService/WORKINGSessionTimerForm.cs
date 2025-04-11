@@ -1,41 +1,46 @@
 ﻿using Guna.UI2.WinForms;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.View.FormService;
+using CodingTracker.View.FormPageEnums;
 
 
 namespace CodingTracker.View.TimerDisplayService
 {
-        public partial class WORKINGSessionTimerForm : Form
+    public partial class WORKINGSessionTimerForm : Form
+    {
+        private Guna2CircleProgressBar progressBar;
+        private System.Windows.Forms.Timer progressTimer;
+        private Guna2BorderlessForm borderlessForm;
+        private Guna2Panel mainPanel;
+        private Guna2ControlBox closeControlBox;
+        private Guna2ControlBox minimizeControlBox;
+        private Guna2Button pauseButton;
+        private bool isPaused = false;
+        private bool isDragging = false;
+        private Point dragStartPoint;
+
+        private int progressValue = 0;
+        private int formSessionGoal;
+        private DateTime formStartTime;
+        private DateTime endTime;
+
+
+        private readonly IFormStatePropertyManager _formStatePropertyManager;
+        private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IFormSwitcher _formSwitcher;
+           
+
+        public WORKINGSessionTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher)
         {
-            private Guna2CircleProgressBar progressBar;
-            private System.Windows.Forms.Timer progressTimer;
-            private Guna2BorderlessForm borderlessForm;
-            private Guna2Panel mainPanel;
-            private Guna2ControlBox closeControlBox;
-            private Guna2ControlBox minimizeControlBox;
-            private Guna2Button pauseButton;
-            private bool isPaused = false;
-            private bool isDragging = false;
-            private Point dragStartPoint;
-
-            private int progressValue = 0;
-            private int formSessionGoal;
-            private DateTime formStartTime;
-            private DateTime endTime;
-
-
-            private readonly IFormStatePropertyManager _formStatePropertyManager;
-            private readonly ICodingSessionManager _codingSessionManager;
-
-            public WORKINGSessionTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager)
-            {
-                InitializeComponent();
-                _formStatePropertyManager = formStatePropertyManager;
-                _codingSessionManager = codingSessionManager;
-                formSessionGoal = _formStatePropertyManager.ReturnFormGoalTimeHHMMAsInt();
-                SetupProgressBar();
-                _codingSessionManager.StartCodingSessionWithGoal(formStartTime, formSessionGoal);
-            }
+            InitializeComponent();
+            _formStatePropertyManager = formStatePropertyManager;
+            _codingSessionManager = codingSessionManager;
+            _formSwitcher = formSwitcher;
+            formSessionGoal = _formStatePropertyManager.ReturnFormGoalTimeHHMMAsInt();
+            SetupProgressBar();
+            _codingSessionManager.StartCodingSessionWithGoal(formStartTime, formSessionGoal);
+        }
 
         void SetupProgressBar()
         {
@@ -136,139 +141,142 @@ namespace CodingTracker.View.TimerDisplayService
         }
 
         private void SetFormStartTime(DateTime startTime)
-            {
-                formStartTime = startTime;
-            }
+        {
+            formStartTime = startTime;
+        }
 
 
-            private void CountdownTimerForm_Load(object sender, EventArgs e)
-            {
-                progressValue = 0;
-                progressBar.Value = 0;
-                var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
-                if (statusLabel != null)
+        private void CountdownTimerForm_Load(object sender, EventArgs e)
+        {
+            progressValue = 0;
+            progressBar.Value = 0;
+            var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
+
+            if (statusLabel != null)
                 {
                     statusLabel.Text = "0%";
                 }
-                _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
-                SetFormStartTime(DateTime.Now);
-                progressTimer.Start();
-            }
 
-            private void ProgressTimer_Tick(object sender, EventArgs e)
+            _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
+            SetFormStartTime(DateTime.Now);
+            progressTimer.Start();
+        }
+
+        private void ProgressTimer_Tick(object sender, EventArgs e)
+        {
+            TimeSpan elapsed = DateTime.Now - formStartTime;
+            double percentage = Math.Min(100, (elapsed.TotalSeconds / formSessionGoal) * 100);
+            progressValue = (int)percentage;
+
+            progressBar.Value = progressValue;
+
+            (Color mainColor, Color secondaryColor) = GetProgressColors(percentage / 100);
+
+            progressBar.ProgressColor = mainColor;
+            progressBar.ProgressColor2 = secondaryColor;
+
+            var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
+
+            if (statusLabel != null)
             {
-                TimeSpan elapsed = DateTime.Now - formStartTime;
-                double percentage = Math.Min(100, (elapsed.TotalSeconds / formSessionGoal) * 100);
-                progressValue = (int)percentage;
-
-                progressBar.Value = progressValue;
-
-                (Color mainColor, Color secondaryColor) = GetProgressColors(percentage / 100);
-
-                progressBar.ProgressColor = mainColor;
-                progressBar.ProgressColor2 = secondaryColor;
-
-                var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
-                if (statusLabel != null)
-                {
-                    statusLabel.Text = $"{progressValue}%";
-                    statusLabel.ForeColor = mainColor;
-                }
-
-                if (progressValue >= 100)
-                {
-                    progressTimer.Stop();
-                }
+                statusLabel.Text = $"{progressValue}%";
+                statusLabel.ForeColor = mainColor;
             }
 
-            private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
-            {
-                int r = (int)(255 * (1 - progress) + 64 * progress);
-                int g = (int)(81 * (1 - progress) + 230 * progress);
-                int b = (int)(195 * (1 - progress) + 200 * progress);
-                Color mainColor = Color.FromArgb(r, g, b);
-
-                Color secondaryColor;
-                if (progress < 0.5)
-                {
-                    int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
-                    int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
-                    int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
-                    secondaryColor = Color.FromArgb(r2, g2, b2);
-                }
-                else
-                {
-                    int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
-                    int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
-                    int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);
-                    secondaryColor = Color.FromArgb(r2, g2, b2);
-                }
-
-                return (mainColor, secondaryColor);
-            }
-
-
-
-            private void SetFormPosition()
-            {
-                this.StartPosition = FormStartPosition.Manual;
-
-                int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-                int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
-                int formWidth = this.Width;
-                int formHeight = this.Height;
-
-
-                this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
-
-            }
-
-
-
-            private async void CloseControlBox_Click(object sender, EventArgs e)
+            if (progressValue >= 100)
             {
                 progressTimer.Stop();
+            }
+        }
 
-                TimeSpan elapsed = DateTime.Now - formStartTime;
+        private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
+        {
+            int r = (int)(255 * (1 - progress) + 64 * progress);
+            int g = (int)(81 * (1 - progress) + 230 * progress);
+            int b = (int)(195 * (1 - progress) + 200 * progress);
+            Color mainColor = Color.FromArgb(r, g, b);
+            Color secondaryColor;
 
-                DialogResult result = MessageBox.Show(
-                    $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}",
-                    "End Session",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    this.DialogResult = DialogResult.OK;
-                    await _codingSessionManager.EndCodingSessionWithGoalAsync(DateTime.Now);
-                    this.Close();
-                }
-                else
-                {
-                    if (!isPaused)
-                    {
-                        progressTimer.Start();
-                    }
-                }
+            if (progress < 0.5)
+            {
+                int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
+                int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
+                int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
+                secondaryColor = Color.FromArgb(r2, g2, b2);
             }
 
-            private void PauseButton_Click(object sender, EventArgs e)
+            else
             {
-                if (isPaused)
+                int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
+                int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
+                int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);
+                secondaryColor = Color.FromArgb(r2, g2, b2);
+            }
+
+            return (mainColor, secondaryColor);
+        }
+
+
+
+        private void SetFormPosition()
+        {
+            this.StartPosition = FormStartPosition.Manual;
+
+            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            int formWidth = this.Width;
+            int formHeight = this.Height;
+
+
+            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
+
+        }
+
+
+
+        private async void CloseControlBox_Click(object sender, EventArgs e)
+        {
+            progressTimer.Stop();
+
+            TimeSpan elapsed = DateTime.Now - formStartTime;
+
+            DialogResult result = MessageBox.Show(
+                $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}",
+                "End Session",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.OK;
+                await _codingSessionManager.EndCodingSessionWithGoalAsync(DateTime.Now);
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            }
+            else
+            {
+                if (!isPaused)
                 {
-                    formStartTime = DateTime.Now.Subtract(TimeSpan.FromSeconds(formSessionGoal * progressValue / 100.0));
                     progressTimer.Start();
-                    pauseButton.Image = Properties.Resources.pause;
-                    isPaused = false;
-                }
-                else
-                {
-                    progressTimer.Stop();
-                    pauseButton.Image = Properties.Resources.playButton;
-                    isPaused = true;
-
-
                 }
             }
         }
+
+        private void PauseButton_Click(object sender, EventArgs e)
+        {
+            if (isPaused)
+            {
+                formStartTime = DateTime.Now.Subtract(TimeSpan.FromSeconds(formSessionGoal * progressValue / 100.0));
+                progressTimer.Start();
+                pauseButton.Image = Properties.Resources.pause;
+                isPaused = false;
+            }
+            else
+            {
+                progressTimer.Stop();
+                pauseButton.Image = Properties.Resources.playButton;
+                isPaused = true;
+
+            }
+        }
     }
+}

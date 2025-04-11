@@ -1,13 +1,11 @@
 ﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionTimers;
 using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 
@@ -21,11 +19,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         private CodingSession _currentCodingSession {  get; set; }
         private int CurrentUserId { get; set; }
 
-        private readonly IErrorHandler _errorHandler;
         private readonly IApplicationLogger _appLogger;
         private readonly IInputValidator _inputValidator;
         private readonly ICodingSessionRepository _codingSessionRepository;
-        private readonly ICodingSessionTimer _sessionTimer;
         private readonly IUserCredentialRepository _userCredentialRepository;
         private readonly IUserIdService _userIdService;
         private readonly IUtilityService _utilityService;
@@ -37,13 +33,11 @@ namespace CodingTracker.Business.CodingSessionManagers
         private string _formGoalTimeHHMM { get; set; }   
         private bool _isFormGoalSet { get; set; }
 
-        public CodingSessionManager(IErrorHandler errorHandler, IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, ICodingSessionTimer sessionTimer, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService, IUtilityService utilityService)
+        public CodingSessionManager( IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo,IUserCredentialRepository userCredentialRepository, IUserIdService userIdService, IUtilityService utilityService)
         {
-            _errorHandler = errorHandler;
             _appLogger = appLogger;
             _inputValidator = inputValidator;
             _codingSessionRepository = codingSessionRepo;
-            _sessionTimer = sessionTimer;
             _userCredentialRepository = userCredentialRepository;
             _userIdService = userIdService;
             _utilityService = utilityService;
@@ -194,21 +188,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             _appLogger.Info($"Coding session started CurrentCodingSession user id = {_currentCodingSession.UserId}.");
         }
 
-        public void StartCodingSessionTimer()
-        {
-            DateTime currentDateTimeUtc = DateTime.UtcNow;
 
-            _sessionTimer.StartCodingSessionTimer();
-            _appLogger.Debug($"Session timer started at {currentDateTimeUtc}.");
-        }
-
-        public void EndCodingSessionTimer()
-        {
-            DateTime currentDateTimeUtc = DateTime.UtcNow;
-
-            _sessionTimer.EndCodingSessionTimer();
-            _appLogger.Debug($"Session timer started at {currentDateTimeUtc}.");
-        }
 
         public void SetCurrentSessionGoalSet(bool goalSet)
         {

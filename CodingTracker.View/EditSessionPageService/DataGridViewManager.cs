@@ -20,8 +20,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 {
     public interface IDataGridViewManager
     {
-        void CONTROLLERUpdateDataGridViewWithCodingSessionList(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
-        void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView);
         void ClearRowsMarkedForDeletion(DataGridView dataGrid);
 
         void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState);
@@ -93,110 +91,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
 
-        // Data grid viewing loading methods.
-
-
-        // Deletes datagrid rows and clears _rowToInfoMapping before adding coding sessions to datagrid. 
-        public void CONTROLLERUpdateDataGridViewWithCodingSessionList(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
-        {
-            using (_layoutService.SuspendLayout(dataGridView))
-            {
-                if (codingSessions == null || codingSessions.Count == 0)
-                {
-                    throw new ArgumentException($"Invalid list passed to {nameof(CONTROLLERUpdateDataGridViewWithCodingSessionList)}", nameof(codingSessions));
-                }
-                ResetDataGridAndRowInfoDict(dataGridView);
-                if (dataGridView.Rows.Count > 1)
-                {
-                    foreach (DataGridViewRow row in dataGridView.Rows)
-                    {
-                        string cellValues = string.Join(", ", Enumerable.Range(0, row.Cells.Count)
-                            .Select(i => $"Cell[{i}]={row.Cells[i].Value ?? "null"}"));
-                        _appLogger.Debug($"Remaining row found - Index: {row.Index}, IsNew: {row.IsNewRow}, Values: {cellValues}");
-                    }
-                    throw new InvalidOperationException($"Row count = {dataGridView.Rows.Count}");
-                }
-                AddSessionsToDataGrid(codingSessions, dataGridView);
-            }
-        }
-
-        public void AddSessionsToDataGrid(List<CodingSessionEntity> codingSessions, Guna2DataGridView dataGridView)
-        {
-            foreach (CodingSessionEntity codingSession in codingSessions)
-            {
-                CreateRowInGrid(codingSession, dataGridView);
-            }
-        }
-
-        // Creates a dataGridRow in the grid and returns both the dataGridRow and rowIndex
-
-        private void CreateRowInGrid(CodingSessionEntity session, Guna2DataGridView dataGridView)
-        {
-            int rowIndex = dataGridView.Rows.Add();
-            if (rowIndex < 0)
-            {
-                _appLogger.Error($"Failed to add dataGridRow for SessionID {session.SessionId}. Invalid dataGridRow index returned.");
-                throw new ArgumentException($"Invalid index for {nameof(CreateRowInGrid)}, index: {rowIndex}.");
- 
-            }
-            // Assign the dataGridRow to a variable so we can pass it to AddPairToRowToInfoMapping
-            DataGridViewRow row = dataGridView.Rows[rowIndex];
-
-            // Create the RowState which holds dataGridRow index, session id & marked for deletion.
-            RowState rowState = _dataGridRowStateManager.CreateDataGridRowState(rowIndex, session.SessionId);
-
-       
-            // This will throw an exception if any of rows do not populate. 
-             TryPopulateDataGridRow(row, session, dataGridView);
-
-             AddPairToRowToInfoMapping(row, rowState);
-
-
-        }
-
-
-
-        private bool SetDataGridViewCell(DataGridViewRow row, int cellIndex, string value)
-        {
-            if (row == null || cellIndex < 0 || cellIndex >= row.Cells.Count)
-            {
-                return false;
-            }
-            row.Cells[cellIndex].Value = value;
-            return true;
-        }
-
-
-
-        private bool TryPopulateDataGridRow(DataGridViewRow row, CodingSessionEntity session, DataGridView dataGridView)
-        {
-            bool success = true;
-            List<string> failedFields = new List<string>();
-
-            if (!SetDataGridViewCell(row, 0, session.SessionId.ToString())) { success = false; failedFields.Add("SessionId"); }
-            if (!SetDataGridViewCell(row, 1, session.DurationHHMM)) { success = false; failedFields.Add("Duration"); }
-            if (!SetDataGridViewCell(row, 2, session.StartDate.ToShortDateString())) { success = false; failedFields.Add("StartDate"); }
-            if (!SetDataGridViewCell(row, 3, session.StartTime.ToString())) { success = false; failedFields.Add("StartTime"); }
-            if (!SetDataGridViewCell(row, 4, session.EndDate.ToShortDateString())) { success = false; failedFields.Add("EndDate"); }
-            if (!SetDataGridViewCell(row, 5, session.EndTime.ToString())) { success = false; failedFields.Add("EndTime"); }
-
-            if (!success)
-            {
-                _appLogger.Error($"Failed to populate cells for SessionId {session.SessionId}: {string.Join(", ", failedFields)}");
-                throw new InvalidOperationException($"Unable to populate DataGridView for {nameof(TryPopulateDataGridRow)}.");
-            }
-
-            _appLogger.Debug($"DataGridRow expected values for Session: {session.SessionId}, row index: {row.Index}.");
-            _appLogger.Debug($"Actual values for Index:{row.Index} sessionId: {row.Cells[0].Value}, " +
-                 $"duration: {row.Cells[1].Value}, " +
-                 $"startDate: {row.Cells[2].Value}, " +
-                 $"startTime: {row.Cells[3].Value}, " +
-                 $"endDate: {row.Cells[4].Value}, " +
-                 $"endTime: {row.Cells[5].Value}");
-
-
-            return success;
-        }
 
 
 
@@ -204,11 +98,6 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         // Methods for altering _rowToInfoMapping
 
-
-        public void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState)
-        {
-            _rowToInfoMapping.Add(dataGridRow, rowState);
-        }
 
         public void ClearAllInRowToInfoMapping()
         {
@@ -636,6 +525,11 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         }
 
 
+
+        public void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState)
+        {
+            _rowToInfoMapping.Add(dataGridRow, rowState);
+        }
 
 
 

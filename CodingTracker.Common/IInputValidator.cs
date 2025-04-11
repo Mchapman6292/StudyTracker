@@ -19,7 +19,6 @@ namespace CodingTracker.Common.IInputValidators
 
         InputValidationResult ValidatePassword(string password);
 
-        int? ParseHHMMStringInputToInt(string input);
 
         DateTime GetValidDateFromUser();
         DateTime GetValidTimeFromUser();

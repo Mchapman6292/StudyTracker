@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using System.Drawing;
 using CodingTracker.Common.CodingSessionDTOs;
@@ -40,17 +39,15 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
     public class PanelColourAssigner : IPanelColourAssigner
     {
         private readonly IApplicationLogger _appLogger;
-        private readonly IErrorHandler _errorHandler;
         private readonly List<(DateTime Day, double TotalDurationMinutes)> _dailyDurations;
         private readonly List<SessionColor> _sessionColors;
         private readonly ICodingSessionRepository _codingSessionRepository;
 
 
 
-        public PanelColourAssigner(IApplicationLogger appLogger, IErrorHandler errorHandler, ICodingSessionRepository codingSessionRepository)
+        public PanelColourAssigner(IApplicationLogger appLogger,ICodingSessionRepository codingSessionRepository)
         {
             _appLogger = appLogger;
-            _errorHandler = errorHandler;
             _codingSessionRepository = codingSessionRepository;
         }
 

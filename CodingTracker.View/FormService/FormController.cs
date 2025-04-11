@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 
 namespace CodingTracker.View.FormService
 {
@@ -7,7 +6,6 @@ namespace CodingTracker.View.FormService
     public interface IFormController
     {
         void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form;
-        void ExecutePageAction(Action action, string methodName);
         void CloseCurrentForm();
         void DisplayForm<TForm>(TForm newForm) where TForm : Form;
         void CloseTargetForm(Form targetForm);
@@ -17,13 +15,11 @@ namespace CodingTracker.View.FormService
         private readonly IApplicationLogger _appLogger;
         private Form currentForm;
         private readonly IFormFactory _formFactory;
-        private readonly IErrorHandler _errorHandler;
 
-        public FormController(IApplicationLogger appLogger, IFormFactory formFactory, IErrorHandler errorHandler)
+        public FormController(IApplicationLogger appLogger, IFormFactory formFactory)
         {
             _appLogger = appLogger;
             _formFactory = formFactory;
-            _errorHandler = errorHandler;
         }
 
         public void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form // Handles the logic for closing forms & implementing error handling logic via ExecutePageAction
@@ -36,10 +32,6 @@ namespace CodingTracker.View.FormService
             DisplayForm(newForm);
         }
 
-        public void ExecutePageAction(Action action, string methodName)
-        {
-            _errorHandler.CatchErrorsAndLogWithStopwatch(action, methodName, false); // false indicates this is not a database operation
-        }
 
         public void CloseCurrentForm()
         {

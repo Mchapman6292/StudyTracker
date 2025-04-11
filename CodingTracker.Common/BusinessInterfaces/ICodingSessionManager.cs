@@ -16,9 +16,7 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void SetCodingSessionStartTimeAndDate( DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);
         Task StartCodingSession(string username);
-        void StartCodingSessionTimer();
         Task EndCodingSessionAsync();
-        void EndCodingSessionTimer();
         void SetCurrentSessionGoalSet(bool goalSet);
         void SetGoalHoursAndGoalMins(int goalMins, bool goalSet);
         void UpdateCodingSessionEndTimes();

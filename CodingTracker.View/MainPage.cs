@@ -3,7 +3,6 @@ using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
@@ -16,7 +15,6 @@ namespace CodingTracker.View
         private readonly IApplicationLogger _appLogger;
         private readonly IFormController _formController;
         private readonly IPanelColourAssigner _panelAssigner;
-        private readonly IErrorHandler _errorHandler;
         private readonly IFormFactory _formFactory;
         private readonly IFormSwitcher _formSwitcher;
         private readonly ISessionCalculator _sessionCalculator;
@@ -27,13 +25,12 @@ namespace CodingTracker.View
 
 
 
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IErrorHandler errorHandler, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
         {
             InitializeComponent();
             _appLogger = appLogger;
             _formController = formController;
             _panelAssigner = panelAssigner;
-            _errorHandler = errorHandler;
             _formFactory = formFactory;
             _formSwitcher = formSwitcher;
             _sessionCalculator = sessionCalculator;
@@ -134,10 +131,7 @@ namespace CodingTracker.View
 
 
 
-        private void Day2Label_Click(object sender, EventArgs e)
-        {
-
-        }
+  
 
         private void MainPageExitControlBox_Click(object sender, EventArgs e)
         {
@@ -145,12 +139,6 @@ namespace CodingTracker.View
         }
 
 
-
-        private void CodingSessionPageStartSessionButton_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
-        }
 
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
         {
@@ -162,6 +150,7 @@ namespace CodingTracker.View
             this.Hide();
             _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
         }
+
     }
 }
  

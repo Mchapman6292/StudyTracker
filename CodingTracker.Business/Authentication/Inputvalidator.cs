@@ -1,6 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
 using System.Diagnostics;
@@ -18,13 +17,11 @@ namespace CodingTracker.Business.InputValidators
     {
         private readonly IApplicationLogger _appLogger;
         private readonly IInputValidationResult _validResult;
-        private readonly IErrorHandler _errorHandler;
 
-        public InputValidator(IApplicationLogger appLogger, IInputValidationResult validResult, IErrorHandler errorHandler)
+        public InputValidator(IApplicationLogger appLogger, IInputValidationResult validResult)
         {
             _appLogger = appLogger;
             _validResult = validResult;
-            _errorHandler = errorHandler;
         }
 
         public InputValidationResult ValidateUsername(string username) // Username requirements = Less than 15 chars long, begins with capital letter & not empty/no whitespaces.
@@ -133,21 +130,6 @@ namespace CodingTracker.Business.InputValidators
             return isValid;
         }
 
-        public int? ParseHHMMStringInputToInt(string input)
-        {
-            return _errorHandler.CatchErrorsAndLogWithStopwatch<int?>(() =>
-            {
-                if (IsValidTimeFormatHHMM(input))
-                {
-                    var timeParts = input.Split(':');
-                    int hours = int.Parse(timeParts[0]);
-                    int minutes = int.Parse(timeParts[1]);
-
-                    return hours * 60 + minutes;
-                }
-                return null;
-            }, nameof(ParseHHMMStringInputToInt));
-        }
 
 
 
