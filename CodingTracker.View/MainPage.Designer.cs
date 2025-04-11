@@ -34,28 +34,26 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges80 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges81 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges82 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges83 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -111,6 +109,10 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges77 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges78 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges79 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges80 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges81 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             panel2 = new Panel();
@@ -187,6 +189,7 @@
             Day2Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             Day1Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             MainPageAnimateWidnow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
+            MainPageStartSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             MainPageProgressLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             panel2.SuspendLayout();
             guna2Panel3.SuspendLayout();
@@ -246,6 +249,7 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(35, 34, 50);
+            panel2.Controls.Add(MainPageStartSessionButton);
             panel2.Controls.Add(guna2Panel3);
             panel2.Controls.Add(MainPageEditSessionsButton);
             panel2.Controls.Add(MainPageCodingSessionButton);
@@ -260,10 +264,10 @@
             // 
             guna2Panel3.Controls.Add(EndSessionButton);
             guna2Panel3.Controls.Add(CodingSessionPageStartSessionButton);
-            guna2Panel3.CustomizableEdges = customizableEdges9;
+            guna2Panel3.CustomizableEdges = customizableEdges11;
             guna2Panel3.Location = new Point(3, 601);
             guna2Panel3.Name = "guna2Panel3";
-            guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges12;
             guna2Panel3.Size = new Size(156, 116);
             guna2Panel3.TabIndex = 25;
             // 
@@ -273,7 +277,7 @@
             EndSessionButton.AutoRoundedCorners = true;
             EndSessionButton.BorderRadius = 18;
             EndSessionButton.BorderThickness = 2;
-            EndSessionButton.CustomizableEdges = customizableEdges5;
+            EndSessionButton.CustomizableEdges = customizableEdges7;
             EndSessionButton.DisabledState.BorderColor = Color.DarkGray;
             EndSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             EndSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -283,7 +287,7 @@
             EndSessionButton.ForeColor = Color.White;
             EndSessionButton.Location = new Point(19, 58);
             EndSessionButton.Name = "EndSessionButton";
-            EndSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            EndSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             EndSessionButton.Size = new Size(120, 38);
             EndSessionButton.TabIndex = 21;
             EndSessionButton.Text = "End Session";
@@ -294,7 +298,7 @@
             CodingSessionPageStartSessionButton.AutoRoundedCorners = true;
             CodingSessionPageStartSessionButton.BorderRadius = 18;
             CodingSessionPageStartSessionButton.BorderThickness = 2;
-            CodingSessionPageStartSessionButton.CustomizableEdges = customizableEdges7;
+            CodingSessionPageStartSessionButton.CustomizableEdges = customizableEdges9;
             CodingSessionPageStartSessionButton.DisabledState.BorderColor = Color.DarkGray;
             CodingSessionPageStartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             CodingSessionPageStartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -304,7 +308,7 @@
             CodingSessionPageStartSessionButton.ForeColor = Color.White;
             CodingSessionPageStartSessionButton.Location = new Point(19, 3);
             CodingSessionPageStartSessionButton.Name = "CodingSessionPageStartSessionButton";
-            CodingSessionPageStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            CodingSessionPageStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
             CodingSessionPageStartSessionButton.Size = new Size(120, 38);
             CodingSessionPageStartSessionButton.TabIndex = 20;
             CodingSessionPageStartSessionButton.Text = "Start Session";
@@ -316,7 +320,7 @@
             MainPageEditSessionsButton.BorderColor = Color.FromArgb(35, 34, 50);
             MainPageEditSessionsButton.BorderRadius = 21;
             MainPageEditSessionsButton.Cursor = Cursors.Hand;
-            MainPageEditSessionsButton.CustomizableEdges = customizableEdges11;
+            MainPageEditSessionsButton.CustomizableEdges = customizableEdges13;
             MainPageEditSessionsButton.DisabledState.BorderColor = Color.DarkGray;
             MainPageEditSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
             MainPageEditSessionsButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -330,7 +334,7 @@
             MainPageEditSessionsButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
             MainPageEditSessionsButton.Location = new Point(0, 119);
             MainPageEditSessionsButton.Name = "MainPageEditSessionsButton";
-            MainPageEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            MainPageEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             MainPageEditSessionsButton.Size = new Size(159, 45);
             MainPageEditSessionsButton.TabIndex = 8;
             MainPageEditSessionsButton.Text = "View Sessions";
@@ -342,7 +346,7 @@
             MainPageCodingSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
             MainPageCodingSessionButton.BorderRadius = 21;
             MainPageCodingSessionButton.Cursor = Cursors.Hand;
-            MainPageCodingSessionButton.CustomizableEdges = customizableEdges13;
+            MainPageCodingSessionButton.CustomizableEdges = customizableEdges15;
             MainPageCodingSessionButton.DisabledState.BorderColor = Color.DarkGray;
             MainPageCodingSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             MainPageCodingSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -356,7 +360,7 @@
             MainPageCodingSessionButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
             MainPageCodingSessionButton.Location = new Point(0, 68);
             MainPageCodingSessionButton.Name = "MainPageCodingSessionButton";
-            MainPageCodingSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            MainPageCodingSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
             MainPageCodingSessionButton.Size = new Size(159, 45);
             MainPageCodingSessionButton.TabIndex = 7;
             MainPageCodingSessionButton.Text = "Coding Session";
@@ -381,10 +385,10 @@
             guna2Panel1.Controls.Add(guna2GradientPanel4);
             guna2Panel1.Controls.Add(guna2GradientPanel3);
             guna2Panel1.Controls.Add(TodayTotalPanel);
-            guna2Panel1.CustomizableEdges = customizableEdges21;
+            guna2Panel1.CustomizableEdges = customizableEdges23;
             guna2Panel1.Location = new Point(165, 87);
             guna2Panel1.Name = "guna2Panel1";
-            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges24;
             guna2Panel1.Size = new Size(1117, 240);
             guna2Panel1.TabIndex = 28;
             // 
@@ -393,12 +397,12 @@
             guna2GradientPanel4.Anchor = AnchorStyles.None;
             guna2GradientPanel4.BorderRadius = 30;
             guna2GradientPanel4.Controls.Add(AverageSessionLabel);
-            guna2GradientPanel4.CustomizableEdges = customizableEdges15;
+            guna2GradientPanel4.CustomizableEdges = customizableEdges17;
             guna2GradientPanel4.FillColor = Color.Turquoise;
             guna2GradientPanel4.FillColor2 = Color.FromArgb(242, 130, 220);
             guna2GradientPanel4.Location = new Point(836, 53);
             guna2GradientPanel4.Name = "guna2GradientPanel4";
-            guna2GradientPanel4.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            guna2GradientPanel4.ShadowDecoration.CustomizableEdges = customizableEdges18;
             guna2GradientPanel4.Size = new Size(240, 140);
             guna2GradientPanel4.TabIndex = 30;
             // 
@@ -418,12 +422,12 @@
             guna2GradientPanel3.Anchor = AnchorStyles.None;
             guna2GradientPanel3.BorderRadius = 30;
             guna2GradientPanel3.Controls.Add(WeekTotalLabel);
-            guna2GradientPanel3.CustomizableEdges = customizableEdges17;
+            guna2GradientPanel3.CustomizableEdges = customizableEdges19;
             guna2GradientPanel3.FillColor = Color.FromArgb(170, 116, 243);
             guna2GradientPanel3.FillColor2 = Color.FromArgb(252, 124, 180);
             guna2GradientPanel3.Location = new Point(438, 50);
             guna2GradientPanel3.Name = "guna2GradientPanel3";
-            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges20;
             guna2GradientPanel3.Size = new Size(240, 140);
             guna2GradientPanel3.TabIndex = 29;
             // 
@@ -443,12 +447,12 @@
             TodayTotalPanel.Anchor = AnchorStyles.None;
             TodayTotalPanel.BorderRadius = 30;
             TodayTotalPanel.Controls.Add(TodayTotalLabel);
-            TodayTotalPanel.CustomizableEdges = customizableEdges19;
+            TodayTotalPanel.CustomizableEdges = customizableEdges21;
             TodayTotalPanel.FillColor = Color.FromArgb(100, 90, 210);
             TodayTotalPanel.FillColor2 = Color.FromArgb(110, 213, 228);
             TodayTotalPanel.Location = new Point(65, 53);
             TodayTotalPanel.Name = "TodayTotalPanel";
-            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges22;
             TodayTotalPanel.Size = new Size(240, 140);
             TodayTotalPanel.TabIndex = 28;
             // 
@@ -466,10 +470,10 @@
             // guna2Panel2
             // 
             guna2Panel2.Controls.Add(Last28DaysPanel);
-            guna2Panel2.CustomizableEdges = customizableEdges80;
+            guna2Panel2.CustomizableEdges = customizableEdges82;
             guna2Panel2.Location = new Point(165, 333);
             guna2Panel2.Name = "guna2Panel2";
-            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges81;
+            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges83;
             guna2Panel2.Size = new Size(1117, 348);
             guna2Panel2.TabIndex = 29;
             // 
@@ -542,10 +546,10 @@
             // 
             // guna2GradientPanel28M
             // 
-            guna2GradientPanel28M.CustomizableEdges = customizableEdges23;
+            guna2GradientPanel28M.CustomizableEdges = customizableEdges25;
             guna2GradientPanel28M.Location = new Point(720, 215);
             guna2GradientPanel28M.Name = "guna2GradientPanel28M";
-            guna2GradientPanel28M.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            guna2GradientPanel28M.ShadowDecoration.CustomizableEdges = customizableEdges26;
             guna2GradientPanel28M.Size = new Size(23, 15);
             guna2GradientPanel28M.TabIndex = 55;
             // 
@@ -560,7 +564,7 @@
             MainPageProgressBar.ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.SolidTransition;
             MainPageProgressBar.ProgressColor = Color.Silver;
             MainPageProgressBar.ProgressColor2 = Color.FromArgb(0, 192, 0);
-            MainPageProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges25;
+            MainPageProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges27;
             MainPageProgressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             MainPageProgressBar.Size = new Size(160, 160);
             MainPageProgressBar.TabIndex = 56;
@@ -570,245 +574,245 @@
             // 
             // guna2GradientPanel27M
             // 
-            guna2GradientPanel27M.CustomizableEdges = customizableEdges26;
+            guna2GradientPanel27M.CustomizableEdges = customizableEdges28;
             guna2GradientPanel27M.Location = new Point(720, 185);
             guna2GradientPanel27M.Name = "guna2GradientPanel27M";
-            guna2GradientPanel27M.ShadowDecoration.CustomizableEdges = customizableEdges27;
+            guna2GradientPanel27M.ShadowDecoration.CustomizableEdges = customizableEdges29;
             guna2GradientPanel27M.Size = new Size(23, 15);
             guna2GradientPanel27M.TabIndex = 54;
             // 
             // guna2GradientPanel26M
             // 
-            guna2GradientPanel26M.CustomizableEdges = customizableEdges28;
+            guna2GradientPanel26M.CustomizableEdges = customizableEdges30;
             guna2GradientPanel26M.Location = new Point(720, 155);
             guna2GradientPanel26M.Name = "guna2GradientPanel26M";
-            guna2GradientPanel26M.ShadowDecoration.CustomizableEdges = customizableEdges29;
+            guna2GradientPanel26M.ShadowDecoration.CustomizableEdges = customizableEdges31;
             guna2GradientPanel26M.Size = new Size(23, 15);
             guna2GradientPanel26M.TabIndex = 53;
             // 
             // guna2GradientPanel25M
             // 
-            guna2GradientPanel25M.CustomizableEdges = customizableEdges30;
+            guna2GradientPanel25M.CustomizableEdges = customizableEdges32;
             guna2GradientPanel25M.Location = new Point(720, 125);
             guna2GradientPanel25M.Name = "guna2GradientPanel25M";
-            guna2GradientPanel25M.ShadowDecoration.CustomizableEdges = customizableEdges31;
+            guna2GradientPanel25M.ShadowDecoration.CustomizableEdges = customizableEdges33;
             guna2GradientPanel25M.Size = new Size(23, 15);
             guna2GradientPanel25M.TabIndex = 52;
             // 
             // guna2GradientPanel24M
             // 
-            guna2GradientPanel24M.CustomizableEdges = customizableEdges32;
+            guna2GradientPanel24M.CustomizableEdges = customizableEdges34;
             guna2GradientPanel24M.Location = new Point(720, 95);
             guna2GradientPanel24M.Name = "guna2GradientPanel24M";
-            guna2GradientPanel24M.ShadowDecoration.CustomizableEdges = customizableEdges33;
+            guna2GradientPanel24M.ShadowDecoration.CustomizableEdges = customizableEdges35;
             guna2GradientPanel24M.Size = new Size(23, 15);
             guna2GradientPanel24M.TabIndex = 51;
             // 
             // guna2GradientPanel23M
             // 
-            guna2GradientPanel23M.CustomizableEdges = customizableEdges34;
+            guna2GradientPanel23M.CustomizableEdges = customizableEdges36;
             guna2GradientPanel23M.Location = new Point(720, 65);
             guna2GradientPanel23M.Name = "guna2GradientPanel23M";
-            guna2GradientPanel23M.ShadowDecoration.CustomizableEdges = customizableEdges35;
+            guna2GradientPanel23M.ShadowDecoration.CustomizableEdges = customizableEdges37;
             guna2GradientPanel23M.Size = new Size(23, 15);
             guna2GradientPanel23M.TabIndex = 50;
             // 
             // guna2GradientPanel22M
             // 
-            guna2GradientPanel22M.CustomizableEdges = customizableEdges36;
+            guna2GradientPanel22M.CustomizableEdges = customizableEdges38;
             guna2GradientPanel22M.Location = new Point(720, 35);
             guna2GradientPanel22M.Name = "guna2GradientPanel22M";
-            guna2GradientPanel22M.ShadowDecoration.CustomizableEdges = customizableEdges37;
+            guna2GradientPanel22M.ShadowDecoration.CustomizableEdges = customizableEdges39;
             guna2GradientPanel22M.Size = new Size(23, 15);
             guna2GradientPanel22M.TabIndex = 49;
             // 
             // guna2GradientPanel21M
             // 
-            guna2GradientPanel21M.CustomizableEdges = customizableEdges38;
+            guna2GradientPanel21M.CustomizableEdges = customizableEdges40;
             guna2GradientPanel21M.Location = new Point(513, 215);
             guna2GradientPanel21M.Name = "guna2GradientPanel21M";
-            guna2GradientPanel21M.ShadowDecoration.CustomizableEdges = customizableEdges39;
+            guna2GradientPanel21M.ShadowDecoration.CustomizableEdges = customizableEdges41;
             guna2GradientPanel21M.Size = new Size(23, 15);
             guna2GradientPanel21M.TabIndex = 48;
             // 
             // guna2GradientPanel20M
             // 
-            guna2GradientPanel20M.CustomizableEdges = customizableEdges40;
+            guna2GradientPanel20M.CustomizableEdges = customizableEdges42;
             guna2GradientPanel20M.Location = new Point(513, 185);
             guna2GradientPanel20M.Name = "guna2GradientPanel20M";
-            guna2GradientPanel20M.ShadowDecoration.CustomizableEdges = customizableEdges41;
+            guna2GradientPanel20M.ShadowDecoration.CustomizableEdges = customizableEdges43;
             guna2GradientPanel20M.Size = new Size(23, 15);
             guna2GradientPanel20M.TabIndex = 47;
             // 
             // guna2GradientPanel19M
             // 
-            guna2GradientPanel19M.CustomizableEdges = customizableEdges42;
+            guna2GradientPanel19M.CustomizableEdges = customizableEdges44;
             guna2GradientPanel19M.Location = new Point(513, 155);
             guna2GradientPanel19M.Name = "guna2GradientPanel19M";
-            guna2GradientPanel19M.ShadowDecoration.CustomizableEdges = customizableEdges43;
+            guna2GradientPanel19M.ShadowDecoration.CustomizableEdges = customizableEdges45;
             guna2GradientPanel19M.Size = new Size(23, 15);
             guna2GradientPanel19M.TabIndex = 46;
             // 
             // guna2GradientPanel18M
             // 
-            guna2GradientPanel18M.CustomizableEdges = customizableEdges44;
+            guna2GradientPanel18M.CustomizableEdges = customizableEdges46;
             guna2GradientPanel18M.Location = new Point(513, 125);
             guna2GradientPanel18M.Name = "guna2GradientPanel18M";
-            guna2GradientPanel18M.ShadowDecoration.CustomizableEdges = customizableEdges45;
+            guna2GradientPanel18M.ShadowDecoration.CustomizableEdges = customizableEdges47;
             guna2GradientPanel18M.Size = new Size(23, 15);
             guna2GradientPanel18M.TabIndex = 45;
             // 
             // guna2GradientPanel17M
             // 
-            guna2GradientPanel17M.CustomizableEdges = customizableEdges46;
+            guna2GradientPanel17M.CustomizableEdges = customizableEdges48;
             guna2GradientPanel17M.Location = new Point(513, 95);
             guna2GradientPanel17M.Name = "guna2GradientPanel17M";
-            guna2GradientPanel17M.ShadowDecoration.CustomizableEdges = customizableEdges47;
+            guna2GradientPanel17M.ShadowDecoration.CustomizableEdges = customizableEdges49;
             guna2GradientPanel17M.Size = new Size(23, 15);
             guna2GradientPanel17M.TabIndex = 44;
             // 
             // guna2GradientPanel16M
             // 
-            guna2GradientPanel16M.CustomizableEdges = customizableEdges48;
+            guna2GradientPanel16M.CustomizableEdges = customizableEdges50;
             guna2GradientPanel16M.Location = new Point(513, 65);
             guna2GradientPanel16M.Name = "guna2GradientPanel16M";
-            guna2GradientPanel16M.ShadowDecoration.CustomizableEdges = customizableEdges49;
+            guna2GradientPanel16M.ShadowDecoration.CustomizableEdges = customizableEdges51;
             guna2GradientPanel16M.Size = new Size(23, 15);
             guna2GradientPanel16M.TabIndex = 43;
             // 
             // guna2GradientPanel15M
             // 
-            guna2GradientPanel15M.CustomizableEdges = customizableEdges50;
+            guna2GradientPanel15M.CustomizableEdges = customizableEdges52;
             guna2GradientPanel15M.Location = new Point(513, 35);
             guna2GradientPanel15M.Name = "guna2GradientPanel15M";
-            guna2GradientPanel15M.ShadowDecoration.CustomizableEdges = customizableEdges51;
+            guna2GradientPanel15M.ShadowDecoration.CustomizableEdges = customizableEdges53;
             guna2GradientPanel15M.Size = new Size(23, 15);
             guna2GradientPanel15M.TabIndex = 42;
             // 
             // guna2GradientPanel14M
             // 
-            guna2GradientPanel14M.CustomizableEdges = customizableEdges52;
+            guna2GradientPanel14M.CustomizableEdges = customizableEdges54;
             guna2GradientPanel14M.Location = new Point(315, 215);
             guna2GradientPanel14M.Name = "guna2GradientPanel14M";
-            guna2GradientPanel14M.ShadowDecoration.CustomizableEdges = customizableEdges53;
+            guna2GradientPanel14M.ShadowDecoration.CustomizableEdges = customizableEdges55;
             guna2GradientPanel14M.Size = new Size(23, 15);
             guna2GradientPanel14M.TabIndex = 41;
             // 
             // guna2GradientPanel13M
             // 
-            guna2GradientPanel13M.CustomizableEdges = customizableEdges54;
+            guna2GradientPanel13M.CustomizableEdges = customizableEdges56;
             guna2GradientPanel13M.Location = new Point(315, 185);
             guna2GradientPanel13M.Name = "guna2GradientPanel13M";
-            guna2GradientPanel13M.ShadowDecoration.CustomizableEdges = customizableEdges55;
+            guna2GradientPanel13M.ShadowDecoration.CustomizableEdges = customizableEdges57;
             guna2GradientPanel13M.Size = new Size(23, 15);
             guna2GradientPanel13M.TabIndex = 40;
             // 
             // guna2GradientPanel12M
             // 
-            guna2GradientPanel12M.CustomizableEdges = customizableEdges56;
+            guna2GradientPanel12M.CustomizableEdges = customizableEdges58;
             guna2GradientPanel12M.Location = new Point(315, 155);
             guna2GradientPanel12M.Name = "guna2GradientPanel12M";
-            guna2GradientPanel12M.ShadowDecoration.CustomizableEdges = customizableEdges57;
+            guna2GradientPanel12M.ShadowDecoration.CustomizableEdges = customizableEdges59;
             guna2GradientPanel12M.Size = new Size(23, 15);
             guna2GradientPanel12M.TabIndex = 39;
             // 
             // guna2GradientPanel11M
             // 
-            guna2GradientPanel11M.CustomizableEdges = customizableEdges58;
+            guna2GradientPanel11M.CustomizableEdges = customizableEdges60;
             guna2GradientPanel11M.Location = new Point(315, 125);
             guna2GradientPanel11M.Name = "guna2GradientPanel11M";
-            guna2GradientPanel11M.ShadowDecoration.CustomizableEdges = customizableEdges59;
+            guna2GradientPanel11M.ShadowDecoration.CustomizableEdges = customizableEdges61;
             guna2GradientPanel11M.Size = new Size(23, 15);
             guna2GradientPanel11M.TabIndex = 38;
             // 
             // guna2GradientPanel10M
             // 
-            guna2GradientPanel10M.CustomizableEdges = customizableEdges60;
+            guna2GradientPanel10M.CustomizableEdges = customizableEdges62;
             guna2GradientPanel10M.Location = new Point(315, 95);
             guna2GradientPanel10M.Name = "guna2GradientPanel10M";
-            guna2GradientPanel10M.ShadowDecoration.CustomizableEdges = customizableEdges61;
+            guna2GradientPanel10M.ShadowDecoration.CustomizableEdges = customizableEdges63;
             guna2GradientPanel10M.Size = new Size(23, 15);
             guna2GradientPanel10M.TabIndex = 37;
             // 
             // guna2GradientPanel9M
             // 
-            guna2GradientPanel9M.CustomizableEdges = customizableEdges62;
+            guna2GradientPanel9M.CustomizableEdges = customizableEdges64;
             guna2GradientPanel9M.Location = new Point(315, 65);
             guna2GradientPanel9M.Name = "guna2GradientPanel9M";
-            guna2GradientPanel9M.ShadowDecoration.CustomizableEdges = customizableEdges63;
+            guna2GradientPanel9M.ShadowDecoration.CustomizableEdges = customizableEdges65;
             guna2GradientPanel9M.Size = new Size(23, 15);
             guna2GradientPanel9M.TabIndex = 36;
             // 
             // guna2GradientPanel8M
             // 
-            guna2GradientPanel8M.CustomizableEdges = customizableEdges64;
+            guna2GradientPanel8M.CustomizableEdges = customizableEdges66;
             guna2GradientPanel8M.Location = new Point(315, 35);
             guna2GradientPanel8M.Name = "guna2GradientPanel8M";
-            guna2GradientPanel8M.ShadowDecoration.CustomizableEdges = customizableEdges65;
+            guna2GradientPanel8M.ShadowDecoration.CustomizableEdges = customizableEdges67;
             guna2GradientPanel8M.Size = new Size(23, 15);
             guna2GradientPanel8M.TabIndex = 35;
             // 
             // guna2GradientPanel7M
             // 
-            guna2GradientPanel7M.CustomizableEdges = customizableEdges66;
+            guna2GradientPanel7M.CustomizableEdges = customizableEdges68;
             guna2GradientPanel7M.Location = new Point(136, 215);
             guna2GradientPanel7M.Name = "guna2GradientPanel7M";
-            guna2GradientPanel7M.ShadowDecoration.CustomizableEdges = customizableEdges67;
+            guna2GradientPanel7M.ShadowDecoration.CustomizableEdges = customizableEdges69;
             guna2GradientPanel7M.Size = new Size(23, 15);
             guna2GradientPanel7M.TabIndex = 34;
             // 
             // guna2GradientPanel6M
             // 
-            guna2GradientPanel6M.CustomizableEdges = customizableEdges68;
+            guna2GradientPanel6M.CustomizableEdges = customizableEdges70;
             guna2GradientPanel6M.Location = new Point(135, 185);
             guna2GradientPanel6M.Name = "guna2GradientPanel6M";
-            guna2GradientPanel6M.ShadowDecoration.CustomizableEdges = customizableEdges69;
+            guna2GradientPanel6M.ShadowDecoration.CustomizableEdges = customizableEdges71;
             guna2GradientPanel6M.Size = new Size(23, 15);
             guna2GradientPanel6M.TabIndex = 33;
             // 
             // guna2GradientPanel5M
             // 
-            guna2GradientPanel5M.CustomizableEdges = customizableEdges70;
+            guna2GradientPanel5M.CustomizableEdges = customizableEdges72;
             guna2GradientPanel5M.Location = new Point(135, 155);
             guna2GradientPanel5M.Name = "guna2GradientPanel5M";
-            guna2GradientPanel5M.ShadowDecoration.CustomizableEdges = customizableEdges71;
+            guna2GradientPanel5M.ShadowDecoration.CustomizableEdges = customizableEdges73;
             guna2GradientPanel5M.Size = new Size(23, 15);
             guna2GradientPanel5M.TabIndex = 32;
             // 
             // guna2GradientPanel4M
             // 
-            guna2GradientPanel4M.CustomizableEdges = customizableEdges72;
+            guna2GradientPanel4M.CustomizableEdges = customizableEdges74;
             guna2GradientPanel4M.Location = new Point(135, 125);
             guna2GradientPanel4M.Name = "guna2GradientPanel4M";
-            guna2GradientPanel4M.ShadowDecoration.CustomizableEdges = customizableEdges73;
+            guna2GradientPanel4M.ShadowDecoration.CustomizableEdges = customizableEdges75;
             guna2GradientPanel4M.Size = new Size(23, 15);
             guna2GradientPanel4M.TabIndex = 31;
             // 
             // guna2GradientPanel3M
             // 
-            guna2GradientPanel3M.CustomizableEdges = customizableEdges74;
+            guna2GradientPanel3M.CustomizableEdges = customizableEdges76;
             guna2GradientPanel3M.Location = new Point(135, 95);
             guna2GradientPanel3M.Name = "guna2GradientPanel3M";
-            guna2GradientPanel3M.ShadowDecoration.CustomizableEdges = customizableEdges75;
+            guna2GradientPanel3M.ShadowDecoration.CustomizableEdges = customizableEdges77;
             guna2GradientPanel3M.Size = new Size(23, 15);
             guna2GradientPanel3M.TabIndex = 30;
             // 
             // guna2GradientPanel2M
             // 
-            guna2GradientPanel2M.CustomizableEdges = customizableEdges76;
+            guna2GradientPanel2M.CustomizableEdges = customizableEdges78;
             guna2GradientPanel2M.Location = new Point(135, 65);
             guna2GradientPanel2M.Name = "guna2GradientPanel2M";
-            guna2GradientPanel2M.ShadowDecoration.CustomizableEdges = customizableEdges77;
+            guna2GradientPanel2M.ShadowDecoration.CustomizableEdges = customizableEdges79;
             guna2GradientPanel2M.Size = new Size(23, 15);
             guna2GradientPanel2M.TabIndex = 29;
             // 
             // guna2GradientPanel1M
             // 
             guna2GradientPanel1M.BorderRadius = 30;
-            guna2GradientPanel1M.CustomizableEdges = customizableEdges78;
+            guna2GradientPanel1M.CustomizableEdges = customizableEdges80;
             guna2GradientPanel1M.Location = new Point(135, 35);
             guna2GradientPanel1M.Name = "guna2GradientPanel1M";
-            guna2GradientPanel1M.ShadowDecoration.CustomizableEdges = customizableEdges79;
+            guna2GradientPanel1M.ShadowDecoration.CustomizableEdges = customizableEdges81;
             guna2GradientPanel1M.Size = new Size(23, 15);
             guna2GradientPanel1M.TabIndex = 28;
             // 
@@ -1098,6 +1102,32 @@
             MainPageAnimateWidnow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_SLIDE;
             MainPageAnimateWidnow.TargetForm = this;
             // 
+            // MainPageStartSessionButton
+            // 
+            MainPageStartSessionButton.AutoRoundedCorners = true;
+            MainPageStartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            MainPageStartSessionButton.BorderRadius = 21;
+            MainPageStartSessionButton.Cursor = Cursors.Hand;
+            MainPageStartSessionButton.CustomizableEdges = customizableEdges5;
+            MainPageStartSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            MainPageStartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            MainPageStartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            MainPageStartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            MainPageStartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            MainPageStartSessionButton.FillColor = Color.Empty;
+            MainPageStartSessionButton.FillColor2 = Color.Empty;
+            MainPageStartSessionButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            MainPageStartSessionButton.ForeColor = Color.White;
+            MainPageStartSessionButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
+            MainPageStartSessionButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
+            MainPageStartSessionButton.Location = new Point(0, 163);
+            MainPageStartSessionButton.Name = "MainPageStartSessionButton";
+            MainPageStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            MainPageStartSessionButton.Size = new Size(159, 45);
+            MainPageStartSessionButton.TabIndex = 26;
+            MainPageStartSessionButton.Text = "Start Session";
+            MainPageStartSessionButton.Click += MainPageStartSessionButton_Click;
+            // 
             // MainPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1202,5 +1232,6 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
         private Guna.UI2.WinForms.Guna2Button CodingSessionPageStartSessionButton;
         private Guna.UI2.WinForms.Guna2Button EndSessionButton;
+        private Guna.UI2.WinForms.Guna2GradientButton MainPageStartSessionButton;
     }
 }

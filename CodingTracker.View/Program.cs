@@ -118,7 +118,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
-                    .AddSingleton<OrbitalTimerForm>()
+                    .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
 
 
@@ -130,12 +130,10 @@ namespace CodingTracker.View.Program
                     .AddTransient<ISessionGoalCountDownTimer, SessionGoalCountdownTimer>()
    
                     .AddTransient<MainPage>()
-                    .AddTransient<CodingSessionPage>()
                     .AddTransient<EditSessionPage>()
-                    .AddTransient<CodingSessionTimerForm>()
-                    .AddTransient<PassWordTextBox>()
-                    .AddTransient<SessionGoalForm>()
-                    .AddTransient<SessionTimerForm>()
+                    .AddTransient<CreateAccountPage>()
+                    .AddTransient<SessionGoalPage>()
+                    .AddTransient<WORKINGSessionTimerForm>()
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
 

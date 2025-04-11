@@ -47,7 +47,7 @@ namespace CodingTracker.View
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
             _formFactory = formFactory;
-            
+
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
             _formStateManagement.SetCurrentForm(this);
         }
@@ -55,6 +55,7 @@ namespace CodingTracker.View
 
 
         // Custom paint method: Draws the rounded corners for the form.
+        /*
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -78,6 +79,7 @@ namespace CodingTracker.View
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.DrawPath(new Pen(Color.Black, 2), path);
         }
+        */
 
         private void InitializeVLCPlayer()
         {
@@ -112,7 +114,7 @@ namespace CodingTracker.View
 
 
 
- 
+
 
 
         private void LoadSavedCredentials()

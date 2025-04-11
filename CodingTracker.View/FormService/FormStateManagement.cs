@@ -1,6 +1,8 @@
 ﻿using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
+using CodingTracker.View.TimerDisplayService;
 
 namespace CodingTracker.View.FormService
 {
@@ -23,13 +25,15 @@ namespace CodingTracker.View.FormService
     public class FormStateManagement : IFormStateManagement
     {
         private MainPage _mainPageInstance;
-        private CodingSessionPage _codingSessionPageInstance;
         private EditSessionPage _editSessionPageInstance;
-        private CodingSessionTimerForm _codingSessionTimerInstance;
-        private PassWordTextBox _createAccountPageInstance;
+        private CreateAccountPage _createAccountPageInstance;
         private LoginPage _loginPageInstance;
-        private SessionGoalForm _popUpPageInstance;
-        private SessionTimerForm _timerDisplayPageInstance;
+        private SessionGoalPage _popUpPageInstance;
+        private WORKINGSessionTimerForm _timerDisplayPageInstance;
+        private OrbitalTimerPage _orbitalTimerPageInstance;
+        private ConfirmUsernamePage _confirmUsernamePageInstance;
+        private ResetPasswordPage _resetPasswordPageInstance;
+
         private readonly IApplicationLogger _appLogger;
 
 
@@ -39,6 +43,12 @@ namespace CodingTracker.View.FormService
         private bool _codingSessionTimerCreated = false;
         private bool _createAccountPageCreated = false;
         private bool _loginPageCreated = false;
+        private bool _popUpPageCreated = false;
+        private bool _confirmUsernamePageCreated = false;
+        private bool _resetPasswordPageCreated = false;
+        private bool _countdownTimerPageCreated = false;
+        private bool _orbitalTimerPageCreated = false;
+        private bool _timerDisplayPageCreated = false;
 
         Form _currentForm;
 
@@ -50,12 +60,15 @@ namespace CodingTracker.View.FormService
 
         private readonly Dictionary<FormPageEnum, Type> _formTypes = new Dictionary<FormPageEnum, Type>
         {
-            { FormPageEnum.LoginPage, typeof(LoginPage) },
-            { FormPageEnum.MainPage, typeof(MainPage) },
-            { FormPageEnum.CodingSessionPage, typeof(CodingSessionPage) },
-            { FormPageEnum.EditSessionPage, typeof(EditSessionPage) },
-            { FormPageEnum.CreateAccountPage, typeof(PassWordTextBox) },
-            { FormPageEnum.CodingSessionTimerPage, typeof(CodingSessionTimerForm) }
+            { FormPageEnum.LoginPage, typeof(LoginPage)},
+            { FormPageEnum.MainPage, typeof(MainPage)},
+            { FormPageEnum.EditSessionPage, typeof(EditSessionPage)},
+            { FormPageEnum.CreateAccountPage, typeof(CreateAccountPage)},
+            { FormPageEnum.SessionGoalPage, typeof(SessionGoalPage)},
+            { FormPageEnum.ConfirmUsernamePage, typeof(ConfirmUsernamePage)},
+            { FormPageEnum.ResetPasswordPage, typeof(ResetPasswordPage)},
+            { FormPageEnum.OrbitalTimerPage, typeof(OrbitalTimerPage)},
+            { FormPageEnum.WORKINGSessionTimerPage, typeof(WORKINGSessionTimerForm)},
         };
 
         public Form GetCurrentForm()
@@ -76,19 +89,26 @@ namespace CodingTracker.View.FormService
             {
                 case FormPageEnum.MainPage:
                     return _mainPageInstance;
-                case FormPageEnum.CodingSessionPage:
-                    return _codingSessionPageInstance;
                 case FormPageEnum.EditSessionPage:
                     return _editSessionPageInstance;
-                case FormPageEnum.CodingSessionTimerPage:
-                    return _codingSessionTimerInstance;
                 case FormPageEnum.CreateAccountPage:
                     return _createAccountPageInstance;
+                case FormPageEnum.LoginPage:
+                    return _loginPageInstance;
+                case FormPageEnum.SessionGoalPage:
+                    return _popUpPageInstance;
+                case FormPageEnum.ConfirmUsernamePage:
+                    return _confirmUsernamePageInstance;
+                case FormPageEnum.ResetPasswordPage:
+                    return _resetPasswordPageInstance;
+                case FormPageEnum.OrbitalTimerPage:
+                    return _orbitalTimerPageInstance;
+                case FormPageEnum.WORKINGSessionTimerPage:
+                    return _timerDisplayPageInstance;
                 default:
                     return null;
             }
         }
-
 
         public void SetFormByFormPageEnum(FormPageEnum form, Form instance)
         {
@@ -97,30 +117,32 @@ namespace CodingTracker.View.FormService
                 case FormPageEnum.MainPage:
                     _mainPageInstance = instance as MainPage;
                     break;
-                case FormPageEnum.CodingSessionPage:
-                    _codingSessionPageInstance = instance as CodingSessionPage;
-                    break;
                 case FormPageEnum.EditSessionPage:
                     _editSessionPageInstance = instance as EditSessionPage;
                     break;
-                case FormPageEnum.CodingSessionTimerPage:
-                    _codingSessionTimerInstance = instance as CodingSessionTimerForm;
-                    break;
                 case FormPageEnum.CreateAccountPage:
-                    _createAccountPageInstance = instance as PassWordTextBox;
+                    _createAccountPageInstance = instance as CreateAccountPage;
                     break;
                 case FormPageEnum.LoginPage:
                     _loginPageInstance = instance as LoginPage;
                     break;
                 case FormPageEnum.SessionGoalPage:
-                    _popUpPageInstance = instance as SessionGoalForm;
+                    _popUpPageInstance = instance as SessionGoalPage;
                     break;
-                case FormPageEnum.SessionTimerPage:
-                    _timerDisplayPageInstance = instance as SessionTimerForm;
+                case FormPageEnum.WORKINGSessionTimerPage:
+                    _timerDisplayPageInstance = instance as WORKINGSessionTimerForm;
+                    break;
+                case FormPageEnum.ConfirmUsernamePage:
+                    _confirmUsernamePageInstance = instance as ConfirmUsernamePage;
+                    break;
+                case FormPageEnum.ResetPasswordPage:
+                    _resetPasswordPageInstance = instance as ResetPasswordPage;
+                    break;
+                case FormPageEnum.OrbitalTimerPage:
+                    _orbitalTimerPageInstance = instance as OrbitalTimerPage;
                     break;
             }
         }
-
 
         public bool IsFormCreated(FormPageEnum form)
         {
@@ -128,16 +150,24 @@ namespace CodingTracker.View.FormService
             {
                 case FormPageEnum.MainPage:
                     return _mainPageCreated;
-                case FormPageEnum.CodingSessionPage:
-                    return _codingSessionPageCreated;
                 case FormPageEnum.EditSessionPage:
                     return _editSessionPageCreated;
-                case FormPageEnum.CodingSessionTimerPage:
-                    return _codingSessionTimerCreated;
                 case FormPageEnum.CreateAccountPage:
                     return _createAccountPageCreated;
                 case FormPageEnum.LoginPage:
                     return _loginPageCreated;
+                case FormPageEnum.SessionGoalPage:
+                    return _popUpPageCreated;
+                case FormPageEnum.ConfirmUsernamePage:
+                    return _confirmUsernamePageCreated;
+                case FormPageEnum.ResetPasswordPage:
+                    return _resetPasswordPageCreated;
+                case FormPageEnum.CountdownTimerPage:
+                    return _countdownTimerPageCreated;
+                case FormPageEnum.OrbitalTimerPage:
+                    return _orbitalTimerPageCreated;
+                case FormPageEnum.WORKINGSessionTimerPage:
+                    return _timerDisplayPageCreated;
                 default:
                     return false;
             }

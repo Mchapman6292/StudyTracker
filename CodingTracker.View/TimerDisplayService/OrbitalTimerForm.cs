@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 
 namespace CodingTracker.View.TimerDisplayService
 {
-    public partial class OrbitalTimerForm : Form
+    public partial class OrbitalTimerPage : Form
     {
         private Guna2BorderlessForm borderlessForm;
         private Guna2Panel mainPanel;
@@ -33,7 +33,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private readonly ICodingSessionManager _codingSessionManager;
 
-        public OrbitalTimerForm(ICodingSessionManager codingSessionManager)
+        public OrbitalTimerPage(ICodingSessionManager codingSessionManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;

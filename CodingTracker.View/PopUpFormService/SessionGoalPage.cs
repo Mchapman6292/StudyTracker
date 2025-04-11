@@ -11,7 +11,7 @@ using CodingTracker.Common.IUtilityServices;
 
 namespace CodingTracker.View.PopUpFormService
 {
-    public partial class SessionGoalForm : Form
+    public partial class SessionGoalPage : Form
     {
         private Guna2Panel mainPanel;
         private Guna2HtmlLabel questionLabel;
@@ -30,7 +30,7 @@ namespace CodingTracker.View.PopUpFormService
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService)
+        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -165,7 +165,7 @@ namespace CodingTracker.View.PopUpFormService
 
             _codingSessionManager.SetCurrentSessionGoalSet(true);
 
-            _formSwitcher.SwitchToForm(FormPageEnum.CountdownTimerPage);
+            _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
 
         private void NoButton_Click(object sender, EventArgs e)

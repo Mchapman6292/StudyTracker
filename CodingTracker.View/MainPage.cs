@@ -6,8 +6,6 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using CodingTracker.View.FormService.ColourServices;
-using Guna.UI2.WinForms;
 using System.Diagnostics;
 
 
@@ -61,8 +59,6 @@ namespace CodingTracker.View
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.CodingSessionPage);
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
@@ -159,6 +155,12 @@ namespace CodingTracker.View
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainPageStartSessionButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
         }
     }
 }
