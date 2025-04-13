@@ -1,0 +1,107 @@
+﻿using Xunit;
+using CodingTracker.Common.CodingSessions;
+
+namespace Tests.BusinessTests.CodingSessionTests
+{
+    public class CodingSessionTest
+    {
+
+        // CodingSession object is created once the user logs in with only the userId defined, the other values are populated once the user starts a session & then converted to a CodingSessionEntity before being added to the database. 
+        [Fact]
+        public void CodingSessionInitializedWithOnlyUserId()
+        {
+            int userId = 42;
+            var session = new CodingSession { UserId = userId };
+
+            Assert.Equal(userId, session.UserId);
+            Assert.Null(session.SessionId);
+            Assert.Null(session.StartDate);
+            Assert.Null(session.StartTime);
+            Assert.Null(session.EndDate);
+            Assert.Null(session.EndTime);
+            Assert.Null(session.DurationSeconds);
+            Assert.Equal(string.Empty, session.DurationHHMM);
+            Assert.False(session.GoalSet);
+            Assert.Null(session.GoalMinutes);
+            Assert.Null(session.GoalReached);
+        }
+
+
+        [Fact]
+        public void CodingSessionStartedCorrectly()
+        {
+            int userId = 42;
+            DateTime currentDateTime = DateTime.Now;
+            DateOnly currentDate = DateOnly.FromDateTime(currentDateTime);
+            bool goalSet = true;
+            int goalMinutes = 60;
+
+            var session = new CodingSession
+            {
+                UserId = userId,
+                StartDate = currentDate,
+                StartTime = currentDateTime,
+                GoalSet = goalSet,
+                GoalMinutes = goalMinutes
+            };
+
+            Assert.Equal(userId, session.UserId);
+            Assert.Equal(currentDate, session.StartDate);
+            Assert.Equal(currentDateTime, session.StartTime);
+            Assert.Equal(goalSet, session.GoalSet);
+            Assert.Equal(goalMinutes, session.GoalMinutes);
+            Assert.Null(session.EndDate);
+            Assert.Null(session.EndTime);
+            Assert.Null(session.GoalReached);
+            Assert.Null(session.DurationSeconds);
+            Assert.Empty(session.DurationHHMM);
+
+        }
+
+
+
+        [Fact]
+        public void EndingSession_CalculatesDurationCorrectly()
+        {
+            var now = DateTime.Now;
+            var session = new CodingSession
+            {
+                UserId = 42,
+                StartDate = DateOnly.FromDateTime(now.AddMinutes(-30)),
+                StartTime = now.AddMinutes(-30)
+            };
+
+            session.EndDate = DateOnly.FromDateTime(now);
+            session.EndTime = now;
+            session.DurationSeconds = (int)(now - session.StartTime.Value).TotalSeconds;
+            session.DurationHHMM = $"{session.DurationSeconds / 3600:00}:{(session.DurationSeconds % 3600) / 60:00}";
+
+            Assert.Equal(30 * 60, session.DurationSeconds);
+            Assert.Equal("00:30", session.DurationHHMM);
+        }
+
+        
+ 
+
+        [Fact]
+        public void CompletingGoal_SetsGoalReachedToTrue()
+        {
+            var now = DateTime.Now;
+            var session = new CodingSession
+            {
+                UserId = 42,
+                StartDate = DateOnly.FromDateTime(now.AddMinutes(-60)),
+                StartTime = now.AddMinutes(-60),
+                GoalSet = true,
+                GoalMinutes = 45
+            };
+
+            session.EndDate = DateOnly.FromDateTime(now);
+            session.EndTime = now;
+            session.DurationSeconds = 60 * 60;
+            session.GoalReached = session.DurationSeconds >= session.GoalMinutes * 60;
+
+            Assert.True(session.GoalReached);
+        }
+    }
+}

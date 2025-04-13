@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View
 {
-    partial class PassWordTextBox
+    partial class CreateAccountPage
     {
         /// <summary>
         /// Required designer variable.
@@ -190,7 +190,7 @@
             MainPageExitControlBox.Size = new Size(45, 29);
             MainPageExitControlBox.TabIndex = 26;
             // 
-            // PassWordTextBox
+            // CreateAccountPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -202,7 +202,7 @@
             Controls.Add(CreateAccountPasswordTextbox);
             Controls.Add(CreateAccountPageUsernameTextbox);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "PassWordTextBox";
+            Name = "CreateAccountPage";
             guna2Panel1.ResumeLayout(false);
             ResumeLayout(false);
         }

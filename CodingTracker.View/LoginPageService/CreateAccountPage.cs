@@ -8,7 +8,7 @@ using CodingTracker.View.FormPageEnums;
 namespace CodingTracker.View
 {
 
-    public partial class PassWordTextBox : Form
+    public partial class CreateAccountPage : Form
     {
         private readonly IInputValidator _inputValidator;
         private readonly IApplicationLogger _appLogger;
@@ -17,7 +17,7 @@ namespace CodingTracker.View
         private readonly IAuthenticationService _authenticationService;
         public Action<string> AccountCreatedCallback { get; set; }
 
-        public PassWordTextBox( IInputValidator inputValidator, IApplicationLogger appLogger, IFormController formController, IFormSwitcher formSwitcher, IAuthenticationService authentication)
+        public CreateAccountPage( IInputValidator inputValidator, IApplicationLogger appLogger, IFormController formController, IFormSwitcher formSwitcher, IAuthenticationService authentication)
         {
             InitializeComponent();
             _inputValidator = inputValidator;

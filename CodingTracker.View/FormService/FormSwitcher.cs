@@ -28,7 +28,7 @@ namespace CodingTracker.View.FormService
         public Form SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 
         {
             var createAccountPage = _formFactory.CreateForm(FormPageEnum.CreateAccountPage);
-            _formController.HandleAndShowForm(() => createAccountPage, nameof(PassWordTextBox), true);
+            _formController.HandleAndShowForm(() => createAccountPage, nameof(CreateAccountPage), true);
             return createAccountPage;
         }
 

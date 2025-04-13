@@ -11,16 +11,13 @@ using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionTimers;
 using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
 using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.ErrorHandlers;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IErrorHandlers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -64,17 +61,14 @@ namespace CodingTracker.View.Program
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-
-
             using var serviceProvider = services.BuildServiceProvider();
+
+
             ApplicationConfiguration.Initialize();
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
             var loginPage = formFactory.GetOrCreateLoginPage();
-            
-
-   
-
+ 
             Application.Run(loginPage);
         }
 
@@ -101,9 +95,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IInputValidationResult, InputValidationResult>()
                     .AddSingleton<IMessageBoxManager, MessageBoxManager>()
                     .AddSingleton<IPanelColourControl, PanelColourControl>()
-                    .AddSingleton<IErrorHandler, ErrorHandler>()
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
-                    .AddSingleton<ICodingSessionTimer, CodingSessionTimer>()
                     .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingTrackerDbContext, CodingTrackerDbContext>()
@@ -118,7 +110,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
-                    .AddSingleton<OrbitalTimerForm>()
+                    .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
 
 
@@ -130,12 +122,10 @@ namespace CodingTracker.View.Program
                     .AddTransient<ISessionGoalCountDownTimer, SessionGoalCountdownTimer>()
    
                     .AddTransient<MainPage>()
-                    .AddTransient<CodingSessionPage>()
                     .AddTransient<EditSessionPage>()
-                    .AddTransient<CodingSessionTimerForm>()
-                    .AddTransient<PassWordTextBox>()
-                    .AddTransient<SessionGoalForm>()
-                    .AddTransient<SessionTimerForm>()
+                    .AddTransient<CreateAccountPage>()
+                    .AddTransient<SessionGoalPage>()
+                    .AddTransient<CountdownTimerForm>()
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
 

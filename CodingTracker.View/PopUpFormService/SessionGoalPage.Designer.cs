@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.PopUpFormService
 {
-    partial class SessionGoalForm
+    partial class SessionGoalPage
     {
         /// <summary>
         /// Required designer variable.
@@ -40,13 +40,13 @@
             DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
             // 
-            // SessionGoalForm
+            // SessionGoalPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 450);
-            Name = "SessionGoalForm";
+            Name = "SessionGoalPage";
             Text = "SessionGoalPage";
             Load += PopUpForm_Load;
             ResumeLayout(false);

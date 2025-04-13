@@ -1,9 +1,12 @@
 ﻿using CodingTracker.Business.CodingSessionService.SessionCalculators;
+using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
 using Guna.UI2.WinForms;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CodingTracker.Business.MainPageService.LabelAssignments
 {
@@ -14,6 +17,9 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
         void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
         void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime);
+        Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel);
+        void UpdateDateLabelsWithHTML(Panel parentPanel);
+        void AdjustDateLabelsColumns(Panel parentPanel);
     }
 
     public class LabelAssignment : ILabelAssignment
@@ -22,15 +28,17 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly ISessionCalculator _sessionCalculator;
         private readonly IUtilityService _utilityService;
+        private readonly IPanelColourAssigner _panelColourAssigner;
 
 
 
-        public LabelAssignment(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ISessionCalculator sessionCalculator, IUtilityService utilityService)
+        public LabelAssignment(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ISessionCalculator sessionCalculator, IUtilityService utilityService, IPanelColourAssigner panelColourAssigner)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
             _sessionCalculator = sessionCalculator;
             _utilityService = utilityService;
+            _panelColourAssigner = panelColourAssigner;
         }
 
 
@@ -112,8 +120,79 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             label.BackColor = Color.Transparent;
         }
 
+        public void FormatDateLabel(Guna2HtmlLabel label, string formattedDate)
+        {
+            string html = $@"
+            <div style='font-family: Segoe UI;'>
+                <div style='font-size: 11.5px; font-weight: 400; color: #e6e6e6;'>{formattedDate}</div>
+            </div>";
+
+            label.Text = html;
+            label.BackColor = Color.Transparent;
+        }
 
 
+        public async Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel)
+        {
+            var gradientPanels = parentPanel.Controls.OfType<Guna.UI2.WinForms.Guna2GradientPanel>().ToList();
+            List<Color> panelColors = await _panelColourAssigner.AssignColorsToSessionsInLast28Days();
+
+            for (int i = 0; i < panelColors.Count && i < gradientPanels.Count; i++)
+            {
+                gradientPanels[i].BackColor = panelColors[i];
+            }
+        }
+
+
+
+
+        public void UpdateDateLabelsWithHTML(Panel parentPanel)
+        {
+            List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
+            var gunaDateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
+
+            for (int i = 0; i < last28Days.Count && i < gunaDateLabels.Count; i++)
+            {
+                string labelDate = last28Days[i].ToShortDateString();
+                FormatDateLabel(gunaDateLabels[i], labelDate);
+            }
+        }
+
+
+        public void AdjustDateLabelsColumns(Panel parentPanel)
+        {
+            // Get all date labels
+            var dateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
+            List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
+
+            // Define the column positions to match the top panels
+            int[] columnX = new int[] { 65, 438, 836, 1050 }; // Adjust the last column as needed
+
+            // Determine how many labels per column (assuming current 4-column layout)
+            int labelsPerColumn = dateLabels.Count / 4;
+            if (dateLabels.Count % 4 != 0) labelsPerColumn++;
+
+            // Update each label's X position while maintaining its current Y position
+            for (int i = 0; i < dateLabels.Count; i++)
+            {
+                // Determine which column this label belongs to
+                int columnIndex = i / labelsPerColumn;
+                if (columnIndex > 3) columnIndex = 3; // Ensure we stay within our column array
+
+                // Get current position
+                Point currentPos = dateLabels[i].Location;
+
+                // Update only the X coordinate to align with our column positions
+                dateLabels[i].Location = new Point(columnX[columnIndex], currentPos.Y);
+
+                // Format the label if we have a corresponding date
+                if (i < last28Days.Count)
+                {
+                    string formattedDate = last28Days[i].ToString("dd/MM/yyyy");
+                    FormatDateLabel(dateLabels[i], formattedDate);
+                }
+            }
+        }
     }
 }
 

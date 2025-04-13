@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.TimerDisplayService
 {
-    partial class OrbitalTimerForm
+    partial class OrbitalTimerPage
     {
         /// <summary>
         /// Required designer variable.

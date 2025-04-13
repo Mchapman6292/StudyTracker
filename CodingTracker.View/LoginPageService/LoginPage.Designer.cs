@@ -290,10 +290,11 @@ namespace CodingTracker.View
             guna2ControlBox1.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             guna2ControlBox1.HoverState.IconColor = Color.White;
             guna2ControlBox1.IconColor = Color.White;
-            guna2ControlBox1.Location = new Point(1185, 1);
+            guna2ControlBox1.Location = new Point(1211, 1);
+            guna2ControlBox1.Margin = new Padding(0);
             guna2ControlBox1.Name = "guna2ControlBox1";
             guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            guna2ControlBox1.Size = new Size(45, 29);
+            guna2ControlBox1.Size = new Size(35, 29);
             guna2ControlBox1.TabIndex = 25;
             // 
             // LoginPageExitControlBox
@@ -303,10 +304,11 @@ namespace CodingTracker.View
             LoginPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
             LoginPageExitControlBox.HoverState.IconColor = Color.White;
             LoginPageExitControlBox.IconColor = Color.White;
-            LoginPageExitControlBox.Location = new Point(1236, 1);
+            LoginPageExitControlBox.Location = new Point(1246, 1);
+            LoginPageExitControlBox.Margin = new Padding(0);
             LoginPageExitControlBox.Name = "LoginPageExitControlBox";
             LoginPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            LoginPageExitControlBox.Size = new Size(45, 29);
+            LoginPageExitControlBox.Size = new Size(35, 29);
             LoginPageExitControlBox.TabIndex = 24;
             LoginPageExitControlBox.Click += LoginPageExitControlBox_Click;
             // 

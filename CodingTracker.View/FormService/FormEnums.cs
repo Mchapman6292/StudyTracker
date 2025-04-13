@@ -4,16 +4,13 @@
     {
         LoginPage,
         MainPage,
-        CodingSessionPage,
         EditSessionPage,
         CreateAccountPage,
-        CodingSessionTimerPage,
         SessionGoalPage,
+        WORKINGSessionTimerPage,
         ConfirmUsernamePage,
         ResetPasswordPage,
-        SessionTimerPage,
         CountdownTimerPage,
-        FloatingBubblePage,
         OrbitalTimerPage
     }
 

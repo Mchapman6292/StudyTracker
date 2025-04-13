@@ -28,39 +28,19 @@ namespace CodingTracker.Business.ApplicationControls
             ApplicationIsRunning = true;
         }
 
-        public async Task ExitApplicationAsync()
-        {
-            using var activity = new Activity(nameof(ExitApplicationAsync)).Start();
-            _appLogger.Info($"Starting {nameof(ExitApplicationAsync)}. TraceID: {activity.TraceId}");
-
-            var stopwatch = Stopwatch.StartNew();
-
-            try
-            {
-                if (_codingSessionManager.ReturnIsCodingSessionActive())
-                {
-                    await _codingSessionManager.EndCodingSessionAsync();
-                    _appLogger.Info($"Active coding session saved. TraceID: {activity.TraceId}");
-                }
-
-                await _context.SaveChangesAsync();
-
-                stopwatch.Stop();
-                _appLogger.Info($"{nameof(ExitApplicationAsync)} completed. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
-
-                Application.Exit();
-            }
-            catch (Exception ex)
-            {
-                stopwatch.Stop();
-                _appLogger.Error($"An error occurred during {nameof(ExitApplicationAsync)}. Error: {ex.Message}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}", ex);
-            }
-        }
-
-
         public async Task ExitCodingTrackerAsync()
         {
-            // Add check/bool for coding session timer true/false.
+            bool codingSessionActive = _codingSessionManager.ReturnIsCodingSessionActive();
+
+            if(!codingSessionActive)
+            {
+                Application.Exit();
+                return;
+            }
+            bool? goalReached = _codingSessionManager.ReturnCurrentSessionGoalReached();
+            await _codingSessionManager.EndCodingSessionAsync(goalReached);
+            Application.Exit();
+
         }
     }
 }

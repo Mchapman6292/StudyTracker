@@ -47,7 +47,7 @@ namespace CodingTracker.View
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
             _formFactory = formFactory;
-            
+
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
             _formStateManagement.SetCurrentForm(this);
         }
@@ -55,6 +55,7 @@ namespace CodingTracker.View
 
 
         // Custom paint method: Draws the rounded corners for the form.
+        /*
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -78,6 +79,7 @@ namespace CodingTracker.View
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.DrawPath(new Pen(Color.Black, 2), path);
         }
+        */
 
         private void InitializeVLCPlayer()
         {
@@ -112,7 +114,7 @@ namespace CodingTracker.View
 
 
 
- 
+
 
 
         private void LoadSavedCredentials()
@@ -163,7 +165,7 @@ namespace CodingTracker.View
                 UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
 
                 // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                await _codingSessionManager.StartCodingSession(username);
+                await _codingSessionManager.OldStartCodingSession(username);
                 await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
                 _userIdService.SetCurrentUserId(userCredential.UserId);
 
@@ -174,7 +176,6 @@ namespace CodingTracker.View
 
                 this.Hide();
                 mainPage.Show();
-
 
             }
         }
@@ -212,7 +213,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _appControl.ExitApplicationAsync();
+            _appControl.ExitCodingTrackerAsync();
 
         }
 
