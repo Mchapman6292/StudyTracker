@@ -9,6 +9,8 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Drawing;
 
 
 // Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
@@ -63,6 +65,7 @@ namespace CodingTracker.View
             CustomizeDatePicker();
             UpdateDeleteSessionButtonVisibility();
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
+            LogDataGridViewColour();
         }
 
         // This fires after the constructor has finished & before form is rendered. 
@@ -451,25 +454,18 @@ namespace CodingTracker.View
 
         }
 
-        private async void TestButton_Click(object sender, EventArgs e)
-        {
-            _dataGridViewManager.ClearDataGridViewDataSource(EditSessionPageDataGridView);
-            _dataGridViewManager.ClearDataGridViewColumns(EditSessionPageDataGridView);
-            _dataGridViewManager.ClearAllInRowToInfoMapping();
-
-            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, SessionSortCriteria.Duration);
-
-            _dataGridViewManager.LoadDataGridViewWithSessions(EditSessionPageDataGridView, codingSessions);
-            _dataGridViewManager.HideUnusuedColumns(EditSessionPageDataGridView);
-            _dataGridViewManager.RenameDataGridColumns(EditSessionPageDataGridView);
-            _dataGridViewManager.FormatDataGridViewDateData(EditSessionPageDataGridView);
-            _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
-            _dataGridViewManager.CreateRowStateAndAddToDictWithDataGridRow(EditSessionPageDataGridView);
-        }
 
         private void EditSessionPageExitControlBox_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void LogDataGridViewColour()
+        {
+            Color headerColor = EditSessionPageDataGridView.ColumnHeadersDefaultCellStyle.BackColor;
+
+            _appLogger.Debug($"Header color RGB: ({ headerColor.R}, { headerColor.G}, { headerColor.B})");
+            _appLogger.Debug($"Header color Hex: #{headerColor.R:X2}{headerColor.G:X2}{headerColor.B:X2}");
         }
     }
 }

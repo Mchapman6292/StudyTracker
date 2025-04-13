@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View.TimerDisplayService
 {
-    partial class WORKINGSessionTimerForm
+    partial class CountdownTimerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,7 @@
 
 
             // 
-            // WORKINGSessionTimerForm
+            // CountdownTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -48,7 +48,7 @@
             Controls.Add(MainPageExitControlBox);
             Controls.Add(MainPageExitControlMinimizeButton);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "WORKINGSessionTimerForm";
+            Name = "CountdownTimerForm";
             ResumeLayout(false);
         }
 

@@ -15,11 +15,11 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
     public enum SessionColor
     {
         Blue,        // For 0 minutes
-        RedGrey,     // For less than 60 minutes
-        Red,         // For 1 to less than 2 hours
-        Yellow,      // For 2 to less than 3 hours
-        Green,       // For 3 hours and more
-        Black        // For errors/null   
+        Coral,       // For less than 60 minutes
+        Rose,        // For 1 to less than 2 hours
+        Amber,       // For 2 to less than 3 hours
+        Emerald,     // For 3 hours and more
+        Slate        // For errors/null   
     }
     public interface IPanelColourAssigner
     {
@@ -93,23 +93,23 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
             using (new Activity(nameof(DetermineSessionColor))) { }
             if (!sessionDurationSeconds.HasValue || sessionDurationSeconds <= 0)
             {
-                return SessionColor.Green;
+                return SessionColor.Emerald;
             }
             else if (sessionDurationSeconds < 3600)
             {
-                return SessionColor.RedGrey;
+                return SessionColor.Coral;
             }
             else if (sessionDurationSeconds < 7200)
             {
-                return SessionColor.Red;
+                return SessionColor.Rose;
             }
             else if (sessionDurationSeconds < 10800)
             {
-                return SessionColor.Yellow;
+                return SessionColor.Amber;
             }
             else
             {
-                return SessionColor.Green;
+                return SessionColor.Emerald;
             }
         }
 
@@ -118,40 +118,36 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         {
             var activity = new Activity(nameof(ConvertSessionColorEnumToColor)).Start();
             var stopwatch = Stopwatch.StartNew();
-
             _appLogger.Debug($"Starting {nameof(ConvertSessionColorEnumToColor)} ceID: {activity.TraceId}");
             try
             {
-
                 Color result;
                 switch (color)
                 {
                     case SessionColor.Blue:
-                        result = Color.Blue;
+                        result = Color.FromArgb(64, 116, 199);
                         break;
-                    case SessionColor.RedGrey:
-                        result = Color.FromArgb(255, 128, 128);
+                    case SessionColor.Coral:
+                        result = Color.FromArgb(235, 107, 107);
                         break;
-                    case SessionColor.Red:
-                        result = Color.Red;
+                    case SessionColor.Rose:
+                        result = Color.FromArgb(226, 54, 78);
                         break;
-                    case SessionColor.Yellow:
-                        result = Color.Yellow;
+                    case SessionColor.Amber:
+                        result = Color.FromArgb(255, 190, 92);
                         break;
-                    case SessionColor.Green:
-                        result = Color.Green;
+                    case SessionColor.Emerald:
+                        result = Color.FromArgb(46, 204, 113);
                         break;
-                    case SessionColor.Black: // For errors/null
-                        result = Color.Black;
+                    case SessionColor.Slate:
+                        result = Color.FromArgb(45, 45, 65);
                         break;
                     default:
-                        result = Color.Blue; // Default case as fallback
+                        result = Color.FromArgb(64, 116, 199);
                         break;
                 }
-
                 stopwatch.Stop();
                 _appLogger.Info($"Color determined for SessionColor {color}: {result}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
-
                 return result;
             }
             finally

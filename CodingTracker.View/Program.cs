@@ -61,17 +61,14 @@ namespace CodingTracker.View.Program
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-
-
             using var serviceProvider = services.BuildServiceProvider();
+
+
             ApplicationConfiguration.Initialize();
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
             var loginPage = formFactory.GetOrCreateLoginPage();
-            
-
-   
-
+ 
             Application.Run(loginPage);
         }
 
@@ -128,7 +125,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()
                     .AddTransient<SessionGoalPage>()
-                    .AddTransient<WORKINGSessionTimerForm>()
+                    .AddTransient<CountdownTimerForm>()
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
 

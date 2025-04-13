@@ -165,7 +165,7 @@ namespace CodingTracker.View
                 UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
 
                 // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                await _codingSessionManager.StartCodingSession(username);
+                await _codingSessionManager.OldStartCodingSession(username);
                 await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
                 _userIdService.SetCurrentUserId(userCredential.UserId);
 
@@ -176,7 +176,6 @@ namespace CodingTracker.View
 
                 this.Hide();
                 mainPage.Show();
-
 
             }
         }
@@ -214,7 +213,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _appControl.ExitApplicationAsync();
+            _appControl.ExitCodingTrackerAsync();
 
         }
 

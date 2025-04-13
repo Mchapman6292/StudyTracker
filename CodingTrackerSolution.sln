@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingTracker.View", "Codin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingTracker.Common", "CodingTracker.Common\CodingTracker.Common.csproj", "{29BFB055-9485-4862-BA80-3CB64AF43E70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingTracker.Logging", "CodingTracker.Logging\CodingTracker.Logging.csproj", "{53D1FB13-6286-4320-8C9B-C0E3B1449CAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingTracker.Logging", "CodingTracker.Logging\CodingTracker.Logging.csproj", "{53D1FB13-6286-4320-8C9B-C0E3B1449CAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5BABB3CE-EE68-453A-8D47-923E09CE2973}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{53D1FB13-6286-4320-8C9B-C0E3B1449CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53D1FB13-6286-4320-8C9B-C0E3B1449CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53D1FB13-6286-4320-8C9B-C0E3B1449CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BABB3CE-EE68-453A-8D47-923E09CE2973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BABB3CE-EE68-453A-8D47-923E09CE2973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BABB3CE-EE68-453A-8D47-923E09CE2973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BABB3CE-EE68-453A-8D47-923E09CE2973}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

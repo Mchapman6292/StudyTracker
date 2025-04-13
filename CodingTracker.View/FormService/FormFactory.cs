@@ -40,7 +40,7 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.EditSessionPage => typeof(EditSessionPage),
                 FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
                 FormPageEnum.SessionGoalPage => typeof(SessionGoalPage),
-                FormPageEnum.WORKINGSessionTimerPage => typeof(WORKINGSessionTimerForm),
+                FormPageEnum.WORKINGSessionTimerPage => typeof(CountdownTimerForm),
                 FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
                 FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
                 FormPageEnum.OrbitalTimerPage => typeof(OrbitalTimerPage),

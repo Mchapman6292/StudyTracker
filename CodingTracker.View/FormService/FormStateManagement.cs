@@ -29,7 +29,7 @@ namespace CodingTracker.View.FormService
         private CreateAccountPage _createAccountPageInstance;
         private LoginPage _loginPageInstance;
         private SessionGoalPage _popUpPageInstance;
-        private WORKINGSessionTimerForm _timerDisplayPageInstance;
+        private CountdownTimerForm _timerDisplayPageInstance;
         private OrbitalTimerPage _orbitalTimerPageInstance;
         private ConfirmUsernamePage _confirmUsernamePageInstance;
         private ResetPasswordPage _resetPasswordPageInstance;
@@ -68,7 +68,7 @@ namespace CodingTracker.View.FormService
             { FormPageEnum.ConfirmUsernamePage, typeof(ConfirmUsernamePage)},
             { FormPageEnum.ResetPasswordPage, typeof(ResetPasswordPage)},
             { FormPageEnum.OrbitalTimerPage, typeof(OrbitalTimerPage)},
-            { FormPageEnum.WORKINGSessionTimerPage, typeof(WORKINGSessionTimerForm)},
+            { FormPageEnum.WORKINGSessionTimerPage, typeof(CountdownTimerForm)},
         };
 
         public Form GetCurrentForm()
@@ -130,7 +130,7 @@ namespace CodingTracker.View.FormService
                     _popUpPageInstance = instance as SessionGoalPage;
                     break;
                 case FormPageEnum.WORKINGSessionTimerPage:
-                    _timerDisplayPageInstance = instance as WORKINGSessionTimerForm;
+                    _timerDisplayPageInstance = instance as CountdownTimerForm;
                     break;
                 case FormPageEnum.ConfirmUsernamePage:
                     _confirmUsernamePageInstance = instance as ConfirmUsernamePage;

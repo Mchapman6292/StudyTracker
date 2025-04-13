@@ -1,13 +1,11 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.View.FormService;
-using Guna.UI2.WinForms;
-using CodingTracker.View.FormPageEnums;
 using CodingTracker.Common.IInputValidators;
-using CodingTracker.View.FormService.NotificationManagers;
-using System.Diagnostics.Metrics;
-using System.Numerics;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.PopUpFormService
 {
@@ -164,14 +162,15 @@ namespace CodingTracker.View.PopUpFormService
             _formStatePropertyManager.SetFormGoalMins(sessionGoal);
 
             _codingSessionManager.SetCurrentSessionGoalSet(true);
+            _codingSessionManager.UpdateISCodingSessionActive(true);
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
 
         private void NoButton_Click(object sender, EventArgs e)
         {
-            GoalSet = false;
             _codingSessionManager.UpdateIsSessionTimerActive(true);
+            _codingSessionManager.UpdateISCodingSessionActive(true);
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();

@@ -3,11 +3,12 @@ using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.Common.IApplicationLoggers;
 
 
 namespace CodingTracker.View.TimerDisplayService
 {
-    public partial class WORKINGSessionTimerForm : Form
+    public partial class CountdownTimerForm : Form
     {
         private Guna2CircleProgressBar progressBar;
         private System.Windows.Forms.Timer progressTimer;
@@ -29,17 +30,19 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
+        private readonly IApplicationLogger _appLogger;
            
 
-        public WORKINGSessionTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher)
+        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger)
         {
             InitializeComponent();
             _formStatePropertyManager = formStatePropertyManager;
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
+            _appLogger = appLogger;
             formSessionGoal = _formStatePropertyManager.ReturnFormGoalTimeHHMMAsInt();
             SetupProgressBar();
-            _codingSessionManager.StartCodingSessionWithGoal(formStartTime, formSessionGoal);
+            _codingSessionManager.StartCodingSession(formStartTime, formSessionGoal, true);
         }
 
         void SetupProgressBar()
@@ -162,7 +165,7 @@ namespace CodingTracker.View.TimerDisplayService
             progressTimer.Start();
         }
 
-        private void ProgressTimer_Tick(object sender, EventArgs e)
+        private async void ProgressTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - formStartTime;
             double percentage = Math.Min(100, (elapsed.TotalSeconds / formSessionGoal) * 100);
@@ -186,7 +189,20 @@ namespace CodingTracker.View.TimerDisplayService
             if (progressValue >= 100)
             {
                 progressTimer.Stop();
+                try
+                {
+                    await _codingSessionManager.EndCodingSessionAsync(true);
+                }
+                catch (Exception ex)
+                {
+                    _appLogger.Error($"Error during {nameof(ProgressTimer_Tick)}: {ex}.");
+                }
             }
+        }
+
+        private void UpdateCodingSessionOnTimerComplete()
+        {
+
         }
 
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
@@ -249,8 +265,9 @@ namespace CodingTracker.View.TimerDisplayService
             if (result == DialogResult.Yes)
             {
                 this.DialogResult = DialogResult.OK;
-                await _codingSessionManager.EndCodingSessionWithGoalAsync(DateTime.Now);
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                bool? goalReached = _codingSessionManager.ReturnCurrentSessionGoalReached();
+                await _codingSessionManager.EndCodingSessionAsync(goalReached);
+                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
             }
             else
             {
