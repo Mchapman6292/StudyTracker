@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.FormPageEnums;
@@ -25,10 +26,11 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IFormSwitcher _formSwitcher;
         private readonly IInputValidator _inputValidator;
         private readonly IFormStatePropertyManager _formStatePropertyManager;
+        private readonly IApplicationLogger _appLogger;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService)
+        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService, IApplicationLogger appLogger)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -36,6 +38,7 @@ namespace CodingTracker.View.PopUpFormService
             _notificationManager = notificationManager;
             _formStatePropertyManager = formStatePropertyManager;
             _utilityService = utilityService;
+            _appLogger = appLogger;
 
             InitializeComponent();
             InitializeToolsAndComponents();
@@ -102,7 +105,7 @@ namespace CodingTracker.View.PopUpFormService
             SetTimeGoalButton.BorderRadius = 8;
             SetTimeGoalButton.Size = new Size(120, 45);
             SetTimeGoalButton.Location = new Point(70, 150);
-            SetTimeGoalButton.Click += YesButton_Click;
+            SetTimeGoalButton.Click += SetTimeGoalButton_Click;
 
             SkipButton = new Guna2Button();
             SkipButton.Text = "Skip";
@@ -110,7 +113,7 @@ namespace CodingTracker.View.PopUpFormService
             SkipButton.BorderRadius = 8;
             SkipButton.Size = new Size(120, 45);
             SkipButton.Location = new Point(210, 150);
-            SkipButton.Click += NoButton_Click;
+            SkipButton.Click += SkipButton_Click;
 
             mainPanel.Controls.Add(questionLabel);
             mainPanel.Controls.Add(timeGoalTextBox);
@@ -146,9 +149,10 @@ namespace CodingTracker.View.PopUpFormService
 
         // Change input time values 
 
-        private void YesButton_Click(object sender, EventArgs e)
+        private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
             string timeInputString = timeGoalTextBox.Text;
+            _appLogger.Debug($"Time string extraced from text box: {timeInputString}"); 
 
             if (!ValidateTimeFormat(timeInputString))
             {
@@ -156,21 +160,32 @@ namespace CodingTracker.View.PopUpFormService
                 return;
             }
 
-            int sessionGoal = _utilityService.ConvertHHMMStringToInt32NoSemiColon(timeInputString);
-            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoal);
+            // Goal is taken as HHMM format and convert to seconds.
+            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+
+
+            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSeconds);
+            /*
             _formStatePropertyManager.SetIsFormGoalSet(true);
-            _formStatePropertyManager.SetFormGoalMins(sessionGoal);
+            _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSeconds);
+            */
+
 
             _codingSessionManager.SetCurrentSessionGoalSet(true);
+            _codingSessionManager.UpdateISCodingSessionActive(true);
+            _codingSessionManager.SetCurrentSessionGoalSeconds(sessionGoalSeconds);
             _codingSessionManager.UpdateISCodingSessionActive(true);
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
 
-        private void NoButton_Click(object sender, EventArgs e)
+        private void SkipButton_Click(object sender, EventArgs e)
         {
+            
             _codingSessionManager.UpdateIsSessionTimerActive(true);
             _codingSessionManager.UpdateISCodingSessionActive(true);
+            _codingSessionManager.SetCurrentSessionGoalSet(false);
+            _codingSessionManager.SetCurrentSessionGoalReached(false);
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();

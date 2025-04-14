@@ -29,25 +29,40 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 throw new InvalidOperationException($"A CodingSession with SessionId {currentSession.SessionId} already exists.");
             }
 
-            _dbContext.CodingSessions.Add(currentSession);
+            _appLogger.Debug($"Adding new coding session with details:");
+            _appLogger.Debug($"  SessionId: {currentSession.SessionId}");
+            _appLogger.Debug($"  UserId: {currentSession.UserId}");
+            _appLogger.Debug($"  StartDate: {currentSession.StartDate}");
+            _appLogger.Debug($"  StartTime: {currentSession.StartTime}");
+            _appLogger.Debug($"  EndDate: {currentSession.EndDate}");
+            _appLogger.Debug($"  EndTime: {currentSession.EndTime}");
+            _appLogger.Debug($"  DurationSeconds: {currentSession.DurationSeconds}");
+            _appLogger.Debug($"  DurationHHMM: {currentSession.DurationHHMM}");
+            _appLogger.Debug($"  GoalSet: {currentSession.GoalSet}");
+            _appLogger.Debug($"  GoalSeconds: {currentSession.GoalSeconds}");
+            _appLogger.Debug($"  GoalReached: {currentSession.GoalReached}");
 
+            _dbContext.CodingSessions.Add(currentSession);
             bool success = await _dbContext.SaveChangesAsync() > 0;
 
             if (!success)
             {
                 _appLogger.Error($"Failed to add CodingSession with SessionId {currentSession.SessionId}.");
             }
+            else
+            {
+                _appLogger.Debug($"Session successfully added for SessionId: {currentSession.SessionId}");
+            }
 
-            _appLogger.Debug($"Session added for SessionId: {currentSession.SessionId}, Duration: {currentSession.DurationHHMM}.");
             return success;
         }
+
+
 
         public async Task<List<CodingSessionEntity>> GetSessionsbyIDAsync(List<int> sessionIds)
         {
             // Creating a list of Coding sessions would load all sessions into memory.
             // Using .Where = SELECT * FROM CodingSessions WHERE SessionId IN (1,2,3)
-
-
 
             return await _dbContext.CodingSessions
                     .Where(s => sessionIds.Contains(s.SessionId))

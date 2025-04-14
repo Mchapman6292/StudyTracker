@@ -69,8 +69,17 @@ namespace CodingTracker.Common.UtilityServices
         }
 
 
-        // Takes input hhmm
-        public int ConvertHHMMStringToInt32NoSemiColon(string input)
+        public string ConvertIntToHHMMStringWitSemiColon(int? durationSeconds)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(durationSeconds);
+            int totalHours = (int)timeSpan.TotalHours;
+            int minutes = timeSpan.Minutes;
+            return $"{totalHours:D2}:{minutes:D2}";
+        }
+
+
+
+        public int ConvertHHMMStringToSeconds(string input)
         {
             int hours = int.Parse(input.Substring(0, 2));
             int minutes = int.Parse(input.Substring(2, 2));
@@ -79,6 +88,9 @@ namespace CodingTracker.Common.UtilityServices
             _appLogger.Debug($"Result of {nameof(ConvertDoubleToHHMMString)}: {result}.");
             return result;
         }
+
+
+
 
         // Ensures all session date and time values are explicitly converted to UTC for PostgreSQL compatibility.
         public void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession)

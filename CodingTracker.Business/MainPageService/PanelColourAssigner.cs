@@ -21,20 +21,14 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         Emerald,     // For 3 hours and more
         Slate        // For errors/null   
     }
+
     public interface IPanelColourAssigner
     {
-        Task<List<Color>> AssignColorsToSessionsInLast28Days();
-        Color ConvertSessionColorEnumToColor(SessionColor color);
-
+        Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days();
+        (Color StartColor, Color EndColor) GetSessionGradientColors(SessionColor color);
         SessionColor DetermineSessionColor(double? sessionDurationSeconds);
-
         List<DateTime> GetDatesPrevious28days();
-
-
-
     }
-
-
 
     public class PanelColourAssigner : IPanelColourAssigner
     {
@@ -43,50 +37,36 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         private readonly List<SessionColor> _sessionColors;
         private readonly ICodingSessionRepository _codingSessionRepository;
 
-
-
-        public PanelColourAssigner(IApplicationLogger appLogger,ICodingSessionRepository codingSessionRepository)
+        public PanelColourAssigner(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
         }
 
-        public async Task<List<Color>> AssignColorsToSessionsInLast28Days()
+        public async Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days()
         {
-            using (var activity = new Activity(nameof(AssignColorsToSessionsInLast28Days)).Start())
+            using (var activity = new Activity(nameof(AssignGradientColorsToSessionsInLast28Days)).Start())
             {
-                _appLogger.Info($"Starting {nameof(AssignColorsToSessionsInLast28Days)}, TraceID: {activity.TraceId}.");
-
+                _appLogger.Info($"Starting {nameof(AssignGradientColorsToSessionsInLast28Days)}, TraceID: {activity.TraceId}.");
 
                 var recentSessions = await _codingSessionRepository.GetRecentSessionsAsync(28);
 
+                _appLogger.Debug($"Sessions returned by ReadFromCodingSessionsTable for {nameof(AssignGradientColorsToSessionsInLast28Days)}: {recentSessions}.");
 
-                _appLogger.Debug($"Sessions returned by ReadFromCodingSessionsTable for {nameof(AssignColorsToSessionsInLast28Days)}: {recentSessions}.");
-
-                List<Color> sessionColors = new List<Color>();
+                List<(Color StartColor, Color EndColor)> sessionGradients = new List<(Color StartColor, Color EndColor)>();
                 foreach (var session in recentSessions)
                 {
                     double totalDurationSeconds = session.DurationSeconds;
-
                     DateOnly sessionDate = session.StartDate;
 
-
                     SessionColor colorEnum = DetermineSessionColor(totalDurationSeconds);
-                    Color color = ConvertSessionColorEnumToColor(colorEnum);
-                    sessionColors.Add(color);
+                    (Color StartColor, Color EndColor) gradientColors = GetSessionGradientColors(colorEnum);
+                    sessionGradients.Add(gradientColors);
 
-                    _appLogger.Debug($"Assigned color for day: {sessionDate.ToString("yyyy-MM-dd")}, DurationSeconds: {totalDurationSeconds}, Color: {color}.");
                 }
-                _appLogger.Info($"Completed {nameof(AssignColorsToSessionsInLast28Days)}.TraceID: {activity.TraceId}.");
-                return sessionColors;
+                return sessionGradients;
             }
         }
-
-
-
-
-
-
 
         public SessionColor DetermineSessionColor(double? sessionDurationSeconds)
         {
@@ -113,41 +93,39 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
             }
         }
 
-
-        public Color ConvertSessionColorEnumToColor(SessionColor color)
+        public (Color StartColor, Color EndColor) GetSessionGradientColors(SessionColor color)
         {
-            var activity = new Activity(nameof(ConvertSessionColorEnumToColor)).Start();
+            var activity = new Activity(nameof(GetSessionGradientColors)).Start();
             var stopwatch = Stopwatch.StartNew();
-            _appLogger.Debug($"Starting {nameof(ConvertSessionColorEnumToColor)} ceID: {activity.TraceId}");
+            _appLogger.Debug($"Starting {nameof(GetSessionGradientColors)} ceID: {activity.TraceId}");
             try
             {
-                Color result;
+                (Color StartColor, Color EndColor) result;
                 switch (color)
                 {
                     case SessionColor.Blue:
-                        result = Color.FromArgb(64, 116, 199);
+                        result = (Color.FromArgb(86, 180, 211), Color.FromArgb(64, 116, 199));
                         break;
                     case SessionColor.Coral:
-                        result = Color.FromArgb(235, 107, 107);
+                        result = (Color.FromArgb(255, 138, 138), Color.FromArgb(235, 107, 107));
                         break;
                     case SessionColor.Rose:
-                        result = Color.FromArgb(226, 54, 78);
+                        result = (Color.FromArgb(247, 99, 119), Color.FromArgb(226, 54, 78));
                         break;
                     case SessionColor.Amber:
-                        result = Color.FromArgb(255, 190, 92);
+                        result = (Color.FromArgb(255, 209, 138), Color.FromArgb(255, 190, 92));
                         break;
                     case SessionColor.Emerald:
-                        result = Color.FromArgb(46, 204, 113);
+                        result = (Color.FromArgb(72, 219, 143), Color.FromArgb(46, 204, 113));
                         break;
                     case SessionColor.Slate:
-                        result = Color.FromArgb(45, 45, 65);
+                        result = (Color.FromArgb(65, 65, 85), Color.FromArgb(45, 45, 65));
                         break;
                     default:
-                        result = Color.FromArgb(64, 116, 199);
+                        result = (Color.FromArgb(86, 180, 211), Color.FromArgb(64, 116, 199));
                         break;
                 }
                 stopwatch.Stop();
-                _appLogger.Info($"Color determined for SessionColor {color}: {result}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
                 return result;
             }
             finally
@@ -178,6 +156,8 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                 return dates;
             }
         }
+
+
+
     }
 }
-

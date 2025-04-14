@@ -46,7 +46,7 @@ namespace CodingTracker.Data.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("GoalMinutes")
+                    b.Property<int>("GoalSeconds")
                         .HasColumnType("integer");
 
                     b.Property<bool>("GoalReached")

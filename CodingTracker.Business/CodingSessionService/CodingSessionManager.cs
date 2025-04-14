@@ -44,11 +44,11 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
 
-        public void StartCodingSession(DateTime startTime, int sessionGoalMins, bool codingGoalSet)
+        public void StartCodingSession(DateTime startTime, int? sessionGoalSeconds, bool codingGoalSet)
         {
             SetCodingSessionStartTimeAndDate(startTime);
             UpdateISCodingSessionActive(true);
-            SetGoalMinutes(sessionGoalMins);
+            SetCurrentSessionGoalSeconds(sessionGoalSeconds);
             SetCurrentSessionGoalSet(codingGoalSet);
         }
 
@@ -56,15 +56,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         
         /// <summary>
         /// Controller method that calls other methods to established the final values for the CodingSession class before it is converted to a CodingSessionEntity and added to the database. All checks for valid CodingSession values are done within the child methods.
-        public async Task EndCodingSessionAsync(bool? goalReached)
+        public async Task EndCodingSessionAsync()
         {
-            if(_currentCodingSession.GoalSet == false)
-            {
-                goalReached = false;
-            }
-
-            // This is set in case the timer ends but the user does not close the form straight away.
-            SetCurrentSessionGoalReached(goalReached);
+            
             // Set EndTime & EndDate.
             DateTime endTime = DateTime.Now;
             DateOnly currentendDate = DateOnly.FromDateTime(endTime);
@@ -75,6 +69,9 @@ namespace CodingTracker.Business.CodingSessionManagers
             SetDurationHHMM(currentDurationHHMM);
             SetDurationSeconds(currentDurationSeconds);
             SetCodingSessionEndTimeAndDate(endTime);
+
+            UpdateGoalCompletionStatus();
+
             CheckAllRequiredCodingSessionDetailsNotNull();
 
             //Dates are stored as local time in CodingSession as these are the values the user will see.
@@ -85,6 +82,17 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             UpdateISCodingSessionActive(false);
         }
+
+
+        public async Task EndCodingSessionWithTimerFinished()
+        {
+            // Duration, DurationHHMM EndTime & EndDate are all set 
+            string currentDurationHHMM = _utilityService.ConvertIntToHHMMStringWitSemiColon(_currentCodingSession.DurationSeconds);
+        }
+
+
+
+
 
         public async Task EndCodingSessionWithoutGoalSet()
         {
@@ -119,6 +127,15 @@ namespace CodingTracker.Business.CodingSessionManagers
             _currentCodingSession.StartDate = DateOnly.FromDateTime(startTime);
         }
 
+        public DateTime? ReturnCurrentSessionStartTime()
+        {
+            if(_currentCodingSession.StartTime != null)
+            {
+                return _currentCodingSession.StartTime;
+            }
+            throw new InvalidOperationException($"Tried to return _currentSession.StartTime before it is initialized, this should never occur.");
+        }
+
         public void SetCodingSessionEndTimeAndDate( DateTime endTime)
         {
             _currentCodingSession.EndTime = endTime;
@@ -135,14 +152,15 @@ namespace CodingTracker.Business.CodingSessionManagers
             _currentCodingSession.DurationHHMM = durationHHMM;  
         }
 
-        public void SetGoalMinutes(int goalMinutes)
+        public int? ReturnGoalSeconds()
         {
-            _currentCodingSession.GoalMinutes = goalMinutes;
+            return _currentCodingSession.GoalSeconds;
         }
 
         public void SetCurrentSessionGoalSet(bool goalSet)
         {
             _currentCodingSession.GoalSet = goalSet;
+            _appLogger.Debug($"GoalSet updated to {goalSet}.");
         }
 
         public void SetCurrentSessionGoalReached(bool? goalReached) 
@@ -155,6 +173,74 @@ namespace CodingTracker.Business.CodingSessionManagers
             return _currentCodingSession.GoalReached;
         }
 
+        public void SetCurrentSessionGoalSeconds(int? goalMinutes)
+        {
+            _currentCodingSession.GoalSeconds = goalMinutes;
+            _appLogger.Debug($"GoalSeconds set to {goalMinutes}");
+        }
+
+        public void SetDurationSeconds(int? durationSeconds)
+        {
+            durationSeconds = _currentCodingSession.DurationSeconds;
+        }
+
+
+
+
+
+        public void UpdateGoalCompletionStatus()
+        {
+            try
+            {
+                _appLogger.Debug($"Starting UpdateGoalCompletionStatus method");
+
+                // Default to false unless conditions are met.
+                _currentCodingSession.GoalReached = false;
+                _appLogger.Debug($"Default GoalReached set to false");
+
+                // Log the current session values we'll be checking
+                _appLogger.Debug($"Session values - GoalSet: {(_currentCodingSession.GoalSet.HasValue ? _currentCodingSession.GoalSet.ToString() : "null")}, GoalSeconds: {(_currentCodingSession.GoalSeconds.HasValue ? _currentCodingSession.GoalSeconds.ToString() : "null")}, DurationSeconds: {_currentCodingSession.DurationSeconds}");
+
+                // .Value checks if GoalSet = true
+                if (_currentCodingSession.GoalSet.HasValue && _currentCodingSession.GoalSet.Value)
+                {
+                    _appLogger.Debug($"GoalSet is true, continuing evaluation");
+
+                    if (_currentCodingSession.GoalSeconds.HasValue)
+                    {
+                        int? goalSeconds = _currentCodingSession.GoalSeconds * 60;
+                        _appLogger.Debug($"GoalSeconds has value: {_currentCodingSession.GoalSeconds}, calculated goalSeconds: {goalSeconds}");
+
+                        _appLogger.Debug($"Comparing DurationSeconds: {_currentCodingSession.DurationSeconds} to goalSeconds: {goalSeconds}");
+                        if (_currentCodingSession.DurationSeconds >= goalSeconds)
+                        {
+                            _appLogger.Debug($"Duration meets or exceeds goal time, setting GoalReached to true");
+                            _currentCodingSession.GoalReached = true;
+                            return;
+                        }
+                        else
+                        {
+                            _appLogger.Debug($"Duration is less than goal time, leaving GoalReached as false");
+                        }
+                    }
+                    else
+                    {
+                        _appLogger.Debug($"GoalSeconds is null, cannot evaluate goal completion");
+                    }
+                }
+                else
+                {
+                    _appLogger.Debug($"GoalSet is not true, goal completion not evaluated");
+                }
+
+                _appLogger.Debug($"Completed UpdateGoalCompletionStatus, final GoalReached value: {_currentCodingSession.GoalReached}");
+            }
+            catch (NullReferenceException ex)
+            {
+                _appLogger.Error($"Null value detected when updating completion status during {nameof(UpdateGoalCompletionStatus)}: " + ex.Message);
+                throw new InvalidOperationException("Cannot evaluate goal status because one or more required values are null.", ex);
+            }
+        }
 
 
 
@@ -228,12 +314,12 @@ namespace CodingTracker.Business.CodingSessionManagers
         {
             if(goalSet) 
             {
-                _currentCodingSession.GoalMinutes = goalMins;
-                _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalMinutes}");
+                _currentCodingSession.GoalSeconds = goalMins;
+                _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalSeconds}");
                 return;
             }
-            _currentCodingSession.GoalMinutes = 0;
-            _appLogger.Debug($"CurrentCdoingSession GoalMins set to {_currentCodingSession.GoalMinutes}, default for not set.");
+            _currentCodingSession.GoalSeconds = 0;
+            _appLogger.Debug($"CurrentCdoingSession GoalMins set to {_currentCodingSession.GoalSeconds}, default for not set.");
 
         }
 
@@ -276,7 +362,7 @@ namespace CodingTracker.Business.CodingSessionManagers
                 EndTime = _currentCodingSession.EndTime ?? throw new ArgumentNullException($"EndTime cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 DurationSeconds = _currentCodingSession.DurationSeconds ?? throw new ArgumentNullException($"DurationSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 DurationHHMM = _currentCodingSession.DurationHHMM,
-                GoalMinutes = _currentCodingSession.GoalMinutes ?? throw new ArgumentNullException($"GoalMinutes cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                GoalSeconds = _currentCodingSession.GoalSeconds ?? throw new ArgumentNullException($"GoalSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
             };
         }
@@ -344,6 +430,9 @@ namespace CodingTracker.Business.CodingSessionManagers
                 throw new InvalidOperationException("Failed to set current coding session");
             }
         }
+
+
+
 
 
         public int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate)

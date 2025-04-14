@@ -352,7 +352,7 @@ namespace CodingTracker.View.TimerDisplayService
                 _codingSessionManager.SetDurationHHMM(durationHHMM);
                 _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
 
-                await _codingSessionManager.EndCodingSessionAsync(false);
+                await _codingSessionManager.EndCodingSessionAsync();
                 this.Close();
             }
             else

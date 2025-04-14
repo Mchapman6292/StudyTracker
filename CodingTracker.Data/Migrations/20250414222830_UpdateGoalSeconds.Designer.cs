@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodingTracker.Data.Migrations
 {
     [DbContext(typeof(CodingTrackerDbContext))]
-    [Migration("20250213051001_AddRangeToCodingSessionGoalReached")]
-    partial class AddRangeToCodingSessionGoalReached
+    [Migration("20250414222830_UpdateGoalSeconds")]
+    partial class UpdateGoalSeconds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,25 +34,35 @@ namespace CodingTracker.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SessionId"));
 
                     b.Property<string>("DurationHHMM")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double?>("DurationSeconds")
+                    b.Property<double>("DurationSeconds")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("GoalHHMM")
-                        .HasColumnType("text");
+                    b.Property<bool>("GoalReached")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("GoalSeconds")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("GoalReached")
-                        .HasColumnType("integer");
+                    b.Property<bool>("GoalSet")
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
                     b.HasKey("SessionId");
 

@@ -11,7 +11,7 @@ namespace CodingTracker.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "GoalMinutes",
+                name: "GoalSeconds",
                 table: "CodingSessions",
                 type: "integer",
                 nullable: false,
@@ -22,7 +22,7 @@ namespace CodingTracker.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "GoalMinutes",
+                name: "GoalSeconds",
                 table: "CodingSessions");
         }
     }

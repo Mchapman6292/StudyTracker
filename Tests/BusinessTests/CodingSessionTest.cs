@@ -22,7 +22,7 @@ namespace Tests.BusinessTests.CodingSessionTests
             Assert.Null(session.DurationSeconds);
             Assert.Equal(string.Empty, session.DurationHHMM);
             Assert.False(session.GoalSet);
-            Assert.Null(session.GoalMinutes);
+            Assert.Null(session.GoalSeconds);
             Assert.Null(session.GoalReached);
         }
 
@@ -42,14 +42,14 @@ namespace Tests.BusinessTests.CodingSessionTests
                 StartDate = currentDate,
                 StartTime = currentDateTime,
                 GoalSet = goalSet,
-                GoalMinutes = goalMinutes
+                GoalSeconds = goalMinutes
             };
 
             Assert.Equal(userId, session.UserId);
             Assert.Equal(currentDate, session.StartDate);
             Assert.Equal(currentDateTime, session.StartTime);
             Assert.Equal(goalSet, session.GoalSet);
-            Assert.Equal(goalMinutes, session.GoalMinutes);
+            Assert.Equal(goalMinutes, session.GoalSeconds);
             Assert.Null(session.EndDate);
             Assert.Null(session.EndTime);
             Assert.Null(session.GoalReached);
@@ -93,13 +93,13 @@ namespace Tests.BusinessTests.CodingSessionTests
                 StartDate = DateOnly.FromDateTime(now.AddMinutes(-60)),
                 StartTime = now.AddMinutes(-60),
                 GoalSet = true,
-                GoalMinutes = 45
+                GoalSeconds = 45
             };
 
             session.EndDate = DateOnly.FromDateTime(now);
             session.EndTime = now;
             session.DurationSeconds = 60 * 60;
-            session.GoalReached = session.DurationSeconds >= session.GoalMinutes * 60;
+            session.GoalReached = session.DurationSeconds >= session.GoalSeconds * 60;
 
             Assert.True(session.GoalReached);
         }

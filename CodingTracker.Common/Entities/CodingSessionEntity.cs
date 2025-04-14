@@ -22,7 +22,7 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
         public string DurationHHMM { get; set; }
 
         public bool GoalSet {  get; set; }
-        public int GoalMinutes { get; set; }
+        public int GoalSeconds { get; set; }
 
         public bool GoalReached { get; set; }
     }
