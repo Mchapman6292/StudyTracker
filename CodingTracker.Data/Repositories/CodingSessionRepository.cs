@@ -47,8 +47,6 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             // Creating a list of Coding sessions would load all sessions into memory.
             // Using .Where = SELECT * FROM CodingSessions WHERE SessionId IN (1,2,3)
 
-
-
             return await _dbContext.CodingSessions
                     .Where(s => sessionIds.Contains(s.SessionId))
                     .ToListAsync();

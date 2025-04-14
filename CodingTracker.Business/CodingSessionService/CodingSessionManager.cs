@@ -56,15 +56,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         
         /// <summary>
         /// Controller method that calls other methods to established the final values for the CodingSession class before it is converted to a CodingSessionEntity and added to the database. All checks for valid CodingSession values are done within the child methods.
-        public async Task EndCodingSessionAsync(bool? goalReached)
+        public async Task EndCodingSessionAsync()
         {
-            if(_currentCodingSession.GoalSet == false)
-            {
-                goalReached = false;
-            }
-
-            // This is set in case the timer ends but the user does not close the form straight away.
-            SetCurrentSessionGoalReached(goalReached);
+            
             // Set EndTime & EndDate.
             DateTime endTime = DateTime.Now;
             DateOnly currentendDate = DateOnly.FromDateTime(endTime);
@@ -75,6 +69,9 @@ namespace CodingTracker.Business.CodingSessionManagers
             SetDurationHHMM(currentDurationHHMM);
             SetDurationSeconds(currentDurationSeconds);
             SetCodingSessionEndTimeAndDate(endTime);
+
+            UpdateGoalCompletionStatus();
+
             CheckAllRequiredCodingSessionDetailsNotNull();
 
             //Dates are stored as local time in CodingSession as these are the values the user will see.
@@ -156,6 +153,37 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
 
+
+
+
+        public void UpdateGoalCompletionStatus()
+        {
+            try
+            {
+                // Default to false unless conditions are met.
+                _currentCodingSession.GoalReached = false;
+
+                // .Value checks if GoalSet = true
+                if (_currentCodingSession.GoalSet.HasValue && _currentCodingSession.GoalSet.Value)
+                {
+                    if (_currentCodingSession.GoalMinutes.HasValue)
+                    {
+                        int? goalSeconds = _currentCodingSession.GoalMinutes * 60;
+                        if (_currentCodingSession.DurationSeconds >= goalSeconds)
+                        {
+                            _currentCodingSession.GoalReached = true;
+
+                        }
+                    }
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                _appLogger.Error($"Null value detected when updating completion status during {nameof(UpdateGoalCompletionStatus)}" + ex.Message);
+                throw new InvalidOperationException("Cannot evaluate goal status because one or more required values are null.", ex);
+            }
+        }
+ 
 
 
 

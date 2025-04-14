@@ -7,12 +7,13 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
     {
 
         void StartCodingSession(DateTime startTime, int sessionGoalMins, bool goalSet);
-        Task EndCodingSessionAsync(bool? goalReached);
+        Task EndCodingSessionAsync();
         void Initialize_CurrentCodingSession(int userId);
         void UpdateISCodingSessionActive(bool active);
         void UpdateIsSessionTimerActive(bool active);
         void SetDurationSeconds(int durationSeconds);
         void SetDurationHHMM(string durationHHMM);
+        void SetCurrentSessionGoalReached(bool? goalReached);
         bool? ReturnCurrentSessionGoalReached();
         CodingSession ReturnCurrentCodingSession();
         void SetCodingSessionStartTimeAndDate( DateTime startTime);

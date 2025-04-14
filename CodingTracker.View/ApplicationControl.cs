@@ -37,8 +37,7 @@ namespace CodingTracker.Business.ApplicationControls
                 Application.Exit();
                 return;
             }
-            bool? goalReached = _codingSessionManager.ReturnCurrentSessionGoalReached();
-            await _codingSessionManager.EndCodingSessionAsync(goalReached);
+            await _codingSessionManager.EndCodingSessionAsync();
             Application.Exit();
 
         }

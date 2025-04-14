@@ -165,7 +165,7 @@ namespace CodingTracker.View.TimerDisplayService
             progressTimer.Start();
         }
 
-        private async void ProgressTimer_Tick(object sender, EventArgs e)
+        private  void ProgressTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = DateTime.Now - formStartTime;
             double percentage = Math.Min(100, (elapsed.TotalSeconds / formSessionGoal) * 100);
@@ -189,21 +189,11 @@ namespace CodingTracker.View.TimerDisplayService
             if (progressValue >= 100)
             {
                 progressTimer.Stop();
-                try
-                {
-                    await _codingSessionManager.EndCodingSessionAsync(true);
-                }
-                catch (Exception ex)
-                {
-                    _appLogger.Error($"Error during {nameof(ProgressTimer_Tick)}: {ex}.");
-                }
+                _codingSessionManager.SetCurrentSessionGoalReached(true);
             }
         }
 
-        private void UpdateCodingSessionOnTimerComplete()
-        {
-
-        }
+   
 
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
         {
@@ -265,8 +255,7 @@ namespace CodingTracker.View.TimerDisplayService
             if (result == DialogResult.Yes)
             {
                 this.DialogResult = DialogResult.OK;
-                bool? goalReached = _codingSessionManager.ReturnCurrentSessionGoalReached();
-                await _codingSessionManager.EndCodingSessionAsync(goalReached);
+                await _codingSessionManager.EndCodingSessionAsync();
                 _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
             }
             else

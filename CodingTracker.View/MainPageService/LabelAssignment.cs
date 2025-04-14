@@ -135,14 +135,14 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
         public async Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel)
         {
             var gradientPanels = parentPanel.Controls.OfType<Guna.UI2.WinForms.Guna2GradientPanel>().ToList();
-            List<Color> panelColors = await _panelColourAssigner.AssignColorsToSessionsInLast28Days();
+            List<(Color StartColor, Color EndColor)> panelGradients = await _panelColourAssigner.AssignGradientColorsToSessionsInLast28Days();
 
-            for (int i = 0; i < panelColors.Count && i < gradientPanels.Count; i++)
+            for (int i = 0; i < panelGradients.Count && i < gradientPanels.Count; i++)
             {
-                gradientPanels[i].BackColor = panelColors[i];
+                gradientPanels[i].FillColor = panelGradients[i].StartColor;
+                gradientPanels[i].FillColor2 = panelGradients[i].EndColor;
             }
         }
-
 
 
 
@@ -192,6 +192,15 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
                     FormatDateLabel(dateLabels[i], formattedDate);
                 }
             }
+        }
+
+        private void ApplyRoundedCornersToPanel(Guna.UI2.WinForms.Guna2GradientPanel panel)
+        {
+            panel.BorderRadius = 30;
+            panel.ShadowDecoration.Enabled = true;
+            panel.ShadowDecoration.Depth = 5;
+            panel.ShadowDecoration.Color = Color.FromArgb(30, 0, 0, 0);
+            panel.BorderThickness = 0;
         }
     }
 }

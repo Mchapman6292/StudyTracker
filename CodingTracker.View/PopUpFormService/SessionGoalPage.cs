@@ -171,6 +171,8 @@ namespace CodingTracker.View.PopUpFormService
         {
             _codingSessionManager.UpdateIsSessionTimerActive(true);
             _codingSessionManager.UpdateISCodingSessionActive(true);
+            _codingSessionManager.SetCurrentSessionGoalSet(false);
+            _codingSessionManager.SetCurrentSessionGoalReached(false);
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();
