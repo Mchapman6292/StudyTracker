@@ -43,11 +43,11 @@ namespace CodingTracker.Data.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("GoalMinutes")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("GoalReached")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("GoalSeconds")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("GoalSet")
                         .HasColumnType("boolean");

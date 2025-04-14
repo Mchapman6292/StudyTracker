@@ -9,10 +9,10 @@ namespace CodingTracker.Common.IUtilityServices
         bool TryParseDate(string input, out DateTime result);
         string HashPassword(string password);
         string ConvertDoubleToHHMMString(double duration);
-        int ConvertHHMMStringToInt32NoSemiColon(string input);
+        int ConvertHHMMStringToSeconds(string input);
         void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession);
         void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions);
 
-
+        string ConvertIntToHHMMStringWitSemiColon(int? durationSeconds);
     }
 }

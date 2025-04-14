@@ -45,7 +45,7 @@ namespace CodingTracker.Data.Migrations
                     b.Property<string>("GoalHHMM")
                         .HasColumnType("text");
 
-                    b.Property<int>("GoalMinutes")
+                    b.Property<int>("GoalSeconds")
                         .HasColumnType("integer");
 
                     b.Property<int?>("GoalReached")

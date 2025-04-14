@@ -4,12 +4,14 @@ namespace CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 
 public interface IFormStatePropertyManager
 {
-    void SetIsFormGoalSet(bool goalSet);
-    bool ReturnIsFormGoalSet();
     void SetFormGoalTimeHHMM(int goalTimeHHMM);
     int ReturnFormGoalTimeHHMMAsInt();
-    void SetFormGoalMins(int formGoalMins);
-    int ReturnFormGoalMins();
+    /*
+    void SetIsFormGoalSet(bool goalSet);
+    bool ReturnIsFormGoalSet();
+    void SetFormGoalSeconds(int formGoalMins);
+    int ReturnFormGoalSeconds();
+    */
 
 }
 
@@ -25,38 +27,43 @@ public class FormStatePropertyManger : IFormStatePropertyManager
     private int _formGoalTimeHHMM { get; set; }
     private bool _isFormGoalSet { get; set; }
 
-    private int _formGoalMinutes { get; set; }  
+    private int _formGoalSeconds { get; set; }
 
+
+    public void SetFormGoalTimeHHMM(int goalTimeHHMM)
+    {
+        _formGoalTimeHHMM = goalTimeHHMM;
+        _appLogger.Debug($"FormGoalTime set to {goalTimeHHMM}.");
+    }
+
+    public int ReturnFormGoalTimeHHMMAsInt()
+    {
+        _appLogger.Debug($"FormGoalTimeHHMM value: {_formGoalTimeHHMM}");
+        return _formGoalTimeHHMM;
+    }
 
     public void SetIsFormGoalSet(bool goalSet)
     {
         _isFormGoalSet = goalSet;
     }
 
+    /*
+
+
     public bool ReturnIsFormGoalSet()
     {
         return _isFormGoalSet;
     }
 
-    public void SetFormGoalTimeHHMM(int goalTimeHHMM)
+
+    public void SetFormGoalSeconds(int formGoalSeconds)
     {
-        _formGoalTimeHHMM = goalTimeHHMM;
+        _formGoalSeconds = formGoalSeconds;
     }
 
-    public int ReturnFormGoalTimeHHMMAsInt()
+    public int ReturnFormGoalSeconds()
     {
-        _appLogger.Debug($"FormGoalTimeHHMM value: {_formGoalTimeHHMM}"); 
-        return _formGoalTimeHHMM;
+        return _formGoalSeconds;
     }
-
-    public void SetFormGoalMins(int formGoalMins)
-    {
-        _formGoalMinutes = formGoalMins;
-    }
-
-    public int ReturnFormGoalMins()
-    {
-        return _formGoalMinutes;
-    }
-
+    */
 }

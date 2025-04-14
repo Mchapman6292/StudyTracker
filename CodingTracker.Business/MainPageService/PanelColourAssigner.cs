@@ -63,9 +63,7 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                     (Color StartColor, Color EndColor) gradientColors = GetSessionGradientColors(colorEnum);
                     sessionGradients.Add(gradientColors);
 
-                    _appLogger.Debug($"Assigned gradient for day: {sessionDate.ToString("yyyy-MM-dd")}, DurationSeconds: {totalDurationSeconds}, StartColor: {gradientColors.StartColor}, EndColor: {gradientColors.EndColor}.");
                 }
-                _appLogger.Info($"Completed {nameof(AssignGradientColorsToSessionsInLast28Days)}.TraceID: {activity.TraceId}.");
                 return sessionGradients;
             }
         }
@@ -128,7 +126,6 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                         break;
                 }
                 stopwatch.Stop();
-                _appLogger.Info($"Gradient colors determined for SessionColor {color}: Start={result.StartColor}, End={result.EndColor}. Execution Time: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
                 return result;
             }
             finally
