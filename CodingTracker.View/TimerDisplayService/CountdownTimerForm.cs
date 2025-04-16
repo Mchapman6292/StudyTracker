@@ -6,6 +6,7 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.Common.IApplicationLoggers;
 using System.Diagnostics;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.FormService.NotificationManagers;
 
 
 namespace CodingTracker.View.TimerDisplayService
@@ -25,7 +26,7 @@ namespace CodingTracker.View.TimerDisplayService
         private Point dragStartPoint;
 
         private int progressValue = 0;
-        private int? sessionGoalSeconds;
+        private double? sessionGoalSeconds;
 
 
         private readonly IFormStatePropertyManager _formStatePropertyManager;
@@ -33,19 +34,21 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IFormSwitcher _formSwitcher;
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utitlityService;
-           
+        private readonly INotificationManager _notificationManager;
 
-        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService)
+
+        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager )
         {
             InitializeComponent();
             _formStatePropertyManager = formStatePropertyManager;
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
-            _appLogger = appLogger;
             _utitlityService = utilityService;
+            _notificationManager = notificationManager;
+            _appLogger = appLogger;
             sessionGoalSeconds = _codingSessionManager.ReturnGoalSeconds();
             SetupProgressBar();
-            _codingSessionManager.StartCodingSession(sessionStartDateTime, sessionGoalSeconds, true);
+            _codingSessionManager.StartCodingSession(DateTime.Now, sessionGoalSeconds, true);
         }
 
         void SetupProgressBar()
@@ -162,6 +165,7 @@ namespace CodingTracker.View.TimerDisplayService
                 }
 
             _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
+            sessionGoalSeconds = _codingSessionManager.ReturnGoalSeconds();
             progressTimer.Start();
             stopwatchTimer.Start();
         }
@@ -194,11 +198,7 @@ namespace CodingTracker.View.TimerDisplayService
 
             if (progressValue >= 100)
             {
-                progressTimer.Stop();
-                stopwatchTimer.Stop();
-                int? durationSeconds = stopwatchTimer.Elapsed.Seconds;
-                _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.Seconds);
-                _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+                _codingSessionManager.SetCurrentSessionGoalReached(true);
             }
         }
 
@@ -251,61 +251,38 @@ namespace CodingTracker.View.TimerDisplayService
 
 
 
+
+
         private async void CloseControlBox_Click(object sender, EventArgs e)
         {
             progressTimer.Stop();
+            stopwatchTimer.Stop();
 
             var sessionStartTime = _codingSessionManager.ReturnCurrentSessionStartTime();
-            if (sessionStartTime.HasValue)
-            {
-                TimeSpan elapsed = DateTime.Now - sessionStartTime.Value;
 
-                DialogResult result = MessageBox.Show(
-                    $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}",
-                    "End Session",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+            TimeSpan elapsed = stopwatchTimer.Elapsed;
 
-                if (result == DialogResult.Yes)
-                {
-                    this.DialogResult = DialogResult.OK;
-                    await _codingSessionManager.EndCodingSessionAsync();
-                    _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
-                }
-                else
-                {
-                    if (!isPaused)
-                    {
-                        progressTimer.Start();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Cannot end session - no start time recorded.",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+            string message = $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}.";
 
-                if (!isPaused)
-                {
-                    progressTimer.Start();
-                }
-            }
+            _notificationManager.ShowNotificationDialog(sender, EventArgs.Empty, DisplayMessageBox, message);
+            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
+            _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+            await _codingSessionManager.EndCodingSessionAsync();
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             if (isPaused && sessionGoalSeconds.HasValue)
             {
-                sessionStartDateTime = DateTime.Now.Subtract(TimeSpan.FromSeconds(sessionGoalSeconds.Value * progressValue / 100.0));
+                stopwatchTimer.Start();
                 progressTimer.Start();
                 pauseButton.Image = Properties.Resources.pause;
                 isPaused = false;
             }
             else
             {
+                stopwatchTimer.Start();
                 progressTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
                 isPaused = true;

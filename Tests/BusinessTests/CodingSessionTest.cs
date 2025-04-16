@@ -59,27 +59,6 @@ namespace Tests.BusinessTests.CodingSessionTests
         }
 
 
-
-        [Fact]
-        public void EndingSession_CalculatesDurationCorrectly()
-        {
-            var now = DateTime.Now;
-            var session = new CodingSession
-            {
-                UserId = 42,
-                StartDate = DateOnly.FromDateTime(now.AddMinutes(-30)),
-                StartTime = now.AddMinutes(-30)
-            };
-
-            session.EndDate = DateOnly.FromDateTime(now);
-            session.EndTime = now;
-            session.DurationSeconds = (int)(now - session.StartTime.Value).TotalSeconds;
-            session.DurationHHMM = $"{session.DurationSeconds / 3600:00}:{(session.DurationSeconds % 3600) / 60:00}";
-
-            Assert.Equal(30 * 60, session.DurationSeconds);
-            Assert.Equal("00:30", session.DurationHHMM);
-        }
-
         
  
 

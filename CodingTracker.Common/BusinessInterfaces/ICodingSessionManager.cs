@@ -6,18 +6,19 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
     public interface ICodingSessionManager
     {
 
-        void StartCodingSession(DateTime startTime, int? sessionGoalMins, bool goalSet);
+        void StartCodingSession(DateTime startTime, double? sessionGoalSeconds, bool goalSet);
         Task EndCodingSessionAsync();
+        Task EndCodingSessionWithTimerFinished();
         void Initialize_CurrentCodingSession(int userId);
         void UpdateISCodingSessionActive(bool active);
         void UpdateIsSessionTimerActive(bool active);
-        int? ReturnGoalSeconds();
+        double? ReturnGoalSeconds();
         void SetDurationHHMM(string durationHHMM);
         void SetCurrentSessionGoalReached(bool? goalReached);
         bool? ReturnCurrentSessionGoalReached();
         DateTime? ReturnCurrentSessionStartTime();
-        void SetDurationSeconds(int? durationSeconds);
-        void SetCurrentSessionGoalSeconds(int? goalMinutes);
+        void SetDurationSeconds(double? durationSeconds);
+        void SetCurrentSessionGoalSeconds(double? goalSeconds);
         CodingSession ReturnCurrentCodingSession();
         void SetCodingSessionStartTimeAndDate( DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);
