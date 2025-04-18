@@ -42,6 +42,8 @@ using CodingTracker.View.LoginPageService;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService;
+using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
+
 
 /// To do
 
@@ -112,6 +114,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<LoginPage>()
                     .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
+                    .AddSingleton< IStopWatchTimerService, StopWatchTimerService>()
 
 
 

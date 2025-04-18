@@ -2,6 +2,7 @@
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -32,7 +33,7 @@ namespace CodingTracker.View.TimerDisplayService
         private bool isDragging = false;
         private Point dragStartPoint;
 
-        private Stopwatch stopwatchTimer = new Stopwatch();
+        private Stopwatch stopwatchTimer;
 
         private Color primaryColor = Color.FromArgb(255, 81, 195);
         private Color secondaryColor = Color.FromArgb(168, 228, 255);
@@ -40,12 +41,15 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly INotificationManager _notificationManager;
         private readonly IFormSwitcher _formSwitcher;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
 
-        public OrbitalTimerPage(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormSwitcher formSwitcher)
+        public OrbitalTimerPage(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormSwitcher formSwitcher, IStopWatchTimerService stopWatchTimerService)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
+            _stopWatchTimerService =stopWatchTimerService;
+            stopwatchTimer = _stopWatchTimerService.ReturnStopWatch();
             InitializeComponents();
             _codingSessionManager.SetCurrentSessionGoalSet(false);
             SetupTimers();
