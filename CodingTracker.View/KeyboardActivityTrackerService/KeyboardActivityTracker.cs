@@ -1,32 +1,43 @@
 ﻿using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using Gma.System.MouseKeyHook;
-using CodingTracker.View.KeyboardActivityTrackerService;
 
-namespace CodingTracker.View.KeyboardActivityTrackers
+namespace CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers
 {
 
 
     public interface IKeyboardActivityTracker
     {
-
+        float CurrentIntensity { get; }
+        event EventHandler<float> ActivityChanged;
+        void UpdateDecay();
     }
 
-    public class KeyboardActivityTracker : IDisposable
+    public class KeyboardActivityTracker : IKeyboardActivityTracker, IDisposable
     {
+        public float CurrentIntensity { get; private set; } = 0.0f;
+
+        private const float SlowBuildUp = 0.05f;
+        private const float MediumBuildUp = 0.08f;
+        private const float FastBuildUp = 0.12f;
+
+        private const float SlowDecay = 0.02f;
+        private const float MediumDecay = 0.04f;
+        private const float FastDecay = 0.06f;
+
+        public event EventHandler<float> ActivityChanged; // event = only containing class can trigger event. 
+
         private IKeyboardMouseEvents _keyboardMouseEvents;
         private IStopWatchTimerService _stopWatchTimerService;
 
         private Queue<DateTime> keyPressTimestamps = new Queue<DateTime>();
         private double lastKeystrokeTimeMs;
 
-        private float currentIntensity = 0.0f;
-        private float intensityBuildUpRate = IntensityValues.MediumBuildUp;
-        private float intensityDecayRate = IntensityValues.MediumDecay;
+ 
+        private float intensityBuildUpRate = MediumBuildUp;
+        private float intensityDecayRate = MediumDecay;
         private double rapidTypingThreshold = 200.0; // 200 milliseconds.
         private float MultiplierCap = 5.0f;
 
-        public float ActivityLevel => currentIntensity;
-        public EventHandler<float> ActivityChanged;
 
         public KeyboardActivityTracker(IStopWatchTimerService stopWatchTimerService)
         {
@@ -44,56 +55,83 @@ namespace CodingTracker.View.KeyboardActivityTrackers
 
         private void GlobalHookKeyPress(object sender, KeyPressEventArgs e)
         {
-            CalculateElapsedTimeSinceLastKeyPress();
-        }
 
-        private void CalculateElapsedTimeSinceLastKeyPress()
-        {
             double currentTimeMs = _stopWatchTimerService.ReturnElapsedMilliseconds();
             double intervalMs = currentTimeMs - lastKeystrokeTimeMs;
+
+            // First calculate the interval & then update the lastKeyStrokeTime.
             lastKeystrokeTimeMs = currentTimeMs;
+
+            // Calculate the interval & then update CurrentIntensity.
+            CalculateAndUpdateICurrentIntensity(intervalMs);
+
+
+            ActivityChanged?.Invoke(this, CurrentIntensity);
         }
+
+
 
         private float CalculateTypingMultiplier(double intervalMs)
         {
-            float boost = intensityBuildUpRate;
-            float multiplier = (float)(Math.Min(MultiplierCap, rapidTypingThreshold / Math.Max(10.0, intervalMs)));
-            boost *= multiplier;
-            return multiplier;
-
+            return (float)(Math.Min(MultiplierCap, rapidTypingThreshold / Math.Max(10.0, intervalMs)));
         }
 
-
-        public float CalculateIntensityBuildUp(double intervalMs)
+        private void CalculateAndUpdateICurrentIntensity(double intervalMs)
         {
-            float boost = intensityBuildUpRate;
+            float intensityValue = CalculateIntensityIncremental(intervalMs);
+            float finalIntensityValue = Math.Min(1.0f, CurrentIntensity + intensityValue);
+            UpdateCurrentIntensity(finalIntensityValue);
+        }
 
-            if(rapidTypingThreshold > intervalMs)
+        // Should only be called by CalculateAndUpdateICurrentIntensity
+        private float CalculateIntensityIncremental(double intervalMs)
+        {
+            float intensityIncremental = intensityBuildUpRate;
+            if (rapidTypingThreshold > intervalMs)
             {
-               boost = CalculateTypingMultiplier(intervalMs);
+                float multiplier = CalculateTypingMultiplier(intervalMs);
+                intensityIncremental *= multiplier;
             }
+            return intensityIncremental;
+        }
+
+        private void UpdateCurrentIntensity(float currentIntensity)
+        {
+            CurrentIntensity = currentIntensity;
         }
 
 
 
-
-
-        private void UpdateDecay()
+        private void UpdateIntensityBuildUp(float intensityValue)
         {
-            if (currentIntensity > 0)
-            {
-                currentIntensity = Math.Max(0.0f, currentIntensity - intensityDecayRate);
+            intensityBuildUpRate = intensityValue;
+        }
 
-                if(currentIntensity > 0.01f || currentIntensity == 0)
+
+
+        // Decay is updated continuously and is called from the animationTimer 
+        public void UpdateDecay()
+        {
+            if (CurrentIntensity > 0)
+            {
+                CurrentIntensity = Math.Max(0.0f, CurrentIntensity - intensityDecayRate);
+
+                if (CurrentIntensity > 0.01f || CurrentIntensity == 0)
                 {
-                    ActivityChanged.Invoke(this, currentIntensity);
+                    ActivityChanged?.Invoke(this, CurrentIntensity);
                 }
             }
         }
 
-        private int CalculateKeyStrokesLastMinute(DateTime dateTimeNow)
-        {
 
+        public void Dispose()
+        {
+            if (_keyboardMouseEvents != null)
+            {
+                _keyboardMouseEvents.KeyPress -= GlobalHookKeyPress;
+                _keyboardMouseEvents.Dispose();
+                _keyboardMouseEvents = null;
+            }
         }
 
     }

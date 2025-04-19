@@ -43,6 +43,7 @@ using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
+using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
 
 
 /// To do
@@ -115,6 +116,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
                     .AddSingleton< IStopWatchTimerService, StopWatchTimerService>()
+                    .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
 
 
 
