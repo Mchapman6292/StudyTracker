@@ -35,6 +35,7 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
         private const int BAR_COUNT = 64;
         private float[] barHeights = new float[BAR_COUNT];
         private float[] targetBarHeights = new float[BAR_COUNT];
+        private float[] noiseValues = new float[BAR_COUNT];
         private Random random = new Random();
 
         public WaveVisualizationControl(IStopWatchTimerService stopWatchTimerService)
@@ -59,6 +60,7 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
             {
                 barHeights[i] = 0.05f + (float)(random.NextDouble() * 0.1);
                 targetBarHeights[i] = barHeights[i];
+                noiseValues[i] = (float)random.NextDouble();
             }
         }
 
@@ -76,33 +78,78 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
 
         private void UpdateBars()
         {
+            UpdateNoiseValues();
             UpdateTargetHeights();
             SmoothBarsTowardTarget();
+        }
+
+        private void UpdateNoiseValues()
+        {
+            // Update noise values for static effect
+            for (int i = 0; i < BAR_COUNT; i++)
+            {
+                // Slightly shift each noise value for continuous static
+                noiseValues[i] += (float)(random.NextDouble() * 0.1 - 0.05);
+
+                // Keep values bounded
+                if (noiseValues[i] < 0) noiseValues[i] += 1;
+                if (noiseValues[i] > 1) noiseValues[i] -= 1;
+            }
         }
 
         private void UpdateTargetHeights()
         {
             for (int i = 0; i < BAR_COUNT; i++)
             {
-                float ambientMovement = (float)(random.NextDouble() * 0.05) - 0.025f;
+                // Constant static effect even at zero intensity
+                float staticEffect = CalculateStaticEffect(i);
 
+                // Dynamic pattern that changes over time
                 double time = _stopWatchTimerService.ReturnElapsedMilliseconds() / 1000.0;
                 float patternFactor = (float)Math.Sin(time * 1.5 + i * 0.2) * 0.08f;
 
+                // Intensity-based movement (increases with typing)
                 float intensityMovement = (float)(random.NextDouble() * 0.2 - 0.1) * intensity;
 
-                float heightChange = ambientMovement + patternFactor + intensityMovement;
+                float heightChange = staticEffect + patternFactor + intensityMovement;
 
                 targetBarHeights[i] = Math.Max(0.05f, Math.Min(1.0f,
                     targetBarHeights[i] + heightChange));
             }
         }
 
+        private float CalculateStaticEffect(int index)
+        {
+            // Base static effect - small random movements
+            float baseStatic = (float)(random.NextDouble() * 0.03 - 0.015);
+
+            // Use noise values for more natural static patterns
+            float noiseEffect = (float)(Math.Sin(noiseValues[index] * Math.PI * 6) * 0.02);
+
+            // Add occasional small spikes for "cackle" effect
+            float spike = 0;
+            if (random.NextDouble() < 0.02) // 2% chance per frame per bar
+            {
+                spike = (float)(random.NextDouble() * 0.05);
+            }
+
+            // Combine static effects
+            return baseStatic + noiseEffect + spike;
+        }
+
         private void SmoothBarsTowardTarget()
         {
             for (int i = 0; i < BAR_COUNT; i++)
             {
-                barHeights[i] += (targetBarHeights[i] - barHeights[i]) * 0.3f;
+                // Lower smoothing factor for static (makes movement more jittery)
+                float smoothingFactor = 0.2f + (intensity * 0.3f);
+                barHeights[i] += (targetBarHeights[i] - barHeights[i]) * smoothingFactor;
+
+                // Add small constant variation to heights for static feel
+                if (intensity < 0.3f)
+                {
+                    barHeights[i] += (float)(random.NextDouble() * 0.01 - 0.005);
+                }
             }
         }
 
@@ -136,7 +183,13 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
             for (int i = 0; i < BAR_COUNT; i++)
             {
                 float x = i * barSpacing + (barSpacing - barWidth) / 2;
-                float barHeight = barHeights[i] * maxBarHeight;
+
+                // Apply additional static jitter to bar heights for low intensities
+                float staticJitter = intensity < 0.3f ? (float)(random.NextDouble() * 0.02 - 0.01) : 0;
+                float barHeight = (barHeights[i] + staticJitter) * maxBarHeight;
+
+                // Ensure minimal height for bars for constant static visibility
+                barHeight = Math.Max(barHeight, 1.0f + noiseValues[i] * 3.0f);
 
                 SKColor barColor = GetColorForPosition(i);
 
@@ -164,64 +217,72 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
                 color = spectrumColors[spectrumColors.Length - 1];
             }
 
-            byte glowAlpha = (byte)(100 + (intensity * 155));
+            // Base alpha ensures visibility even at low intensity
+            byte baseAlpha = 80;
+            byte glowAlpha = (byte)(baseAlpha + (intensity * 175));
             return color.WithAlpha(glowAlpha);
         }
 
         private void DrawBar(SKCanvas canvas, float x, int centerY, float barWidth, float barHeight, SKColor barColor)
         {
-            if (barHeight > 2)
+            using (var paint = new SKPaint
             {
-                using (var paint = new SKPaint
-                {
-                    Color = barColor,
-                    IsAntialias = true,
-                    Style = SKPaintStyle.Fill
-                })
-                {
-                    canvas.DrawRect(x, centerY - barHeight / 2, barWidth, barHeight, paint);
-                }
+                Color = barColor,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill
+            })
+            {
+                canvas.DrawRect(x, centerY - barHeight / 2, barWidth, barHeight, paint);
+            }
 
-                if (intensity > 0.3f)
-                {
-                    byte glowAlpha = (byte)(barColor.Alpha * 0.4f);
-                    using (var glowPaint = new SKPaint
-                    {
-                        Color = barColor.WithAlpha(glowAlpha),
-                        IsAntialias = true,
-                        MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 3 * intensity)
-                    })
-                    {
-                        canvas.DrawRect(x - 2, centerY - barHeight / 2 - 2,
-                                       barWidth + 4, barHeight + 4, glowPaint);
-                    }
-                }
+            // Always have some glow for static effect, more for higher intensity
+            float glowAmount = 0.2f + (intensity * 0.8f);
+            byte glowAlpha = (byte)(barColor.Alpha * 0.4f);
+            using (var glowPaint = new SKPaint
+            {
+                Color = barColor.WithAlpha(glowAlpha),
+                IsAntialias = true,
+                MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 1 + 2 * glowAmount)
+            })
+            {
+                canvas.DrawRect(x - 1, centerY - barHeight / 2 - 1,
+                               barWidth + 2, barHeight + 2, glowPaint);
             }
         }
 
         private void StorePointsForDottedLines(int index, float x, float barWidth, int centerY, float barHeight,
             SKPoint[] upperPoints, SKPoint[] lowerPoints, SKPoint[] middlePoints)
         {
-            upperPoints[index] = new SKPoint(x + barWidth / 2, centerY - barHeight / 2);
-            lowerPoints[index] = new SKPoint(x + barWidth / 2, centerY + barHeight / 2);
+            // Add small static jitter to dot positions
+            float jitterY = (float)(random.NextDouble() * 1.5 - 0.75);
 
-            float middleOffset = (float)Math.Sin(index * 0.2f) * 3;
-            middlePoints[index] = new SKPoint(x + barWidth / 2, centerY + middleOffset);
+            upperPoints[index] = new SKPoint(x + barWidth / 2, centerY - barHeight / 2 + jitterY);
+            lowerPoints[index] = new SKPoint(x + barWidth / 2, centerY + barHeight / 2 + jitterY);
+
+            // More pronounced middle line movement for static effect
+            float middleOffset = (float)Math.Sin(index * 0.2f + noiseValues[index] * 5) * 3;
+            middlePoints[index] = new SKPoint(x + barWidth / 2, centerY + middleOffset + jitterY);
         }
 
         private void DrawDottedLines(SKCanvas canvas, SKPoint[] upperPoints, SKPoint[] lowerPoints, SKPoint[] middlePoints)
         {
-            DrawDottedLine(canvas, upperPoints, intensity);
-            DrawDottedLine(canvas, lowerPoints, intensity);
-            DrawDottedLine(canvas, middlePoints, intensity * 0.7f);
+            DrawDottedLine(canvas, upperPoints, Math.Max(0.2f, intensity));
+            DrawDottedLine(canvas, lowerPoints, Math.Max(0.2f, intensity));
+            DrawDottedLine(canvas, middlePoints, Math.Max(0.15f, intensity * 0.7f));
         }
 
         private void DrawDottedLine(SKCanvas canvas, SKPoint[] points, float glowIntensity)
         {
             for (int i = 0; i < points.Length; i++)
             {
-                float dotSize = 2 + (glowIntensity * 1);
-                byte alpha = (byte)(150 + (glowIntensity * 105));
+                // Static dot size variation
+                float sizeVariation = (float)(random.NextDouble() * 0.5);
+                float dotSize = 1.5f + sizeVariation + (glowIntensity * 1);
+
+                // Base alpha ensures visibility even at low intensity
+                byte baseAlpha = 80;
+                byte alpha = (byte)(baseAlpha + (glowIntensity * 175));
+
                 SKColor dotColor = GetColorForPosition(i).WithAlpha(alpha);
 
                 DrawDot(canvas, points[i], dotSize, dotColor, glowIntensity);
@@ -239,17 +300,19 @@ namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
             {
                 canvas.DrawCircle(position.X, position.Y, dotSize, paint);
 
-                if (glowIntensity > 0.3f)
+                // Always have some glow for static effect
+                float minGlow = 0.2f;
+                if (glowIntensity > minGlow)
                 {
                     byte glowAlpha = (byte)(dotColor.Alpha * 0.4f);
                     using (var glowPaint = new SKPaint
                     {
                         Color = dotColor.WithAlpha(glowAlpha),
                         IsAntialias = true,
-                        MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 3 * glowIntensity)
+                        MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 1 + 2 * glowIntensity)
                     })
                     {
-                        canvas.DrawCircle(position.X, position.Y, dotSize * 2, glowPaint);
+                        canvas.DrawCircle(position.X, position.Y, dotSize * 1.8f, glowPaint);
                     }
                 }
             }

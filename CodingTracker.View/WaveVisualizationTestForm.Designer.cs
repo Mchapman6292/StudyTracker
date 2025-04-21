@@ -18,8 +18,9 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
-            intensityTimer?.Stop();
-            intensityTimer?.Dispose();
+            decayTimer?.Stop();
+            decayTimer?.Dispose();
+            activityTracker?.Dispose();
             waveControl?.Dispose();
         }
 
