@@ -11,7 +11,8 @@
         ConfirmUsernamePage,
         ResetPasswordPage,
         CountdownTimerPage,
-        OrbitalTimerPage
+        OrbitalTimerPage,
+        WaveVisualizationForm
     }
 
 }

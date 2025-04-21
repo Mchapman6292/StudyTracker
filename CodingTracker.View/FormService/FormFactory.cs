@@ -44,6 +44,7 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
                 FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
                 FormPageEnum.OrbitalTimerPage => typeof(OrbitalTimerPage),
+                FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationTestForm),
 
 
 

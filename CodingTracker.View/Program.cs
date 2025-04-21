@@ -44,6 +44,7 @@ using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
+using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 
 
 /// To do
@@ -117,6 +118,8 @@ namespace CodingTracker.View.Program
                     .AddSingleton<INotificationManager, NotificationManager>()
                     .AddSingleton< IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
+                    .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
+                    .AddSingleton<WaveVisualizationTestForm>()
 
 
 

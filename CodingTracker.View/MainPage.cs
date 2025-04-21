@@ -123,8 +123,10 @@ namespace CodingTracker.View
 
         }
 
-
-
+        private void WaveTestButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.WaveVisualizationForm);
+        }
     }
 }
  
