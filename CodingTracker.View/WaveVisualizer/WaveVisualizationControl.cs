@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 
 namespace CodingTracker.View.TimerDisplayService.WaveVisualizationControls
 {

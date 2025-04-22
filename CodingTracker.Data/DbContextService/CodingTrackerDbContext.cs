@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
-using CodingTracker.Common.Entities.UserCredentialEntities;
+﻿using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.Entities.UserCredentialEntities;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace CodingTracker.Data.DbContextService.CodingTrackerDbContexts

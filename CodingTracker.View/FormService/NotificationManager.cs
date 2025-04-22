@@ -7,10 +7,10 @@ namespace CodingTracker.View.FormService.NotificationManagers
         void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message);
     }
 
-    public class NotificationManager : INotificationManager 
+    public class NotificationManager : INotificationManager
     {
 
-        public void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog ,string message)
+        public void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message)
         {
             if (string.IsNullOrWhiteSpace(message))
             {

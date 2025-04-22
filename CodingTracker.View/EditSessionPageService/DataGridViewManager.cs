@@ -63,7 +63,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         // Maps the sessionId to the datagridview display, used to tracking session ids for deletion
         private Dictionary<DataGridViewRow, RowState> _rowToInfoMapping { get; set; }
-        private List<String> _visibleColumns; 
+        private List<String> _visibleColumns;
         private int _numberOfSessions = 10;
         private List<int> _currentHighlightedRows = new List<int>();
 
@@ -78,7 +78,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             _configuration = configuration;
             _utilityService = utilityService;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
-            _visibleColumns = new List<string>    
+            _visibleColumns = new List<string>
                 {
                     "SessionId",
                     "DurationHHMM",
@@ -111,9 +111,9 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         public void ClearEntryInRowToInfoMapping(DataGridViewRow row)
         {
-           _rowToInfoMapping.Remove(row);
+            _rowToInfoMapping.Remove(row);
         }
-        
+
         public void ResetDataGridAndRowInfoDict(DataGridView dataGridView)
         {
             ClearALlDataGridRows(dataGridView);
@@ -147,7 +147,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
             using (_layoutService.SuspendLayout(dataGrid))
             {
-        
+
 
             }
         }
@@ -156,7 +156,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         public int GetSessionIdForRowIndex(DataGridViewRow selectedRow)
         {
-            if(_rowToInfoMapping.Count < 1)
+            if (_rowToInfoMapping.Count < 1)
             {
                 throw new KeyNotFoundException($"Count of entries in {nameof(_rowToInfoMapping)} is < 1, Count: {_rowToInfoMapping.Count}.");
             }
@@ -178,7 +178,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         public void SetAllMarkedDeletionToFalse()
         {
-            foreach(RowState rowSate in _rowToInfoMapping.Values)
+            foreach (RowState rowSate in _rowToInfoMapping.Values)
             {
                 _dataGridRowStateManager.UpdateMarkedForDeletionBool(rowSate, false);
             }
@@ -225,7 +225,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         }
 
         // This alters the DisplayIndex and not the RowIndex so the mapping in _rowToInfo remains unaltered. 
-      
+
         public void HideUnusuedColumns(DataGridView dataGrid)
         {
             foreach (DataGridViewColumn column in dataGrid.Columns)
@@ -379,14 +379,14 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         // This takes a list of row indexes instead of a RowState object as the DataGridRows need to be sorted by Ascending
         private void SetDataGridViewCellToEmptyByRowIndex(DataGridView dataGrid, List<int> rowIndexes)
         {
-            foreach(int index in rowIndexes)
+            foreach (int index in rowIndexes)
             {
-                if(index >= 0 && index < dataGrid.Rows.Count) 
+                if (index >= 0 && index < dataGrid.Rows.Count)
                 {
                     foreach (DataGridViewCell cell in dataGrid.Rows[index].Cells)
                     {
                         cell.Value = string.Empty;
-                    }     
+                    }
                 }
             }
         }
@@ -397,12 +397,12 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         // Old logic remove when working
         private List<int> GetIndexesMarkedInRowDeletionColour(DataGridView dataGrid)
         {
-            List<int> indexesForDeletion = new List<int>(); 
+            List<int> indexesForDeletion = new List<int>();
 
-            for(int i = 0; i < dataGrid.Rows.Count; i++) 
+            for (int i = 0; i < dataGrid.Rows.Count; i++)
             {
                 DataGridViewRow row = dataGrid.Rows[i];
-                if(row.DefaultCellStyle.BackColor == ColourService.RowDeletionCrimsonRed)
+                if (row.DefaultCellStyle.BackColor == ColourService.RowDeletionCrimsonRed)
                 {
                     indexesForDeletion.Add(i);
                 }
@@ -417,8 +417,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
 
         ////////////// NEW METHODS WHICH USE DATASOURCE
-        
-        
+
+
         public async Task CONTROLLERClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria)
         {
             ClearDataGridViewDataSource(dataGrid);
@@ -450,7 +450,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         }
 
 
-        public void CONTROLLERClearAndLoadDataGridViewWithSessions(DataGridView dataGrid,  List<CodingSessionEntity> codingSessions)
+        public void CONTROLLERClearAndLoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)
         {
             ClearDataGridViewDataSource(dataGrid);
             ClearDataGridViewColumns(dataGrid);
@@ -465,7 +465,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
 
         public void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)
         {
-            if(!codingSessions.Any())
+            if (!codingSessions.Any())
             {
                 _appLogger.Debug($"No coding sessions passed to {nameof(LoadDataGridViewWithSessions)}.");
             }
@@ -554,8 +554,8 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             foreach (KeyValuePair<DataGridViewRow, RowState> pair in _rowToInfoMapping)
             {
                 var rowState = pair.Value;
-                
-                if(rowState.MarkedForDeletion == false)
+
+                if (rowState.MarkedForDeletion == false)
                 {
                     sessionIdsNotMarked.Add(rowState.SessionId);
                 }

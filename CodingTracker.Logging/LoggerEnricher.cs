@@ -1,10 +1,8 @@
-﻿
-using Serilog;
-using System.Diagnostics;
+﻿using CodingTracker.Common.ILoggerEnrichers;
 using Serilog.Core;
-using Serilog.Events;
 using Serilog.Enrichers.Span;
-using CodingTracker.Common.ILoggerEnrichers;
+using Serilog.Events;
+using System.Diagnostics;
 
 namespace CodingTracker.Logging.LoggerEnrichers
 {

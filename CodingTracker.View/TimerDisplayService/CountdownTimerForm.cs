@@ -1,12 +1,12 @@
-﻿using Guna.UI2.WinForms;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormPageEnums;
+﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
-using System.Diagnostics;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using Guna.UI2.WinForms;
+using System.Diagnostics;
 
 
 namespace CodingTracker.View.TimerDisplayService
@@ -37,7 +37,7 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly INotificationManager _notificationManager;
 
 
-        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager )
+        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager)
         {
             InitializeComponent();
             _formStatePropertyManager = formStatePropertyManager;
@@ -160,9 +160,9 @@ namespace CodingTracker.View.TimerDisplayService
             var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
 
             if (statusLabel != null)
-                {
-                    statusLabel.Text = "0%";
-                }
+            {
+                statusLabel.Text = "0%";
+            }
 
             _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
             sessionGoalSeconds = _codingSessionManager.ReturnGoalSeconds();
@@ -170,7 +170,7 @@ namespace CodingTracker.View.TimerDisplayService
             stopwatchTimer.Start();
         }
 
-        private  void ProgressTimer_Tick(object sender, EventArgs e)
+        private void ProgressTimer_Tick(object sender, EventArgs e)
         {
             if (!sessionGoalSeconds.HasValue)
             {
@@ -204,7 +204,7 @@ namespace CodingTracker.View.TimerDisplayService
 
 
 
-   
+
 
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
         {

@@ -105,7 +105,7 @@ namespace CodingTracker.Business.InputValidators
 
         public bool IsValidTimeFormatHHMM(string input)
         {
-            using(var activity = new Activity(nameof(IsValidTimeFormatHHMM)).Start())
+            using (var activity = new Activity(nameof(IsValidTimeFormatHHMM)).Start())
             {
                 _appLogger.Info($"Starting {nameof(IsValidTimeFormatHHMM)} for {input}.");
             }

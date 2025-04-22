@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace CodingTracker.View.TimerDisplayService.StopWatchTimerServices
 {
@@ -17,12 +12,12 @@ namespace CodingTracker.View.TimerDisplayService.StopWatchTimerServices
 
     public class StopWatchTimerService : IStopWatchTimerService
     {
-        private Stopwatch stopwatchTimer {  get; } = new Stopwatch();
+        private Stopwatch stopwatchTimer { get; } = new Stopwatch();
 
 
         public Stopwatch ReturnStopWatch()
         {
-            return stopwatchTimer;  
+            return stopwatchTimer;
         }
 
         public TimeSpan ReturnElapsedTimeSpan()
@@ -35,7 +30,7 @@ namespace CodingTracker.View.TimerDisplayService.StopWatchTimerServices
             return stopwatchTimer.Elapsed.TotalSeconds;
         }
 
-        public double ReturnElapsedMilliseconds() 
+        public double ReturnElapsedMilliseconds()
         {
             return stopwatchTimer.Elapsed.TotalMilliseconds;
         }

@@ -2,10 +2,8 @@
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
-using CodingTracker.Common.UtilityServices;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit;
 
 namespace CodingTracker.Tests.Repositories
 {

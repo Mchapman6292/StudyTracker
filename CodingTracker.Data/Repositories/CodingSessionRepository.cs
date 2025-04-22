@@ -4,7 +4,6 @@ using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 
 namespace CodingTracker.Data.Repositories.CodingSessionRepositories
@@ -16,7 +15,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         private readonly ICodingTrackerDbContext _dbContext;
 
 
-        public CodingSessionRepository(IApplicationLogger appLogger, ICodingTrackerDbContext context) 
+        public CodingSessionRepository(IApplicationLogger appLogger, ICodingTrackerDbContext context)
         {
             _appLogger = appLogger;
             _dbContext = context;
@@ -79,7 +78,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .Select(s => s.SessionId)
                 .ToListAsync();
 
-            if(!sessionsToDelete.Any())
+            if (!sessionsToDelete.Any())
             {
                 _appLogger.Error($"No session ids for deletion in {nameof(DeleteSessionsByIdAsync)}");
                 return 0;
@@ -115,7 +114,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDate),
                 SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDate),
                 SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDate),
-                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate), 
+                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate),
                 _ => query.OrderByDescending(s => s.StartDate)  // Fallback
             };
 
@@ -166,14 +165,14 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
         public async Task<double> GetAverageDurationOfAllSessionsAsync()
         {
-            if(!await _dbContext.CodingSessions.AnyAsync())
+            if (!await _dbContext.CodingSessions.AnyAsync())
             {
                 return 0.0;
             }
 
             return await _dbContext.CodingSessions
                 .Select(s => s.DurationSeconds)
-                .AverageAsync();     
+                .AverageAsync();
         }
 
         public async Task<double> GetTodaysTotalDurationAsync()

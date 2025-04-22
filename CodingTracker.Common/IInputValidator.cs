@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.BusinessInterfaces;
+﻿using CodingTracker.Common.BusinessInterfaces;
 
 namespace CodingTracker.Common.IInputValidators
 {
-    public interface IInputValidator 
+    public interface IInputValidator
     {
 
         bool CheckDateInput(string input, out DateTime result);

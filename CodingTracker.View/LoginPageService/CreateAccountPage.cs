@@ -1,9 +1,9 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using System.Diagnostics;
-using CodingTracker.View.FormPageEnums;
 
 namespace CodingTracker.View
 {
@@ -17,7 +17,7 @@ namespace CodingTracker.View
         private readonly IAuthenticationService _authenticationService;
         public Action<string> AccountCreatedCallback { get; set; }
 
-        public CreateAccountPage( IInputValidator inputValidator, IApplicationLogger appLogger, IFormController formController, IFormSwitcher formSwitcher, IAuthenticationService authentication)
+        public CreateAccountPage(IInputValidator inputValidator, IApplicationLogger appLogger, IFormController formController, IFormSwitcher formSwitcher, IAuthenticationService authentication)
         {
             InitializeComponent();
             _inputValidator = inputValidator;
@@ -25,15 +25,15 @@ namespace CodingTracker.View
             _formController = formController;
             _formSwitcher = formSwitcher;
             _authenticationService = authentication;
-            
+
         }
 
         private void DisplayErrorMessage(string message)
         {
-            CreateAccountPageErrorTextBox.Text = message; 
+            CreateAccountPageErrorTextBox.Text = message;
         }
 
- 
+
 
         private async void CreateAccountPageCreateAccountButton_Click(object sender, EventArgs e)
         {
@@ -52,7 +52,7 @@ namespace CodingTracker.View
                 {
                     try
                     {
-                       bool isAccountCreated = await _authenticationService.CreateAccount(username, password);
+                        bool isAccountCreated = await _authenticationService.CreateAccount(username, password);
 
                         if (isAccountCreated)
                         {
@@ -83,7 +83,7 @@ namespace CodingTracker.View
             overallStopwatch.Stop();
         }
 
- 
+
 
     }
 }

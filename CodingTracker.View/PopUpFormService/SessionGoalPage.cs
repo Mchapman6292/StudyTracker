@@ -46,7 +46,7 @@ namespace CodingTracker.View.PopUpFormService
 
         private void PopUpForm_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void InitializeToolsAndComponents()
@@ -152,7 +152,7 @@ namespace CodingTracker.View.PopUpFormService
         private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
             string timeInputString = timeGoalTextBox.Text;
-            _appLogger.Debug($"Time string extraced from text box: {timeInputString}"); 
+            _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
 
             if (!ValidateTimeFormat(timeInputString))
             {

@@ -1,5 +1,4 @@
 ﻿using CodingTracker.View.FormPageEnums;
-using System.Windows.Forms;
 
 namespace CodingTracker.View.FormService
 {
@@ -41,7 +40,7 @@ namespace CodingTracker.View.FormService
             {
                 oldForm.Hide();
             }
-            
+
             _formStateManagement.SetCurrentForm(newForm);
 
             newForm.Show();

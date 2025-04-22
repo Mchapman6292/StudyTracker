@@ -1,5 +1,5 @@
-﻿using Xunit;
-using CodingTracker.Common.CodingSessions;
+﻿using CodingTracker.Common.CodingSessions;
+using Xunit;
 
 namespace Tests.BusinessTests.CodingSessionTests
 {
@@ -56,8 +56,8 @@ namespace Tests.BusinessTests.CodingSessionTests
             Assert.Null(session.DurationSeconds);
             Assert.Empty(session.DurationHHMM);
 
-        } 
- 
+        }
+
 
         [Fact]
         public void CompletingGoal_SetsGoalReachedToTrue()

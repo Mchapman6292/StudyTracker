@@ -14,8 +14,8 @@ namespace CodingTracker.Common.UtilityServices
         private readonly IApplicationLogger _appLogger;
 
         public UtilityService(IApplicationLogger appLogger)
-        { 
-            _appLogger = appLogger; 
+        {
+            _appLogger = appLogger;
         }
         public bool IsValidString(string input)
         {
@@ -69,7 +69,7 @@ namespace CodingTracker.Common.UtilityServices
         }
 
 
-    
+
 
 
 
@@ -77,7 +77,7 @@ namespace CodingTracker.Common.UtilityServices
         {
             int hours = int.Parse(input.Substring(0, 2));
             int minutes = int.Parse(input.Substring(2, 2));
-            var result =  hours * 60 + minutes;
+            var result = hours * 60 + minutes;
 
             _appLogger.Debug($"Result of {nameof(ConvertDoubleToHHMMString)}: {result}.");
             return result;
@@ -97,13 +97,13 @@ namespace CodingTracker.Common.UtilityServices
 
         public void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions)
         {
-            if(!codingSessions.Any())
+            if (!codingSessions.Any())
             {
                 _appLogger.Info($"CodingSession list empty for {nameof(ConvertCodingSessionListDatesToLocal)}");
                 return;
             }
 
-            foreach(var codingSession in codingSessions)
+            foreach (var codingSession in codingSessions)
             {
                 codingSession.StartDate = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDate.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
                 codingSession.StartTime = codingSession.StartTime.ToLocalTime();

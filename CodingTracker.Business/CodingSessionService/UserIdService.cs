@@ -6,7 +6,7 @@ namespace CodingTracker.Business.CodingSessionService.UserIdServices
     public class UserIdService : IUserIdService
     {
         private readonly IApplicationLogger _appLogger;
-        private  int _currentUserId {  get; set; }  
+        private int _currentUserId { get; set; }
 
 
         public UserIdService(IApplicationLogger appLogger)

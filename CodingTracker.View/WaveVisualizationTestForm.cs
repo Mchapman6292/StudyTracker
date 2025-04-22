@@ -1,9 +1,6 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
-using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
 
 namespace CodingTracker.View
 {

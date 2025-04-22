@@ -4,11 +4,10 @@ using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
-using System.Drawing.Drawing2D;
-using CodingTracker.View.FormPageEnums; 
 
 namespace CodingTracker.View
 {

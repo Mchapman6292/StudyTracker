@@ -3,13 +3,13 @@ using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
-using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using Moq;
 using Xunit;
-using CodingTracker.View.PopUpFormService;
-using CodingTracker.View.FormPageEnums;
 
 namespace Tests.ViewTests.SessionGoalFormTests
 {

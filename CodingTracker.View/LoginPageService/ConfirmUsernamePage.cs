@@ -1,9 +1,9 @@
-﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
+﻿using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormPageEnums;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
 
 namespace CodingTracker.View.LoginPageService
@@ -59,11 +59,11 @@ namespace CodingTracker.View.LoginPageService
 
 
 
- 
+
 
         private void ConfirmUsernameExitButtonControlBox_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)

@@ -1,8 +1,6 @@
-﻿using Serilog;
-using Serilog.Context;
-using System;
+﻿using CodingTracker.Common.IApplicationLoggers;
+using Serilog;
 using System.Diagnostics;
-using CodingTracker.Common.IApplicationLoggers;
 
 namespace CodingTracker.Logging.ApplicationLoggers
 {
@@ -103,7 +101,7 @@ namespace CodingTracker.Logging.ApplicationLoggers
                 if (updateEntries.Count > 0)
                 {
                     string message = $"Updated {methodName}: {string.Join(", ", updateEntries)}. TraceID: {activity.TraceId}";
-                    Info(message); 
+                    Info(message);
                 }
             }
             return Task.CompletedTask;

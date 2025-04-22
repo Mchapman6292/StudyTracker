@@ -48,7 +48,7 @@ namespace CodingTracker.View.TimerDisplayService
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
-            _stopWatchTimerService =stopWatchTimerService;
+            _stopWatchTimerService = stopWatchTimerService;
             stopwatchTimer = _stopWatchTimerService.ReturnStopWatch();
             InitializeComponents();
             _codingSessionManager.SetCurrentSessionGoalSet(false);
@@ -228,7 +228,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void TriggerMilestoneEffect()
         {
-      
+
         }
 
         private Color LerpColor(Color color1, Color color2, float amount)
@@ -375,7 +375,7 @@ namespace CodingTracker.View.TimerDisplayService
 
             _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
- 
+
 
         private void DisposeCustomResources()
         {

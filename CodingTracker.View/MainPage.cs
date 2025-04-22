@@ -5,7 +5,6 @@ using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using System.Diagnostics;
 
 
 namespace CodingTracker.View
@@ -129,4 +128,3 @@ namespace CodingTracker.View
         }
     }
 }
- 

@@ -2,7 +2,6 @@
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
-using System.Diagnostics;
 
 namespace CodingTracker.Business.ApplicationControls
 {
@@ -32,7 +31,7 @@ namespace CodingTracker.Business.ApplicationControls
         {
             bool codingSessionActive = _codingSessionManager.ReturnIsCodingSessionActive();
 
-            if(!codingSessionActive)
+            if (!codingSessionActive)
             {
                 Application.Exit();
                 return;

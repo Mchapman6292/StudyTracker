@@ -13,8 +13,8 @@ namespace CodingTracker.Common.CodingSessions
         public double? DurationSeconds { get; set; }
         public string DurationHHMM { get; set; } = string.Empty;
         public bool? GoalSet { get; set; }
-        public double? GoalSeconds { get; set; }   
-        public bool? GoalReached { get; set; } 
+        public double? GoalSeconds { get; set; }
+        public bool? GoalReached { get; set; }
 
 
 
