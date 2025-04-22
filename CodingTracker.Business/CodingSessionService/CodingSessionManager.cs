@@ -12,7 +12,7 @@ using CodingTracker.Common.IUtilityServices;
 namespace CodingTracker.Business.CodingSessionManagers
 {
 
-
+    // Test convert method.
 
     public class CodingSessionManager : ICodingSessionManager
     {
@@ -215,6 +215,26 @@ namespace CodingTracker.Business.CodingSessionManagers
 
 
 
+        public void UpdateCodingSessionNoGoalSet()
+        {
+            UpdateIsSessionTimerActive(true);
+            UpdateISCodingSessionActive(true);
+            SetCurrentSessionGoalSet(false);
+            SetCurrentSessionGoalReached(false);
+        }
+
+
+        public void UpdateCodingSessionGoalSet(int sessionGoalSeconds)
+        {
+            SetCurrentSessionGoalSet(true);
+            UpdateISCodingSessionActive(true);
+            SetCurrentSessionGoalSeconds(sessionGoalSeconds);
+            UpdateISCodingSessionActive(true);
+        }
+
+
+
+
 
 
         public void UpdateGoalCompletionStatus()
@@ -382,6 +402,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         public CodingSessionEntity ConvertCodingSessionToCodingSessionEntity()
         {
+            
             return new CodingSessionEntity
             {
                 UserId = _currentCodingSession.UserId,
@@ -491,6 +512,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
  
+
+
+
 
 
     }

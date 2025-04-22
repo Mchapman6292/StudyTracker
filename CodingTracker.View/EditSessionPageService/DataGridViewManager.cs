@@ -39,9 +39,11 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         void RefreshDataGridView(DataGridView dataGrid);
         void RenameDataGridColumns(DataGridView dataGrid);
         void FormatDataGridViewDateData(DataGridView dataGrid);
-        Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
-        Task CONTROLLERClearAndRefreshDataGridByDate(DataGridView dataGrid, DateOnly date);
+        Task CONTROLLERClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
+        Task CONTROLLERClearAndRefreshDataGridByDateAsync(DataGridView dataGrid, DateOnly date);
+        void CONTROLLERClearAndLoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions);
         HashSet<int> GetSessionIdsMarkedForDeletion();
+        List<int> GetSessionIdsNotMarkedForDeletion();
         void DeleteRowInfoMarkedForDeletion();
 
     }
@@ -417,7 +419,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         ////////////// NEW METHODS WHICH USE DATASOURCE
         
         
-        public async Task CONTROLLERClearAndRefreshDataGridByCriteria(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria)
+        public async Task CONTROLLERClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria)
         {
             ClearDataGridViewDataSource(dataGrid);
             ClearDataGridViewColumns(dataGrid);
@@ -433,7 +435,7 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
         }
 
-        public async Task CONTROLLERClearAndRefreshDataGridByDate(DataGridView dataGrid, DateOnly date)
+        public async Task CONTROLLERClearAndRefreshDataGridByDateAsync(DataGridView dataGrid, DateOnly date)
         {
             ClearDataGridViewDataSource(dataGrid);
             ClearDataGridViewColumns(dataGrid);
@@ -445,8 +447,21 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             FormatDataGridViewDateData(dataGrid);
             RefreshDataGridView(dataGrid);
             CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
-
         }
+
+
+        public void CONTROLLERClearAndLoadDataGridViewWithSessions(DataGridView dataGrid,  List<CodingSessionEntity> codingSessions)
+        {
+            ClearDataGridViewDataSource(dataGrid);
+            ClearDataGridViewColumns(dataGrid);
+            LoadDataGridViewWithSessions(dataGrid, codingSessions);
+            HideUnusuedColumns(dataGrid);
+            RenameDataGridColumns(dataGrid);
+            FormatDataGridViewDateData(dataGrid);
+            RefreshDataGridView(dataGrid);
+            CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
+        }
+
 
         public void LoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions)
         {
@@ -530,6 +545,25 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
         {
             _rowToInfoMapping.Add(dataGridRow, rowState);
         }
+
+
+        public List<int> GetSessionIdsNotMarkedForDeletion()
+        {
+            List<int> sessionIdsNotMarked = new List<int>();
+
+            foreach (KeyValuePair<DataGridViewRow, RowState> pair in _rowToInfoMapping)
+            {
+                var rowState = pair.Value;
+                
+                if(rowState.MarkedForDeletion == false)
+                {
+                    sessionIdsNotMarked.Add(rowState.SessionId);
+                }
+            }
+            return sessionIdsNotMarked;
+        }
+
+
 
 
 

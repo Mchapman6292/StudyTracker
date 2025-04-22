@@ -15,10 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="ViewTests\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\CodingTracker.Business\CodingTracker.Business.csproj" />
 		<ProjectReference Include="..\CodingTracker.Common\CodingTracker.Common.csproj" />
 		<ProjectReference Include="..\CodingTracker.Data\CodingTracker.Data.csproj" />

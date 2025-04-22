@@ -16,6 +16,10 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void SetDurationHHMM(string durationHHMM);
         void SetCurrentSessionGoalReached(bool? goalReached);
         bool? ReturnCurrentSessionGoalReached();
+
+        void UpdateCodingSessionNoGoalSet();
+        void UpdateCodingSessionGoalSet(int sessionGoalSeconds);
+
         DateTime? ReturnCurrentSessionStartTime();
         void SetDurationSeconds(double? durationSeconds);
         void SetCurrentSessionGoalSeconds(double? goalSeconds);

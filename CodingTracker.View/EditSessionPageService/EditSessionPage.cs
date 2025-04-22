@@ -11,6 +11,7 @@ using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Drawing;
+using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 
 
 // Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
@@ -71,7 +72,7 @@ namespace CodingTracker.View
         // This fires after the constructor has finished & before form is rendered. 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteria(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
         }
 
         // Methods to update properties, button behaviour.
@@ -383,7 +384,7 @@ namespace CodingTracker.View
             string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
 
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteria(EditSessionPageDataGridView, selectedCriteria);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, selectedCriteria);
         }
 
 
@@ -411,7 +412,7 @@ namespace CodingTracker.View
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
             var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDate(EditSessionPageDataGridView, date);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDateAsync(EditSessionPageDataGridView, date);
         }
 
 
@@ -428,8 +429,11 @@ namespace CodingTracker.View
             try
             {
                 HashSet<int> sessionsForDeletion = _dataGridViewManager.GetSessionIdsMarkedForDeletion();
+
+
                 int deletedSessions = await _codingSessionRepository.DeleteSessionsByIdAsync(sessionsForDeletion);
                 _dataGridViewManager.DeleteRowInfoMarkedForDeletion();
+
 
                 string message = string.Empty;
 
@@ -448,10 +452,14 @@ namespace CodingTracker.View
 
             finally
             {
-                UpdateDeleteSessionButtonEnabled(IsEditSession);
-                _dataGridViewManager.RefreshDataGridView(EditSessionPageDataGridView);
-            }
+                List<int> sessionIdsNotMarkedForDeletion = _dataGridViewManager.GetSessionIdsNotMarkedForDeletion();
+                List<CodingSessionEntity> sessionsNotDeleted = await _codingSessionRepository.GetSessionsbyIDAsync(sessionIdsNotMarkedForDeletion);
 
+                _dataGridViewManager.CONTROLLERClearAndLoadDataGridViewWithSessions(EditSessionPageDataGridView, sessionsNotDeleted);
+                UpdateDeleteSessionButtonEnabled(IsEditSession);
+
+                this.ActiveControl = EditSessionPageComboBox;   
+            }
         }
 
 

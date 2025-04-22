@@ -56,10 +56,7 @@ namespace Tests.BusinessTests.CodingSessionTests
             Assert.Null(session.DurationSeconds);
             Assert.Empty(session.DurationHHMM);
 
-        }
-
-
-        
+        } 
  
 
         [Fact]
@@ -81,6 +78,20 @@ namespace Tests.BusinessTests.CodingSessionTests
             session.GoalReached = session.DurationSeconds >= session.GoalSeconds * 60;
 
             Assert.True(session.GoalReached);
+        }
+
+        [Fact]
+        public void SessionGoalSetToFalseWhenNoGoalSet()
+        {
+            var session = new CodingSession
+            {
+                UserId = 42,
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                StartTime = DateTime.Now,
+                GoalSet = false,
+                GoalReached = false,
+                GoalSeconds = 0
+            };
         }
     }
 }
