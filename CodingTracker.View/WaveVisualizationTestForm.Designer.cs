@@ -1,6 +1,6 @@
 ﻿namespace CodingTracker.View
 {
-    partial class TestForm
+    partial class WaveVisualizationTestForm
     {
         /// <summary>
         /// Required designer variable.
@@ -18,6 +18,10 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+            decayTimer?.Stop();
+            decayTimer?.Dispose();
+            activityTracker?.Dispose();
+            waveControl?.Dispose();
         }
 
         #region Windows Form Designer generated code
@@ -28,16 +32,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
-            // 
-            // TestForm
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Name = "TestForm";
-            Text = "TestForm";
-            ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Text = "Form1";
         }
 
         #endregion

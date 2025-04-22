@@ -171,21 +171,19 @@ namespace CodingTracker.View.PopUpFormService
             */
 
 
-            _codingSessionManager.SetCurrentSessionGoalSet(true);
-            _codingSessionManager.UpdateISCodingSessionActive(true);
-            _codingSessionManager.SetCurrentSessionGoalSeconds(sessionGoalSeconds);
-            _codingSessionManager.UpdateISCodingSessionActive(true);
+            _codingSessionManager.UpdateCodingSessionGoalSet(sessionGoalSeconds);
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
-            
-            _codingSessionManager.UpdateIsSessionTimerActive(true);
-            _codingSessionManager.UpdateISCodingSessionActive(true);
-            _codingSessionManager.SetCurrentSessionGoalSet(false);
-            _codingSessionManager.SetCurrentSessionGoalReached(false);
+            HandleSkipButton();
+        }
+
+        public void HandleSkipButton()
+        {
+            _codingSessionManager.UpdateCodingSessionNoGoalSet();
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();

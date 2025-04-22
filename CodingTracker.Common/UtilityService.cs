@@ -69,13 +69,7 @@ namespace CodingTracker.Common.UtilityServices
         }
 
 
-        public string ConvertIntToHHMMStringWitSemiColon(int? durationSeconds)
-        {
-            TimeSpan timeSpan = TimeSpan.FromSeconds(durationSeconds);
-            int totalHours = (int)timeSpan.TotalHours;
-            int minutes = timeSpan.Minutes;
-            return $"{totalHours:D2}:{minutes:D2}";
-        }
+    
 
 
 

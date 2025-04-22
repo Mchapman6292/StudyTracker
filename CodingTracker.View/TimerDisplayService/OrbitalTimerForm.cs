@@ -1,5 +1,10 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using Guna.UI2.WinForms;
+using System.Diagnostics;
 using System.Drawing.Drawing2D;
 
 namespace CodingTracker.View.TimerDisplayService
@@ -28,16 +33,25 @@ namespace CodingTracker.View.TimerDisplayService
         private bool isDragging = false;
         private Point dragStartPoint;
 
+        private Stopwatch stopwatchTimer;
+
         private Color primaryColor = Color.FromArgb(255, 81, 195);
         private Color secondaryColor = Color.FromArgb(168, 228, 255);
 
         private readonly ICodingSessionManager _codingSessionManager;
+        private readonly INotificationManager _notificationManager;
+        private readonly IFormSwitcher _formSwitcher;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
 
-        public OrbitalTimerPage(ICodingSessionManager codingSessionManager)
+        public OrbitalTimerPage(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormSwitcher formSwitcher, IStopWatchTimerService stopWatchTimerService)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
+            _notificationManager = notificationManager;
+            _stopWatchTimerService =stopWatchTimerService;
+            stopwatchTimer = _stopWatchTimerService.ReturnStopWatch();
             InitializeComponents();
+            _codingSessionManager.SetCurrentSessionGoalSet(false);
             SetupTimers();
         }
 
@@ -98,6 +112,16 @@ namespace CodingTracker.View.TimerDisplayService
             minimizeControlBox.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             minimizeControlBox.BackColor = Color.Transparent;
 
+
+            Guna2GradientButton homeButton = new Guna2GradientButton();
+            homeButton.Size = new Size(45, 29);
+            homeButton.Location = new Point(minimizeControlBox.Location.X - 50, 0);
+            homeButton.FillColor = Color.FromArgb(25, 24, 40);
+            homeButton.FillColor2 = Color.FromArgb(25, 24, 40);
+            homeButton.Font = new Font("Segoe UI", 9F);
+            homeButton.ForeColor = Color.White;
+            homeButton.BackColor = Color.Transparent;
+
             pauseButton = new Guna2Button();
             pauseButton.Size = new Size(24, 24);
             pauseButton.FillColor = Color.FromArgb(255, 81, 195);
@@ -123,6 +147,9 @@ namespace CodingTracker.View.TimerDisplayService
 
             this.Load += OrbitalTimerForm_Load;
 
+            homeButton.Click += HomeButton_Click;
+            controlPanel.Controls.Add(homeButton);
+
             mainPanel.MouseDown += MainPanel_MouseDown;
             mainPanel.MouseMove += MainPanel_MouseMove;
             mainPanel.MouseUp += MainPanel_MouseUp;
@@ -147,13 +174,14 @@ namespace CodingTracker.View.TimerDisplayService
             _codingSessionManager.UpdateISCodingSessionActive(true);
             sessionTimer.Start();
             animationTimer.Start();
+            stopwatchTimer.Start();
         }
 
         private void SessionTimer_Tick(object sender, EventArgs e)
         {
             if (!isPaused)
             {
-                elapsedTime = DateTime.Now - sessionStartTime;
+                elapsedTime = stopwatchTimer.Elapsed;
                 UpdateTimeDisplay();
 
                 if (elapsedTime.TotalMinutes % 30 == 0 && elapsedTime.Seconds == 0)
@@ -200,7 +228,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void TriggerMilestoneEffect()
         {
-            // Milestone effect logic
+      
         }
 
         private Color LerpColor(Color color1, Color color2, float amount)
@@ -317,12 +345,13 @@ namespace CodingTracker.View.TimerDisplayService
             if (isPaused)
             {
                 sessionTimer.Stop();
+                stopwatchTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
             }
             else
             {
-                sessionStartTime = DateTime.Now - elapsedTime;
                 sessionTimer.Start();
+                stopwatchTimer.Start();
                 pauseButton.Image = Properties.Resources.pause;
             }
 
@@ -334,36 +363,19 @@ namespace CodingTracker.View.TimerDisplayService
         {
             sessionTimer.Stop();
             animationTimer.Stop();
+            stopwatchTimer.Stop();
 
-            DialogResult result = MessageBox.Show(
-                $"End session and record time?\nElapsed: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}",
-                "End Session",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            string message = $"End session and record time?\nElapsed: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}";
 
-            if (result == DialogResult.Yes)
-            {
-                this.DialogResult = DialogResult.OK;
 
-                int durationSeconds = (int)elapsedTime.TotalSeconds;
-                string durationHHMM = $"{elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}";
 
-                _codingSessionManager.SetDurationSeconds(durationSeconds);
-                _codingSessionManager.SetDurationHHMM(durationHHMM);
-                _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
+            _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+            await _codingSessionManager.EndCodingSessionAsync();
 
-                await _codingSessionManager.EndCodingSessionAsync();
-                this.Close();
-            }
-            else
-            {
-                if (!isPaused)
-                {
-                    sessionTimer.Start();
-                    animationTimer.Start();
-                }
-            }
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
+ 
 
         private void DisposeCustomResources()
         {
@@ -400,6 +412,22 @@ namespace CodingTracker.View.TimerDisplayService
                 isDragging = false;
             }
         }
+
+        private async void HomeButton_Click(object sender, EventArgs e)
+        {
+            sessionTimer.Stop();
+            animationTimer.Stop();
+            stopwatchTimer.Stop();
+
+
+
+            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
+            _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+            await _codingSessionManager.EndCodingSessionAsync();
+
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+        }
+
 
 
     }

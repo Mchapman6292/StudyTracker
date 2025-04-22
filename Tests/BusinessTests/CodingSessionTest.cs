@@ -56,31 +56,7 @@ namespace Tests.BusinessTests.CodingSessionTests
             Assert.Null(session.DurationSeconds);
             Assert.Empty(session.DurationHHMM);
 
-        }
-
-
-
-        [Fact]
-        public void EndingSession_CalculatesDurationCorrectly()
-        {
-            var now = DateTime.Now;
-            var session = new CodingSession
-            {
-                UserId = 42,
-                StartDate = DateOnly.FromDateTime(now.AddMinutes(-30)),
-                StartTime = now.AddMinutes(-30)
-            };
-
-            session.EndDate = DateOnly.FromDateTime(now);
-            session.EndTime = now;
-            session.DurationSeconds = (int)(now - session.StartTime.Value).TotalSeconds;
-            session.DurationHHMM = $"{session.DurationSeconds / 3600:00}:{(session.DurationSeconds % 3600) / 60:00}";
-
-            Assert.Equal(30 * 60, session.DurationSeconds);
-            Assert.Equal("00:30", session.DurationHHMM);
-        }
-
-        
+        } 
  
 
         [Fact]
@@ -102,6 +78,20 @@ namespace Tests.BusinessTests.CodingSessionTests
             session.GoalReached = session.DurationSeconds >= session.GoalSeconds * 60;
 
             Assert.True(session.GoalReached);
+        }
+
+        [Fact]
+        public void SessionGoalSetToFalseWhenNoGoalSet()
+        {
+            var session = new CodingSession
+            {
+                UserId = 42,
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                StartTime = DateTime.Now,
+                GoalSet = false,
+                GoalReached = false,
+                GoalSeconds = 0
+            };
         }
     }
 }

@@ -12,7 +12,5 @@ namespace CodingTracker.Common.IUtilityServices
         int ConvertHHMMStringToSeconds(string input);
         void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession);
         void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions);
-
-        string ConvertIntToHHMMStringWitSemiColon(int? durationSeconds);
     }
 }
