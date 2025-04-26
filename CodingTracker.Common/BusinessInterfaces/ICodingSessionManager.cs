@@ -4,7 +4,8 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
 {
     public interface ICodingSessionManager
     {
-
+        int ReturnCurrentUserId();
+        void SetCurrentUserId(int userId);
         void StartCodingSession(DateTime startTime, double? sessionGoalSeconds, bool goalSet);
         Task EndCodingSessionAsync();
         Task EndCodingSessionWithTimerFinished();
@@ -31,7 +32,6 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void UpdateCodingSessionEndTimes();
         void SetCurrentCodingSession(CodingSession codingSession);
         Task SetUserIdForCurrentSessionAsync(string username, string password);
-        int GetCurrentUserId();
         int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate);
         bool ReturnIsCodingSessionActive();
     }

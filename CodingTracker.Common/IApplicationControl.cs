@@ -2,7 +2,6 @@
 {
     public interface IApplicationControl
     {
-        void StartApplication();
         Task ExitCodingTrackerAsync();
     }
 }
