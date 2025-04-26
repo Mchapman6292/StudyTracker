@@ -27,24 +27,25 @@ using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
+using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
+using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ButtonHighlighterServices;
+using CodingTracker.View.FormService.LayoutServices;
+using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.IMessageBoxManagers;
+using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
+using CodingTracker.View.LoginPageService;
 using CodingTracker.View.MessageBoxManagers;
+using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.SessionGoalCountDownTimers;
+using CodingTracker.View.TimerDisplayService;
+using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
+using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.FormService.LayoutServices;
-using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
-using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
-using CodingTracker.View.PopUpFormService;
-using CodingTracker.View.LoginPageService;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
-using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.TimerDisplayService;
-using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
-using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
-using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 
 
 /// To do
@@ -72,7 +73,7 @@ namespace CodingTracker.View.Program
 
             var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
             var loginPage = formFactory.GetOrCreateLoginPage();
- 
+
             Application.Run(loginPage);
         }
 
@@ -87,7 +88,7 @@ namespace CodingTracker.View.Program
             var connectionString = configuration.GetSection("DatabaseConfig:ConnectionString").Value;
 
             services.AddSingleton<IConfiguration>(configuration)
-                    .AddSingleton<IStartConfiguration, StartConfiguration>()  
+                    .AddSingleton<IStartConfiguration, StartConfiguration>()
                     .AddSingleton<IInputValidator, InputValidator>()
                     .AddSingleton<IApplicationLogger, ApplicationLogger>()
                     .AddSingleton<IUtilityService, UtilityService>()
@@ -104,31 +105,32 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingTrackerDbContext, CodingTrackerDbContext>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
-                    .AddSingleton<IUserCredentialRepository , UserCredentialRepository>()
+                    .AddSingleton<IUserCredentialRepository, UserCredentialRepository>()
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
                     .AddSingleton<IUserIdService, UserIdService>()
                     .AddSingleton<ILayoutService, LayoutService>()
-                    .AddSingleton<IDataGridViewManager , DataGridViewManager>()
+                    .AddSingleton<IDataGridViewManager, DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
                     .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
-                    .AddSingleton< IStopWatchTimerService, StopWatchTimerService>()
+                    .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
                     .AddSingleton<WaveVisualizationTestForm>()
+                    .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
 
 
 
-                    .AddSingleton<UserIdService , UserIdService>()
+                    .AddSingleton<UserIdService, UserIdService>()
 
 
                     // Transient services.
                     .AddTransient<ISessionGoalCountDownTimer, SessionGoalCountdownTimer>()
-   
+
                     .AddTransient<MainPage>()
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()

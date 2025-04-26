@@ -9,13 +9,9 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ColourServices;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Drawing;
-using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 
 
-// Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
-// Maybe try refreshing entire page instead of datagrid once combo box changed?
+
 
 
 namespace CodingTracker.View
@@ -127,7 +123,7 @@ namespace CodingTracker.View
         }
 
 
-        
+
 
 
 
@@ -446,7 +442,7 @@ namespace CodingTracker.View
                     message = $"{deletedSessions} sessions deleted.";
                 }
 
-                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox,message);
+                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
                 ClearCurrentHighlightedRows();
             }
 
@@ -458,7 +454,7 @@ namespace CodingTracker.View
                 _dataGridViewManager.CONTROLLERClearAndLoadDataGridViewWithSessions(EditSessionPageDataGridView, sessionsNotDeleted);
                 UpdateDeleteSessionButtonEnabled(IsEditSession);
 
-                this.ActiveControl = EditSessionPageComboBox;   
+                this.ActiveControl = EditSessionPageComboBox;
             }
         }
 
@@ -472,7 +468,7 @@ namespace CodingTracker.View
         {
             Color headerColor = EditSessionPageDataGridView.ColumnHeadersDefaultCellStyle.BackColor;
 
-            _appLogger.Debug($"Header color RGB: ({ headerColor.R}, { headerColor.G}, { headerColor.B})");
+            _appLogger.Debug($"Header color RGB: ({headerColor.R}, {headerColor.G}, {headerColor.B})");
             _appLogger.Debug($"Header color Hex: #{headerColor.R:X2}{headerColor.G:X2}{headerColor.B:X2}");
         }
     }

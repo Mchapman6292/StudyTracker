@@ -17,7 +17,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         private readonly IUtilityService _utilityService;
         private readonly UserIdService _userIdService;
 
-        private string _usernameForPasswordReset {  get; set; }
+        private string _usernameForPasswordReset { get; set; }
 
         public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, UserIdService userIdService)
         {
@@ -27,13 +27,13 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             _userIdService = userIdService;
         }
 
-        public void SetUsernameForPasswordReset(string username) 
+        public void SetUsernameForPasswordReset(string username)
         {
             _usernameForPasswordReset = username;
             _appLogger.Debug($"{nameof(_usernameForPasswordReset)} set to {_usernameForPasswordReset}.");
         }
 
-        public string GetUsernameForPasswordReset() 
+        public string GetUsernameForPasswordReset()
         {
             return _usernameForPasswordReset;
         }
@@ -41,7 +41,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
         public async Task<bool> CreateAccount(string username, string password)
         {
-            if(await _userCredentialRepository.UsernameExistsAsync(username))
+            if (await _userCredentialRepository.UsernameExistsAsync(username))
             {
                 _appLogger.Error($"Username already exists.");
                 return false;
@@ -52,7 +52,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
                 Username = username,
                 PasswordHash = _utilityService.HashPassword(password),
                 LastLogin = DateTime.UtcNow,
-                
+
             };
 
             return await _userCredentialRepository.AddUserCredentialAsync(user);
@@ -119,7 +119,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
                 _appLogger.Debug($"Incorrect passwordHash.");
                 return false;
             }
-            _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");     
+            _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");
 
             return true;
         }
@@ -127,7 +127,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
         public async Task<UserCredentialEntity> ReturnUserCredentialIfLoginAuthenticated(bool loginAuthenticated, string username)
         {
-            if(loginAuthenticated)
+            if (loginAuthenticated)
             {
                 _appLogger.Debug($"Login authenticated fro {username}.");
                 return await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
@@ -140,7 +140,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
         public async Task<bool> ResetPassword(string username, string newPassword)
         {
-            if (! await _userCredentialRepository.UsernameExistsAsync(username))
+            if (!await _userCredentialRepository.UsernameExistsAsync(username))
             {
                 _appLogger.Info($"Password reset failed: No user found for username {username}");
                 return false;
@@ -163,15 +163,15 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
 
 
-        public bool CheckPasswordValid(string password,out string? message)
+        public bool CheckPasswordValid(string password, out string? message)
         {
-            if(!password.Any(c => Char.IsUpper(c)))
+            if (!password.Any(c => Char.IsUpper(c)))
             {
                 message = "Password must contain at least one capital.";
                 return false;
             }
 
-            if(password.Length < 7)
+            if (password.Length < 7)
             {
                 message = "Password length must be greater than 7";
                 return false;

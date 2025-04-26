@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.Entities.CodingSessionEntities;
 
 namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
 {
@@ -24,7 +23,7 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void SetDurationSeconds(double? durationSeconds);
         void SetCurrentSessionGoalSeconds(double? goalSeconds);
         CodingSession ReturnCurrentCodingSession();
-        void SetCodingSessionStartTimeAndDate( DateTime startTime);
+        void SetCodingSessionStartTimeAndDate(DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);
         Task OldStartCodingSession(string username);
         void SetCurrentSessionGoalSet(bool goalSet);

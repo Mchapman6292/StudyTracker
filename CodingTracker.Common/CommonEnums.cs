@@ -20,5 +20,5 @@ namespace CodingTracker.Common.CommonEnums
         AverageSessionLabel
     }
 
- 
+
 }

@@ -12,7 +12,7 @@ namespace CodingTracker.Data.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "GoalMinutes",
-                table: "CodingSessions", 
+                table: "CodingSessions",
                 newName: "GoalSeconds");
         }
 
@@ -21,7 +21,7 @@ namespace CodingTracker.Data.Migrations
         {
             migrationBuilder.RenameColumn(
            name: "GoalSeconds",
-           table: "CodingSessions", 
+           table: "CodingSessions",
            newName: "GoalMinutes");
         }
     }

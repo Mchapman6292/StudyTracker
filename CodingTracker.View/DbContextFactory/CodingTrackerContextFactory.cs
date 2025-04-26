@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 
 namespace CodingTracker.Data.DbContextService.CodingTrackerContextFactory
 {

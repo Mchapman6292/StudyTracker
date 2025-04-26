@@ -175,7 +175,7 @@ namespace CodingTracker.View.FormService
 
         public void UpdateAccountCreatedCallBack(Action<string> callback)
         {
-            _createAccountPageInstance.AccountCreatedCallback = callback;   
+            _createAccountPageInstance.AccountCreatedCallback = callback;
         }
 
 

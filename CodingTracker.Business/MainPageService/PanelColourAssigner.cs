@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Data.Repositories.CodingSessionRepositories;
+using System.Diagnostics;
 using System.Drawing;
-using CodingTracker.Common.CodingSessionDTOs;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 
 namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 {

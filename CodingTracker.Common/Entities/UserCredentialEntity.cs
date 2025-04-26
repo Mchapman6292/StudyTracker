@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodingTracker.Common.Entities.UserCredentialEntities
 {
@@ -15,6 +10,6 @@ namespace CodingTracker.Common.Entities.UserCredentialEntities
         public int UserId { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
-        public DateTime? LastLogin { get;  set; }
+        public DateTime? LastLogin { get; set; }
     }
 }

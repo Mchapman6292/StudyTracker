@@ -5,7 +5,8 @@ using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using System.Diagnostics;
+using CodingTracker.View.FormService.ButtonHighlighterServices;
+using Guna.UI2.Designer;
 
 
 namespace CodingTracker.View
@@ -19,13 +20,14 @@ namespace CodingTracker.View
         private readonly IFormSwitcher _formSwitcher;
         private readonly ISessionCalculator _sessionCalculator;
         private readonly ILabelAssignment _labelAssignment;
+        private readonly IButtonHighlighterService _buttonHighlighterService;
 
 
         private bool isActionPanelVisible = false;
 
 
 
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService)
         {
             InitializeComponent();
             _appLogger = appLogger;
@@ -35,6 +37,7 @@ namespace CodingTracker.View
             _formSwitcher = formSwitcher;
             _sessionCalculator = sessionCalculator;
             _labelAssignment = labelAssignment;
+            _buttonHighlighterService = buttonHighlighterService;
         }
 
         private async void MainPage_Load(object sender, EventArgs e)
@@ -129,4 +132,3 @@ namespace CodingTracker.View
         }
     }
 }
- 

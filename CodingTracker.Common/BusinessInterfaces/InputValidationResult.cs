@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IInputValidationResults;
+﻿using CodingTracker.Common.IInputValidationResults;
 
 // This class encapsulates the result of a valid operation.
 // When a validation method (like ValidateUsername or ValidatePassword) is called, an InputValidationResult object is instantiated.

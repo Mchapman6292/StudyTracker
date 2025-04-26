@@ -5,8 +5,6 @@ using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
 using Guna.UI2.WinForms;
-using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CodingTracker.Business.MainPageService.LabelAssignments
 {

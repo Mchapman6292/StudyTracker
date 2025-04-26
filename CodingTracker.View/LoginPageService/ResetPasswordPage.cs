@@ -2,8 +2,8 @@
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.IUtilityServices;
-using CodingTracker.View.FormService;
 using CodingTracker.View.FormPageEnums;
+using CodingTracker.View.FormService;
 
 namespace CodingTracker.View.LoginPageService
 {
@@ -79,7 +79,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ResetPasswordPageExitButton_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)

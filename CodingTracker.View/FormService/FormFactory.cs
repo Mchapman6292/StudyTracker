@@ -42,7 +42,7 @@ namespace CodingTracker.View.FormService
                 FormPageEnum.SessionGoalPage => typeof(SessionGoalPage),
                 FormPageEnum.WORKINGSessionTimerPage => typeof(CountdownTimerForm),
                 FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
-                FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage), 
+                FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage),
                 FormPageEnum.OrbitalTimerPage => typeof(OrbitalTimerPage),
                 FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationTestForm),
 
@@ -71,7 +71,7 @@ namespace CodingTracker.View.FormService
         {
             var loginForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.LoginPage);
 
-            if(loginForm == null || loginForm.IsDisposed)
+            if (loginForm == null || loginForm.IsDisposed)
             {
                 loginForm = CreateForm(FormPageEnum.LoginPage);
             }
@@ -95,7 +95,7 @@ namespace CodingTracker.View.FormService
             return existingForm;
         }
 
-      
+
     }
 }
 

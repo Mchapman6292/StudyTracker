@@ -1,9 +1,7 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
-using System.Windows.Forms;
-using System;
-using System.Diagnostics;
-using CodingTracker.Business.CodingSessionService;
+﻿using CodingTracker.Business.CodingSessionService;
 using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.IApplicationLoggers;
+using System.Diagnostics;
 
 
 namespace CodingTracker.View.SessionGoalCountDownTimers
@@ -50,7 +48,7 @@ namespace CodingTracker.View.SessionGoalCountDownTimers
 
                 if (_maxTime > TimeSpan.Zero)
                 {
-                
+
 
                     _stopwatch.Start();
                     _timer.Start();

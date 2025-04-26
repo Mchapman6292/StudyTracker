@@ -32,7 +32,7 @@ namespace CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrac
         private Queue<DateTime> keyPressTimestamps = new Queue<DateTime>();
         private double lastKeystrokeTimeMs;
 
- 
+
         private float intensityBuildUpRate = MediumBuildUp;
         private float intensityDecayRate = MediumDecay;
         private double rapidTypingThreshold = 200.0; // 200 milliseconds.
