@@ -141,7 +141,6 @@ namespace CodingTracker.View
             loginPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges2;
             loginPageUsernameTextbox.Size = new Size(200, 36);
             loginPageUsernameTextbox.TabIndex = 15;
-            loginPageUsernameTextbox.TextChanged += loginPageUsernameTextbox_TextChanged;
             loginPageUsernameTextbox.Enter += LoginPagePasswordTextbox_Enter;
             loginPageUsernameTextbox.Leave += LoginPageUsernameTextbox_Leave;
             // 

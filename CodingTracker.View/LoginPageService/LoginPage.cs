@@ -21,14 +21,13 @@ namespace CodingTracker.View
         private readonly IFormController _formController;
         private readonly IFormSwitcher _formSwitcher;
         private readonly ICodingSessionManager _codingSessionManager;
-        private readonly IUserIdService _userIdService;
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager, IUserIdService userIdService, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
@@ -36,55 +35,32 @@ namespace CodingTracker.View
             _formController = formController;
             _formSwitcher = formSwitcher;
             _codingSessionManager = codingSessionManager;
-            _userIdService = userIdService;
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
+
+            // Set up text box events
             loginPageUsernameTextbox.Enter += LoginPagePasswordTextbox_Enter;
             loginPageUsernameTextbox.Leave += LoginPageUsernameTextbox_Leave;
             LoginPagePasswordTextbox.Enter += LoginPagePasswordTextbox_Enter;
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
+
+            // Set up button events
             NewForgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
             NewForgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+
+            // Load saved settings
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
-            _formFactory = formFactory;
 
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
             _formStateManagement.SetCurrentForm(this);
         }
 
-
-
-        // Custom paint method: Draws the rounded corners for the form.
-        /*
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            GraphicsPath path = new GraphicsPath();
-            int radius = 40;
-
-            // Top left arc
-            path.AddArc(0, 0, radius, radius, 180, 90);
-            // Top right arc
-            path.AddArc(Width - radius, 0, radius, radius, 270, 90);
-            // Bottom right arc
-            path.AddArc(Width - radius, Height - radius, radius, radius, 0, 90);
-            // Bottom left arc
-            path.AddArc(0, Height - radius, radius, radius, 90, 90);
-
-            path.CloseFigure();
-
-            this.Region = new Region(path);
-
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.DrawPath(new Pen(Color.Black, 2), path);
-        }
-        */
+        #region Media Player
 
         private void InitializeVLCPlayer()
         {
@@ -117,10 +93,9 @@ namespace CodingTracker.View
             }
         }
 
+        #endregion
 
-
-
-
+        #region Credential Management
 
         private void LoadSavedCredentials()
         {
@@ -134,7 +109,6 @@ namespace CodingTracker.View
                 }
             }
         }
-
 
         private void SaveUsernameForNextLogin(string username)
         {
@@ -152,82 +126,15 @@ namespace CodingTracker.View
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        private void AccountCreatedSuccessfully(string message)
-        {
-            _appLogger.Debug("AccountCreatedSuccessfully method called.");
-
-            this.Invoke((MethodInvoker)(() =>
-            {
-                _appLogger.Debug("Inside Invoke method of AccountCreatedSuccessfully.");
-                LoginPageDisplaySuccessMessage(message);
-            }));
-        }
-
-        private void LoginPageDisplaySuccessMessage(string message)
-        {
-
-            LoginPageCreationSuccessTextBox.Text = message;
-        }
-
-
-
-        private void LoginPageCreateAccountButton_Click_1(object sender, EventArgs e)
-        {
-            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
-            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
-        }
-
-        private void LoginPageExitControlBox_Click(object sender, EventArgs e)
-        {
-            _appControl.ExitCodingTrackerAsync();
-
-        }
-
-        private void loginPageLoginButton_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoginPageForgotPasswordButton_Click(object sender, EventArgs e)
-        {
-            _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
-        }
-
-
-
-
         private void LoginPageRememberMeToggle_CheckedChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.RememberMe = LoginPageRememberMeToggle.Checked;
             Properties.Settings.Default.Save();
         }
 
+        #endregion
 
-
-        private void loginPageUsernameTextbox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void InitializePlaceholderText()
-        {
-
-            LoginPagePasswordTextbox.Text = "Password";
-            LoginPagePasswordTextbox.ForeColor = Color.Gray;
-            LoginPagePasswordTextbox.PasswordChar = '\0';
-        }
+        #region Text Box Handling
 
         private void LoginPagePasswordTextbox_Enter(object sender, EventArgs e)
         {
@@ -238,8 +145,6 @@ namespace CodingTracker.View
                 LoginPagePasswordTextbox.PasswordChar = '●';
             }
         }
-
-
 
         private void LoginPageUsernameTextbox_Leave(object sender, EventArgs e)
         {
@@ -260,47 +165,9 @@ namespace CodingTracker.View
             }
         }
 
-        // This button was copied and pasted from the MainPage which has the functionality to change the hover colors set in the designer file, not changing this as it works fine but any changes need to be edited in the NewLoginButton definition in the designer file. 
-        private async void LoginButton_Click(object sender, EventArgs e)
-        {
-            _appLogger.Info($"Starting {nameof(LoginButton_Click)}.");
+        #endregion
 
-            string username = loginPageUsernameTextbox.Text;
-            string password = LoginPagePasswordTextbox.Text;
-            bool isValidLogin = await _authenticationService.AuthenticateLoginWithoutActivity(username, password);
-
-            await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
-
-            if (isValidLogin)
-            {
-                UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
-
-                // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                await _codingSessionManager.OldStartCodingSession(username);
-                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
-                _userIdService.SetCurrentUserId(userCredential.UserId);
-
-
-                SaveUsernameForNextLogin(username);
-
-                Form mainPage = _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
-
-                this.Hide();
-                mainPage.Show();
-
-            }
-        }
-
-        private void NewCreateAccountButton_Click(object sender, EventArgs e)
-        {
-            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
-            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
-        }
-
-        private void NewForgotPasswordButton_Click(object sender, EventArgs e)
-        {
-            _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
-        }
+        #region Button Handling
 
         private void NewForgotPasswordButton_MouseEnter(object sender, EventArgs e)
         {
@@ -317,7 +184,75 @@ namespace CodingTracker.View
                 _buttonHighlighterService.SetFillColorToTransparent(button);
             }
         }
+
+        #endregion
+
+        #region Navigation and Authentication
+
+        private async void LoginButton_Click(object sender, EventArgs e)
+        {
+            _appLogger.Info($"Starting {nameof(LoginButton_Click)}.");
+
+            string username = loginPageUsernameTextbox.Text;
+            string password = LoginPagePasswordTextbox.Text;
+            bool isValidLogin = await _authenticationService.AuthenticateLogin(username, password);
+
+            await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
+
+            if (isValidLogin)
+            {
+                UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
+
+                // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
+                await _codingSessionManager.OldStartCodingSession(username);
+                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
+                _codingSessionManager.SetCurrentUserId(userCredential.UserId);
+
+                SaveUsernameForNextLogin(username);
+
+                Form mainPage = _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+
+                this.Hide();
+                mainPage.Show();
+            }
+        }
+
+        private void NewCreateAccountButton_Click(object sender, EventArgs e)
+        {
+            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
+            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
+        }
+
+        private void NewForgotPasswordButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
+        }
+
+        private void LoginPageExitControlBox_Click(object sender, EventArgs e)
+        {
+            _appControl.ExitCodingTrackerAsync();
+        }
+
+        #endregion
+
+        #region Feedback Messages
+
+        private void AccountCreatedSuccessfully(string message)
+        {
+            _appLogger.Debug("AccountCreatedSuccessfully method called.");
+
+            this.Invoke((MethodInvoker)(() =>
+            {
+                _appLogger.Debug("Inside Invoke method of AccountCreatedSuccessfully.");
+                LoginPageDisplaySuccessMessage(message);
+            }));
+        }
+
+        private void LoginPageDisplaySuccessMessage(string message)
+        {
+            LoginPageCreationSuccessTextBox.Text = message;
+        }
+
+        #endregion
     }
 }
-
-

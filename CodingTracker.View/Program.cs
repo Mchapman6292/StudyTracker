@@ -3,7 +3,6 @@ using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
 using CodingTracker.Business.CodingSessionService;
 using CodingTracker.Business.CodingSessionService.SessionCalculators;
-using CodingTracker.Business.CodingSessionService.UserIdServices;
 using CodingTracker.Business.InputValidators;
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColorControls;
@@ -38,7 +37,6 @@ using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.MessageBoxManagers;
 using CodingTracker.View.PopUpFormService;
-using CodingTracker.View.SessionGoalCountDownTimers;
 using CodingTracker.View.TimerDisplayService;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
@@ -109,7 +107,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
-                    .AddSingleton<IUserIdService, UserIdService>()
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager, DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
@@ -125,11 +122,6 @@ namespace CodingTracker.View.Program
 
 
 
-                    .AddSingleton<UserIdService, UserIdService>()
-
-
-                    // Transient services.
-                    .AddTransient<ISessionGoalCountDownTimer, SessionGoalCountdownTimer>()
 
                     .AddTransient<MainPage>()
                     .AddTransient<EditSessionPage>()

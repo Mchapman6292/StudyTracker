@@ -1,5 +1,6 @@
-﻿using CodingTracker.Business.CodingSessionService.UserIdServices;
+﻿
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
@@ -15,16 +16,16 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         private readonly IUserCredentialRepository _userCredentialRepository;
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utilityService;
-        private readonly UserIdService _userIdService;
+        private readonly ICodingSessionManager _codingSessionManager;
 
         private string _usernameForPasswordReset { get; set; }
 
-        public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, UserIdService userIdService)
+        public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, ICodingSessionManager codingSessionManager)
         {
             _appLogger = appLogger;
             _userCredentialRepository = userCredentialRepository;
             _utilityService = utilityService;
-            _userIdService = userIdService;
+            _codingSessionManager = codingSessionManager;
         }
 
         public void SetUsernameForPasswordReset(string username)
@@ -59,40 +60,10 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
         }
 
-        public async Task<bool> AuthenticateLogin(string username, string password, Activity activity)
-        {
-            bool usernameExist = await _userCredentialRepository.UsernameExistsAsync(username);
-
-            if (!usernameExist)
-            {
-                _appLogger.Info($"No username exists for {username}");
-                return false;
-            }
-
-            _appLogger.Debug($"Username found for {username}.");
-
-
-            UserCredentialEntity loginCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
-
-            var inputHash = _utilityService.HashPassword(password);
-            var storedHash = loginCredential.PasswordHash;
-
-            bool isValid = inputHash.Equals(storedHash, StringComparison.Ordinal);
-
-            if (!isValid)
-            {
-                _appLogger.Debug($"Incorrect passwordHash.");
-                return false;
-            }
-
-            _userIdService.SetCurrentUserId(loginCredential.UserId);
-            return true;
-        }
 
 
 
-
-        public async Task<bool> AuthenticateLoginWithoutActivity(string username, string password)
+        public async Task<bool> AuthenticateLogin(string username, string password)
         {
             bool usernameExist = await _userCredentialRepository.UsernameExistsAsync(username);
 
@@ -119,7 +90,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
                 _appLogger.Debug($"Incorrect passwordHash.");
                 return false;
             }
-            _appLogger.Debug($"User authenticated for {nameof(AuthenticateLoginWithoutActivity)}");
+            _appLogger.Debug($"User authenticated for {nameof(AuthenticateLogin)}");
 
             return true;
         }

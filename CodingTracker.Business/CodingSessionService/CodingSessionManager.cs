@@ -17,13 +17,12 @@ namespace CodingTracker.Business.CodingSessionManagers
     public class CodingSessionManager : ICodingSessionManager
     {
         private CodingSession _currentCodingSession { get; set; }
-        private int CurrentUserId { get; set; }
+        private int _currentUserId { get; set; }
 
         private readonly IApplicationLogger _appLogger;
         private readonly IInputValidator _inputValidator;
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUserCredentialRepository _userCredentialRepository;
-        private readonly IUserIdService _userIdService;
         private readonly IUtilityService _utilityService;
 
         private bool IsCodingSessionActive { get; set; } = false;
@@ -33,13 +32,12 @@ namespace CodingTracker.Business.CodingSessionManagers
         private string _formGoalTimeHHMM { get; set; }
         private bool _isFormGoalSet { get; set; }
 
-        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, IUserCredentialRepository userCredentialRepository, IUserIdService userIdService, IUtilityService utilityService)
+        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService)
         {
             _appLogger = appLogger;
             _inputValidator = inputValidator;
             _codingSessionRepository = codingSessionRepo;
             _userCredentialRepository = userCredentialRepository;
-            _userIdService = userIdService;
             _utilityService = utilityService;
         }
 
@@ -121,12 +119,6 @@ namespace CodingTracker.Business.CodingSessionManagers
         }
 
 
-
-
-        public async Task EndCodingSessionWithoutGoalSet()
-        {
-
-        }
 
 
 
@@ -232,6 +224,18 @@ namespace CodingTracker.Business.CodingSessionManagers
             UpdateISCodingSessionActive(true);
         }
 
+        public void SetCurrentUserId(int userId)
+        {
+            _currentUserId = userId;
+        }
+
+        public int ReturnCurrentUserId() 
+        {
+            return _currentUserId;
+        }
+
+
+
 
 
 
@@ -300,13 +304,6 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         public void Initialize_CurrentCodingSession(int userId)
         {
-            if (userId <= 0)
-            {
-                _appLogger.Error($"Invalid UserId: {userId} for {nameof(Initialize_CurrentCodingSession)}. UserId must be positive.");
-                throw new ArgumentException($"UserId must be positive. Provided: {userId}", nameof(Initialize_CurrentCodingSession));
-            }
-
-
             _appLogger.Info($"Starting {nameof(Initialize_CurrentCodingSession)}");
             DateTime currentDateTime = DateTime.UtcNow;
 
@@ -321,25 +318,6 @@ namespace CodingTracker.Business.CodingSessionManagers
             UpdateISCodingSessionActive(true);
         }
 
-        public async Task SetCurrentSessionUserIdAsync(string username)
-        {
-            UserCredentialEntity credential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
-
-            _appLogger.Debug($"UserId {credential.UserId} retrieved for username{username} for {nameof(SetCurrentSessionUserIdAsync)}");
-
-            int userId = credential.UserId;
-
-            _currentCodingSession.UserId = userId;
-
-            CurrentUserId = userId;
-
-            _appLogger.Debug($"_currentCodingSession.UserId set to {_currentCodingSession.UserId}");
-        }
-
-        public int GetCurrentUserId()
-        {
-            return CurrentUserId;
-        }
 
         // This is called upon successful login, If a user never starts the timer the Session is never saved to the database. 
         public async Task OldStartCodingSession(string username)
@@ -454,7 +432,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             UserCredentialEntity userCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
 
-            _appLogger.Debug($"UserId {userCredential.UserId} retrieved for username{username} for {nameof(SetCurrentSessionUserIdAsync)}");
+            _appLogger.Debug($"UserId {userCredential.UserId} retrieved for username{username} for {nameof(SetUserIdForCurrentSessionAsync)}");
 
             _currentCodingSession.UserId = userCredential.UserId;
 
