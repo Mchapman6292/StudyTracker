@@ -51,6 +51,7 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges78 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges79 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -107,7 +108,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges75 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges76 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges77 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             panel2 = new Panel();
@@ -125,6 +125,7 @@
             TodayTotalLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             Last28DaysPanel = new Panel();
+            WaveTestButton = new Guna.UI2.WinForms.Guna2CircleButton();
             guna2GradientPanel28M = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2GradientPanel27M = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2GradientPanel26M = new Guna.UI2.WinForms.Guna2GradientPanel();
@@ -182,7 +183,6 @@
             Day2Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             Day1Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             MainPageAnimateWidnow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
-            WaveTestButton = new Guna.UI2.WinForms.Guna2CircleButton();
             panel2.SuspendLayout();
             guna2Panel1.SuspendLayout();
             guna2GradientPanel4.SuspendLayout();
@@ -502,6 +502,23 @@
             Last28DaysPanel.Size = new Size(1117, 345);
             Last28DaysPanel.TabIndex = 6;
             Last28DaysPanel.Paint += Last28DaysPanel_Paint;
+            // 
+            // WaveTestButton
+            // 
+            WaveTestButton.DisabledState.BorderColor = Color.DarkGray;
+            WaveTestButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            WaveTestButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            WaveTestButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            WaveTestButton.Font = new Font("Segoe UI", 9F);
+            WaveTestButton.ForeColor = Color.White;
+            WaveTestButton.Location = new Point(540, 247);
+            WaveTestButton.Name = "WaveTestButton";
+            WaveTestButton.ShadowDecoration.CustomizableEdges = customizableEdges21;
+            WaveTestButton.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            WaveTestButton.Size = new Size(64, 98);
+            WaveTestButton.TabIndex = 27;
+            WaveTestButton.Text = "guna2CircleButton1";
+            WaveTestButton.Click += WaveTestButton_Click;
             // 
             // guna2GradientPanel28M
             // 
@@ -1041,23 +1058,6 @@
             // 
             MainPageAnimateWidnow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_SLIDE;
             MainPageAnimateWidnow.TargetForm = this;
-            // 
-            // WaveTestButton
-            // 
-            WaveTestButton.DisabledState.BorderColor = Color.DarkGray;
-            WaveTestButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            WaveTestButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            WaveTestButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            WaveTestButton.Font = new Font("Segoe UI", 9F);
-            WaveTestButton.ForeColor = Color.White;
-            WaveTestButton.Location = new Point(540, 247);
-            WaveTestButton.Name = "WaveTestButton";
-            WaveTestButton.ShadowDecoration.CustomizableEdges = customizableEdges21;
-            WaveTestButton.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            WaveTestButton.Size = new Size(64, 98);
-            WaveTestButton.TabIndex = 27;
-            WaveTestButton.Text = "guna2CircleButton1";
-            WaveTestButton.Click += WaveTestButton_Click;
             // 
             // MainPage
             // 

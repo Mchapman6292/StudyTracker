@@ -51,20 +51,20 @@ namespace CodingTracker.View
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             loginPageErrorTextbox = new Label();
             label1 = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -72,9 +72,6 @@ namespace CodingTracker.View
             loginPageUsernameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPagePasswordTextbox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPageRememberMeToggle = new Guna.UI2.WinForms.Guna2ToggleSwitch();
-            loginPageLoginButton = new Guna.UI2.WinForms.Guna2Button();
-            LoginPageCreateAccountButton = new Guna.UI2.WinForms.Guna2Button();
-            LoginPageForgotPasswordButton = new Guna.UI2.WinForms.Guna2Button();
             LoginPageMediaPanel = new Guna.UI2.WinForms.Guna2Panel();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -82,6 +79,10 @@ namespace CodingTracker.View
             LoginPageCreationSuccessTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
+            guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            NewLoginButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            NewCreateAccountButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            NewForgotPasswordButton = new Guna.UI2.WinForms.Guna2GradientButton();
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
             LoginPageMediaPanel.SuspendLayout();
             guna2Panel1.SuspendLayout();
@@ -191,82 +192,16 @@ namespace CodingTracker.View
             LoginPageRememberMeToggle.UncheckedState.InnerColor = Color.FromArgb(234, 153, 149);
             LoginPageRememberMeToggle.CheckedChanged += LoginPageRememberMeToggle_CheckedChanged;
             // 
-            // loginPageLoginButton
-            // 
-            loginPageLoginButton.Animated = true;
-            loginPageLoginButton.AutoRoundedCorners = true;
-            loginPageLoginButton.BorderRadius = 18;
-            loginPageLoginButton.BorderThickness = 2;
-            loginPageLoginButton.CustomizableEdges = customizableEdges7;
-            loginPageLoginButton.DisabledState.BorderColor = Color.DarkGray;
-            loginPageLoginButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            loginPageLoginButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            loginPageLoginButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            loginPageLoginButton.FillColor = Color.FromArgb(193, 20, 137);
-            loginPageLoginButton.Font = new Font("Segoe UI", 9F);
-            loginPageLoginButton.ForeColor = Color.White;
-            loginPageLoginButton.Location = new Point(31, 347);
-            loginPageLoginButton.Name = "loginPageLoginButton";
-            loginPageLoginButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            loginPageLoginButton.Size = new Size(120, 38);
-            loginPageLoginButton.TabIndex = 18;
-            loginPageLoginButton.Text = "Login";
-            loginPageLoginButton.Click += loginPageLoginButton_Click;
-            // 
-            // LoginPageCreateAccountButton
-            // 
-            LoginPageCreateAccountButton.Animated = true;
-            LoginPageCreateAccountButton.AutoRoundedCorners = true;
-            LoginPageCreateAccountButton.BorderRadius = 18;
-            LoginPageCreateAccountButton.BorderThickness = 2;
-            LoginPageCreateAccountButton.CustomizableEdges = customizableEdges9;
-            LoginPageCreateAccountButton.DisabledState.BorderColor = Color.DarkGray;
-            LoginPageCreateAccountButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            LoginPageCreateAccountButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            LoginPageCreateAccountButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            LoginPageCreateAccountButton.FillColor = Color.FromArgb(193, 20, 137);
-            LoginPageCreateAccountButton.Font = new Font("Segoe UI", 9F);
-            LoginPageCreateAccountButton.ForeColor = Color.White;
-            LoginPageCreateAccountButton.Location = new Point(182, 347);
-            LoginPageCreateAccountButton.Name = "LoginPageCreateAccountButton";
-            LoginPageCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            LoginPageCreateAccountButton.Size = new Size(120, 38);
-            LoginPageCreateAccountButton.TabIndex = 19;
-            LoginPageCreateAccountButton.Text = "Create account";
-            LoginPageCreateAccountButton.Click += LoginPageCreateAccountButton_Click_1;
-            // 
-            // LoginPageForgotPasswordButton
-            // 
-            LoginPageForgotPasswordButton.Animated = true;
-            LoginPageForgotPasswordButton.AutoRoundedCorners = true;
-            LoginPageForgotPasswordButton.BorderRadius = 10;
-            LoginPageForgotPasswordButton.BorderThickness = 2;
-            LoginPageForgotPasswordButton.CustomizableEdges = customizableEdges11;
-            LoginPageForgotPasswordButton.DisabledState.BorderColor = Color.DarkGray;
-            LoginPageForgotPasswordButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            LoginPageForgotPasswordButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            LoginPageForgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            LoginPageForgotPasswordButton.FillColor = Color.FromArgb(193, 20, 137);
-            LoginPageForgotPasswordButton.Font = new Font("Segoe UI", 9F);
-            LoginPageForgotPasswordButton.ForeColor = Color.White;
-            LoginPageForgotPasswordButton.Location = new Point(199, 294);
-            LoginPageForgotPasswordButton.Name = "LoginPageForgotPasswordButton";
-            LoginPageForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            LoginPageForgotPasswordButton.Size = new Size(134, 23);
-            LoginPageForgotPasswordButton.TabIndex = 20;
-            LoginPageForgotPasswordButton.Text = "Forgot PasswordHash?";
-            LoginPageForgotPasswordButton.Click += LoginPageForgotPasswordButton_Click;
-            // 
             // LoginPageMediaPanel
             // 
             LoginPageMediaPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LoginPageMediaPanel.Controls.Add(LoginPageVLCPLayer);
-            LoginPageMediaPanel.CustomizableEdges = customizableEdges13;
+            LoginPageMediaPanel.CustomizableEdges = customizableEdges7;
             LoginPageMediaPanel.ForeColor = Color.FromArgb(35, 34, 50);
             LoginPageMediaPanel.Location = new Point(461, 48);
             LoginPageMediaPanel.Margin = new Padding(0);
             LoginPageMediaPanel.Name = "LoginPageMediaPanel";
-            LoginPageMediaPanel.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            LoginPageMediaPanel.ShadowDecoration.CustomizableEdges = customizableEdges8;
             LoginPageMediaPanel.Size = new Size(820, 558);
             LoginPageMediaPanel.TabIndex = 22;
             // 
@@ -274,10 +209,10 @@ namespace CodingTracker.View
             // 
             guna2Panel1.Controls.Add(guna2ControlBox1);
             guna2Panel1.Controls.Add(LoginPageExitControlBox);
-            guna2Panel1.CustomizableEdges = customizableEdges19;
+            guna2Panel1.CustomizableEdges = customizableEdges13;
             guna2Panel1.Location = new Point(0, 1);
             guna2Panel1.Name = "guna2Panel1";
-            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges14;
             guna2Panel1.Size = new Size(1281, 33);
             guna2Panel1.TabIndex = 23;
             // 
@@ -285,7 +220,7 @@ namespace CodingTracker.View
             // 
             guna2ControlBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             guna2ControlBox1.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            guna2ControlBox1.CustomizableEdges = customizableEdges15;
+            guna2ControlBox1.CustomizableEdges = customizableEdges9;
             guna2ControlBox1.FillColor = Color.FromArgb(25, 24, 40);
             guna2ControlBox1.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             guna2ControlBox1.HoverState.IconColor = Color.White;
@@ -293,21 +228,21 @@ namespace CodingTracker.View
             guna2ControlBox1.Location = new Point(1211, 1);
             guna2ControlBox1.Margin = new Padding(0);
             guna2ControlBox1.Name = "guna2ControlBox1";
-            guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges10;
             guna2ControlBox1.Size = new Size(35, 29);
             guna2ControlBox1.TabIndex = 25;
             // 
             // LoginPageExitControlBox
             // 
             LoginPageExitControlBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            LoginPageExitControlBox.CustomizableEdges = customizableEdges17;
+            LoginPageExitControlBox.CustomizableEdges = customizableEdges11;
             LoginPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
             LoginPageExitControlBox.HoverState.IconColor = Color.White;
             LoginPageExitControlBox.IconColor = Color.White;
             LoginPageExitControlBox.Location = new Point(1246, 1);
             LoginPageExitControlBox.Margin = new Padding(0);
             LoginPageExitControlBox.Name = "LoginPageExitControlBox";
-            LoginPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            LoginPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges12;
             LoginPageExitControlBox.Size = new Size(35, 29);
             LoginPageExitControlBox.TabIndex = 24;
             LoginPageExitControlBox.Click += LoginPageExitControlBox_Click;
@@ -315,7 +250,7 @@ namespace CodingTracker.View
             // LoginPageCreationSuccessTextBox
             // 
             LoginPageCreationSuccessTextBox.BorderColor = Color.FromArgb(35, 34, 50);
-            LoginPageCreationSuccessTextBox.CustomizableEdges = customizableEdges21;
+            LoginPageCreationSuccessTextBox.CustomizableEdges = customizableEdges15;
             LoginPageCreationSuccessTextBox.DefaultText = "";
             LoginPageCreationSuccessTextBox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             LoginPageCreationSuccessTextBox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -332,7 +267,7 @@ namespace CodingTracker.View
             LoginPageCreationSuccessTextBox.PlaceholderForeColor = Color.FromArgb(35, 34, 50);
             LoginPageCreationSuccessTextBox.PlaceholderText = "";
             LoginPageCreationSuccessTextBox.SelectedText = "";
-            LoginPageCreationSuccessTextBox.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            LoginPageCreationSuccessTextBox.ShadowDecoration.CustomizableEdges = customizableEdges16;
             LoginPageCreationSuccessTextBox.Size = new Size(200, 36);
             LoginPageCreationSuccessTextBox.TabIndex = 24;
             // 
@@ -345,17 +280,103 @@ namespace CodingTracker.View
             // 
             guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
             // 
+            // guna2BorderlessForm1
+            // 
+            guna2BorderlessForm1.BorderRadius = 20;
+            guna2BorderlessForm1.ContainerControl = this;
+            guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // NewLoginButton
+            // 
+            NewLoginButton.AutoRoundedCorners = true;
+            NewLoginButton.BorderRadius = 18;
+            NewLoginButton.BorderThickness = 2;
+            NewLoginButton.Cursor = Cursors.Hand;
+            NewLoginButton.CustomizableEdges = customizableEdges21;
+            NewLoginButton.DisabledState.BorderColor = Color.DarkGray;
+            NewLoginButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            NewLoginButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            NewLoginButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            NewLoginButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            NewLoginButton.FillColor = Color.FromArgb(175, 30, 130);
+            NewLoginButton.FillColor2 = Color.FromArgb(175, 30, 130);
+            NewLoginButton.Font = new Font("Segoe UI", 9F);
+            NewLoginButton.ForeColor = Color.White;
+            NewLoginButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
+            NewLoginButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
+            NewLoginButton.Location = new Point(31, 347);
+            NewLoginButton.Name = "NewLoginButton";
+            NewLoginButton.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            NewLoginButton.Size = new Size(120, 38);
+            NewLoginButton.TabIndex = 27;
+            NewLoginButton.Text = "Login";
+            NewLoginButton.Click += LoginButton_Click;
+            // 
+            // NewCreateAccountButton
+            // 
+            NewCreateAccountButton.AutoRoundedCorners = true;
+            NewCreateAccountButton.BorderRadius = 18;
+            NewCreateAccountButton.BorderThickness = 2;
+            NewCreateAccountButton.Cursor = Cursors.Hand;
+            NewCreateAccountButton.CustomizableEdges = customizableEdges19;
+            NewCreateAccountButton.DisabledState.BorderColor = Color.DarkGray;
+            NewCreateAccountButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            NewCreateAccountButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            NewCreateAccountButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            NewCreateAccountButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            NewCreateAccountButton.FillColor = Color.FromArgb(175, 30, 130);
+            NewCreateAccountButton.FillColor2 = Color.FromArgb(175, 30, 130);
+            NewCreateAccountButton.Font = new Font("Segoe UI", 9F);
+            NewCreateAccountButton.ForeColor = Color.White;
+            NewCreateAccountButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
+            NewCreateAccountButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
+            NewCreateAccountButton.Location = new Point(182, 347);
+            NewCreateAccountButton.Name = "NewCreateAccountButton";
+            NewCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            NewCreateAccountButton.Size = new Size(120, 38);
+            NewCreateAccountButton.TabIndex = 28;
+            NewCreateAccountButton.Text = "Create Account";
+            NewCreateAccountButton.Click += NewCreateAccountButton_Click;
+            // 
+            // NewForgotPasswordButton
+            // 
+            NewForgotPasswordButton.AutoRoundedCorners = true;
+            NewForgotPasswordButton.BorderColor = Color.Transparent;
+            NewForgotPasswordButton.BorderRadius = 14;
+            NewForgotPasswordButton.BorderThickness = 2;
+            NewForgotPasswordButton.Cursor = Cursors.Hand;
+            NewForgotPasswordButton.CustomizableEdges = customizableEdges17;
+            NewForgotPasswordButton.DisabledState.BorderColor = Color.DarkGray;
+            NewForgotPasswordButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            NewForgotPasswordButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            NewForgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            NewForgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            NewForgotPasswordButton.FillColor = Color.Transparent;
+            NewForgotPasswordButton.FillColor2 = Color.Transparent;
+            NewForgotPasswordButton.Font = new Font("Segoe UI", 9F);
+            NewForgotPasswordButton.ForeColor = Color.White;
+            NewForgotPasswordButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
+            NewForgotPasswordButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
+            NewForgotPasswordButton.Location = new Point(234, 291);
+            NewForgotPasswordButton.Name = "NewForgotPasswordButton";
+            NewForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            NewForgotPasswordButton.Size = new Size(140, 30);
+            NewForgotPasswordButton.TabIndex = 29;
+            NewForgotPasswordButton.Text = "Forgot Password";
+            NewForgotPasswordButton.Click += NewForgotPasswordButton_Click;
+            // 
             // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1284, 681);
+            Controls.Add(NewForgotPasswordButton);
+            Controls.Add(NewCreateAccountButton);
+            Controls.Add(NewLoginButton);
             Controls.Add(LoginPageCreationSuccessTextBox);
             Controls.Add(guna2Panel1);
-            Controls.Add(LoginPageForgotPasswordButton);
-            Controls.Add(LoginPageCreateAccountButton);
-            Controls.Add(loginPageLoginButton);
             Controls.Add(LoginPageRememberMeToggle);
             Controls.Add(LoginPagePasswordTextbox);
             Controls.Add(loginPageUsernameTextbox);
@@ -364,6 +385,7 @@ namespace CodingTracker.View
             Controls.Add(LoginPageMediaPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "LoginPage";
+            SizeGripStyle = SizeGripStyle.Show;
             WindowState = FormWindowState.Minimized;
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).EndInit();
             LoginPageMediaPanel.ResumeLayout(false);
@@ -392,9 +414,6 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2TextBox loginPageUsernameTextbox;
         private Guna.UI2.WinForms.Guna2TextBox LoginPagePasswordTextbox;
         private Guna.UI2.WinForms.Guna2ToggleSwitch LoginPageRememberMeToggle;
-        private Guna.UI2.WinForms.Guna2Button loginPageLoginButton;
-        private Guna.UI2.WinForms.Guna2Button LoginPageCreateAccountButton;
-        private Guna.UI2.WinForms.Guna2Button LoginPageForgotPasswordButton;
         private Guna.UI2.WinForms.Guna2Panel LoginPageMediaPanel;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
@@ -402,5 +421,9 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox LoginPageExitControlBox;
         private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2GradientButton NewLoginButton;
+        private Guna.UI2.WinForms.Guna2GradientButton NewCreateAccountButton;
+        private Guna.UI2.WinForms.Guna2GradientButton NewForgotPasswordButton;
     }
 }

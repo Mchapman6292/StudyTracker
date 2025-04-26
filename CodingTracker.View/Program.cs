@@ -30,6 +30,7 @@ using CodingTracker.Logging.ApplicationLoggers;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.IMessageBoxManagers;
@@ -120,6 +121,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
                     .AddSingleton<WaveVisualizationTestForm>()
+                    .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
 
 
 

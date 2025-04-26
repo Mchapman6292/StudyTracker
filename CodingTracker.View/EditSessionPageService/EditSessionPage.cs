@@ -11,8 +11,7 @@ using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
 
 
-// Calling SetDataGridViewCellToEmptyByRowIndex instead of ClearALlDataGridRows works to empty the rows and refresh the grid but not remove the rows.
-// Maybe try refreshing entire page instead of datagrid once combo box changed?
+
 
 
 namespace CodingTracker.View

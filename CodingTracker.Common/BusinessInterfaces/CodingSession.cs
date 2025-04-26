@@ -4,8 +4,11 @@ namespace CodingTracker.Common.CodingSessions
 {
     public class CodingSession
     {
+        // Add session topic & project?
+
         public int? SessionId { get; set; } = null;
         public int UserId { get; set; }
+
         public DateOnly? StartDate { get; set; }
         public DateTime? StartTime { get; set; }
         public DateOnly? EndDate { get; set; }
