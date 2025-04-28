@@ -7,6 +7,7 @@ namespace CodingTracker.View.FormService
     {
         Form SwitchToForm(FormPageEnum formType);
         void CloseLoginPage();
+        Form SwitchToFormWithoutPreviousFormClosing(FormPageEnum formType);
 
     }
 
@@ -16,6 +17,7 @@ namespace CodingTracker.View.FormService
         private readonly IFormController _formController;
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
+
 
         public FormSwitcher(IFormController formController, IFormFactory formFactory, IFormStateManagement formStateManagement)
         {
@@ -46,6 +48,36 @@ namespace CodingTracker.View.FormService
             newForm.Show();
 
             return newForm;
+        }
+
+        public Form SwitchToFormWithoutPreviousFormClosing(FormPageEnum formType)
+        {
+            var currentForm = _formStateManagement.GetCurrentForm();
+            var newForm = _formFactory.GetOrCreateForm(formType);
+
+            if (_formStateManagement.CheckIfFormEnumIsTimerForm(formType))
+            {
+                _formStateManagement.AddActiveTimerForm(formType, newForm);
+            }
+            else
+            {
+                _formStateManagement.SetCurrentForm(newForm);
+            }
+
+            if (currentForm != null)
+            {
+                currentForm.WindowState = FormWindowState.Normal;
+                currentForm.Show();
+            }
+
+   
+            newForm.Show();
+
+            return newForm;
+
+ 
+
+
         }
 
 

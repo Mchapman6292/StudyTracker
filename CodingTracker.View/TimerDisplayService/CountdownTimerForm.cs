@@ -147,6 +147,7 @@ namespace CodingTracker.View.TimerDisplayService
             mainPanel.Controls.Add(pauseButton);
 
             this.Load += CountdownTimerForm_Load;
+            this.ShowInTaskbar = true;
         }
 
 
@@ -282,7 +283,7 @@ namespace CodingTracker.View.TimerDisplayService
             }
             else
             {
-                stopwatchTimer.Start();
+                stopwatchTimer.Stop();
                 progressTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
                 isPaused = true;

@@ -74,7 +74,7 @@ namespace CodingTracker.View.PopUpFormService
             questionLabel.ForeColor = Color.White;
             questionLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
             questionLabel.AutoSize = false;
-            questionLabel.Size = new Size(350, 30);
+            questionLabel.Size = new Size(350, 40);
             questionLabel.TextAlignment = ContentAlignment.MiddleCenter;
             questionLabel.Location = new Point(25, 30);
 
@@ -191,7 +191,7 @@ namespace CodingTracker.View.PopUpFormService
         {
             bool goalSet = false;
             DateTime StartTime = DateTime.Now;
-            _codingSessionManager.StartCodingSession(StartTime,null, goalSet);
+            _codingSessionManager.StartCodingSession(StartTime, null, goalSet);
 
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;

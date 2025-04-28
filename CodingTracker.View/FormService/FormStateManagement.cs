@@ -3,6 +3,7 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
+using LibVLCSharp.Shared;
 
 namespace CodingTracker.View.FormService
 {
@@ -10,6 +11,9 @@ namespace CodingTracker.View.FormService
     {
         Form GetCurrentForm();
         void SetCurrentForm(Form form);
+        void AddActiveTimerForm(FormPageEnum formEnum, Form form);
+        void RemoveActiveTimerForm(FormPageEnum formEnum, Form form);
+        bool CheckIfFormEnumIsTimerForm(FormPageEnum formEnum);
         Form GetFormByFormPageEnum(FormPageEnum form);
 
         void SetFormByFormPageEnum(FormPageEnum form, Form instance);
@@ -52,6 +56,9 @@ namespace CodingTracker.View.FormService
 
         Form _currentForm;
 
+        private Dictionary<FormPageEnum, Form> _activeTimerForms = new Dictionary<FormPageEnum, Form>();
+
+
         public FormStateManagement(IApplicationLogger appLogger)
         {
             _appLogger = appLogger;
@@ -69,6 +76,7 @@ namespace CodingTracker.View.FormService
             { FormPageEnum.ResetPasswordPage, typeof(ResetPasswordPage)},
             { FormPageEnum.OrbitalTimerPage, typeof(OrbitalTimerPage)},
             { FormPageEnum.WORKINGSessionTimerPage, typeof(CountdownTimerForm)},
+            { FormPageEnum.WaveVisualizationForm, typeof (WaveVisualizationTestForm)},
         };
 
         public Form GetCurrentForm()
@@ -80,6 +88,27 @@ namespace CodingTracker.View.FormService
         {
             _currentForm = form;
             _appLogger.Debug($"Current form set to: {form.GetType().Name}");
+        }
+
+        public void AddActiveTimerForm(FormPageEnum formEnum, Form form)
+        {
+            _activeTimerForms[formEnum] = form;
+            _appLogger.Debug($"Added active timer form: {form.GetType().Name}");
+        }
+
+        public void RemoveActiveTimerForm(FormPageEnum formEnum, Form form)
+        {
+            _activeTimerForms.Remove(formEnum);
+            _appLogger.Debug($"Removed active timer form: {form.GetType().Name}");
+        }
+
+        public bool CheckIfFormEnumIsTimerForm(FormPageEnum formEnum)
+        {
+            if (formEnum == FormPageEnum.OrbitalTimerPage || formEnum == FormPageEnum.WORKINGSessionTimerPage || formEnum == FormPageEnum.WaveVisualizationForm)
+            {
+                return true;
+            }
+            return false;
         }
 
 

@@ -54,6 +54,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             SetCurrentCodingSession(session);
             SetCodingSessionStartTimeAndDate(startTime);
             UpdateISCodingSessionActive(true);
+            UpdateIsSessionTimerActive(true);
             SetCurrentSessionGoalSeconds(sessionGoalSeconds);
             SetCurrentSessionGoalSet(codingGoalSet);
         }
@@ -349,14 +350,12 @@ namespace CodingTracker.Business.CodingSessionManagers
             {
                 _appLogger.Debug($"Starting UpdateGoalCompletionStatus method");
 
-                // Default to false unless conditions are met.
                 _currentCodingSession.GoalReached = false;
                 _appLogger.Debug($"Default GoalReached set to false");
 
-                // Log the current session values we'll be checking
+
                 _appLogger.Debug($"Session values - GoalSet: {(_currentCodingSession.GoalSet.HasValue ? _currentCodingSession.GoalSet.ToString() : "null")}, GoalSeconds: {(_currentCodingSession.GoalSeconds.HasValue ? _currentCodingSession.GoalSeconds.ToString() : "null")}, DurationSeconds: {_currentCodingSession.DurationSeconds}");
 
-                // .Value checks if GoalSet = true
                 if (_currentCodingSession.GoalSet.HasValue && _currentCodingSession.GoalSet.Value)
                 {
                     _appLogger.Debug($"GoalSet is true, continuing evaluation");
