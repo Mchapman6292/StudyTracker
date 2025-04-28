@@ -61,10 +61,10 @@ namespace CodingTracker.View
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             loginPageErrorTextbox = new Label();
             label1 = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -81,8 +81,8 @@ namespace CodingTracker.View
             guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
             NewLoginButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            NewCreateAccountButton = new Guna.UI2.WinForms.Guna2GradientButton();
             NewForgotPasswordButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            CreateAccountButton = new Guna.UI2.WinForms.Guna2GradientButton();
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
             LoginPageMediaPanel.SuspendLayout();
             guna2Panel1.SuspendLayout();
@@ -295,9 +295,6 @@ namespace CodingTracker.View
             NewLoginButton.CustomizableEdges = customizableEdges21;
             NewLoginButton.DisabledState.BorderColor = Color.DarkGray;
             NewLoginButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            NewLoginButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            NewLoginButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            NewLoginButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             NewLoginButton.FillColor = Color.FromArgb(175, 30, 130);
             NewLoginButton.FillColor2 = Color.FromArgb(175, 30, 130);
             NewLoginButton.Font = new Font("Segoe UI", 9F);
@@ -311,32 +308,8 @@ namespace CodingTracker.View
             NewLoginButton.TabIndex = 27;
             NewLoginButton.Text = "Login";
             NewLoginButton.Click += LoginButton_Click;
-            // 
-            // NewCreateAccountButton
-            // 
-            NewCreateAccountButton.AutoRoundedCorners = true;
-            NewCreateAccountButton.BorderRadius = 18;
-            NewCreateAccountButton.BorderThickness = 2;
-            NewCreateAccountButton.Cursor = Cursors.Hand;
-            NewCreateAccountButton.CustomizableEdges = customizableEdges19;
-            NewCreateAccountButton.DisabledState.BorderColor = Color.DarkGray;
-            NewCreateAccountButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            NewCreateAccountButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            NewCreateAccountButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            NewCreateAccountButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            NewCreateAccountButton.FillColor = Color.FromArgb(175, 30, 130);
-            NewCreateAccountButton.FillColor2 = Color.FromArgb(175, 30, 130);
-            NewCreateAccountButton.Font = new Font("Segoe UI", 9F);
-            NewCreateAccountButton.ForeColor = Color.White;
-            NewCreateAccountButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            NewCreateAccountButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
-            NewCreateAccountButton.Location = new Point(182, 347);
-            NewCreateAccountButton.Name = "NewCreateAccountButton";
-            NewCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            NewCreateAccountButton.Size = new Size(120, 38);
-            NewCreateAccountButton.TabIndex = 28;
-            NewCreateAccountButton.Text = "Create Account";
-            NewCreateAccountButton.Click += NewCreateAccountButton_Click;
+            NewLoginButton.MouseEnter += LoginButton_MouseEnter;
+            NewLoginButton.MouseLeave += LoginButton_MouseLeave;
             // 
             // NewForgotPasswordButton
             // 
@@ -365,6 +338,34 @@ namespace CodingTracker.View
             NewForgotPasswordButton.Text = "Forgot Password";
             NewForgotPasswordButton.Click += NewForgotPasswordButton_Click;
             // 
+            // CreateAccountButton
+            // 
+            CreateAccountButton.AutoRoundedCorners = true;
+            CreateAccountButton.BorderRadius = 18;
+            CreateAccountButton.BorderThickness = 2;
+            CreateAccountButton.Cursor = Cursors.Hand;
+            CreateAccountButton.CustomizableEdges = customizableEdges19;
+            CreateAccountButton.DisabledState.BorderColor = Color.DarkGray;
+            CreateAccountButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            CreateAccountButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            CreateAccountButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            CreateAccountButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            CreateAccountButton.FillColor = Color.FromArgb(175, 30, 130);
+            CreateAccountButton.FillColor2 = Color.FromArgb(175, 30, 130);
+            CreateAccountButton.Font = new Font("Segoe UI", 9F);
+            CreateAccountButton.ForeColor = Color.White;
+            CreateAccountButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
+            CreateAccountButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
+            CreateAccountButton.Location = new Point(182, 347);
+            CreateAccountButton.Name = "CreateAccountButton";
+            CreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            CreateAccountButton.Size = new Size(120, 38);
+            CreateAccountButton.TabIndex = 28;
+            CreateAccountButton.Text = "Create Account";
+            CreateAccountButton.Click += NewCreateAccountButton_Click;
+            CreateAccountButton.MouseEnter += CreateAccountButton_MouseEnter;
+            CreateAccountButton.MouseLeave += CreateAccountButton_MouseLeave;
+            // 
             // LoginPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -372,7 +373,7 @@ namespace CodingTracker.View
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1284, 681);
             Controls.Add(NewForgotPasswordButton);
-            Controls.Add(NewCreateAccountButton);
+            Controls.Add(CreateAccountButton);
             Controls.Add(NewLoginButton);
             Controls.Add(LoginPageCreationSuccessTextBox);
             Controls.Add(guna2Panel1);
@@ -422,7 +423,7 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private Guna.UI2.WinForms.Guna2GradientButton NewLoginButton;
-        private Guna.UI2.WinForms.Guna2GradientButton NewCreateAccountButton;
         private Guna.UI2.WinForms.Guna2GradientButton NewForgotPasswordButton;
+        private Guna.UI2.WinForms.Guna2GradientButton CreateAccountButton;
     }
 }

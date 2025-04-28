@@ -52,6 +52,8 @@ namespace CodingTracker.View
             NewForgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
             NewForgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
+
+
             // Load saved settings
             LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
@@ -146,6 +148,11 @@ namespace CodingTracker.View
             }
         }
 
+        private void UsernameTextBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
         private void LoginPageUsernameTextbox_Leave(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(loginPageUsernameTextbox.Text))
@@ -169,6 +176,8 @@ namespace CodingTracker.View
 
         #region Button Handling
 
+
+
         private void NewForgotPasswordButton_MouseEnter(object sender, EventArgs e)
         {
             if (sender is Guna2GradientButton button)
@@ -182,6 +191,38 @@ namespace CodingTracker.View
             if (sender is Guna2GradientButton button)
             {
                 _buttonHighlighterService.SetFillColorToTransparent(button);
+            }
+        }
+
+        private void LoginButton_MouseEnter(object sender, EventArgs e)
+        {
+            if(sender is Guna2GradientButton button) 
+            {
+                _buttonHighlighterService.HighlightButtonWithHoverColour(button);
+            }
+        }
+
+        private void LoginButton_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is Guna2GradientButton button)
+            {
+                _buttonHighlighterService.FillButtonWithBrightPink(button);
+            }
+        }
+
+        private void CreateAccountButton_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is Guna2GradientButton button)
+            {
+                _buttonHighlighterService.HighlightButtonWithHoverColour(button);
+            }
+        }
+
+        private void CreateAccountButton_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is Guna2GradientButton button)
+            {
+                _buttonHighlighterService.FillButtonWithBrightPink(button);
             }
         }
 
@@ -203,17 +244,12 @@ namespace CodingTracker.View
             {
                 UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
 
-                // Create the codingSession object, CodingSession timers are started separately when the timer is started by the user.
-                await _codingSessionManager.OldStartCodingSession(username);
-                await _codingSessionManager.SetUserIdForCurrentSessionAsync(username, password);
-                _codingSessionManager.SetCurrentUserId(userCredential.UserId);
+                _codingSessionManager.SetCurrentUserIdPlaceholder(userCredential.UserId);
 
                 SaveUsernameForNextLogin(username);
 
-                Form mainPage = _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
 
-                this.Hide();
-                mainPage.Show();
             }
         }
 

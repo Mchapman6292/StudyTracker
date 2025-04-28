@@ -152,6 +152,11 @@ namespace CodingTracker.View.PopUpFormService
         private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
             string timeInputString = timeGoalTextBox.Text;
+            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+            DateTime startTime = DateTime.Now;
+            bool goalSet = true;
+
+
             _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
 
             if (!ValidateTimeFormat(timeInputString))
@@ -161,17 +166,18 @@ namespace CodingTracker.View.PopUpFormService
             }
 
             // Goal is taken as HHMM format and convert to seconds.
-            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+
 
 
             _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSeconds);
+            _codingSessionManager.StartCodingSession(startTime, sessionGoalSeconds, goalSet);
             /*
             _formStatePropertyManager.SetIsFormGoalSet(true);
             _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSeconds);
             */
 
 
-            _codingSessionManager.UpdateCodingSessionGoalSet(sessionGoalSeconds);
+
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
@@ -183,7 +189,10 @@ namespace CodingTracker.View.PopUpFormService
 
         public void HandleSkipButton()
         {
-            _codingSessionManager.UpdateCodingSessionNoGoalSet();
+            bool goalSet = false;
+            DateTime StartTime = DateTime.Now;
+            _codingSessionManager.StartCodingSession(StartTime,null, goalSet);
+
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();

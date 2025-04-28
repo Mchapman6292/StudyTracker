@@ -7,6 +7,7 @@ namespace CodingTracker.View.FormService.ButtonHighlighterServices
     {
         void HighlightButtonWithHoverColour(Guna2GradientButton button);
         void SetFillColorToTransparent(Guna2GradientButton button);
+        void FillButtonWithBrightPink(Guna2GradientButton button);
     }
     public class ButtonHighlighterService : IButtonHighlighterService
     {
@@ -22,7 +23,7 @@ namespace CodingTracker.View.FormService.ButtonHighlighterServices
         public void HighlightButtonWithHoverColour(Guna2GradientButton button)
         {
             button.FillColor = Color.FromArgb(94, 148, 255);   // Medium blue shade 
-            button.FillColor2 = Color.FromArgb(255, 77, 165);  // Pink/magenta shade 
+            button.FillColor2 = Color.FromArgb(64, 224, 208);  // Pink/magenta shade 
         }
 
         public void SetFillColorToTransparent(Guna2GradientButton button)
@@ -31,6 +32,11 @@ namespace CodingTracker.View.FormService.ButtonHighlighterServices
             button.FillColor2 = Color.Transparent;
         }
 
+        public void FillButtonWithBrightPink(Guna2GradientButton button)
+        {
+            button.FillColor = Color.FromArgb(175, 30, 130);
+            button.FillColor2 = Color.FromArgb(175, 30, 130);
+        }
 
     }
 }

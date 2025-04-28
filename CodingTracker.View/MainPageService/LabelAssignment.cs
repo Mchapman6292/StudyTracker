@@ -10,14 +10,14 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
 {
     public interface ILabelAssignment
     {
-        void UpdateMainPageLabel(Guna2HtmlLabel label, string text);
-        Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum);
+        void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, string todayText, string weekText, string averageText);
+        Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync();
+        void UpdateMainPageLabel(Guna2HtmlLabel label, string text);    
         void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
         void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
         void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime);
         Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel);
         void UpdateDateLabelsWithHTML(Panel parentPanel);
-        void AdjustDateLabelsColumns(Panel parentPanel);
     }
 
     public class LabelAssignment : ILabelAssignment
@@ -53,6 +53,29 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             label.Text = text;
         }
 
+        // Returns tuple of totals.
+        public async Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync()
+        {
+            
+            (double todayTotal, double weekTotal, double averageSession) = await _codingSessionRepository.GetLabelDurationsAsync();
+
+
+            // Format all the values
+            string todayText = _utilityService.ConvertDoubleToHHMMString(todayTotal);
+            string weekText = _utilityService.ConvertDoubleToHHMMString(weekTotal);
+            string averageText = _utilityService.ConvertDoubleToHHMMString(averageSession);
+
+            return (todayText, weekText, averageText);
+        }
+
+        public void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel,Guna2HtmlLabel averageLabel, string todayText,string weekText, string averageText)
+        {
+            FormatTodayLabelText(todayLabel, todayText);
+            FormatWeekTotalLabel(weekLabel, weekText);
+            FormatAverageSessionLabel(averageLabel, averageText);
+        }
+
+        /*
         public async Task<string> GetFormattedLabelDisplayMessage(MainPageLabels labelEnum)
         {
             string labelMessage = string.Empty;
@@ -81,6 +104,7 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             return labelMessage;
         }
 
+        */
 
         public void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime)
         {
@@ -118,17 +142,32 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             label.BackColor = Color.Transparent;
         }
 
-        public void FormatDateLabel(Guna2HtmlLabel label, string formattedDate)
+
+
+
+
+
+
+
+
+
+        public void FormatDateLabel(Guna2HtmlLabel label, DateTime labelDate)
         {
+            _appLogger.Info($"labelDate passed to {nameof(FormatDateLabel)}: {labelDate}.");
+
             string html = $@"
-            <div style='font-family: Segoe UI;'>
-                <div style='font-size: 11.5px; font-weight: 400; color: #e6e6e6;'>{formattedDate}</div>
-            </div>";
+    <div style='font-family: Segoe UI; padding: 2px 0;'>
+        <div style='font-size: 10.5px; line-height: 1.5; letter-spacing: 0.5px; font-weight: 300; color: #e0e0e0;'>
+            {labelDate:dd/MM/yyyy}
+        </div>
+    </div>";
 
             label.Text = html;
             label.BackColor = Color.Transparent;
+            label.UseGdiPlusTextRendering = true;
+            label.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            label.Cursor = Cursors.Hand;
         }
-
 
         public async Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel)
         {
@@ -149,48 +188,18 @@ namespace CodingTracker.Business.MainPageService.LabelAssignments
             List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
             var gunaDateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
 
+            _appLogger.Info($"Number of labels for {nameof(UpdateDateLabelsWithHTML)}: {gunaDateLabels.Count}.");
+
+
             for (int i = 0; i < last28Days.Count && i < gunaDateLabels.Count; i++)
             {
-                string labelDate = last28Days[i].ToShortDateString();
-                FormatDateLabel(gunaDateLabels[i], labelDate);
+                DateTime labelDate = last28Days[i];
+                Guna2HtmlLabel currentLabel = gunaDateLabels[i];   
+                FormatDateLabel(currentLabel, labelDate);
             }
         }
 
 
-        public void AdjustDateLabelsColumns(Panel parentPanel)
-        {
-            // Get all date labels
-            var dateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
-            List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
-
-            // Define the column positions to match the top panels
-            int[] columnX = new int[] { 65, 438, 836, 1050 }; // Adjust the last column as needed
-
-            // Determine how many labels per column (assuming current 4-column layout)
-            int labelsPerColumn = dateLabels.Count / 4;
-            if (dateLabels.Count % 4 != 0) labelsPerColumn++;
-
-            // Update each label's X position while maintaining its current Y position
-            for (int i = 0; i < dateLabels.Count; i++)
-            {
-                // Determine which column this label belongs to
-                int columnIndex = i / labelsPerColumn;
-                if (columnIndex > 3) columnIndex = 3; // Ensure we stay within our column array
-
-                // Get current position
-                Point currentPos = dateLabels[i].Location;
-
-                // Update only the X coordinate to align with our column positions
-                dateLabels[i].Location = new Point(columnX[columnIndex], currentPos.Y);
-
-                // Format the label if we have a corresponding date
-                if (i < last28Days.Count)
-                {
-                    string formattedDate = last28Days[i].ToString("dd/MM/yyyy");
-                    FormatDateLabel(dateLabels[i], formattedDate);
-                }
-            }
-        }
 
         private void ApplyRoundedCornersToPanel(Guna.UI2.WinForms.Guna2GradientPanel panel)
         {

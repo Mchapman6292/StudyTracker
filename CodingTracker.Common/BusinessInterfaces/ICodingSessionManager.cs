@@ -4,12 +4,11 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
 {
     public interface ICodingSessionManager
     {
-        int ReturnCurrentUserId();
-        void SetCurrentUserId(int userId);
+        int ReturnCurrentUserIdPlaceholder();
+        void SetCurrentUserIdPlaceholder(int userId);
         void StartCodingSession(DateTime startTime, double? sessionGoalSeconds, bool goalSet);
         Task EndCodingSessionAsync();
         Task EndCodingSessionWithTimerFinished();
-        void Initialize_CurrentCodingSession(int userId);
         void UpdateISCodingSessionActive(bool active);
         void UpdateIsSessionTimerActive(bool active);
         double? ReturnGoalSeconds();
@@ -23,16 +22,18 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         DateTime? ReturnCurrentSessionStartTime();
         void SetDurationSeconds(double? durationSeconds);
         void SetCurrentSessionGoalSeconds(double? goalSeconds);
-        CodingSession ReturnCurrentCodingSession();
         void SetCodingSessionStartTimeAndDate(DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);
         Task OldStartCodingSession(string username);
         void SetCurrentSessionGoalSet(bool goalSet);
         void SetGoalHoursAndGoalMins(int goalMins, bool goalSet);
         void UpdateCodingSessionEndTimes();
-        void SetCurrentCodingSession(CodingSession codingSession);
-        Task SetUserIdForCurrentSessionAsync(string username, string password);
+
         int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate);
         bool ReturnIsCodingSessionActive();
+
+
+
+ 
     }
 }

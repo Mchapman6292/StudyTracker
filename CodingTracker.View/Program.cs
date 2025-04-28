@@ -101,7 +101,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
                     .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
-                    .AddSingleton<ICodingTrackerDbContext, CodingTrackerDbContext>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
                     .AddSingleton<IUserCredentialRepository, UserCredentialRepository>()
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
@@ -123,7 +122,7 @@ namespace CodingTracker.View.Program
 
 
 
-                    .AddTransient<MainPage>()
+                    .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()
                     .AddTransient<SessionGoalPage>()
@@ -132,7 +131,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<ConfirmUsernamePage>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
-                    options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddScoped<ICodingTrackerDbContext, CodingTrackerDbContext>();
+                    options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
 
 
 
