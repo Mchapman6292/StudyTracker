@@ -18,6 +18,16 @@ namespace CodingTracker.View.MessageBoxManagers
         {
             return MessageBox.Show(message, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
         }
+
+        public DialogResult ShowExitButtonConfirmationMessageBox()
+        {
+            return MessageBox.Show(
+            "Press Enter to confirm exit, Escape to cancel",
+            "Confirm Exit",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question,
+            MessageBoxDefaultButton.Button1); // Make "Yes" the default (Enter key)
+        }
     }
 }
 

@@ -2,6 +2,7 @@
 using CodingTracker.Common.IApplicationLoggers;
 using System.Diagnostics;
 using System.Drawing;
+using System.Numerics;
 
 namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 {
@@ -149,8 +150,5 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                 return dates;
             }
         }
-
-
-
     }
 }

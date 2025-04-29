@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.Entities.CodingSessionEntities;
+using System.Threading.Tasks;
 
 namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
 {
@@ -28,5 +29,6 @@ namespace CodingTracker.Common.DataInterfaces.ICodingSessionRepositories
 
         Task<double> GetTodaysTotalDurationAsync();
         Task<double> GetWeekTotalDurationAsync();
+        Task<(double todayTotal, double weekTotal, double average)> GetLabelDurationsAsync();
     }
 }

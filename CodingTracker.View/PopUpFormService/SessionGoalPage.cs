@@ -5,8 +5,10 @@ using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.Properties;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using Guna.UI2.WinForms;
+using System.ComponentModel;
 
 namespace CodingTracker.View.PopUpFormService
 {
@@ -19,6 +21,12 @@ namespace CodingTracker.View.PopUpFormService
         private Guna2Button SetTimeGoalButton;
         private Guna2Button SkipButton;
         private Guna2BorderlessForm borderlessForm;
+        private Guna2ControlBox minimizeButton;
+        private Guna2ControlBox closeButton;
+        private Guna2GradientButton homeButton;
+
+        ComponentResourceManager resources = new ComponentResourceManager(typeof(SessionGoalPage));
+
         private readonly INotificationManager _notificationManager;
         private readonly IUtilityService _utilityService;
 
@@ -69,12 +77,56 @@ namespace CodingTracker.View.PopUpFormService
             mainPanel.BorderColor = Color.FromArgb(70, 71, 117);
             mainPanel.BorderThickness = 1;
 
+            Guna2Panel headerPanel = new Guna2Panel();
+            headerPanel.Size = new Size(this.Width, 35);
+            headerPanel.Location = new Point(0, 0);
+            headerPanel.FillColor = Color.FromArgb(32, 33, 36);
+            headerPanel.BorderRadius = 12; 
+
+            closeButton = new Guna2ControlBox();
+            closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            closeButton.FillColor = Color.FromArgb(25, 24, 40);
+            closeButton.HoverState.IconColor = Color.White;
+            closeButton.IconColor = Color.White;
+            closeButton.Location = new Point(341, 0);
+            closeButton.Size = new Size(45, 29);
+            closeButton.BorderRadius = 12;
+            closeButton.Click += (s, e) => { this.Close(); };
+            closeButton.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges()
+            {
+                TopRight = true,
+                BottomRight = false,
+                TopLeft = false,
+                BottomLeft = false
+            };
+
+
+            minimizeButton = new Guna2ControlBox();
+            minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
+            minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
+            minimizeButton.HoverState.IconColor = Color.White;
+            minimizeButton.IconColor = Color.White;
+            minimizeButton.Location = new Point(299, 0);
+            minimizeButton.Size = new Size(43, 28);
+            minimizeButton.Click += (s, e) => { this.WindowState = FormWindowState.Minimized; };
+
+            homeButton = new Guna2GradientButton();
+            homeButton.FillColor = Color.FromArgb(25, 24, 40);
+            homeButton.FillColor2 = Color.FromArgb(25, 24, 40);
+            homeButton.Font = new Font("Segoe UI", 9F);
+            homeButton.ForeColor = Color.White;
+            homeButton.Location = new Point(257 , 0);
+            homeButton.Size = new Size(43, 28);
+            homeButton.Image = Properties.Resources.HomeButtonIcon; 
+            homeButton.Click += HomeButton_Click;
+
             questionLabel = new Guna2HtmlLabel();
             questionLabel.Text = "Would you like to set a time goal for this session?";
             questionLabel.ForeColor = Color.White;
             questionLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
             questionLabel.AutoSize = false;
-            questionLabel.Size = new Size(350, 30);
+            questionLabel.Size = new Size(350, 40);
             questionLabel.TextAlignment = ContentAlignment.MiddleCenter;
             questionLabel.Location = new Point(25, 30);
 
@@ -119,8 +171,14 @@ namespace CodingTracker.View.PopUpFormService
             mainPanel.Controls.Add(timeGoalTextBox);
             mainPanel.Controls.Add(formatLabel);
             mainPanel.Controls.Add(SetTimeGoalButton);
-            mainPanel.Controls.Add(SkipButton);
+            mainPanel.Controls.Add(SkipButton); 
             this.Controls.Add(mainPanel);
+            this.Controls.Add(closeButton);
+            this.Controls.Add(minimizeButton);
+            this.Controls.Add(homeButton);
+            closeButton.BringToFront();
+            minimizeButton.BringToFront();
+            homeButton.BringToFront();
         }
 
         private void TimeGoalTextBox_KeyPress(object sender, KeyPressEventArgs e)
@@ -152,6 +210,11 @@ namespace CodingTracker.View.PopUpFormService
         private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
             string timeInputString = timeGoalTextBox.Text;
+            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+            DateTime startTime = DateTime.Now;
+            bool goalSet = true;
+
+
             _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
 
             if (!ValidateTimeFormat(timeInputString))
@@ -161,17 +224,18 @@ namespace CodingTracker.View.PopUpFormService
             }
 
             // Goal is taken as HHMM format and convert to seconds.
-            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+
 
 
             _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSeconds);
+            _codingSessionManager.StartCodingSession(startTime, sessionGoalSeconds, goalSet);
             /*
             _formStatePropertyManager.SetIsFormGoalSet(true);
             _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSeconds);
             */
 
 
-            _codingSessionManager.UpdateCodingSessionGoalSet(sessionGoalSeconds);
+
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
@@ -181,9 +245,23 @@ namespace CodingTracker.View.PopUpFormService
             HandleSkipButton();
         }
 
+        private void HomeButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            this.Close();
+        }
+
+        private void CloseButton_Click(object sender, EventArgs args)
+        {
+
+        }
+
         public void HandleSkipButton()
         {
-            _codingSessionManager.UpdateCodingSessionNoGoalSet();
+            bool goalSet = false;
+            DateTime StartTime = DateTime.Now;
+            _codingSessionManager.StartCodingSession(StartTime, null, goalSet);
+
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
             this.Close();

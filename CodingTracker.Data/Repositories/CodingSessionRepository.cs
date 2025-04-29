@@ -175,6 +175,8 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .AverageAsync();
         }
 
+        // Issue is this is being called several times, need to change this to a transaction method
+
         public async Task<double> GetTodaysTotalDurationAsync()
         {
             if (!await _dbContext.CodingSessions.AnyAsync())
@@ -203,6 +205,39 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .Where(s => s.StartDate >= todayDate)
                 .SumAsync(s => s.DurationSeconds);
         }
+
+
+        // This needs to be made under one db call as calling all the individual methods together causes a concurrency exception. 
+        public async Task<(double todayTotal, double weekTotal, double average)> GetLabelDurationsAsync()
+        {
+            var todayUTC = DateOnly.FromDateTime(DateTime.UtcNow);
+            var weekStart = todayUTC.AddDays(-6);
+
+            var sessions = await _dbContext.CodingSessions
+                .AsNoTracking()
+                .Select(s => new
+                {
+                    s.StartDate,
+                    s.DurationSeconds
+                })
+                .ToListAsync();
+
+            var todayTotal = sessions
+                .Where(s => s.StartDate >= todayUTC)
+                .Sum(s => (double?)s.DurationSeconds) ?? 0.0;
+
+            var weekTotal = sessions
+                .Where(s => s.StartDate >= weekStart)
+                .Sum(s => (double?)s.DurationSeconds) ?? 0.0;
+
+            var average = sessions
+                .Sum(s => (double?)s.DurationSeconds) ?? 0.0;
+
+            return (todayTotal, weekTotal, average);
+        }
+
+
+
 
     }
 }

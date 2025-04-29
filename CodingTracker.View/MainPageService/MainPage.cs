@@ -6,7 +6,6 @@ using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
-using Guna.UI2.Designer;
 
 
 namespace CodingTracker.View
@@ -23,7 +22,10 @@ namespace CodingTracker.View
         private readonly IButtonHighlighterService _buttonHighlighterService;
 
 
+
+
         private bool isActionPanelVisible = false;
+
 
 
 
@@ -38,23 +40,31 @@ namespace CodingTracker.View
             _sessionCalculator = sessionCalculator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
+            this.Load += MainPage_Load;
+            this.Shown += MainPage_Shown;
+
+
         }
 
         private async void MainPage_Load(object sender, EventArgs e)
         {
-            string todayText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.TodayTotalLabel);
-            _labelAssignment.FormatTodayLabelText(TodayTotalLabel, todayText);
+            // 1
+            var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
 
-            string weekText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.WeekTotalLabel);
-            _labelAssignment.FormatWeekTotalLabel(WeekTotalLabel, weekText);
+            string todayText = results.TodayTotal;
+            string weekText = results.WeekTotal;
+            string averageText = results.AverageSession;
 
-            string averageText = await _labelAssignment.GetFormattedLabelDisplayMessage(MainPageLabels.AverageSessionLabel);
-            _labelAssignment.FormatAverageSessionLabel(AverageSessionLabel, averageText);
+            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
+
 
             _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
+
+        }
+
+        private async void MainPage_Shown(object sender, EventArgs e)
+        {
             await _labelAssignment.UpdateLast28DayBoxesWithAssignedColorsAsync(Last28DaysPanel);
-
-
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -129,6 +139,11 @@ namespace CodingTracker.View
         private void WaveTestButton_Click(object sender, EventArgs e)
         {
             _formSwitcher.SwitchToForm(FormPageEnum.WaveVisualizationForm);
+        }
+
+        private void guna2CircleButton1_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.TestForm);
         }
     }
 }

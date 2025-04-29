@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.IApplicationLoggers;
 using Serilog;
 using System.Diagnostics;
 
@@ -89,6 +90,25 @@ namespace CodingTracker.Logging.ApplicationLoggers
             }
         }
 
+
+        public void LogCodingSessionEntity(CodingSessionEntity codingSessionEntity)
+        {
+            string session =
+                $"Values for codingSessionEntity \n" +
+                $"-------SessionId : {codingSessionEntity.SessionId}.\n" +
+                $"-------UserId : {codingSessionEntity.UserId}.\n" +
+                $"-------StartDate : {codingSessionEntity.StartDate}.\n" +
+                $"-------StartTime : {codingSessionEntity.StartTime}.\n" +
+                $"-------EndDate : {codingSessionEntity.EndDate}.\n" +
+                $"-------EndTime : {codingSessionEntity.EndTime}.\n" +
+                $"-------DurationSeconds : {codingSessionEntity.DurationSeconds}.\n" +
+                $"-------DurationHHMM : {codingSessionEntity.DurationHHMM}.\n" +
+                $"-------GoalSet : {codingSessionEntity.GoalSet}.\n" +
+                $"-------GoalSeconds : {codingSessionEntity.GoalSeconds}.\n" +
+                $"-------GoalReached : {codingSessionEntity.GoalReached}.";
+
+            Info(session);
+        }
 
         public Task LogUpdatesAsync(string methodName, params (string Name, object Value)[] updates)
         {

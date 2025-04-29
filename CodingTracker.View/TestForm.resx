@@ -117,4 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="TestBorderlessForm.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="CodingSessionPageHomeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAAk5JREFUaEPt2L1rVEEUhvEoogh+IWghFum0EWzsBAtBsLPTLlbWdvFPsLW0tRIE
+        EcRSBD8QgmJlIzY2EhRBQSyM5pGVuzr7nEtmT3Y3TGB/kOrO+55zi8wuu7AwVwcsAk+6v0U/3xaAi8AX
+        /vsKXPK5ZgE7gGXgd/ESQ+vATWCnc00BDgD3vX2PR8Bh55sAnAbee+MNfADOqKNXeWamgCXghxcYwyCz
+        VPRcB3760Oi0GQD2ALc8eBPuAHu7zrPAx/Kh504VcBx4WQ6c0OvhFQ0cAR4PH3j21ADngNXRPabiM3Ch
+        m7Gru+HWPX9ixdX6yxtM0aD7xmBWN/Oy95gIsB+456kz9BA45D0mApwE3nrSFngHnPI+mwJcAb57whYa
+        XNFXvdfYin+2VtwGdnvPDQFHy+uvIc+BY963V98HUmM+Aee99wjgWt9XhAatdR8Df6/o8gX2AXd9eht4
+        ABwsX2Sle/BNB1s23HWlfJEXwBvghA63bLDrK+Dpvxcp+XSrvHfgQKu8d+BAq7x34ECrvHfgQKu8d+BA
+        q7x34ECrvHfgQKu8d+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BA
+        hrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9w
+        V+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wV+BAhrtqnM9wVwA8c2hc7qpxPqH/18W5
+        uen7A1ynkub1IPCqAAAAAElFTkSuQmCC
+</value>
+  </data>
 </root>
