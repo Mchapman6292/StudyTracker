@@ -12,7 +12,8 @@
         ResetPasswordPage,
         CountdownTimerPage,
         OrbitalTimerPage,
-        WaveVisualizationForm
+        WaveVisualizationForm,
+        TestForm
     }
 
 }

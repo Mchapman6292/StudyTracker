@@ -26,7 +26,7 @@ namespace CodingTracker.View
 
         private bool isActionPanelVisible = false;
 
-  
+
 
 
         public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService)
@@ -55,7 +55,7 @@ namespace CodingTracker.View
             string weekText = results.WeekTotal;
             string averageText = results.AverageSession;
 
-            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel,todayText, weekText, averageText);
+            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
 
 
             _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
@@ -139,6 +139,11 @@ namespace CodingTracker.View
         private void WaveTestButton_Click(object sender, EventArgs e)
         {
             _formSwitcher.SwitchToForm(FormPageEnum.WaveVisualizationForm);
+        }
+
+        private void guna2CircleButton1_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.TestForm);
         }
     }
 }

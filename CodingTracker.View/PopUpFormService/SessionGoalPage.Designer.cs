@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SessionGoalPage));
             SuspendLayout();
             // 
             // DisplayMessageBox

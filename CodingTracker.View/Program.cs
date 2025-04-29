@@ -118,6 +118,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
                     .AddSingleton<WaveVisualizationTestForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
+                    .AddSingleton<TestForm>()
 
 
 
