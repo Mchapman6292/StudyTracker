@@ -7,6 +7,7 @@ using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace CodingTracker.View.TimerDisplayService
@@ -35,7 +36,7 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utitlityService;
         private readonly INotificationManager _notificationManager;
-
+   
 
         public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager)
         {
@@ -118,6 +119,7 @@ namespace CodingTracker.View.TimerDisplayService
             closeControlBox.BorderRadius = 0;
             closeControlBox.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.CloseBox;
             closeControlBox.Click += CloseControlBox_Click;
+            closeControlBox.CustomClick = true;  // CustomClick needs to be set or else the form is disposed before the Guna2NotificationDialog from NotificationManager is shown
 
             minimizeControlBox = new Guna2ControlBox();
             minimizeControlBox.Size = new Size(16, 16);
@@ -256,20 +258,26 @@ namespace CodingTracker.View.TimerDisplayService
 
         private async void CloseControlBox_Click(object sender, EventArgs e)
         {
-            progressTimer.Stop();
-            stopwatchTimer.Stop();
+            DialogResult dialogResult = _notificationManager.ReturnExitMessageDialogWithActiveCodingSession(this);
 
-            var sessionStartTime = _codingSessionManager.ReturnCurrentSessionStartTime();
+            if (dialogResult.Equals(DialogResult.Yes))
+            {
 
-            TimeSpan elapsed = stopwatchTimer.Elapsed;
+                progressTimer.Stop();
+                stopwatchTimer.Stop();
 
-            string message = $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}.";
+                var sessionStartTime = _codingSessionManager.ReturnCurrentSessionStartTime();
 
-            _notificationManager.ShowNotificationDialog(sender, EventArgs.Empty, DisplayMessageBox, message);
-            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
-            _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
-            await _codingSessionManager.EndCodingSessionAsync();
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                TimeSpan elapsed = stopwatchTimer.Elapsed;
+
+                string message = $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}.";
+
+                _notificationManager.ShowNotificationDialog(sender, EventArgs.Empty, DisplayMessageBox, message);
+                _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
+                _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
+                await _codingSessionManager.EndCodingSessionAsync();
+                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            }
         }
 
         private void PauseButton_Click(object sender, EventArgs e)

@@ -2,10 +2,12 @@
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
+using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
+using CodingTracker.View.FormService.NotificationManagers;
 
 
 namespace CodingTracker.View
@@ -20,6 +22,8 @@ namespace CodingTracker.View
         private readonly ISessionCalculator _sessionCalculator;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly INotificationManager _notificationManager;
+        private readonly IApplicationControl _applicationControl;
 
 
 
@@ -29,7 +33,7 @@ namespace CodingTracker.View
 
 
 
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IApplicationControl applicationControl)
         {
             InitializeComponent();
             _appLogger = appLogger;
@@ -40,6 +44,8 @@ namespace CodingTracker.View
             _sessionCalculator = sessionCalculator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
+            _notificationManager = notificationManager;
+            _applicationControl = applicationControl;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
 
@@ -108,9 +114,14 @@ namespace CodingTracker.View
 
 
 
-        private void MainPageExitControlBox_Click(object sender, EventArgs e)
+        private async void MainPageExitControlBox_Click(object sender, EventArgs e)
         {
+            DialogResult dialogResult = _notificationManager.ReturnExitMessageDialog(this);
 
+            if(dialogResult == DialogResult.Yes) 
+            {
+                await _applicationControl.ExitCodingTrackerAsync();
+            }
         }
 
 

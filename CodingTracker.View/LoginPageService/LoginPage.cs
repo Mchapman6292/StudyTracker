@@ -264,9 +264,9 @@ namespace CodingTracker.View
             _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
         }
 
-        private void LoginPageExitControlBox_Click(object sender, EventArgs e)
+        private async void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _appControl.ExitCodingTrackerAsync();
+            await _appControl.ExitCodingTrackerAsync();
         }
 
         #endregion

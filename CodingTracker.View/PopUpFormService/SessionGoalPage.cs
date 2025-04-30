@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -29,6 +30,8 @@ namespace CodingTracker.View.PopUpFormService
 
         private readonly INotificationManager _notificationManager;
         private readonly IUtilityService _utilityService;
+        private readonly IFormStateManagement _formStateManagement;
+        private readonly IApplicationControl _applicationControl;
 
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
@@ -38,7 +41,7 @@ namespace CodingTracker.View.PopUpFormService
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService, IApplicationLogger appLogger)
+        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService, IApplicationLogger appLogger, IFormStateManagement formStateManagement, IApplicationControl applicationControl)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -47,6 +50,8 @@ namespace CodingTracker.View.PopUpFormService
             _formStatePropertyManager = formStatePropertyManager;
             _utilityService = utilityService;
             _appLogger = appLogger;
+            _formStateManagement = formStateManagement;
+            _applicationControl = applicationControl;
 
             InitializeComponent();
             InitializeToolsAndComponents();
@@ -91,7 +96,8 @@ namespace CodingTracker.View.PopUpFormService
             closeButton.Location = new Point(341, 0);
             closeButton.Size = new Size(45, 29);
             closeButton.BorderRadius = 12;
-            closeButton.Click += (s, e) => { this.Close(); };
+            closeButton.Click += CloseButton_Click;
+            closeButton.CustomClick = true;
             closeButton.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges()
             {
                 TopRight = true,
@@ -251,10 +257,23 @@ namespace CodingTracker.View.PopUpFormService
             this.Close();
         }
 
-        private void CloseButton_Click(object sender, EventArgs args)
-        {
 
+        /// <summary>
+        /// When user clicks close: Shows "Are you sure you want to exit?" dialog.
+        /// If user clicks Yes: Exits app, automatically saving any active coding session through ExitCodingTrackerAsync.
+        /// If user clicks No: Dialog closes and user remains in the application.
+        /// </summary>
+        private async void CloseButton_Click(object sender, EventArgs args)
+        {
+            DialogResult exitResult = _notificationManager.ReturnExitMessageDialog(this);
+
+            if (exitResult == DialogResult.Yes)
+            {
+                await _applicationControl.ExitCodingTrackerAsync();
+            }
         }
+
+
 
         public void HandleSkipButton()
         {
