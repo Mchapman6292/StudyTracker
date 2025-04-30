@@ -26,7 +26,7 @@ namespace CodingTracker.View.MessageBoxManagers
             "Confirm Exit",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Question,
-            MessageBoxDefaultButton.Button1); // Make "Yes" the default (Enter key)
+            MessageBoxDefaultButton.Button1); 
         }
     }
 }
