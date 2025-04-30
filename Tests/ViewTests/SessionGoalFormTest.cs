@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
+using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -27,17 +28,21 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockFormStateManager = new Mock<IFormStatePropertyManager>();
             var mockUtilityService = new Mock<IUtilityService>();
             var mockLogger = new Mock<IApplicationLogger>();
+            var mockApplicationControl = new Mock<IApplicationControl>();
+            var mockFormStateManagement = new Mock<IFormStateManagement>();
 
-            var form = new SessionGoalPage
-            (
+            var form = new SessionGoalPage(
                 mockSessionManager.Object,
                 mockFormSwitcher.Object,
                 mockInputValidator.Object,
                 mockNotificationManager.Object,
                 mockFormStateManager.Object,
                 mockUtilityService.Object,
-                mockLogger.Object
+                mockLogger.Object,
+                mockFormStateManagement.Object, 
+                mockApplicationControl.Object
             );
+
 
             var session = new CodingSession
             {

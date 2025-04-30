@@ -32,10 +32,8 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.LayoutServices;
 using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.IMessageBoxManagers;
 using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
 using CodingTracker.View.LoginPageService;
-using CodingTracker.View.MessageBoxManagers;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
@@ -96,7 +94,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IFormFactory, FormFactory>()
                     .AddSingleton<IFormController, FormController>()
                     .AddSingleton<IInputValidationResult, InputValidationResult>()
-                    .AddSingleton<IMessageBoxManager, MessageBoxManager>()
                     .AddSingleton<IPanelColourControl, PanelColourControl>()
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
                     .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
