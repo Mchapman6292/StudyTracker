@@ -436,7 +436,10 @@ namespace CodingTracker.Business.CodingSessionManagers
                 DurationSeconds = _currentCodingSession.DurationSeconds ?? throw new ArgumentNullException($"DurationSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 DurationHHMM = _currentCodingSession.DurationHHMM ?? throw new ArgumentNullException($"DurationHHMM cannot be null when creating CdoingSesisonEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 GoalSeconds = _currentCodingSession.GoalSeconds ?? throw new ArgumentNullException($"GoalSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
-                GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
+                GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                StudyProject = _currentCodingSession.StudyProject ?? throw new ArgumentNullException($"StudyProject cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                StudyNotes = _currentCodingSession.StudyNotes ?? throw new ArgumentNullException($"StudyNotes cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
+
             };
         }
 
