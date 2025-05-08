@@ -299,9 +299,7 @@ namespace CodingTracker.View
             NewLoginButton.FillColor2 = Color.FromArgb(175, 30, 130);
             NewLoginButton.Font = new Font("Segoe UI", 9F);
             NewLoginButton.ForeColor = Color.White;
-            NewLoginButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            NewLoginButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
-            NewLoginButton.Location = new Point(31, 347);
+            NewLoginButton.Location = new Point(56, 347);
             NewLoginButton.Name = "NewLoginButton";
             NewLoginButton.ShadowDecoration.CustomizableEdges = customizableEdges22;
             NewLoginButton.Size = new Size(120, 38);
@@ -328,8 +326,6 @@ namespace CodingTracker.View
             NewForgotPasswordButton.FillColor2 = Color.Transparent;
             NewForgotPasswordButton.Font = new Font("Segoe UI", 9F);
             NewForgotPasswordButton.ForeColor = Color.White;
-            NewForgotPasswordButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            NewForgotPasswordButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
             NewForgotPasswordButton.Location = new Point(234, 291);
             NewForgotPasswordButton.Name = "NewForgotPasswordButton";
             NewForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
@@ -354,8 +350,6 @@ namespace CodingTracker.View
             CreateAccountButton.FillColor2 = Color.FromArgb(175, 30, 130);
             CreateAccountButton.Font = new Font("Segoe UI", 9F);
             CreateAccountButton.ForeColor = Color.White;
-            CreateAccountButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            CreateAccountButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
             CreateAccountButton.Location = new Point(182, 347);
             CreateAccountButton.Name = "CreateAccountButton";
             CreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;

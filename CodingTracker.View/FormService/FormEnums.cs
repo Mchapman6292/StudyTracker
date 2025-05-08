@@ -13,7 +13,8 @@
         CountdownTimerPage,
         OrbitalTimerPage,
         WaveVisualizationForm,
-        TestForm
+        TestForm,
+        SessionNotesForm
     }
 
 }

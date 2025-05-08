@@ -1,47 +1,44 @@
-﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+﻿// SessionGoalPage.cs
+using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.Properties;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
-using Guna.UI2.WinForms;
-using System.ComponentModel;
 
 namespace CodingTracker.View.PopUpFormService
 {
     public partial class SessionGoalPage : Form
     {
-        private Guna2Panel mainPanel;
-        private Guna2HtmlLabel questionLabel;
-        private Guna2TextBox timeGoalTextBox;
-        private Guna2HtmlLabel formatLabel;
-        private Guna2Button SetTimeGoalButton;
-        private Guna2Button SkipButton;
-        private Guna2BorderlessForm borderlessForm;
-        private Guna2ControlBox minimizeButton;
-        private Guna2ControlBox closeButton;
-        private Guna2GradientButton homeButton;
-
-        ComponentResourceManager resources = new ComponentResourceManager(typeof(SessionGoalPage));
-
         private readonly INotificationManager _notificationManager;
         private readonly IUtilityService _utilityService;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IApplicationControl _applicationControl;
-
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
         private readonly IInputValidator _inputValidator;
         private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly IApplicationLogger _appLogger;
+        private readonly IButtonHighlighterService _buttonHighlighterService;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
-        public SessionGoalPage(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IInputValidator inputValidator, INotificationManager notificationManager, IFormStatePropertyManager formStatePropertyManager, IUtilityService utilityService, IApplicationLogger appLogger, IFormStateManagement formStateManagement, IApplicationControl applicationControl)
+
+        public SessionGoalPage(
+            ICodingSessionManager codingSessionManager,
+            IFormSwitcher formSwitcher,
+            IInputValidator inputValidator,
+            INotificationManager notificationManager,
+            IFormStatePropertyManager formStatePropertyManager,
+            IUtilityService utilityService,
+            IApplicationLogger appLogger,
+            IFormStateManagement formStateManagement,
+            IApplicationControl applicationControl,
+            IButtonHighlighterService buttonHighlighterService)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -52,140 +49,26 @@ namespace CodingTracker.View.PopUpFormService
             _appLogger = appLogger;
             _formStateManagement = formStateManagement;
             _applicationControl = applicationControl;
+            _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();
-            InitializeToolsAndComponents();
         }
 
         private void PopUpForm_Load(object sender, EventArgs e)
         {
-
+            _buttonHighlighterService.SetButtonHoverColors(setTimeGoalButton);
+            _buttonHighlighterService.SetButtonHoverColors(skipButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(setTimeGoalButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(skipButton);
         }
 
-        private void InitializeToolsAndComponents()
+        private void UpdatetimeDisplayLabel(int hours, int minutes)
         {
-            this.Size = new Size(400, 250);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.FromArgb(35, 34, 50);
-            this.ShowInTaskbar = false;
-
-            borderlessForm = new Guna2BorderlessForm();
-            borderlessForm.ContainerControl = this;
-            borderlessForm.DragForm = true;
-            borderlessForm.BorderRadius = 12;
-
-            mainPanel = new Guna2Panel();
-            mainPanel.Dock = DockStyle.Fill;
-            mainPanel.FillColor = Color.FromArgb(32, 33, 36);
-            mainPanel.BorderRadius = 12;
-            mainPanel.BorderColor = Color.FromArgb(70, 71, 117);
-            mainPanel.BorderThickness = 1;
-
-            Guna2Panel headerPanel = new Guna2Panel();
-            headerPanel.Size = new Size(this.Width, 35);
-            headerPanel.Location = new Point(0, 0);
-            headerPanel.FillColor = Color.FromArgb(32, 33, 36);
-            headerPanel.BorderRadius = 12; 
-
-            closeButton = new Guna2ControlBox();
-            closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            closeButton.FillColor = Color.FromArgb(25, 24, 40);
-            closeButton.HoverState.IconColor = Color.White;
-            closeButton.IconColor = Color.White;
-            closeButton.Location = new Point(341, 0);
-            closeButton.Size = new Size(45, 29);
-            closeButton.BorderRadius = 12;
-            closeButton.Click += CloseButton_Click;
-            closeButton.CustomClick = true;
-            closeButton.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges()
-            {
-                TopRight = true,
-                BottomRight = false,
-                TopLeft = false,
-                BottomLeft = false
-            };
-
-
-            minimizeButton = new Guna2ControlBox();
-            minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
-            minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
-            minimizeButton.HoverState.IconColor = Color.White;
-            minimizeButton.IconColor = Color.White;
-            minimizeButton.Location = new Point(299, 0);
-            minimizeButton.Size = new Size(43, 28);
-            minimizeButton.Click += (s, e) => { this.WindowState = FormWindowState.Minimized; };
-
-            homeButton = new Guna2GradientButton();
-            homeButton.FillColor = Color.FromArgb(25, 24, 40);
-            homeButton.FillColor2 = Color.FromArgb(25, 24, 40);
-            homeButton.Font = new Font("Segoe UI", 9F);
-            homeButton.ForeColor = Color.White;
-            homeButton.Location = new Point(257 , 0);
-            homeButton.Size = new Size(43, 28);
-            homeButton.Image = Properties.Resources.HomeButtonIcon; 
-            homeButton.Click += HomeButton_Click;
-
-            questionLabel = new Guna2HtmlLabel();
-            questionLabel.Text = "Would you like to set a time goal for this session?";
-            questionLabel.ForeColor = Color.White;
-            questionLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
-            questionLabel.AutoSize = false;
-            questionLabel.Size = new Size(350, 40);
-            questionLabel.TextAlignment = ContentAlignment.MiddleCenter;
-            questionLabel.Location = new Point(25, 30);
-
-            timeGoalTextBox = new Guna2TextBox();
-            timeGoalTextBox.PlaceholderText = "0100";
-            timeGoalTextBox.BorderRadius = 8;
-            timeGoalTextBox.ForeColor = Color.White;
-            timeGoalTextBox.FillColor = Color.FromArgb(45, 46, 50);
-            timeGoalTextBox.BorderColor = Color.FromArgb(94, 148, 255);
-            timeGoalTextBox.Size = new Size(120, 36);
-            timeGoalTextBox.Location = new Point(140, 70);
-            timeGoalTextBox.MaxLength = 4;
-            timeGoalTextBox.TextAlign = HorizontalAlignment.Center;
-            timeGoalTextBox.KeyPress += TimeGoalTextBox_KeyPress;
-
-            formatLabel = new Guna2HtmlLabel();
-            formatLabel.Text = "Enter time in HHMM format (e.g., 0130 for 1 hour 30 minutes)";
-            formatLabel.ForeColor = Color.Silver;
-            formatLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            formatLabel.AutoSize = false;
-            formatLabel.Size = new Size(350, 20);
-            formatLabel.TextAlignment = ContentAlignment.MiddleCenter;
-            formatLabel.Location = new Point(25, 110);
-
-            SetTimeGoalButton = new Guna2Button();
-            SetTimeGoalButton.Text = "Set TimeGoal";
-            SetTimeGoalButton.FillColor = Color.FromArgb(94, 148, 255);
-            SetTimeGoalButton.BorderRadius = 8;
-            SetTimeGoalButton.Size = new Size(120, 45);
-            SetTimeGoalButton.Location = new Point(70, 150);
-            SetTimeGoalButton.Click += SetTimeGoalButton_Click;
-
-            SkipButton = new Guna2Button();
-            SkipButton.Text = "Skip";
-            SkipButton.FillColor = Color.FromArgb(72, 73, 77);
-            SkipButton.BorderRadius = 8;
-            SkipButton.Size = new Size(120, 45);
-            SkipButton.Location = new Point(210, 150);
-            SkipButton.Click += SkipButton_Click;
-
-            mainPanel.Controls.Add(questionLabel);
-            mainPanel.Controls.Add(timeGoalTextBox);
-            mainPanel.Controls.Add(formatLabel);
-            mainPanel.Controls.Add(SetTimeGoalButton);
-            mainPanel.Controls.Add(SkipButton); 
-            this.Controls.Add(mainPanel);
-            this.Controls.Add(closeButton);
-            this.Controls.Add(minimizeButton);
-            this.Controls.Add(homeButton);
-            closeButton.BringToFront();
-            minimizeButton.BringToFront();
-            homeButton.BringToFront();
+            string displayMessage = $"{hours} hours, {minutes} minutes";
         }
+
+
+
 
         private void TimeGoalTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -195,7 +78,6 @@ namespace CodingTracker.View.PopUpFormService
                 e.Handled = true;
             }
         }
-
 
         private bool ValidateTimeFormat(string time)
         {
@@ -210,8 +92,6 @@ namespace CodingTracker.View.PopUpFormService
 
             return true;
         }
-
-        // Change input time values 
 
         private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
@@ -240,9 +120,6 @@ namespace CodingTracker.View.PopUpFormService
             _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSeconds);
             */
 
-
-
-
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
 
@@ -251,12 +128,16 @@ namespace CodingTracker.View.PopUpFormService
             HandleSkipButton();
         }
 
+        private void MinimizeButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
         private void HomeButton_Click(object sender, EventArgs e)
         {
             _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
             this.Close();
         }
-
 
         /// <summary>
         /// When user clicks close: Shows "Are you sure you want to exit?" dialog.
@@ -273,13 +154,11 @@ namespace CodingTracker.View.PopUpFormService
             }
         }
 
-
-
         public void HandleSkipButton()
         {
             bool goalSet = false;
-            DateTime StartTime = DateTime.Now;
-            _codingSessionManager.StartCodingSession(StartTime, null, goalSet);
+            DateTime startTime = DateTime.Now;
+            _codingSessionManager.StartCodingSession(startTime, null, goalSet);
 
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;
@@ -287,4 +166,3 @@ namespace CodingTracker.View.PopUpFormService
         }
     }
 }
-
