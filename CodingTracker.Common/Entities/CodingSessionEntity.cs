@@ -25,5 +25,10 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
         public double GoalSeconds { get; set; }
 
         public bool GoalReached { get; set; }
+
+        public string StudyProject { get; set; }
+        public string StudyNotes { get; set; }
+
+
     }
 }

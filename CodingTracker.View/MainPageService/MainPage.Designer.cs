@@ -112,10 +112,10 @@
             MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             panel2 = new Panel();
-            MainPageStartSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            StartSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
-            MainPageEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            MainPageCodingSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            ViewSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            CodingSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             MainPageUsernameLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             guna2GradientPanel4 = new Guna.UI2.WinForms.Guna2GradientPanel();
@@ -229,10 +229,10 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(35, 34, 50);
-            panel2.Controls.Add(MainPageStartSessionButton);
+            panel2.Controls.Add(StartSessionButton);
             panel2.Controls.Add(guna2Panel3);
-            panel2.Controls.Add(MainPageEditSessionsButton);
-            panel2.Controls.Add(MainPageCodingSessionButton);
+            panel2.Controls.Add(ViewSessionsButton);
+            panel2.Controls.Add(CodingSessionButton);
             panel2.Controls.Add(MainPageUsernameLabel);
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
@@ -240,31 +240,28 @@
             panel2.Size = new Size(159, 720);
             panel2.TabIndex = 27;
             // 
-            // MainPageStartSessionButton
+            // StartSessionButton
             // 
-            MainPageStartSessionButton.AutoRoundedCorners = true;
-            MainPageStartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
-            MainPageStartSessionButton.BorderRadius = 21;
-            MainPageStartSessionButton.Cursor = Cursors.Hand;
-            MainPageStartSessionButton.CustomizableEdges = customizableEdges5;
-            MainPageStartSessionButton.DisabledState.BorderColor = Color.DarkGray;
-            MainPageStartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            MainPageStartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            MainPageStartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            MainPageStartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            MainPageStartSessionButton.FillColor = Color.Empty;
-            MainPageStartSessionButton.FillColor2 = Color.Empty;
-            MainPageStartSessionButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            MainPageStartSessionButton.ForeColor = Color.White;
-            MainPageStartSessionButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            MainPageStartSessionButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
-            MainPageStartSessionButton.Location = new Point(0, 163);
-            MainPageStartSessionButton.Name = "MainPageStartSessionButton";
-            MainPageStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            MainPageStartSessionButton.Size = new Size(159, 45);
-            MainPageStartSessionButton.TabIndex = 26;
-            MainPageStartSessionButton.Text = "Start Session";
-            MainPageStartSessionButton.Click += MainPageStartSessionButton_Click;
+            StartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            StartSessionButton.BorderRadius = 21;
+            StartSessionButton.Cursor = Cursors.Hand;
+            StartSessionButton.CustomizableEdges = customizableEdges5;
+            StartSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            StartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            StartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            StartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            StartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            StartSessionButton.FillColor = Color.Empty;
+            StartSessionButton.FillColor2 = Color.Empty;
+            StartSessionButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            StartSessionButton.ForeColor = Color.White;
+            StartSessionButton.Location = new Point(0, 163);
+            StartSessionButton.Name = "StartSessionButton";
+            StartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            StartSessionButton.Size = new Size(159, 45);
+            StartSessionButton.TabIndex = 26;
+            StartSessionButton.Text = "Start Session";
+            StartSessionButton.Click += MainPageStartSessionButton_Click;
             // 
             // guna2Panel3
             // 
@@ -275,57 +272,57 @@
             guna2Panel3.Size = new Size(156, 116);
             guna2Panel3.TabIndex = 25;
             // 
-            // MainPageEditSessionsButton
+            // ViewSessionsButton
             // 
-            MainPageEditSessionsButton.AutoRoundedCorners = true;
-            MainPageEditSessionsButton.BorderColor = Color.FromArgb(35, 34, 50);
-            MainPageEditSessionsButton.BorderRadius = 21;
-            MainPageEditSessionsButton.Cursor = Cursors.Hand;
-            MainPageEditSessionsButton.CustomizableEdges = customizableEdges9;
-            MainPageEditSessionsButton.DisabledState.BorderColor = Color.DarkGray;
-            MainPageEditSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            MainPageEditSessionsButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            MainPageEditSessionsButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            MainPageEditSessionsButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            MainPageEditSessionsButton.FillColor = Color.Empty;
-            MainPageEditSessionsButton.FillColor2 = Color.Empty;
-            MainPageEditSessionsButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            MainPageEditSessionsButton.ForeColor = Color.White;
-            MainPageEditSessionsButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            MainPageEditSessionsButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
-            MainPageEditSessionsButton.Location = new Point(0, 119);
-            MainPageEditSessionsButton.Name = "MainPageEditSessionsButton";
-            MainPageEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            MainPageEditSessionsButton.Size = new Size(159, 45);
-            MainPageEditSessionsButton.TabIndex = 8;
-            MainPageEditSessionsButton.Text = "View Sessions";
-            MainPageEditSessionsButton.Click += MainPageEditSessionsButton_Click;
+            ViewSessionsButton.AutoRoundedCorners = true;
+            ViewSessionsButton.BorderColor = Color.FromArgb(35, 34, 50);
+            ViewSessionsButton.BorderRadius = 21;
+            ViewSessionsButton.Cursor = Cursors.Hand;
+            ViewSessionsButton.CustomizableEdges = customizableEdges9;
+            ViewSessionsButton.DisabledState.BorderColor = Color.DarkGray;
+            ViewSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            ViewSessionsButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            ViewSessionsButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            ViewSessionsButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            ViewSessionsButton.FillColor = Color.Empty;
+            ViewSessionsButton.FillColor2 = Color.Empty;
+            ViewSessionsButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            ViewSessionsButton.ForeColor = Color.White;
+            ViewSessionsButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
+            ViewSessionsButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
+            ViewSessionsButton.Location = new Point(0, 119);
+            ViewSessionsButton.Name = "ViewSessionsButton";
+            ViewSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            ViewSessionsButton.Size = new Size(159, 45);
+            ViewSessionsButton.TabIndex = 8;
+            ViewSessionsButton.Text = "View Sessions";
+            ViewSessionsButton.Click += MainPageEditSessionsButton_Click;
             // 
-            // MainPageCodingSessionButton
+            // CodingSessionButton
             // 
-            MainPageCodingSessionButton.AutoRoundedCorners = true;
-            MainPageCodingSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
-            MainPageCodingSessionButton.BorderRadius = 21;
-            MainPageCodingSessionButton.Cursor = Cursors.Hand;
-            MainPageCodingSessionButton.CustomizableEdges = customizableEdges11;
-            MainPageCodingSessionButton.DisabledState.BorderColor = Color.DarkGray;
-            MainPageCodingSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            MainPageCodingSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            MainPageCodingSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            MainPageCodingSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            MainPageCodingSessionButton.FillColor = Color.Empty;
-            MainPageCodingSessionButton.FillColor2 = Color.Empty;
-            MainPageCodingSessionButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
-            MainPageCodingSessionButton.ForeColor = Color.White;
-            MainPageCodingSessionButton.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            MainPageCodingSessionButton.HoverState.FillColor2 = Color.FromArgb(255, 77, 165);
-            MainPageCodingSessionButton.Location = new Point(0, 68);
-            MainPageCodingSessionButton.Name = "MainPageCodingSessionButton";
-            MainPageCodingSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            MainPageCodingSessionButton.Size = new Size(159, 45);
-            MainPageCodingSessionButton.TabIndex = 7;
-            MainPageCodingSessionButton.Text = "Coding Session";
-            MainPageCodingSessionButton.Click += MainPageCodingSessionButton_Click;
+            CodingSessionButton.AutoRoundedCorners = true;
+            CodingSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            CodingSessionButton.BorderRadius = 21;
+            CodingSessionButton.Cursor = Cursors.Hand;
+            CodingSessionButton.CustomizableEdges = customizableEdges11;
+            CodingSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            CodingSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            CodingSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            CodingSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            CodingSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            CodingSessionButton.FillColor = Color.Empty;
+            CodingSessionButton.FillColor2 = Color.Empty;
+            CodingSessionButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
+            CodingSessionButton.ForeColor = Color.White;
+            CodingSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
+            CodingSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
+            CodingSessionButton.Location = new Point(0, 68);
+            CodingSessionButton.Name = "CodingSessionButton";
+            CodingSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            CodingSessionButton.Size = new Size(159, 45);
+            CodingSessionButton.TabIndex = 7;
+            CodingSessionButton.Text = "Coding Session";
+            CodingSessionButton.Click += MainPageCodingSessionButton_Click;
             // 
             // MainPageUsernameLabel
             // 
@@ -1092,6 +1089,7 @@
             Controls.Add(panel2);
             Controls.Add(MainPageExitControlMinimizeButton);
             Controls.Add(MainPageExitControlBox);
+            ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Name = "MainPage";
             panel2.ResumeLayout(false);
@@ -1173,14 +1171,14 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel Day2Label;
         private Guna.UI2.WinForms.Guna2HtmlLabel Day1Label;
         private Guna.UI2.WinForms.Guna2HtmlLabel Day14Label;
-        private Guna.UI2.WinForms.Guna2GradientButton MainPageCodingSessionButton;
-        private Guna.UI2.WinForms.Guna2GradientButton MainPageEditSessionsButton;
+        private Guna.UI2.WinForms.Guna2GradientButton CodingSessionButton;
+        private Guna.UI2.WinForms.Guna2GradientButton ViewSessionsButton;
         private Guna.UI2.WinForms.Guna2HtmlLabel TodayTotalLabel;
         private Guna.UI2.WinForms.Guna2AnimateWindow MainPageAnimateWidnow;
         private Guna.UI2.WinForms.Guna2HtmlLabel AverageSessionLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel WeekTotalLabel;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
-        private Guna.UI2.WinForms.Guna2GradientButton MainPageStartSessionButton;
+        private Guna.UI2.WinForms.Guna2GradientButton StartSessionButton;
         private Guna.UI2.WinForms.Guna2CircleButton WaveTestButton;
         private Guna.UI2.WinForms.Guna2CircleButton guna2CircleButton1;
     }

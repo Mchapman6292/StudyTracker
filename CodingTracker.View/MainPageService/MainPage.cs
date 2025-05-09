@@ -66,6 +66,10 @@ namespace CodingTracker.View
 
             _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
 
+            _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
+            _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
+            _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
         }
 
         private async void MainPage_Shown(object sender, EventArgs e)
@@ -80,8 +84,8 @@ namespace CodingTracker.View
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
         {
             Guna.UI2.WinForms.Guna2GradientButton btn = sender as Guna.UI2.WinForms.Guna2GradientButton;
-            btn.FillColor = Color.FromArgb(94, 148, 255);
-            btn.FillColor2 = Color.FromArgb(255, 77, 165);
+            btn.FillColor = Color.FromArgb(255, 81, 195);
+            btn.FillColor2 = Color.FromArgb(168, 228, 255);
         }
 
         private void MainPageCodingSessionButton_MouseLeave(object sender, EventArgs e)
@@ -154,7 +158,7 @@ namespace CodingTracker.View
 
         private void guna2CircleButton1_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.TestForm);
+            _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);
         }
     }
 }
