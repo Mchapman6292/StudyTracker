@@ -54,7 +54,7 @@ namespace CodingTracker.View.PopUpFormService
             InitializeComponent();
         }
 
-        private void PopUpForm_Load(object sender, EventArgs e)
+        private void SessionGoalPage_Load(object sender, EventArgs e)
         {
             _buttonHighlighterService.SetButtonHoverColors(setTimeGoalButton);
             _buttonHighlighterService.SetButtonHoverColors(skipButton);
@@ -62,9 +62,113 @@ namespace CodingTracker.View.PopUpFormService
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(skipButton);
         }
 
-        private void UpdatetimeDisplayLabel(int hours, int minutes)
+
+        /// <summary>
+        /// Updates real-time input to update a display label as the user types, e.g 130 = 1 hours, 30 minutes.
+        /// <param name="timeGoalTextBoxText">The text from timeDisplayLabel.</param>
+        /// <returns> String to be used in SessionGoalPage top label.  </returns>
+
+        public string ParseTimeGoalTextBoxInput(string timeGoalTextBoxText)
         {
-            string displayMessage = $"{hours} hours, {minutes} minutes";
+            if (string.IsNullOrEmpty(timeGoalTextBoxText))
+            {
+                return string.Empty;
+            }
+            int inputLength = timeGoalTextBoxText.Length;
+            switch (inputLength)
+            {
+                case 1:
+                case 2:
+                    {
+                        string hoursSubString = timeGoalTextBoxText.Substring(0, inputLength);
+                        if (int.TryParse(hoursSubString, out int hoursInt))
+                        {
+                            return $"{hoursInt} hours";
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        string hoursSubString = timeGoalTextBoxText.Substring(0, 1);
+                        string minsSubString = timeGoalTextBoxText.Substring(1, 2);
+                        if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                        {
+                            return $"{hoursInt} hours, {minsInt} minutes.";
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        string hoursSubString = timeGoalTextBoxText.Substring(0, 2);
+                        string minsSubString = timeGoalTextBoxText.Substring(inputLength - 2);
+                        if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                        {
+                            return $"{hoursInt} hours, {minsInt} minutes.";
+                        }
+                        break;
+                    }
+            }
+            return string.Empty;
+        }
+
+
+
+
+
+
+        private string GetTimeDisplayLabelText(string timeGoalTextBoxText)
+        {
+            int textLength = timeGoalTextBoxText.Length;
+
+            bool noTimeInput = textLength == 0;
+            bool hoursNotNull = textLength > 0 && textLength <= 2;
+            bool partialHoursFormat = textLength == 3;
+            bool minsNotNull = textLength > 2 && textLength <= 4;
+
+            if (minsNotNull)
+            {
+                string hoursSubString = timeGoalTextBoxText.Substring(0, 2);
+                string minsSubString = timeGoalTextBoxText.Substring(textLength - 2);
+
+                if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                {
+                    return $"{hoursInt} hours, {minsInt} minutes.";
+                }
+            }
+
+            if (partialHoursFormat)
+            {
+                string hoursSubString = timeGoalTextBoxText.Substring(0, 1);
+                string minsSubString = timeGoalTextBoxText.Substring(2, 3);
+
+                if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                {
+                    return $"{hoursInt} hours, {minsInt} minutes.";
+                }
+            }
+
+            if (hoursNotNull)
+            {
+                string hoursSubString = timeGoalTextBoxText.Substring(0, textLength);
+
+                if (int.TryParse(hoursSubString, out int hoursInt))
+                {
+                    return $"{hoursInt} hours";
+                }
+            }
+
+
+            if (noTimeInput)
+            {
+                return string.Empty;
+            }
+            return string.Empty;
+        }
+ 
+
+        private void UpdateTimeDisplayLabel(string displayText)
+        {
+            timeDisplayLabel.Text = displayText;
         }
 
 
@@ -78,6 +182,18 @@ namespace CodingTracker.View.PopUpFormService
                 e.Handled = true;
             }
         }
+
+        private void TimeGoalTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string goalInputText = timeGoalTextBox.Text;
+            string displayText = ParseTimeGoalTextBoxInput(goalInputText);
+
+            UpdateTimeDisplayLabel(displayText);
+
+        }
+
+
+
 
         private bool ValidateTimeFormat(string time)
         {

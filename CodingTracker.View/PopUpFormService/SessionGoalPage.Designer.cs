@@ -21,6 +21,10 @@ namespace CodingTracker.View.PopUpFormService
         private Guna.UI2.WinForms.Guna2GradientButton homeButton;
         private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
 
+        private int buttonWidth = 40;
+        private int buttonHeight = 28;
+        private int formWidth = 400;
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -41,164 +45,213 @@ namespace CodingTracker.View.PopUpFormService
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SessionGoalPage));
-
+            components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            borderlessForm = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            mainPanel = new Guna.UI2.WinForms.Guna2Panel();
+            homeButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            minimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
+            closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
+            timeDisplayLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            timeGoalTextBox = new Guna.UI2.WinForms.Guna2TextBox();
+            formatLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            setTimeGoalButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            skipButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            mainPanel.SuspendLayout();
+            SuspendLayout();
+            // 
             // borderlessForm
-            this.borderlessForm = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
-            this.borderlessForm.ContainerControl = this;
-            this.borderlessForm.DragForm = true;
-            this.borderlessForm.BorderRadius = 12;
-
+            // 
+            borderlessForm.BorderRadius = 12;
+            borderlessForm.ContainerControl = this;
+            borderlessForm.DockIndicatorTransparencyValue = 0.6D;
+            borderlessForm.TransparentWhileDrag = true;
+            // 
             // mainPanel
-            this.mainPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.FillColor = System.Drawing.Color.FromArgb(32, 33, 36);
-            this.mainPanel.BorderRadius = 12;
-            this.mainPanel.BorderColor = System.Drawing.Color.FromArgb(70, 71, 117);
-            this.mainPanel.BorderThickness = 1;
-            this.mainPanel.Padding = new System.Windows.Forms.Padding(20);
-            this.mainPanel.Name = "mainPanel";
-
-            // closeButton
-            this.closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.closeButton.FillColor = System.Drawing.Color.FromArgb(25, 24, 40);
-            this.closeButton.HoverState.IconColor = System.Drawing.Color.White;
-            this.closeButton.IconColor = System.Drawing.Color.White;
-            this.closeButton.Location = new System.Drawing.Point(341, 0);
-            this.closeButton.Size = new System.Drawing.Size(45, 29);
-            this.closeButton.BorderRadius = 12;
-            this.closeButton.CustomClick = true;
-            this.closeButton.Name = "closeButton";
-            this.closeButton.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges()
-            {
-                TopRight = true,
-                BottomRight = false,
-                TopLeft = false,
-                BottomLeft = false
-            };
-            this.closeButton.Click += new System.EventHandler(this.CloseButton_Click);
-
-            // minimizeButton
-            this.minimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.minimizeButton.FillColor = System.Drawing.Color.FromArgb(25, 24, 40);
-            this.minimizeButton.HoverState.FillColor = System.Drawing.Color.FromArgb(0, 9, 43);
-            this.minimizeButton.HoverState.IconColor = System.Drawing.Color.White;
-            this.minimizeButton.IconColor = System.Drawing.Color.White;
-            this.minimizeButton.Location = new System.Drawing.Point(299, 0);
-            this.minimizeButton.Size = new System.Drawing.Size(43, 28);
-            this.minimizeButton.Name = "minimizeButton";
-            this.minimizeButton.Click += new System.EventHandler(this.MinimizeButton_Click);
-
+            // 
+            mainPanel.BorderColor = Color.FromArgb(70, 71, 117);
+            mainPanel.BorderRadius = 12;
+            mainPanel.BorderThickness = 1;
+            mainPanel.Controls.Add(homeButton);
+            mainPanel.Controls.Add(minimizeButton);
+            mainPanel.Controls.Add(closeButton);
+            mainPanel.Controls.Add(timeDisplayLabel);
+            mainPanel.Controls.Add(timeGoalTextBox);
+            mainPanel.Controls.Add(formatLabel);
+            mainPanel.Controls.Add(setTimeGoalButton);
+            mainPanel.Controls.Add(skipButton);
+            mainPanel.CustomizableEdges = customizableEdges13;
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.FillColor = Color.FromArgb(35, 34, 50);
+            mainPanel.ForeColor = Color.FromArgb(70, 71, 117);
+            mainPanel.Location = new Point(0, 0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Padding = new Padding(20);
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            mainPanel.Size = new Size(400, 280);
+            mainPanel.TabIndex = 0;
+            // 
             // homeButton
-            this.homeButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.homeButton.FillColor = System.Drawing.Color.FromArgb(25, 24, 40);
-            this.homeButton.FillColor2 = System.Drawing.Color.FromArgb(25, 24, 40);
-            this.homeButton.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.homeButton.ForeColor = System.Drawing.Color.White;
-            this.homeButton.Location = new System.Drawing.Point(257, 0);
-            this.homeButton.Size = new System.Drawing.Size(43, 28);
-            this.homeButton.Image = global::CodingTracker.View.Properties.Resources.HomeButtonIcon;
-            this.homeButton.Name = "homeButton";
-            this.homeButton.Click += new System.EventHandler(this.HomeButton_Click);
-
+            // 
+            homeButton.CustomizableEdges = customizableEdges1;
+            homeButton.FillColor = Color.FromArgb(25, 24, 40);
+            homeButton.FillColor2 = Color.FromArgb(25, 24, 40);
+            homeButton.Font = new Font("Segoe UI", 9F);
+            homeButton.ForeColor = Color.White;
+            homeButton.Image = Properties.Resources.HomeButtonIcon;
+            homeButton.Location = new Point(284, -1);
+            homeButton.Name = "homeButton";
+            homeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            homeButton.Size = new Size(43, 28);
+            homeButton.TabIndex = 3;
+            homeButton.Click += HomeButton_Click;
+            // 
+            // minimizeButton
+            // 
+            minimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            minimizeButton.CustomizableEdges = customizableEdges3;
+            minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
+            minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
+            minimizeButton.HoverState.IconColor = Color.White;
+            minimizeButton.IconColor = Color.White;
+            minimizeButton.Location = new Point(322, -1);
+            minimizeButton.Name = "minimizeButton";
+            minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            minimizeButton.Size = new Size(43, 28);
+            minimizeButton.TabIndex = 2;
+            minimizeButton.Click += MinimizeButton_Click;
+            // 
+            // closeButton
+            // 
+            closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            closeButton.BorderRadius = 12;
+            closeButton.CustomClick = true;
+            closeButton.CustomizableEdges = customizableEdges5;
+            closeButton.FillColor = Color.FromArgb(25, 24, 40);
+            closeButton.HoverState.IconColor = Color.White;
+            closeButton.IconColor = Color.White;
+            closeButton.Location = new Point(355, -1);
+            closeButton.Name = "closeButton";
+            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            closeButton.Size = new Size(45, 29);
+            closeButton.TabIndex = 1;
+            closeButton.Click += CloseButton_Click;
+            // 
             // timeDisplayLabel
-            this.timeDisplayLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.timeDisplayLabel.Text = "Enter goal time";
-            this.timeDisplayLabel.ForeColor = System.Drawing.Color.White;
-            this.timeDisplayLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.timeDisplayLabel.AutoSize = false;
-            this.timeDisplayLabel.Size = new System.Drawing.Size(350, 40);
-            this.timeDisplayLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.timeDisplayLabel.Location = new System.Drawing.Point(25, 40);
-            this.timeDisplayLabel.Name = "timeDisplayLabel";
-            this.timeDisplayLabel.BackColor = System.Drawing.Color.Transparent;
-
+            // 
+            timeDisplayLabel.AutoSize = false;
+            timeDisplayLabel.BackColor = Color.Transparent;
+            timeDisplayLabel.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            timeDisplayLabel.ForeColor = Color.White;
+            timeDisplayLabel.Location = new Point(23, 44);
+            timeDisplayLabel.Name = "timeDisplayLabel";
+            timeDisplayLabel.Size = new Size(350, 40);
+            timeDisplayLabel.TabIndex = 0;
+            timeDisplayLabel.Text = "Enter goal time";
+            timeDisplayLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
             // timeGoalTextBox
-            this.timeGoalTextBox = new Guna.UI2.WinForms.Guna2TextBox();
-            this.timeGoalTextBox.PlaceholderText = "0100";
-            this.timeGoalTextBox.BorderRadius = 8;
-            this.timeGoalTextBox.ForeColor = System.Drawing.Color.White;
-            this.timeGoalTextBox.FillColor = System.Drawing.Color.FromArgb(45, 46, 50);
-            this.timeGoalTextBox.BorderColor = System.Drawing.Color.FromArgb(255, 81, 195);
-            this.timeGoalTextBox.Size = new System.Drawing.Size(120, 36);
-            this.timeGoalTextBox.Location = new System.Drawing.Point(140, 90);
-            this.timeGoalTextBox.MaxLength = 4;
-            this.timeGoalTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.timeGoalTextBox.Name = "timeGoalTextBox";
-            this.timeGoalTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TimeGoalTextBox_KeyPress);
-
+            // 
+            timeGoalTextBox.BorderColor = Color.FromArgb(255, 81, 195);
+            timeGoalTextBox.BorderRadius = 8;
+            timeGoalTextBox.CustomizableEdges = customizableEdges7;
+            timeGoalTextBox.DefaultText = "";
+            timeGoalTextBox.FillColor = Color.FromArgb(35, 34, 50);
+            timeGoalTextBox.Font = new Font("Segoe UI", 9F);
+            timeGoalTextBox.ForeColor = Color.White;
+            timeGoalTextBox.Location = new Point(140, 90);
+            timeGoalTextBox.MaxLength = 4;
+            timeGoalTextBox.Name = "timeGoalTextBox";
+            timeGoalTextBox.PasswordChar = '\0';
+            timeGoalTextBox.PlaceholderText = "0100";
+            timeGoalTextBox.SelectedText = "";
+            timeGoalTextBox.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            timeGoalTextBox.Size = new Size(120, 36);
+            timeGoalTextBox.TabIndex = 1;
+            timeGoalTextBox.TextAlign = HorizontalAlignment.Center;
+            timeGoalTextBox.TextChanged += TimeGoalTextBox_TextChanged;
+            timeGoalTextBox.KeyPress += TimeGoalTextBox_KeyPress;
+            // 
             // formatLabel
-            this.formatLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.formatLabel.Text = "Enter time in HHMM format (e.g., 0130 for 1 hour 30 minutes)";
-            this.formatLabel.ForeColor = System.Drawing.Color.Silver;
-            this.formatLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.formatLabel.AutoSize = false;
-            this.formatLabel.Size = new System.Drawing.Size(350, 20);
-            this.formatLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.formatLabel.Location = new System.Drawing.Point(25, 135);
-            this.formatLabel.Name = "formatLabel";
-            this.formatLabel.BackColor = System.Drawing.Color.Transparent;
-
+            // 
+            formatLabel.AutoSize = false;
+            formatLabel.BackColor = Color.Transparent;
+            formatLabel.Font = new Font("Segoe UI", 9F);
+            formatLabel.ForeColor = Color.Silver;
+            formatLabel.Location = new Point(25, 135);
+            formatLabel.Name = "formatLabel";
+            formatLabel.Size = new Size(350, 20);
+            formatLabel.TabIndex = 2;
+            formatLabel.Text = "Enter time in HHMM format (e.g., 0130 for 1 hour 30 minutes)";
+            formatLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
             // setTimeGoalButton
-            this.setTimeGoalButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.setTimeGoalButton.Text = "Set Time Goal";
-            this.setTimeGoalButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.setTimeGoalButton.BorderRadius = 8;
-            this.setTimeGoalButton.Size = new System.Drawing.Size(150, 45);
-            this.setTimeGoalButton.Location = new System.Drawing.Point(55, 170);
-            this.setTimeGoalButton.Name = "setTimeGoalButton";
-            this.setTimeGoalButton.Click += new System.EventHandler(this.SetTimeGoalButton_Click);
-
+            // 
+            setTimeGoalButton.BorderRadius = 8;
+            setTimeGoalButton.CustomizableEdges = customizableEdges9;
+            setTimeGoalButton.Font = new Font("Segoe UI", 9F);
+            setTimeGoalButton.ForeColor = Color.White;
+            setTimeGoalButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            setTimeGoalButton.Location = new Point(55, 170);
+            setTimeGoalButton.Name = "setTimeGoalButton";
+            setTimeGoalButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            setTimeGoalButton.Size = new Size(150, 45);
+            setTimeGoalButton.TabIndex = 3;
+            setTimeGoalButton.Text = "Set Time Goal";
+            setTimeGoalButton.Click += SetTimeGoalButton_Click;
+            // 
             // skipButton
-            this.skipButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.skipButton.Text = "Skip";
-            this.skipButton.BorderRadius = 8;
-            this.skipButton.Size = new System.Drawing.Size(150, 45);
-            this.skipButton.Location = new System.Drawing.Point(215, 170);
-            this.skipButton.Name = "skipButton";
-            this.skipButton.Click += new System.EventHandler(this.SkipButton_Click);
-
+            // 
+            skipButton.BorderRadius = 8;
+            skipButton.CustomizableEdges = customizableEdges11;
+            skipButton.Font = new Font("Segoe UI", 9F);
+            skipButton.ForeColor = Color.White;
+            skipButton.Location = new Point(215, 170);
+            skipButton.Name = "skipButton";
+            skipButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            skipButton.Size = new Size(150, 45);
+            skipButton.TabIndex = 4;
+            skipButton.Text = "Skip";
+            skipButton.Click += SkipButton_Click;
+            // 
             // DisplayMessageBox
-            this.DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            this.DisplayMessageBox.Caption = null;
-            this.DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
-            this.DisplayMessageBox.Parent = null;
-            this.DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
-            this.DisplayMessageBox.Text = null;
-
-            // Add controls to containers
-            this.mainPanel.Controls.Add(this.timeDisplayLabel);
-            this.mainPanel.Controls.Add(this.timeGoalTextBox);
-            this.mainPanel.Controls.Add(this.formatLabel);
-            this.mainPanel.Controls.Add(this.setTimeGoalButton);
-            this.mainPanel.Controls.Add(this.skipButton);
-
+            // 
+            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            DisplayMessageBox.Caption = null;
+            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            DisplayMessageBox.Parent = null;
+            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
+            DisplayMessageBox.Text = null;
+            // 
             // SessionGoalPage
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(35, 34, 50);
-            this.ClientSize = new System.Drawing.Size(400, 280);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "SessionGoalPage";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Session Goal";
-            this.Load += new System.EventHandler(this.PopUpForm_Load);
-
-            this.Controls.Add(this.mainPanel);
-            this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.minimizeButton);
-            this.Controls.Add(this.homeButton);
-
-            // Bring control buttons to front
-            this.closeButton.BringToFront();
-            this.minimizeButton.BringToFront();
-            this.homeButton.BringToFront();
-
-            this.ResumeLayout(false);
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(35, 34, 50);
+            ClientSize = new Size(400, 280);
+            Controls.Add(mainPanel);
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "SessionGoalPage";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Session Goal";
+            Load += SessionGoalPage_Load;
+            mainPanel.ResumeLayout(false);
+            ResumeLayout(false);
         }
         #endregion
     }
