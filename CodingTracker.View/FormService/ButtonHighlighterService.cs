@@ -59,10 +59,8 @@ namespace CodingTracker.View.FormService.ButtonHighlighterServices
 
         public void SetButtonBackColorAndBorderColor(Guna2GradientButton button)
         {
-            button.BackColor = Color.FromArgb(35, 34, 50);
-            button.BorderColor = Color.FromArgb(35, 34, 50);
-            button.FillColor = Color.Empty;
-            button.FillColor2 = Color.Empty;
+            button.BorderColor = Color.FromArgb(100, 255, 100, 200);  // Light pink glow
+            button.BorderThickness = 1;
         }
 
     }

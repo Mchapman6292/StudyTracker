@@ -41,14 +41,14 @@ namespace CodingTracker.View.LoginPageService
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {
                 message = "Username cannot be blank.";
-                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
+                _notificationManager.ShowNotificationDialog(this, message);
                 return;
             }
 
             if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
             {
                 message = "No username located";
-                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
+                _notificationManager.ShowNotificationDialog(this, message);
                 return;
             }
 

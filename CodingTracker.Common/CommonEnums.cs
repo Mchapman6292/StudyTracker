@@ -10,7 +10,8 @@ namespace CodingTracker.Common.CommonEnums
         StartDate,
         StartTime,
         EndDate,
-        EndTime
+        EndTime,
+        StudyProject
     }
 
     public enum MainPageLabels

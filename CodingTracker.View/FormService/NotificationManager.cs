@@ -5,7 +5,7 @@ namespace CodingTracker.View.FormService.NotificationManagers
 {
     public interface INotificationManager
     {
-        void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message);
+        void ShowNotificationDialog(Form parentForm, string message);
         DialogResult ReturnExitMessageDialog(Form parentForm);
         DialogResult ReturnExitMessageDialogWithActiveCodingSession(Form parentForm);
 
@@ -26,25 +26,20 @@ namespace CodingTracker.View.FormService.NotificationManagers
         }
 
 
-        public void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message)
+        public void ShowNotificationDialog(Form parentForm, string message)
         {
-            if (string.IsNullOrWhiteSpace(message))
+            var messageDialog = new Guna2MessageDialog
             {
-                messageDialog.Text = "No message provided.";
-            }
-            else
-            {
-                messageDialog.Text = message;
-            }
+                Text = string.IsNullOrWhiteSpace(message) ? "No message provided." : message,
+                Caption = "Notification",
+                Buttons = MessageDialogButtons.OK,
+                Icon = MessageDialogIcon.Information,
+                Style = MessageDialogStyle.Dark
+            };
 
-            messageDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            messageDialog.Caption = "Notification";
-            messageDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-
+            SetNotificationParentForm(parentForm, messageDialog);
 
             messageDialog.Show();
-
-            SendKeys.Send("{ENTER}");
         }
 
         public DialogResult ReturnExitMessageDialog(Form parentForm) 
@@ -76,7 +71,7 @@ namespace CodingTracker.View.FormService.NotificationManagers
             {
                 Caption = "Exit Application",
                 Text = "Save current coding Session?",
-                Buttons = MessageDialogButtons.YesNo,
+                Buttons = MessageDialogButtons.YesNo,   
                 Icon = MessageDialogIcon.Question,
                 Style = MessageDialogStyle.Dark
             };
@@ -84,6 +79,11 @@ namespace CodingTracker.View.FormService.NotificationManagers
             SetNotificationParentForm(parentForm, messageDialog);
 
             return messageDialog.Show();
+        }
+
+        public void ReturnEndCodingSessionDialog(Form parentForm) 
+        {
+    
         }
  
     }

@@ -368,8 +368,8 @@ namespace CodingTracker.View.TimerDisplayService
             string message = $"End session and record time?\nElapsed: {elapsedTime.Hours:D2}:{elapsedTime.Minutes:D2}:{elapsedTime.Seconds:D2}";
 
 
-
-            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
+            int durationInt = (int)(stopwatchTimer.Elapsed.TotalSeconds);
+            _codingSessionManager.SetDurationSeconds(durationInt);
             _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
             await _codingSessionManager.EndCodingSessionAsync();
 
@@ -421,9 +421,6 @@ namespace CodingTracker.View.TimerDisplayService
 
 
 
-            _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
-            _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
-            await _codingSessionManager.EndCodingSessionAsync();
 
             _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }

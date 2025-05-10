@@ -40,6 +40,8 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             _appLogger.Debug($"  GoalSet: {currentSession.GoalSet}");
             _appLogger.Debug($"  GoalSeconds: {currentSession.GoalSeconds}");
             _appLogger.Debug($"  GoalReached: {currentSession.GoalReached}");
+            _appLogger.Debug($"  StudyProject: {currentSession.StudyProject}");
+            _appLogger.Debug($"  StudyNotes: {currentSession.StudyNotes}"); 
 
             _dbContext.CodingSessions.Add(currentSession);
             bool success = await _dbContext.SaveChangesAsync() > 0;
@@ -108,7 +110,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
             query = sortBy switch
             {
-                SessionSortCriteria.SessionId => query.OrderByDescending(s => s.SessionId),
+                SessionSortCriteria.StudyProject => query.OrderByDescending(s => s.StudyProject),
                 SessionSortCriteria.Duration => query.OrderByDescending(s => s.DurationHHMM),
                 SessionSortCriteria.StartDate => query.OrderByDescending(s => s.StartDate),
                 SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDate),

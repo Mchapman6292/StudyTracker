@@ -6,29 +6,22 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using Guna.UI2.WinForms;
+using System;
 using System.Diagnostics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace CodingTracker.View.TimerDisplayService
 {
     public partial class CountdownTimerForm : Form
     {
         private Stopwatch stopwatchTimer = new Stopwatch();
-        private Guna2CircleProgressBar progressBar;
-        private System.Windows.Forms.Timer progressTimer;
-        private Guna2BorderlessForm borderlessForm;
-        private Guna2Panel mainPanel;
-        private Guna2ControlBox closeControlBox;
-        private Guna2ControlBox minimizeControlBox;
-        private Guna2Button pauseButton;
         private bool isPaused = false;
         private bool isDragging = false;
         private Point dragStartPoint;
-
         private int progressValue = 0;
-        private double? sessionGoalSeconds;
-
+        private int? sessionGoalSecondsInt;
+        private double? progressTimerGoalSecondsDouble;
 
         private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly ICodingSessionManager _codingSessionManager;
@@ -36,7 +29,6 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utitlityService;
         private readonly INotificationManager _notificationManager;
-   
 
         public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager)
         {
@@ -47,141 +39,51 @@ namespace CodingTracker.View.TimerDisplayService
             _utitlityService = utilityService;
             _notificationManager = notificationManager;
             _appLogger = appLogger;
-            sessionGoalSeconds = _codingSessionManager.ReturnGoalSeconds();
-            SetupProgressBar();
-            _codingSessionManager.StartCodingSession(DateTime.Now, sessionGoalSeconds, true);
-        }
-
-        void SetupProgressBar()
-        {
-            this.Size = new Size(220, 220);
-            this.Text = "";
-            this.StartPosition = FormStartPosition.Manual;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.FromArgb(35, 34, 50);
-            this.ShowInTaskbar = false;
-
-            borderlessForm = new Guna2BorderlessForm();
-            borderlessForm.ContainerControl = this;
-            borderlessForm.DragForm = true;
-            borderlessForm.BorderRadius = 12;
-
-            mainPanel = new Guna2Panel();
-            mainPanel.Dock = DockStyle.Fill;
-            mainPanel.FillColor = Color.FromArgb(32, 33, 36);
-            mainPanel.BorderRadius = 12;
-            mainPanel.BorderColor = Color.FromArgb(70, 71, 117);
-            mainPanel.BorderThickness = 1;
-            mainPanel.Padding = new Padding(10);
-
-            progressBar = new Guna2CircleProgressBar();
-            progressBar.Size = new Size(170, 170);
-            progressBar.Location = new Point(15, 15);
-            progressBar.Minimum = 0;
-            progressBar.Maximum = 100;
-            progressBar.Value = 0;
-            progressBar.AnimationSpeed = 0.5f;
-            progressBar.ProgressThickness = 15;
-            progressBar.FillThickness = 15;
-            progressBar.FillColor = Color.FromArgb(45, 46, 50);
-            progressBar.BackColor = Color.Transparent;
-            progressBar.ProgressColor = Color.FromArgb(255, 81, 195);
-            progressBar.ProgressColor2 = Color.FromArgb(168, 228, 255);
-            progressBar.ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.Gradient;
-
-            Guna2HtmlLabel statusLabel = new Guna2HtmlLabel();
-            statusLabel.Text = "0%";
-            statusLabel.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-            statusLabel.ForeColor = Color.White;
-            statusLabel.AutoSize = false;
-            statusLabel.Size = new Size(150, 30);
-            statusLabel.TextAlignment = ContentAlignment.MiddleCenter;
-            statusLabel.Location = new Point(15, 75);
-            statusLabel.Name = "statusLabel";
-            statusLabel.BackColor = Color.Transparent;
-
+            sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
             SetFormPosition();
-
-            progressBar.Controls.Add(statusLabel);
-            mainPanel.Controls.Add(progressBar);
-            this.Controls.Add(mainPanel);
-
-            progressTimer = new System.Windows.Forms.Timer();
-            progressTimer.Interval = 50;
-            progressTimer.Tick += ProgressTimer_Tick;
-
-            closeControlBox = new Guna2ControlBox();
-            closeControlBox.Size = new Size(16, 16);
-            closeControlBox.Location = new Point(mainPanel.Width - 20, 4);
-            closeControlBox.FillColor = Color.FromArgb(40, 40, 60);
-            closeControlBox.IconColor = Color.White;
-            closeControlBox.HoverState.FillColor = Color.FromArgb(60, 60, 80);
-            closeControlBox.BorderRadius = 0;
-            closeControlBox.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.CloseBox;
-            closeControlBox.Click += CloseControlBox_Click;
-            closeControlBox.CustomClick = true;  // CustomClick needs to be set or else the form is disposed before the Guna2NotificationDialog from NotificationManager is shown
-
-            minimizeControlBox = new Guna2ControlBox();
-            minimizeControlBox.Size = new Size(16, 16);
-            minimizeControlBox.Location = new Point(mainPanel.Width - 36, 4);
-            minimizeControlBox.FillColor = Color.FromArgb(40, 40, 60);
-            minimizeControlBox.IconColor = Color.White;
-            minimizeControlBox.HoverState.FillColor = Color.FromArgb(60, 60, 80);
-            minimizeControlBox.BorderRadius = 0;
-            minimizeControlBox.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            minimizeControlBox.Click += (s, e) => { this.WindowState = FormWindowState.Minimized; };
-
-
-            pauseButton = new Guna2Button();
-            pauseButton.Size = new Size(25, 25);
-            pauseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            pauseButton.FillColor = Color.FromArgb(70, 71, 117);
-            pauseButton.BorderRadius = 12;
-            pauseButton.Text = "";
-            pauseButton.Image = Properties.Resources.pause;
-            pauseButton.Location = new Point(5, mainPanel.Height - 30);
-            pauseButton.Cursor = Cursors.Hand;
-            pauseButton.ForeColor = Color.White;
-            pauseButton.Click += PauseButton_Click;
-
-            mainPanel.Controls.Add(closeControlBox);
-            mainPanel.Controls.Add(minimizeControlBox);
-            mainPanel.Controls.Add(pauseButton);
-
-            this.Load += CountdownTimerForm_Load;
-            this.ShowInTaskbar = true;
+            _codingSessionManager.StartCodingSession(DateTime.Now, sessionGoalSecondsInt, true);
         }
 
+        private void SetFormPosition()
+        {
+            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            int formWidth = this.Width;
+            int formHeight = this.Height;
 
-
-
+            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
+        }
 
         private void CountdownTimerForm_Load(object sender, EventArgs e)
         {
             progressValue = 0;
             progressBar.Value = 0;
-            var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
 
             if (statusLabel != null)
             {
                 statusLabel.Text = "0%";
             }
 
+            if(sessionGoalSecondsInt  != 0) 
+            {
+                progressTimerGoalSecondsDouble = (double)sessionGoalSecondsInt;
+            }
+
             _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
-            sessionGoalSeconds = _codingSessionManager.ReturnGoalSeconds();
+            sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
             progressTimer.Start();
             stopwatchTimer.Start();
         }
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
-            if (!sessionGoalSeconds.HasValue)
+            if(!progressTimerGoalSecondsDouble.HasValue)
             {
                 return;
             }
 
             TimeSpan elapsed = stopwatchTimer.Elapsed;
-            double percentage = Math.Min(100, (elapsed.TotalSeconds / sessionGoalSeconds.Value) * 100);
+            double percentage = Math.Min(100, (elapsed.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
             progressValue = (int)percentage;
 
             progressBar.Value = progressValue;
@@ -190,8 +92,6 @@ namespace CodingTracker.View.TimerDisplayService
 
             progressBar.ProgressColor = mainColor;
             progressBar.ProgressColor2 = secondaryColor;
-
-            var statusLabel = progressBar.Controls["statusLabel"] as Guna2HtmlLabel;
 
             if (statusLabel != null)
             {
@@ -204,10 +104,6 @@ namespace CodingTracker.View.TimerDisplayService
                 _codingSessionManager.SetCurrentSessionGoalReached(true);
             }
         }
-
-
-
-
 
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
         {
@@ -224,7 +120,6 @@ namespace CodingTracker.View.TimerDisplayService
                 int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
                 secondaryColor = Color.FromArgb(r2, g2, b2);
             }
-
             else
             {
                 int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
@@ -236,53 +131,24 @@ namespace CodingTracker.View.TimerDisplayService
             return (mainColor, secondaryColor);
         }
 
-
-
-        private void SetFormPosition()
-        {
-            this.StartPosition = FormStartPosition.Manual;
-
-            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
-            int formWidth = this.Width;
-            int formHeight = this.Height;
-
-
-            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
-
-        }
-
-
-
-
-
-        private async void CloseControlBox_Click(object sender, EventArgs e)
+        private async void CloseButton_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = _notificationManager.ReturnExitMessageDialogWithActiveCodingSession(this);
 
             if (dialogResult.Equals(DialogResult.Yes))
             {
-
                 progressTimer.Stop();
                 stopwatchTimer.Stop();
 
-                var sessionStartTime = _codingSessionManager.ReturnCurrentSessionStartTime();
-
-                TimeSpan elapsed = stopwatchTimer.Elapsed;
-
-                string message = $"End session and record time?\nElapsed: {elapsed.Hours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}.";
-
-                _notificationManager.ShowNotificationDialog(sender, EventArgs.Empty, DisplayMessageBox, message);
-                _codingSessionManager.SetDurationSeconds(stopwatchTimer.Elapsed.TotalSeconds);
-                _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
-                await _codingSessionManager.EndCodingSessionAsync();
-                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                TimeSpan stopWatchTimerDuration = stopwatchTimer.Elapsed;
+                 _codingSessionManager.NEWUpdateCodingSessionTimerEnded(stopWatchTimerDuration);
+                _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);
             }
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
-            if (isPaused && sessionGoalSeconds.HasValue)
+            if (isPaused && progressTimerGoalSecondsDouble > 0)
             {
                 stopwatchTimer.Start();
                 progressTimer.Start();
@@ -295,8 +161,18 @@ namespace CodingTracker.View.TimerDisplayService
                 progressTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
                 isPaused = true;
-
             }
+        }
+
+        private void MinimizeButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void homeButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }
