@@ -6,12 +6,12 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
     {
         int ReturnCurrentUserIdPlaceholder();
         void SetCurrentUserIdPlaceholder(int userId);
-        void StartCodingSession(DateTime startTime, double? sessionGoalSeconds, bool goalSet);
+        void StartCodingSession(DateTime startTime, int? sessionGoalSeconds, bool goalSet);
         Task EndCodingSessionAsync();
         Task EndCodingSessionWithTimerFinished();
         void UpdateISCodingSessionActive(bool active);
         void UpdateIsSessionTimerActive(bool active);
-        double? ReturnGoalSeconds();
+        int? ReturnGoalSeconds();
         void SetDurationHHMM(string durationHHMM);
         void SetCurrentSessionGoalReached(bool? goalReached);
         bool? ReturnCurrentSessionGoalReached();
@@ -20,8 +20,8 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void UpdateCodingSessionGoalSet(int sessionGoalSeconds);
 
         DateTime? ReturnCurrentSessionStartTime();
-        void SetDurationSeconds(double? durationSeconds);
-        void SetCurrentSessionGoalSeconds(double? goalSeconds);
+        void SetDurationSeconds(int durationSeconds);
+        void SetCurrentSessionGoalSeconds(int? goalSeconds);
         void SetCodingSessionStartTimeAndDate(DateTime startTime);
         void SetCodingSessionEndTimeAndDate(DateTime endTime);
         Task OldStartCodingSession(string username);
@@ -32,8 +32,21 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate);
         bool ReturnIsCodingSessionActive();
 
+        void SetStudyProject(string studyProject);
+
+        void SetStudyNotes(string studyNotes);
+
+        Task NEWEndCodingSessionAsync(TimeSpan? durationSeconds);
+
+        void NEWUpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration);
+
+        Task<bool> NEWUpdateCodingSessionStudyNotesAndSaveCodingSession(string studyProject, string studyNotes);
 
 
- 
+
+
+
+
+
     }
 }

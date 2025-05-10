@@ -10,6 +10,7 @@ namespace CodingTracker.Common.IUtilityServices
         string HashPassword(string password);
         string ConvertDoubleToHHMMString(double duration);
         int ConvertHHMMStringToSeconds(string input);
+        string ConvertDurationSecondsToHHMMStringWithSpace(int durationSeconds);
         void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession);
         void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions);
     }

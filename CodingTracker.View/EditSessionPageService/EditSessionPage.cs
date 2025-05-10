@@ -442,7 +442,7 @@ namespace CodingTracker.View
                     message = $"{deletedSessions} sessions deleted.";
                 }
 
-                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
+                _notificationManager.ShowNotificationDialog(this, message);
                 ClearCurrentHighlightedRows();
             }
 

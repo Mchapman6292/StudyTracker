@@ -28,8 +28,6 @@ namespace CodingTracker.View
 
 
 
-        private bool isActionPanelVisible = false;
-
 
 
 

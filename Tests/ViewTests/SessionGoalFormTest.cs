@@ -6,6 +6,7 @@ using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
+using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
@@ -16,8 +17,6 @@ namespace Tests.ViewTests.SessionGoalFormTests
 {
     public class SessionGoalFormTest
     {
-
-
         [Fact]
         public void SessionGoalSetToFalseWhenNoGoalSet()
         {
@@ -30,6 +29,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockLogger = new Mock<IApplicationLogger>();
             var mockApplicationControl = new Mock<IApplicationControl>();
             var mockFormStateManagement = new Mock<IFormStateManagement>();
+            var mockButtonHighlighterService = new Mock<IButtonHighlighterService>();
 
             var form = new SessionGoalPage(
                 mockSessionManager.Object,
@@ -39,12 +39,14 @@ namespace Tests.ViewTests.SessionGoalFormTests
                 mockFormStateManager.Object,
                 mockUtilityService.Object,
                 mockLogger.Object,
-                mockFormStateManagement.Object, 
-                mockApplicationControl.Object
+                mockFormStateManagement.Object,
+                mockApplicationControl.Object,
+                mockButtonHighlighterService.Object
             );
+        
 
 
-            var session = new CodingSession
+        var session = new CodingSession
             {
                 UserId = 42,
                 StartDate = DateOnly.FromDateTime(DateTime.Now),
