@@ -4,6 +4,7 @@ using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
@@ -24,6 +25,7 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly IExitFlowManager _exitFlowManager;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
@@ -38,7 +40,8 @@ namespace CodingTracker.View.PopUpFormService
             IApplicationLogger appLogger,
             IFormStateManagement formStateManagement,
             IApplicationControl applicationControl,
-            IButtonHighlighterService buttonHighlighterService)
+            IButtonHighlighterService buttonHighlighterService,
+            IExitFlowManager exitFlowManager)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -50,6 +53,7 @@ namespace CodingTracker.View.PopUpFormService
             _formStateManagement = formStateManagement;
             _applicationControl = applicationControl;
             _buttonHighlighterService = buttonHighlighterService;
+            _exitFlowManager = exitFlowManager;
 
             InitializeComponent();
         }
@@ -266,14 +270,9 @@ namespace CodingTracker.View.PopUpFormService
         /// If user clicks Yes: Exits app, automatically saving any active coding session through ExitCodingTrackerAsync.
         /// If user clicks No: Dialog closes and user remains in the application.
         /// </summary>
-        private async void CloseButton_Click(object sender, EventArgs args)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
-            DialogResult exitResult = _notificationManager.ReturnExitMessageDialog(this);
-
-            if (exitResult == DialogResult.Yes)
-            {
-                await _applicationControl.ExitCodingTrackerAsync();
-            }
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         public void HandleSkipButton()

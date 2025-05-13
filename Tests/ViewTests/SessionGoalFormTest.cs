@@ -4,6 +4,7 @@ using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
@@ -30,6 +31,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockApplicationControl = new Mock<IApplicationControl>();
             var mockFormStateManagement = new Mock<IFormStateManagement>();
             var mockButtonHighlighterService = new Mock<IButtonHighlighterService>();
+            var exitFlowManager = new Mock<IExitFlowManager>();
 
             var form = new SessionGoalPage(
                 mockSessionManager.Object,
@@ -41,7 +43,8 @@ namespace Tests.ViewTests.SessionGoalFormTests
                 mockLogger.Object,
                 mockFormStateManagement.Object,
                 mockApplicationControl.Object,
-                mockButtonHighlighterService.Object
+                mockButtonHighlighterService.Object,
+                exitFlowManager.Object
             );
         
 

@@ -1,10 +1,12 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
+using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using Guna.UI2.WinForms;
 using System;
 using System.Diagnostics;
@@ -15,7 +17,6 @@ namespace CodingTracker.View.TimerDisplayService
 {
     public partial class CountdownTimerForm : Form
     {
-        private Stopwatch stopwatchTimer = new Stopwatch();
         private bool isPaused = false;
         private bool isDragging = false;
         private Point dragStartPoint;
@@ -29,8 +30,10 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utitlityService;
         private readonly INotificationManager _notificationManager;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IExitFlowManager _exitFlowManager;
 
-        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager)
+        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
             _formStatePropertyManager = formStatePropertyManager;
@@ -39,7 +42,13 @@ namespace CodingTracker.View.TimerDisplayService
             _utitlityService = utilityService;
             _notificationManager = notificationManager;
             _appLogger = appLogger;
+            _stopWatchTimerService = stopWatchTimerService;
+            _exitFlowManager = exitFlowManager;
+
+            closeButton.Click += CloseButton_Click;
+
             sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
+
             SetFormPosition();
             _codingSessionManager.StartCodingSession(DateTime.Now, sessionGoalSecondsInt, true);
         }
@@ -72,7 +81,7 @@ namespace CodingTracker.View.TimerDisplayService
             _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
             sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
             progressTimer.Start();
-            stopwatchTimer.Start();
+            _stopWatchTimerService.StartTimer();
         }
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
@@ -82,7 +91,7 @@ namespace CodingTracker.View.TimerDisplayService
                 return;
             }
 
-            TimeSpan elapsed = stopwatchTimer.Elapsed;
+            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
             double percentage = Math.Min(100, (elapsed.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
             progressValue = (int)percentage;
 
@@ -131,33 +140,23 @@ namespace CodingTracker.View.TimerDisplayService
             return (mainColor, secondaryColor);
         }
 
-        private async void CloseButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = _notificationManager.ReturnExitMessageDialogWithActiveCodingSession(this);
-
-            if (dialogResult.Equals(DialogResult.Yes))
-            {
-                progressTimer.Stop();
-                stopwatchTimer.Stop();
-
-                TimeSpan stopWatchTimerDuration = stopwatchTimer.Elapsed;
-                 _codingSessionManager.NEWUpdateCodingSessionTimerEnded(stopWatchTimerDuration);
-                _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);
-            }
+             _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             if (isPaused && progressTimerGoalSecondsDouble > 0)
             {
-                stopwatchTimer.Start();
+                _stopWatchTimerService.StartTimer();
                 progressTimer.Start();
                 pauseButton.Image = Properties.Resources.pause;
                 isPaused = false;
             }
             else
             {
-                stopwatchTimer.Stop();
+                _stopWatchTimerService.StopTimer();
                 progressTimer.Stop();
                 pauseButton.Image = Properties.Resources.playButton;
                 isPaused = true;

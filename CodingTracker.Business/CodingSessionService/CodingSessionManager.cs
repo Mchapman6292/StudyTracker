@@ -35,11 +35,11 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         #region Constructor
 
-        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepo, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService)
+        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService)
         {
             _appLogger = appLogger;
             _inputValidator = inputValidator;
-            _codingSessionRepository = codingSessionRepo;
+            _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
             _utilityService = utilityService;
         }
@@ -62,6 +62,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         /// <summary>
         /// Controller method that calls other methods to established the final values for the CodingSession class before it is converted to a CodingSessionEntity and added to the database. All checks for valid CodingSession values are done within the child methods.
         /// </summary>
+       
         public async Task EndCodingSessionAsync()
         {
             // Set EndTime & EndDate.
@@ -180,7 +181,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
 
-            return !sessionAddedToDb; 
+            return sessionAddedToDb; 
         }
 
 
@@ -239,6 +240,11 @@ namespace CodingTracker.Business.CodingSessionManagers
         public void UpdateIsSessionTimerActive(bool active)
         {
             IsSessionTimerActive = active;
+        }
+
+        public bool ReturnIsSessionTimerActive()
+        {
+            return IsSessionTimerActive;
         }
 
         public bool ReturnIsCodingSessionActive()

@@ -1,8 +1,9 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+using CodingTracker.View.FormPageEnums;
+using Guna.UI2.WinForms;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 
 namespace CodingTracker.View
 {
@@ -10,13 +11,18 @@ namespace CodingTracker.View
     {
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly INotificationManager _notificationManager;
+        private readonly IFormSwitcher _formSwitcher;
+        private readonly IExitFlowManager _exitFlowManager;
         private TimeSpan _sessionDuration;
 
-        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager)
+        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormSwitcher formSwitcher, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
+            _exitFlowManager =exitFlowManager;
+            _formSwitcher = formSwitcher;
+            closeButton.Click += CloseButton_Click;
         }
 
         public void SetSessionDuration(TimeSpan duration)
@@ -34,6 +40,8 @@ namespace CodingTracker.View
             string successMessage = sessionAdded ? "Coding session saved successfully." : "Error saving coding session.";
 
             _notificationManager.ShowNotificationDialog(this, successMessage);
+
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void SkipButton_Click(object sender, EventArgs e)
@@ -50,12 +58,12 @@ namespace CodingTracker.View
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-
+            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)

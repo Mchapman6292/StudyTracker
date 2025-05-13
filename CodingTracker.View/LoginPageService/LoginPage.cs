@@ -10,6 +10,7 @@ using CodingTracker.View.FormService.ButtonHighlighterServices;
 using Guna.UI2.WinForms;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 
 namespace CodingTracker.View
 {
@@ -24,10 +25,11 @@ namespace CodingTracker.View
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly IExitFlowManager _exitFlowManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
         {
             _authenticationService = authenticationService;
             _appControl = appControl;
@@ -38,6 +40,7 @@ namespace CodingTracker.View
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
+            _exitFlowManager = exitFlowManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -264,9 +267,9 @@ namespace CodingTracker.View
             _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
         }
 
-        private async void LoginPageExitControlBox_Click(object sender, EventArgs e)
+        private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            await _appControl.ExitCodingTrackerAsync();
+             _exitFlowManager.ExitCodingTracker();
         }
 
         #endregion

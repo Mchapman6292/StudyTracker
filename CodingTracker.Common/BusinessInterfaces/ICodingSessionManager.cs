@@ -20,6 +20,7 @@ namespace CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers
         void UpdateCodingSessionGoalSet(int sessionGoalSeconds);
 
         DateTime? ReturnCurrentSessionStartTime();
+        bool ReturnIsSessionTimerActive();
         void SetDurationSeconds(int durationSeconds);
         void SetCurrentSessionGoalSeconds(int? goalSeconds);
         void SetCodingSessionStartTimeAndDate(DateTime startTime);
