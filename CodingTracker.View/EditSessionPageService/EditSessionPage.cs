@@ -3,6 +3,7 @@ using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
@@ -28,6 +29,9 @@ namespace CodingTracker.View
         private readonly ILayoutService _layoutService;
         private readonly IDataGridViewManager _dataGridViewManager;
         private readonly INotificationManager _notificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
+
+     
 
         // Maps the sessionId to the datagridview display, used to tracking session ids which are added to EditSessionPageContextManager SessionIdsForDeletion. 
         private bool IsEditSession { get; set; } = false;
@@ -46,7 +50,7 @@ namespace CodingTracker.View
         public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, INotificationManager notificationManager)
+        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, INotificationManager notificationManager, IExitFlowManager exitFlowManager)
         {
             _appLogger = appLogger;
             _appControl = appControl;
@@ -55,6 +59,8 @@ namespace CodingTracker.View
             _layoutService = layoutService;
             _dataGridViewManager = dataGridViewManager;
             _notificationManager = notificationManager;
+            _exitFlowManager = exitFlowManager;
+
 
             InitializeComponent();
             InitializeComboBoxDropDowns();
@@ -62,6 +68,8 @@ namespace CodingTracker.View
             CustomizeDatePicker();
             UpdateDeleteSessionButtonVisibility();
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
+
+            closeButton.Click += closeButton_Click;
             LogDataGridViewColour();
         }
 
@@ -442,7 +450,7 @@ namespace CodingTracker.View
                     message = $"{deletedSessions} sessions deleted.";
                 }
 
-                _notificationManager.ShowNotificationDialog(this, EventArgs.Empty, DisplayMessageBox, message);
+                _notificationManager.ShowNotificationDialog(this, message);
                 ClearCurrentHighlightedRows();
             }
 
@@ -459,9 +467,9 @@ namespace CodingTracker.View
         }
 
 
-        private void EditSessionPageExitControlBox_Click(object sender, EventArgs e)
+        private void closeButton_Click(object sender, EventArgs e)
         {
-
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         public void LogDataGridViewColour()

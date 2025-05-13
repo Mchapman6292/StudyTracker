@@ -1,4 +1,3 @@
-using CodingTracker.Business.ApplicationControls;
 using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
 using CodingTracker.Business.CodingSessionService;
@@ -26,6 +25,7 @@ using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
+using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormService;
@@ -42,12 +42,9 @@ using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.DurationManagers;
 
-
-/// To do
-
-/// Change date to Today 18:15 etc
-/// Categories for Study type. 
 
 
 
@@ -113,8 +110,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
+                    .AddSingleton<IExitFlowManager, ExitFlowManager>()
                     .AddSingleton<WaveVisualizationTestForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
+                    .AddSingleton<IDurationManager , DurationManager>()
                     .AddSingleton<TestForm>()
                     .AddSingleton<SessionNotesForm>()
 

@@ -4,6 +4,7 @@ using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
@@ -24,16 +25,15 @@ namespace CodingTracker.View
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly INotificationManager _notificationManager;
         private readonly IApplicationControl _applicationControl;
+        private readonly IExitFlowManager _exitFlowManager;
 
 
 
 
-        private bool isActionPanelVisible = false;
 
 
 
-
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IApplicationControl applicationControl)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IApplicationControl applicationControl, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
             _appLogger = appLogger;
@@ -46,8 +46,11 @@ namespace CodingTracker.View
             _buttonHighlighterService = buttonHighlighterService;
             _notificationManager = notificationManager;
             _applicationControl = applicationControl;
+            _exitFlowManager = exitFlowManager;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
+
+            closeButton.Click += CloseButton_Click; 
 
 
         }
@@ -117,15 +120,10 @@ namespace CodingTracker.View
 
 
 
-
-        private async void MainPageExitControlBox_Click(object sender, EventArgs e)
+        // Custom click set to True in properties to enable behaviour overriding 
+        private async void CloseButton_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = _notificationManager.ReturnExitMessageDialog(this);
-
-            if(dialogResult == DialogResult.Yes) 
-            {
-                await _applicationControl.ExitCodingTrackerAsync();
-            }
+             _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
 

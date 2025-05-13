@@ -3,13 +3,20 @@ using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.FormService.NotificationManagers
 {
+    public enum CustomDialogResult
+    {
+        Exit,                      // Exit without saving
+        SaveCurrentSessionAndExit, // Takes user to session notes form before saving.
+        ContinueSession,         // Don't exit
+    }
+
     public interface INotificationManager
     {
-        void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message);
-        DialogResult ReturnExitMessageDialog(Form parentForm);
-        DialogResult ReturnExitMessageDialogWithActiveCodingSession(Form parentForm);
-
+        void ShowNotificationDialog(Form parentForm, string message);
+        CustomDialogResult ShowExitMessageDialog(Form parentForm);
     }
+
+
 
     public class NotificationManager : INotificationManager
     {
@@ -26,65 +33,103 @@ namespace CodingTracker.View.FormService.NotificationManagers
         }
 
 
-        public void ShowNotificationDialog(object sender, EventArgs e, Guna2MessageDialog messageDialog, string message)
+        public void ShowNotificationDialog(Form parentForm, string message)
         {
-            if (string.IsNullOrWhiteSpace(message))
+            var messageDialog = new Guna2MessageDialog
             {
-                messageDialog.Text = "No message provided.";
-            }
-            else
-            {
-                messageDialog.Text = message;
-            }
-
-            messageDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            messageDialog.Caption = "Notification";
-            messageDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-
-
-            messageDialog.Show();
-
-            SendKeys.Send("{ENTER}");
-        }
-
-        public DialogResult ReturnExitMessageDialog(Form parentForm) 
-        {
-            Guna2MessageDialog messageDialog = new Guna2MessageDialog
-            {
-                Text = "Are you sure you want to exit?",
-                Caption = "Exit Application",
-                Buttons = MessageDialogButtons.YesNo,
-                Icon = MessageDialogIcon.Question,
+                Text = string.IsNullOrWhiteSpace(message) ? "No message provided." : message,
+                Caption = "Notification",
+                Buttons = MessageDialogButtons.OK,
+                Icon = MessageDialogIcon.Information,
                 Style = MessageDialogStyle.Dark
             };
 
             SetNotificationParentForm(parentForm, messageDialog);
 
-            return messageDialog.Show();
+            messageDialog.Show();
         }
 
-        public DialogResult ReturnExitMessageDialogWithActiveCodingSession(Form parentForm)
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Returns a CustomDialogResult enum which is used in ExitFlowManager to control application based on users choices. 
+        /// </summary>
+        /// <param name="parentForm"></param>
+        /// <returns></returns>
+
+        public CustomDialogResult ShowExitMessageDialog(Form parentForm)
         {
             bool codingSessionActive = _codingSessionManager.ReturnIsCodingSessionActive();
 
             if(!codingSessionActive) 
             {
-                throw new InvalidOperationException($"{nameof(ReturnExitMessageDialogWithActiveCodingSession)} should not be called when coding session is not active.");
+                Guna2MessageDialog exitAppDialog = new Guna2MessageDialog
+                {
+                    Text = "Exit application?",
+                    Caption = "Exit Application",
+                    Buttons = MessageDialogButtons.YesNo,
+                    Icon = MessageDialogIcon.Question,
+                    Style = MessageDialogStyle.Dark
+                };
+
+                SetNotificationParentForm(parentForm, exitAppDialog);
+                DialogResult exitResult = exitAppDialog.Show();
+
+                if(exitResult == DialogResult.Yes) 
+                {
+                    return CustomDialogResult.Exit;
+                }
+                else
+                {
+                    return CustomDialogResult.ContinueSession;
+                }
+
             }
 
-            Guna2MessageDialog messageDialog = new Guna2MessageDialog
+            else
+            // If coding session is active show "Save current coding session" and action user choice. 
             {
-                Caption = "Exit Application",
-                Text = "Save current coding Session?",
-                Buttons = MessageDialogButtons.YesNo,
-                Icon = MessageDialogIcon.Question,
-                Style = MessageDialogStyle.Dark
-            };
+                Guna2MessageDialog SaveCurrentCodingSessionDialog = new Guna2MessageDialog
+                {
+                    Caption = "Exit Application",
+                    Text = "Save current coding Session?",
+                    Buttons = MessageDialogButtons.YesNoCancel,
+                    Icon = MessageDialogIcon.Question,
+                    Style = MessageDialogStyle.Dark
+                };
+                SetNotificationParentForm(parentForm, SaveCurrentCodingSessionDialog);
 
-            SetNotificationParentForm(parentForm, messageDialog);
+                DialogResult saveResult = SaveCurrentCodingSessionDialog.Show();
 
-            return messageDialog.Show();
+                if (saveResult == DialogResult.Yes)
+                {
+                    return CustomDialogResult.SaveCurrentSessionAndExit;
+                }
+
+                else if (saveResult == DialogResult.No)
+                {
+                    return CustomDialogResult.Exit;
+                }
+
+                else
+                {
+                    return CustomDialogResult.ContinueSession;
+                }
+            }
+
+  
+          
+
         }
- 
+
+
+
+
     }
 }

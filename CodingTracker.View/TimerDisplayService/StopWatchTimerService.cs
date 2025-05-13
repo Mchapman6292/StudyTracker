@@ -8,6 +8,8 @@ namespace CodingTracker.View.TimerDisplayService.StopWatchTimerServices
         TimeSpan ReturnElapsedTimeSpan();
         double ReturnElapsedSeconds();
         double ReturnElapsedMilliseconds();
+        void StopTimer();
+        void StartTimer();
     }
 
     public class StopWatchTimerService : IStopWatchTimerService
@@ -34,6 +36,17 @@ namespace CodingTracker.View.TimerDisplayService.StopWatchTimerServices
         {
             return stopwatchTimer.Elapsed.TotalMilliseconds;
         }
+
+        public void StartTimer()
+        {
+            stopwatchTimer.Start();
+        }
+
+        public void StopTimer()
+        {
+            stopwatchTimer.Stop();
+        }
+
 
 
 

@@ -2,8 +2,9 @@
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.ApplicationControlService.DurationManagers;
 
-namespace CodingTracker.Business.ApplicationControls
+namespace CodingTracker.View.ApplicationControlService
 {
 
 
@@ -12,28 +13,27 @@ namespace CodingTracker.Business.ApplicationControls
         private readonly IApplicationLogger _appLogger;
         private readonly ICodingTrackerDbContext _context;
         private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IDurationManager _durationManager;
 
 
 
-        public ApplicationControl(IApplicationLogger appLogger, ICodingTrackerDbContext entityContext, ICodingSessionManager codingSessionManager)
+        public ApplicationControl(IApplicationLogger appLogger, ICodingTrackerDbContext entityContext, ICodingSessionManager codingSessionManager, IDurationManager durationManager)
         {
             _appLogger = appLogger;
             _context = entityContext;
             _codingSessionManager = codingSessionManager;
+            _durationManager = durationManager;
         }
 
         public async Task ExitCodingTrackerAsync()
         {
-            bool codingSessionActive = _codingSessionManager.ReturnIsCodingSessionActive();
-
-            if (!codingSessionActive)
-            {
-                Application.Exit();
-                return;
-            }
-            await _codingSessionManager.EndCodingSessionAsync();
+            // By the time we get here, there should be no active sessions
+            // or if there is one, the user must have explicitly chosen to discard it
+            
             Application.Exit();
-
         }
+
+
+
     }
 }

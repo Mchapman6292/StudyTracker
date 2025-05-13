@@ -1,4 +1,5 @@
-﻿using CodingTracker.View.FormPageEnums;
+﻿using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.View.FormPageEnums;
 
 namespace CodingTracker.View.FormService
 {
@@ -17,13 +18,15 @@ namespace CodingTracker.View.FormService
         private readonly IFormController _formController;
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
+        private readonly IApplicationLogger _appLogger;
 
 
-        public FormSwitcher(IFormController formController, IFormFactory formFactory, IFormStateManagement formStateManagement)
+        public FormSwitcher(IFormController formController, IFormFactory formFactory, IFormStateManagement formStateManagement, IApplicationLogger appLogger)
         {
             _formController = formController;
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
+            _appLogger = appLogger;
         }
 
         public Form SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 

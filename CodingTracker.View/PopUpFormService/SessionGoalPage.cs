@@ -4,6 +4,7 @@ using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
@@ -24,6 +25,7 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly IExitFlowManager _exitFlowManager;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
@@ -38,7 +40,8 @@ namespace CodingTracker.View.PopUpFormService
             IApplicationLogger appLogger,
             IFormStateManagement formStateManagement,
             IApplicationControl applicationControl,
-            IButtonHighlighterService buttonHighlighterService)
+            IButtonHighlighterService buttonHighlighterService,
+            IExitFlowManager exitFlowManager)
         {
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
@@ -50,6 +53,7 @@ namespace CodingTracker.View.PopUpFormService
             _formStateManagement = formStateManagement;
             _applicationControl = applicationControl;
             _buttonHighlighterService = buttonHighlighterService;
+            _exitFlowManager = exitFlowManager;
 
             InitializeComponent();
         }
@@ -116,56 +120,6 @@ namespace CodingTracker.View.PopUpFormService
 
 
 
-        private string GetTimeDisplayLabelText(string timeGoalTextBoxText)
-        {
-            int textLength = timeGoalTextBoxText.Length;
-
-            bool noTimeInput = textLength == 0;
-            bool hoursNotNull = textLength > 0 && textLength <= 2;
-            bool partialHoursFormat = textLength == 3;
-            bool minsNotNull = textLength > 2 && textLength <= 4;
-
-            if (minsNotNull)
-            {
-                string hoursSubString = timeGoalTextBoxText.Substring(0, 2);
-                string minsSubString = timeGoalTextBoxText.Substring(textLength - 2);
-
-                if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
-                {
-                    return $"{hoursInt} hours, {minsInt} minutes.";
-                }
-            }
-
-            if (partialHoursFormat)
-            {
-                string hoursSubString = timeGoalTextBoxText.Substring(0, 1);
-                string minsSubString = timeGoalTextBoxText.Substring(2, 3);
-
-                if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
-                {
-                    return $"{hoursInt} hours, {minsInt} minutes.";
-                }
-            }
-
-            if (hoursNotNull)
-            {
-                string hoursSubString = timeGoalTextBoxText.Substring(0, textLength);
-
-                if (int.TryParse(hoursSubString, out int hoursInt))
-                {
-                    return $"{hoursInt} hours";
-                }
-            }
-
-
-            if (noTimeInput)
-            {
-                return string.Empty;
-            }
-            return string.Empty;
-        }
- 
-
         private void UpdateTimeDisplayLabel(string displayText)
         {
             timeDisplayLabel.Text = displayText;
@@ -212,7 +166,9 @@ namespace CodingTracker.View.PopUpFormService
         private void SetTimeGoalButton_Click(object sender, EventArgs e)
         {
             string timeInputString = timeGoalTextBox.Text;
-            int sessionGoalSeconds = _utilityService.ConvertHHMMStringToSeconds(timeInputString);
+            int sessionGoalSeconds = ConvertHHMMStringToDurationSeconds(timeInputString);
+
+            _appLogger.Debug($"SetTimeGoalButton pressed:TimeInputString: {timeInputString}, sessionGoalSecondsInt: {sessionGoalSeconds}");
             DateTime startTime = DateTime.Now;
             bool goalSet = true;
 
@@ -228,16 +184,70 @@ namespace CodingTracker.View.PopUpFormService
             // Goal is taken as HHMM format and convert to seconds.
 
 
+            /*
+            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSecondsInt);
+            */
 
-            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSeconds);
+
             _codingSessionManager.StartCodingSession(startTime, sessionGoalSeconds, goalSet);
             /*
             _formStatePropertyManager.SetIsFormGoalSet(true);
-            _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSeconds);
+            _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSecondsInt);
             */
 
             _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
         }
+
+
+        public int ConvertHHMMStringToDurationSeconds(string timeInputString)
+        {
+            int timeInputLength = timeInputString.Length;
+            int result = 0;
+
+            switch (timeInputLength)
+            {
+                case 0:
+                    {
+                        return result;
+                    }
+
+                case 1:
+                case 2:
+                    {
+                        if (int.TryParse(timeInputString, out int minsInt))
+                        {
+                            result = minsInt * 60;
+                        }
+                        break;
+                    }
+
+                case 3:
+                    {
+                        string hoursSubString = timeInputString.Substring(0, 1);
+                        string minsSubString = timeInputString.Substring(1, 2);
+                        if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                        {
+                            result = (hoursInt * 3600) + (minsInt * 60);
+                        }
+                        break;
+                    }
+
+                case 4:
+                    {
+                        string hoursSubString = timeInputString.Substring(0, 2);
+                        string minsSubString = timeInputString.Substring(timeInputString.Length - 2);
+                        if (int.TryParse(hoursSubString, out int hoursInt) && int.TryParse(minsSubString, out int minsInt))
+                        {
+                            result = (hoursInt * 3600) + (minsInt * 60);
+                        }
+                        break;
+                    }
+            }
+
+            _appLogger.Debug($"Result from {nameof(ConvertHHMMStringToDurationSeconds)}: {result}.");
+            return result;
+        }
+
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
@@ -260,21 +270,16 @@ namespace CodingTracker.View.PopUpFormService
         /// If user clicks Yes: Exits app, automatically saving any active coding session through ExitCodingTrackerAsync.
         /// If user clicks No: Dialog closes and user remains in the application.
         /// </summary>
-        private async void CloseButton_Click(object sender, EventArgs args)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
-            DialogResult exitResult = _notificationManager.ReturnExitMessageDialog(this);
-
-            if (exitResult == DialogResult.Yes)
-            {
-                await _applicationControl.ExitCodingTrackerAsync();
-            }
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         public void HandleSkipButton()
         {
             bool goalSet = false;
             DateTime startTime = DateTime.Now;
-            _codingSessionManager.StartCodingSession(startTime, null, goalSet);
+            _codingSessionManager.StartCodingSession(startTime, 0, goalSet);
 
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;

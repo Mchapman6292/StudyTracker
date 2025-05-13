@@ -69,6 +69,14 @@ namespace CodingTracker.Common.UtilityServices
         }
 
 
+        public string ConvertDurationSecondsToHHMMStringWithSpace(int durationSeconds)
+        {
+            TimeSpan duration = TimeSpan.FromSeconds(durationSeconds);
+
+            return $"{(int)duration.TotalHours}:{duration.Minutes:D2}";
+
+        }
+
 
 
 
@@ -77,7 +85,7 @@ namespace CodingTracker.Common.UtilityServices
         {
             int hours = int.Parse(input.Substring(0, 2));
             int minutes = int.Parse(input.Substring(2, 2));
-            var result = hours * 60 + minutes;
+            var result = ((hours * 3600) + minutes * 60);
 
             _appLogger.Debug($"Result of {nameof(ConvertDoubleToHHMMString)}: {result}.");
             return result;

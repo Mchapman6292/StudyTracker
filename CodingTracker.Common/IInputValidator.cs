@@ -1,4 +1,6 @@
-﻿using CodingTracker.Common.BusinessInterfaces;
+﻿// Ignore Spelling: Validator
+
+using CodingTracker.Common.BusinessInterfaces;
 
 namespace CodingTracker.Common.IInputValidators
 {

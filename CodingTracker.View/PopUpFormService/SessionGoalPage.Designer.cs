@@ -171,7 +171,7 @@ namespace CodingTracker.View.PopUpFormService
             timeGoalTextBox.BorderRadius = 8;
             timeGoalTextBox.CustomizableEdges = customizableEdges7;
             timeGoalTextBox.DefaultText = "";
-            timeGoalTextBox.FillColor = Color.FromArgb(35, 34, 50);
+            timeGoalTextBox.FillColor = Color.FromArgb(45, 46, 50);
             timeGoalTextBox.Font = new Font("Segoe UI", 9F);
             timeGoalTextBox.ForeColor = Color.White;
             timeGoalTextBox.Location = new Point(140, 90);
