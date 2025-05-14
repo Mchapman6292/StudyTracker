@@ -1,7 +1,6 @@
 ﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
@@ -21,7 +20,6 @@ namespace CodingTracker.View
     {
 
 
-        private readonly IApplicationControl _appControl;
         private readonly IFormSwitcher _formSwitcher;
         private readonly IFormController _formController;
         private readonly IApplicationLogger _appLogger;
@@ -50,10 +48,9 @@ namespace CodingTracker.View
         public Dictionary<string, SessionSortCriteria> ComboBoxOptionToSortCriteria { get; set; }
 
 
-        public EditSessionPage(IApplicationControl appControl, IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, INotificationManager notificationManager, IExitFlowManager exitFlowManager)
+        public EditSessionPage( IFormSwitcher formSwitcher, IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, ILayoutService layoutService, IDataGridViewManager dataGridViewManager, INotificationManager notificationManager, IExitFlowManager exitFlowManager)
         {
             _appLogger = appLogger;
-            _appControl = appControl;
             _formSwitcher = formSwitcher;
             _codingSessionRepository = codingSessionRepository;
             _layoutService = layoutService;

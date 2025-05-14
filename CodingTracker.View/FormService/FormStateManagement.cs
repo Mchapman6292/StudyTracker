@@ -1,4 +1,4 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;

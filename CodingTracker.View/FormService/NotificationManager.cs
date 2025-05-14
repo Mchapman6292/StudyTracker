@@ -7,7 +7,7 @@ namespace CodingTracker.View.FormService.NotificationManagers
     {
         Exit,                      // Exit without saving
         SaveCurrentSessionAndExit, // Takes user to session notes form before saving.
-        ContinueSession,         // Don't exit
+        ContinueSession,           // Don't exit
     }
 
     public interface INotificationManager

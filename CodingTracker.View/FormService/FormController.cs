@@ -1,4 +1,4 @@
-﻿using CodingTracker.Common.IApplicationLoggers;
+﻿using CodingTracker.Common.LoggingInterfaces;
 
 namespace CodingTracker.View.FormService
 {

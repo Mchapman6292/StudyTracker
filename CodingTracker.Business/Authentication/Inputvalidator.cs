@@ -1,18 +1,13 @@
 ﻿using CodingTracker.Common.BusinessInterfaces;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
+using CodingTracker.Common.LoggingInterfaces;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-
-
-// performs the actual validation of user inputs
-
 namespace CodingTracker.Business.InputValidators
 {
-
     public class InputValidator : IInputValidator
     {
         private readonly IApplicationLogger _appLogger;
@@ -24,73 +19,66 @@ namespace CodingTracker.Business.InputValidators
             _validResult = validResult;
         }
 
-        public InputValidationResult ValidateUsername(string username) // Username requirements = Less than 15 chars long, begins with capital letter & not empty/no whitespaces.
+        public InputValidationResult ValidateUsername(string username)
         {
             var result = new InputValidationResult();
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            using (var activity = new Activity(nameof(ValidateUsername)).Start())
+            _appLogger.Debug($"Starting {nameof(ValidateUsername)}.");
+
+            if (string.IsNullOrWhiteSpace(username))
             {
-                _appLogger.Debug($"Starting {nameof(ValidateUsername)}. TraceID: {activity.TraceId}");
-
-                if (string.IsNullOrWhiteSpace(username))
-                {
-                    result.AddErrorMessage("Username cannot be empty or whitespace.");
-                }
-
-                if (username.Length > 15)
-                {
-                    result.AddErrorMessage("Username must be 15 characters or less.");
-                }
-
-                if (!string.IsNullOrWhiteSpace(username) && !char.IsUpper(username[0]))
-                {
-                    result.AddErrorMessage("Username must begin with a capital letter.");
-                }
-
-                stopwatch.Stop();
-                _appLogger.Info($"Username validation completed. Duration: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
+                result.AddErrorMessage("Username cannot be empty or whitespace.");
             }
+
+            if (username.Length > 15)
+            {
+                result.AddErrorMessage("Username must be 15 characters or less.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(username) && !char.IsUpper(username[0]))
+            {
+                result.AddErrorMessage("Username must begin with a capital letter.");
+            }
+
+            stopwatch.Stop();
+            _appLogger.Info($"Username validation completed. Duration: {stopwatch.ElapsedMilliseconds}ms.");
 
             return result;
         }
 
-        public InputValidationResult ValidatePassword(string password) // requirements <= 15, one upper case letter, one special char & no whitespaces/ not empty. 
+        public InputValidationResult ValidatePassword(string password)
         {
             var result = new InputValidationResult();
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            using (var activity = new Activity(nameof(ValidatePassword)).Start())
+            _appLogger.Debug($"Starting {nameof(ValidatePassword)}.");
+
+            if (string.IsNullOrWhiteSpace(password))
             {
-                _appLogger.Debug($"Starting {nameof(ValidatePassword)}. TraceID: {activity.TraceId}");
-
-                if (string.IsNullOrWhiteSpace(password))
-                {
-                    result.AddErrorMessage("PasswordHash cannot be empty or whitespace.");
-                }
-
-                if (password.Length > 15)
-                {
-                    result.AddErrorMessage("PasswordHash must be 15 characters or less.");
-                }
-
-                if (!password.Any(char.IsUpper))
-                {
-                    result.AddErrorMessage("PasswordHash must contain at least one uppercase letter.");
-                }
-
-                if (!new Regex("[^a-zA-Z0-9]").IsMatch(password))
-                {
-                    result.AddErrorMessage("PasswordHash must contain at least one special character.");
-                }
-
-                stopwatch.Stop();
-                _appLogger.Info($"PasswordHash validation completed. Duration: {stopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
+                result.AddErrorMessage("PasswordHash cannot be empty or whitespace.");
             }
+
+            if (password.Length > 15)
+            {
+                result.AddErrorMessage("PasswordHash must be 15 characters or less.");
+            }
+
+            if (!password.Any(char.IsUpper))
+            {
+                result.AddErrorMessage("PasswordHash must contain at least one uppercase letter.");
+            }
+
+            if (!new Regex("[^a-zA-Z0-9]").IsMatch(password))
+            {
+                result.AddErrorMessage("PasswordHash must contain at least one special character.");
+            }
+
+            stopwatch.Stop();
+            _appLogger.Info($"PasswordHash validation completed. Duration: {stopwatch.ElapsedMilliseconds}ms.");
 
             return result;
         }
-
 
         public bool CheckDateInput(string input, out DateTime result)
         {
@@ -102,13 +90,10 @@ namespace CodingTracker.Business.InputValidators
             return DateTime.TryParseExact(input, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
         }
 
-
         public bool IsValidTimeFormatHHMM(string input)
         {
-            using (var activity = new Activity(nameof(IsValidTimeFormatHHMM)).Start())
-            {
-                _appLogger.Info($"Starting {nameof(IsValidTimeFormatHHMM)} for {input}.");
-            }
+            _appLogger.Info($"Starting {nameof(IsValidTimeFormatHHMM)} for {input}.");
+
             if (string.IsNullOrWhiteSpace(input))
             {
                 _appLogger.Error($"Input for {IsValidTimeFormatHHMM} is null or empty. Input: {input}.");
@@ -130,12 +115,7 @@ namespace CodingTracker.Business.InputValidators
             return isValid;
         }
 
-
-
-
-
-
-        public bool TryParseTime(string input, out TimeSpan timeSpan) // probably not needed.
+        public bool TryParseTime(string input, out TimeSpan timeSpan)
         {
             timeSpan = default;
 
@@ -151,10 +131,6 @@ namespace CodingTracker.Business.InputValidators
 
             return false;
         }
-
-
-
-
 
         public DateTime GetValidDateFromUser()
         {
@@ -172,7 +148,7 @@ namespace CodingTracker.Business.InputValidators
             }
         }
 
-        public DateTime GetValidTimeFromUser() // refactor to remove writeline
+        public DateTime GetValidTimeFromUser()
         {
             while (true)
             {
@@ -187,7 +163,6 @@ namespace CodingTracker.Business.InputValidators
             }
         }
 
-        // Covers basic validation for hhmm format. 
         public bool ValidateTimeFormat(string time)
         {
             if (time.Length != 4 || !int.TryParse(time, out int _))

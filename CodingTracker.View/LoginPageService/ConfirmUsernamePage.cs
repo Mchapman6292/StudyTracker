@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;

@@ -1,9 +1,7 @@
-﻿
-
-using CodingTracker.Common.Entities.CodingSessionEntities;
+﻿using CodingTracker.Common.Entities.CodingSessionEntities;
 using System.Diagnostics;
 
-namespace CodingTracker.Common.IApplicationLoggers
+namespace CodingTracker.Common.LoggingInterfaces
 {
     public interface IApplicationLogger
     {

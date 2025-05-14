@@ -39,7 +39,7 @@ namespace CodingTracker.Data.Migrations
                     b.Property<double?>("DurationSeconds")
                         .HasColumnType("double precision");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime?>("EndDateLocal")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("GoalHHMM")
@@ -48,7 +48,7 @@ namespace CodingTracker.Data.Migrations
                     b.Property<int?>("GoalReached")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime?>("StartDateLocal")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("SessionId");

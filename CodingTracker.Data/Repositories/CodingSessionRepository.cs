@@ -2,7 +2,7 @@
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -31,10 +31,10 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             _appLogger.Debug($"Adding new coding session with details:");
             _appLogger.Debug($"  SessionId: {currentSession.SessionId}");
             _appLogger.Debug($"  UserId: {currentSession.UserId}");
-            _appLogger.Debug($"  StartDate: {currentSession.StartDate}");
-            _appLogger.Debug($"  StartTime: {currentSession.StartTime}");
-            _appLogger.Debug($"  EndDate: {currentSession.EndDate}");
-            _appLogger.Debug($"  EndTime: {currentSession.EndTime}");
+            _appLogger.Debug($"  StartDateLocal: {currentSession.StartDateUTC}");
+            _appLogger.Debug($"  StartTimeLocal: {currentSession.StartTimeUTC}");
+            _appLogger.Debug($"  EndDateLocal: {currentSession.EndDateUTC}");
+            _appLogger.Debug($"  EndTimeLocal: {currentSession.EndTimeUTC}");
             _appLogger.Debug($"  DurationSeconds: {currentSession.DurationSeconds}");
             _appLogger.Debug($"  DurationHHMM: {currentSession.DurationHHMM}");
             _appLogger.Debug($"  GoalSet: {currentSession.GoalSet}");
@@ -99,7 +99,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         public async Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions)
         {
             return await _dbContext.CodingSessions
-                    .OrderByDescending(s => s.StartDate)
+                    .OrderByDescending(s => s.StartDateUTC)
                     .Take(numberOfSessions)
                     .ToListAsync();
         }
@@ -112,12 +112,12 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             {
                 SessionSortCriteria.StudyProject => query.OrderByDescending(s => s.StudyProject),
                 SessionSortCriteria.Duration => query.OrderByDescending(s => s.DurationHHMM),
-                SessionSortCriteria.StartDate => query.OrderByDescending(s => s.StartDate),
-                SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDate),
-                SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDate),
-                SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDate),
-                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDate),
-                _ => query.OrderByDescending(s => s.StartDate)  // Fallback
+                SessionSortCriteria.StartDate => query.OrderByDescending(s => s.StartDateUTC),
+                SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDateUTC),
+                SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDateUTC),
+                SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDateUTC),
+                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDateUTC),
+                _ => query.OrderByDescending(s => s.StartDateUTC)  // Fallback
             };
 
             return await query
@@ -129,8 +129,8 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         {
             DateOnly targetDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-numberOfDays));
             return await _dbContext.CodingSessions
-                .Where(s => s.StartDate >= targetDate || s.EndDate >= targetDate)
-                .OrderBy(s => s.StartDate)
+                .Where(s => s.StartDateUTC >= targetDate || s.EndDateUTC >= targetDate)
+                .OrderBy(s => s.StartDateUTC)
                 .ToListAsync();
         }
 
@@ -139,8 +139,8 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _dbContext.CodingSessions
-                .Where(s => s.StartDate == today || s.EndDate == today)
-                .OrderBy(s => s.StartTime)
+                .Where(s => s.StartDateUTC == today || s.EndDateUTC == today)
+                .OrderBy(s => s.StartTimeUTC)
                 .ToListAsync();
         }
 
@@ -154,14 +154,14 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         {
             DateOnly today = DateOnly.FromDateTime(DateTime.UtcNow);
             return await _dbContext.CodingSessions
-                .AnyAsync(s => s.StartDate == today || s.EndDate == today);
+                .AnyAsync(s => s.StartDateUTC == today || s.EndDateUTC == today);
         }
 
 
         public async Task<List<CodingSessionEntity>> GetAllCodingSessionsByDateOnlyForStartDateAsync(DateOnly date)
         {
             return await _dbContext.CodingSessions
-                .Where(s => s.StartDate == date)
+                .Where(s => s.StartDateUTC == date)
                 .ToListAsync();
         }
 
@@ -189,7 +189,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             DateOnly todayUTC = DateOnly.FromDateTime(DateTime.UtcNow);
 
             return await _dbContext.CodingSessions
-                .Where(s => s.StartDate == todayUTC)
+                .Where(s => s.StartDateUTC == todayUTC)
                 .SumAsync(s => s.DurationSeconds);
         }
 
@@ -204,7 +204,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
             return await _dbContext.CodingSessions
-                .Where(s => s.StartDate >= todayDate)
+                .Where(s => s.StartDateUTC >= todayDate)
                 .SumAsync(s => s.DurationSeconds);
         }
 
@@ -219,17 +219,17 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .AsNoTracking()
                 .Select(s => new
                 {
-                    s.StartDate,
+                    s.StartDateUTC,
                     s.DurationSeconds
                 })
                 .ToListAsync();
 
             var todayTotal = sessions
-                .Where(s => s.StartDate >= todayUTC)
+                .Where(s => s.StartDateUTC >= todayUTC)
                 .Sum(s => (double?)s.DurationSeconds) ?? 0.0;
 
             var weekTotal = sessions
-                .Where(s => s.StartDate >= weekStart)
+                .Where(s => s.StartDateUTC >= weekStart)
                 .Sum(s => (double?)s.DurationSeconds) ?? 0.0;
 
             var average = sessions

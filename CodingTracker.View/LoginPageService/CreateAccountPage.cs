@@ -1,6 +1,6 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using System.Diagnostics;

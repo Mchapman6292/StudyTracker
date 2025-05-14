@@ -1,8 +1,8 @@
 ﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.FormService.ColourServices;
@@ -82,10 +82,10 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 {
                     "SessionId",
                     "DurationHHMM",
-                    "StartDate",
-                    "StartTime",
-                    "EndDate",
-                    "EndTime"
+                    "StartDateLocal",
+                    "StartTimeLocal",
+                    "EndDateLocal",
+                    "EndTimeLocal"
                 };
         }
 
@@ -242,17 +242,17 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].DisplayIndex = 1;
 
-            if (dataGrid.Columns.Contains("StartDate"))
-                dataGrid.Columns["StartDate"].DisplayIndex = 2;
+            if (dataGrid.Columns.Contains("StartDateLocal"))
+                dataGrid.Columns["StartDateLocal"].DisplayIndex = 2;
 
-            if (dataGrid.Columns.Contains("StartTime"))
-                dataGrid.Columns["StartTime"].DisplayIndex = 3;
+            if (dataGrid.Columns.Contains("StartTimeLocal"))
+                dataGrid.Columns["StartTimeLocal"].DisplayIndex = 3;
 
-            if (dataGrid.Columns.Contains("EndDate"))
-                dataGrid.Columns["EndDate"].DisplayIndex = 4;
+            if (dataGrid.Columns.Contains("EndDateLocal"))
+                dataGrid.Columns["EndDateLocal"].DisplayIndex = 4;
 
-            if (dataGrid.Columns.Contains("EndTime"))
-                dataGrid.Columns["EndTime"].DisplayIndex = 5;
+            if (dataGrid.Columns.Contains("EndTimeLocal"))
+                dataGrid.Columns["EndTimeLocal"].DisplayIndex = 5;
 
         }
 
@@ -264,17 +264,17 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
 
-            if (dataGrid.Columns.Contains("StartDate"))
-                dataGrid.Columns["StartDate"].HeaderText = "Start Date";
+            if (dataGrid.Columns.Contains("StartDateLocal"))
+                dataGrid.Columns["StartDateLocal"].HeaderText = "Start Date";
 
-            if (dataGrid.Columns.Contains("StartTime"))
-                dataGrid.Columns["StartTime"].HeaderText = "Start Time";
+            if (dataGrid.Columns.Contains("StartTimeLocal"))
+                dataGrid.Columns["StartTimeLocal"].HeaderText = "Start Time";
 
-            if (dataGrid.Columns.Contains("EndDate"))
-                dataGrid.Columns["EndDate"].HeaderText = "End Date";
+            if (dataGrid.Columns.Contains("EndDateLocal"))
+                dataGrid.Columns["EndDateLocal"].HeaderText = "End Date";
 
-            if (dataGrid.Columns.Contains("EndTime"))
-                dataGrid.Columns["EndTime"].HeaderText = "End Time";
+            if (dataGrid.Columns.Contains("EndTimeLocal"))
+                dataGrid.Columns["EndTimeLocal"].HeaderText = "End Time";
         }
 
         public void ReSizeColumns(DataGridView dataGrid)
@@ -289,11 +289,11 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
-                    else if (columnName == "StartDate" || columnName == "EndDate")
+                    else if (columnName == "StartDateLocal" || columnName == "EndDateLocal")
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
-                    else if (columnName == "StartTime" || columnName == "EndTime")
+                    else if (columnName == "StartTimeLocal" || columnName == "EndTimeLocal")
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
@@ -322,28 +322,28 @@ namespace CodingTracker.View.EditSessionPageService.DataGridViewManagers
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
             }
 
-            if (dataGrid.Columns.Contains("StartDate"))
+            if (dataGrid.Columns.Contains("StartDateLocal"))
             {
-                dataGrid.Columns["StartDate"].DefaultCellStyle.Format = "dd MMM yyyy";
-                dataGrid.Columns["StartDate"].HeaderText = "Start Date";
+                dataGrid.Columns["StartDateLocal"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["StartDateLocal"].HeaderText = "Start Date";
             }
 
-            if (dataGrid.Columns.Contains("EndDate"))
+            if (dataGrid.Columns.Contains("EndDateLocal"))
             {
-                dataGrid.Columns["EndDate"].DefaultCellStyle.Format = "dd MMM yyyy";
-                dataGrid.Columns["EndDate"].HeaderText = "End Date";
+                dataGrid.Columns["EndDateLocal"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["EndDateLocal"].HeaderText = "End Date";
             }
 
-            if (dataGrid.Columns.Contains("StartTime"))
+            if (dataGrid.Columns.Contains("StartTimeLocal"))
             {
-                dataGrid.Columns["StartTime"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["StartTime"].HeaderText = "Start Time";
+                dataGrid.Columns["StartTimeLocal"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["StartTimeLocal"].HeaderText = "Start Time";
             }
 
-            if (dataGrid.Columns.Contains("EndTime"))
+            if (dataGrid.Columns.Contains("EndTimeLocal"))
             {
-                dataGrid.Columns["EndTime"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["EndTime"].HeaderText = "End Time";
+                dataGrid.Columns["EndTimeLocal"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["EndTimeLocal"].HeaderText = "End Time";
             }
         }
 
