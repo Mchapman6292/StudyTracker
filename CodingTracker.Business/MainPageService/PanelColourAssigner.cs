@@ -39,9 +39,8 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 
         public async Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days()
         {
-            using (var activity = new Activity(nameof(AssignGradientColorsToSessionsInLast28Days)).Start())
             {
-                _appLogger.Info($"Starting {nameof(AssignGradientColorsToSessionsInLast28Days)}, TraceID: {activity.TraceId}.");
+                _appLogger.Info($"Starting {nameof(AssignGradientColorsToSessionsInLast28Days)}");
 
                 var recentSessions = await _codingSessionRepository.GetRecentSessionsAsync(28);
 
@@ -51,7 +50,7 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                 foreach (var session in recentSessions)
                 {
                     double totalDurationSeconds = session.DurationSeconds;
-                    DateOnly sessionDate = session.StartDate;
+                    DateOnly sessionDate = session.StartDateUTC;
 
                     SessionColor colorEnum = DetermineSessionColor(totalDurationSeconds);
                     (Color StartColor, Color EndColor) gradientColors = GetSessionGradientColors(colorEnum);

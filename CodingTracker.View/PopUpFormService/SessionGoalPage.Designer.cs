@@ -71,6 +71,7 @@ namespace CodingTracker.View.PopUpFormService
             setTimeGoalButton = new Guna.UI2.WinForms.Guna2GradientButton();
             skipButton = new Guna.UI2.WinForms.Guna2GradientButton();
             DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            gunaAnimationWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             mainPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -238,6 +239,11 @@ namespace CodingTracker.View.PopUpFormService
             DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
             // 
+            // gunaAnimationWindow
+            // 
+            gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
+            gunaAnimationWindow.TargetForm = this;
+            // 
             // SessionGoalPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -254,5 +260,7 @@ namespace CodingTracker.View.PopUpFormService
             ResumeLayout(false);
         }
         #endregion
+
+        private Guna.UI2.WinForms.Guna2AnimateWindow gunaAnimationWindow;
     }
 }

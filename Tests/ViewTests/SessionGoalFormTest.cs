@@ -1,6 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -10,7 +9,6 @@ using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.NotificationManagers;
 using CodingTracker.View.PopUpFormService;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using Moq;
 using Xunit;
 
@@ -25,10 +23,8 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockFormSwitcher = new Mock<IFormSwitcher>();
             var mockInputValidator = new Mock<IInputValidator>();
             var mockNotificationManager = new Mock<INotificationManager>();
-            var mockFormStateManager = new Mock<IFormStatePropertyManager>();
             var mockUtilityService = new Mock<IUtilityService>();
             var mockLogger = new Mock<IApplicationLogger>();
-            var mockApplicationControl = new Mock<IApplicationControl>();
             var mockFormStateManagement = new Mock<IFormStateManagement>();
             var mockButtonHighlighterService = new Mock<IButtonHighlighterService>();
             var exitFlowManager = new Mock<IExitFlowManager>();
@@ -38,11 +34,9 @@ namespace Tests.ViewTests.SessionGoalFormTests
                 mockFormSwitcher.Object,
                 mockInputValidator.Object,
                 mockNotificationManager.Object,
-                mockFormStateManager.Object,
                 mockUtilityService.Object,
                 mockLogger.Object,
                 mockFormStateManagement.Object,
-                mockApplicationControl.Object,
                 mockButtonHighlighterService.Object,
                 exitFlowManager.Object
             );
@@ -52,8 +46,8 @@ namespace Tests.ViewTests.SessionGoalFormTests
         var session = new CodingSession
             {
                 UserId = 42,
-                StartDate = DateOnly.FromDateTime(DateTime.Now),
-                StartTime = DateTime.Now,
+                StartDateLocal = DateOnly.FromDateTime(DateTime.Now),
+                StartTimeLocal = DateTime.Now,
                 GoalSet = false,
                 GoalReached = false,
                 GoalSeconds = 0

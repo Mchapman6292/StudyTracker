@@ -15,7 +15,7 @@ namespace CodingTracker.Data.Migrations
                 table: "CodingSessions");
 
             migrationBuilder.AlterColumn<DateOnly>(
-                name: "StartDate",
+                name: "StartDateLocal",
                 table: "CodingSessions",
                 type: "date",
                 nullable: false,
@@ -35,7 +35,7 @@ namespace CodingTracker.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<DateOnly>(
-                name: "EndDate",
+                name: "EndDateLocal",
                 table: "CodingSessions",
                 type: "date",
                 nullable: false,
@@ -65,7 +65,7 @@ namespace CodingTracker.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "EndTime",
+                name: "EndTimeLocal",
                 table: "CodingSessions",
                 type: "timestamp with time zone",
                 nullable: false,
@@ -79,7 +79,7 @@ namespace CodingTracker.Data.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "StartTime",
+                name: "StartTimeLocal",
                 table: "CodingSessions",
                 type: "timestamp with time zone",
                 nullable: false,
@@ -97,7 +97,7 @@ namespace CodingTracker.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "EndTime",
+                name: "EndTimeLocal",
                 table: "CodingSessions");
 
             migrationBuilder.DropColumn(
@@ -105,7 +105,7 @@ namespace CodingTracker.Data.Migrations
                 table: "CodingSessions");
 
             migrationBuilder.DropColumn(
-                name: "StartTime",
+                name: "StartTimeLocal",
                 table: "CodingSessions");
 
             migrationBuilder.DropColumn(
@@ -113,7 +113,7 @@ namespace CodingTracker.Data.Migrations
                 table: "CodingSessions");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "StartDate",
+                name: "StartDateLocal",
                 table: "CodingSessions",
                 type: "timestamp with time zone",
                 nullable: true,
@@ -129,7 +129,7 @@ namespace CodingTracker.Data.Migrations
                 oldType: "boolean");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "EndDate",
+                name: "EndDateLocal",
                 table: "CodingSessions",
                 type: "timestamp with time zone",
                 nullable: true,

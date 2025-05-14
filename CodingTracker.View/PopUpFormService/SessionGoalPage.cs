@@ -1,6 +1,5 @@
 ﻿// SessionGoalPage.cs
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -9,7 +8,6 @@ using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
 using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 
 namespace CodingTracker.View.PopUpFormService
 {
@@ -18,11 +16,9 @@ namespace CodingTracker.View.PopUpFormService
         private readonly INotificationManager _notificationManager;
         private readonly IUtilityService _utilityService;
         private readonly IFormStateManagement _formStateManagement;
-        private readonly IApplicationControl _applicationControl;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
         private readonly IInputValidator _inputValidator;
-        private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly IExitFlowManager _exitFlowManager;
@@ -35,11 +31,9 @@ namespace CodingTracker.View.PopUpFormService
             IFormSwitcher formSwitcher,
             IInputValidator inputValidator,
             INotificationManager notificationManager,
-            IFormStatePropertyManager formStatePropertyManager,
             IUtilityService utilityService,
             IApplicationLogger appLogger,
             IFormStateManagement formStateManagement,
-            IApplicationControl applicationControl,
             IButtonHighlighterService buttonHighlighterService,
             IExitFlowManager exitFlowManager)
         {
@@ -47,11 +41,9 @@ namespace CodingTracker.View.PopUpFormService
             _formSwitcher = formSwitcher;
             _inputValidator = inputValidator;
             _notificationManager = notificationManager;
-            _formStatePropertyManager = formStatePropertyManager;
             _utilityService = utilityService;
             _appLogger = appLogger;
             _formStateManagement = formStateManagement;
-            _applicationControl = applicationControl;
             _buttonHighlighterService = buttonHighlighterService;
             _exitFlowManager = exitFlowManager;
 
@@ -181,15 +173,9 @@ namespace CodingTracker.View.PopUpFormService
                 return;
             }
 
-            // Goal is taken as HHMM format and convert to seconds.
 
 
-            /*
-            _formStatePropertyManager.SetFormGoalTimeHHMM(sessionGoalSecondsInt);
-            */
-
-
-            _codingSessionManager.StartCodingSession(startTime, sessionGoalSeconds, goalSet);
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, goalSet);
             /*
             _formStatePropertyManager.SetIsFormGoalSet(true);
             _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSecondsInt);
@@ -279,7 +265,7 @@ namespace CodingTracker.View.PopUpFormService
         {
             bool goalSet = false;
             DateTime startTime = DateTime.Now;
-            _codingSessionManager.StartCodingSession(startTime, 0, goalSet);
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(0, goalSet);
 
             _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
             this.DialogResult = DialogResult.Cancel;

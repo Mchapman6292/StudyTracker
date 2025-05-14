@@ -2,7 +2,6 @@
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
@@ -17,7 +16,6 @@ namespace CodingTracker.View
     public partial class LoginPage : Form
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IApplicationControl _appControl;
         private readonly IApplicationLogger _appLogger;
         private readonly IFormController _formController;
         private readonly IFormSwitcher _formSwitcher;
@@ -29,10 +27,9 @@ namespace CodingTracker.View
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationControl appControl, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormController formController, IFormSwitcher formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
         {
             _authenticationService = authenticationService;
-            _appControl = appControl;
             _appLogger = applogger;
             _formController = formController;
             _formSwitcher = formSwitcher;

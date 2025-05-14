@@ -37,7 +37,7 @@ namespace CodingTracker.Business.CodingSessionService.SessionCalculators
             }
 
             var sessionsByDate = sessions
-                .GroupBy(s => s.StartDate)
+                .GroupBy(s => s.StartDateUTC)
                 .Select(g => new { Date = g.Key, TotalSeconds = g.Sum(s => s.DurationSeconds) })
                 .ToList();
 

@@ -65,6 +65,8 @@ namespace CodingTracker.View.TimerDisplayService
             pauseButton = new Guna2Button();
             progressTimer = new System.Windows.Forms.Timer(components);
             DisplayMessageBox = new Guna2MessageDialog();
+            gunaAnimationWindow = new Guna2AnimateWindow(components);
+            timeDisplayLabel = new Guna2HtmlLabel();
             mainPanel.SuspendLayout();
             progressBar.SuspendLayout();
             SuspendLayout();
@@ -161,6 +163,7 @@ namespace CodingTracker.View.TimerDisplayService
             // 
             progressBar.AnimationSpeed = 0.5F;
             progressBar.BackColor = Color.Transparent;
+            progressBar.Controls.Add(timeDisplayLabel);
             progressBar.Controls.Add(statusLabel);
             progressBar.FillColor = Color.FromArgb(45, 46, 50);
             progressBar.FillThickness = 15;
@@ -223,6 +226,16 @@ namespace CodingTracker.View.TimerDisplayService
             DisplayMessageBox.Style = MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
             // 
+            // timeDisplayLabel
+            // 
+            timeDisplayLabel.BackColor = Color.Transparent;
+            timeDisplayLabel.Location = new Point(49, 106);
+            timeDisplayLabel.Name = "timeDisplayLabel";
+            timeDisplayLabel.Size = new Size(77, 23);
+            timeDisplayLabel.TabIndex = 1;
+            timeDisplayLabel.Text = "HH:MM:SS";
+            timeDisplayLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
             // CountdownTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -236,6 +249,7 @@ namespace CodingTracker.View.TimerDisplayService
             Load += CountdownTimerForm_Load;
             mainPanel.ResumeLayout(false);
             progressBar.ResumeLayout(false);
+            progressBar.PerformLayout();
             ResumeLayout(false);
         }
         #endregion
@@ -243,5 +257,7 @@ namespace CodingTracker.View.TimerDisplayService
         private Guna2ControlBox closeButton;
         private Guna2ControlBox minimizeButton;
         private Guna2GradientButton homeButton;
+        private Guna2AnimateWindow gunaAnimationWindow;
+        private Guna2HtmlLabel timeDisplayLabel;
     }
 }

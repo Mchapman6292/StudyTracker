@@ -15,10 +15,10 @@ namespace Tests.BusinessTests.CodingSessionTests
 
             Assert.Equal(userId, session.UserId);
             Assert.Null(session.SessionId);
-            Assert.Null(session.StartDate);
-            Assert.Null(session.StartTime);
-            Assert.Null(session.EndDate);
-            Assert.Null(session.EndTime);
+            Assert.Null(session.StartDateLocal);
+            Assert.Null(session.StartTimeLocal);
+            Assert.Null(session.EndDateLocal);
+            Assert.Null(session.EndTimeLocal);
             Assert.Null(session.DurationSeconds);
             Assert.Equal(string.Empty, session.DurationHHMM);
             Assert.False(session.GoalSet);
@@ -39,19 +39,19 @@ namespace Tests.BusinessTests.CodingSessionTests
             var session = new CodingSession
             {
                 UserId = userId,
-                StartDate = currentDate,
-                StartTime = currentDateTime,
+                StartDateLocal = currentDate,
+                StartTimeLocal = currentDateTime,
                 GoalSet = goalSet,
                 GoalSeconds = goalMinutes
             };
 
             Assert.Equal(userId, session.UserId);
-            Assert.Equal(currentDate, session.StartDate);
-            Assert.Equal(currentDateTime, session.StartTime);
+            Assert.Equal(currentDate, session.StartDateLocal);
+            Assert.Equal(currentDateTime, session.StartTimeLocal);
             Assert.Equal(goalSet, session.GoalSet);
             Assert.Equal(goalMinutes, session.GoalSeconds);
-            Assert.Null(session.EndDate);
-            Assert.Null(session.EndTime);
+            Assert.Null(session.EndDateLocal);
+            Assert.Null(session.EndTimeLocal);
             Assert.Null(session.GoalReached);
             Assert.Null(session.DurationSeconds);
             Assert.Empty(session.DurationHHMM);
@@ -66,14 +66,14 @@ namespace Tests.BusinessTests.CodingSessionTests
             var session = new CodingSession
             {
                 UserId = 42,
-                StartDate = DateOnly.FromDateTime(now.AddMinutes(-60)),
-                StartTime = now.AddMinutes(-60),
+                StartDateLocal = DateOnly.FromDateTime(now.AddMinutes(-60)),
+                StartTimeLocal = now.AddMinutes(-60),
                 GoalSet = true,
                 GoalSeconds = 45
             };
 
-            session.EndDate = DateOnly.FromDateTime(now);
-            session.EndTime = now;
+            session.EndDateLocal = DateOnly.FromDateTime(now);
+            session.EndTimeLocal = now;
             session.DurationSeconds = 60 * 60;
             session.GoalReached = session.DurationSeconds >= session.GoalSeconds * 60;
 
@@ -86,8 +86,8 @@ namespace Tests.BusinessTests.CodingSessionTests
             var session = new CodingSession
             {
                 UserId = 42,
-                StartDate = DateOnly.FromDateTime(DateTime.Now),
-                StartTime = DateTime.Now,
+                StartDateLocal = DateOnly.FromDateTime(DateTime.Now),
+                StartTimeLocal = DateTime.Now,
                 GoalSet = false,
                 GoalReached = false,
                 GoalSeconds = 0

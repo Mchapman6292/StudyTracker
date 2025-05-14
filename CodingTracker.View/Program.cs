@@ -14,7 +14,6 @@ using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
@@ -25,7 +24,6 @@ using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
-using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
 using CodingTracker.View.FormService;
@@ -36,7 +34,6 @@ using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 using Microsoft.EntityFrameworkCore;
@@ -85,7 +82,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IInputValidator, InputValidator>()
                     .AddSingleton<IApplicationLogger, ApplicationLogger>()
                     .AddSingleton<IUtilityService, UtilityService>()
-                    .AddSingleton<IApplicationControl, ApplicationControl>()
                     .AddSingleton<IAuthenticationService, AuthenticationService>()
                     .AddSingleton<ISessionCalculator, SessionCalculator>()
                     .AddSingleton<IFormFactory, FormFactory>()
@@ -103,7 +99,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager, DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
-                    .AddSingleton<IFormStatePropertyManager, FormStatePropertyManger>()
                     .AddSingleton<LoginPage>()
                     .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()

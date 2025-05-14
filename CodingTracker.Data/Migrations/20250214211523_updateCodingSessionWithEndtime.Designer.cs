@@ -40,10 +40,10 @@ namespace CodingTracker.Data.Migrations
                     b.Property<double>("DurationSeconds")
                         .HasColumnType("double precision");
 
-                    b.Property<DateOnly>("EndDate")
+                    b.Property<DateOnly>("EndDateLocal")
                         .HasColumnType("date");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime>("EndTimeLocal")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("GoalSeconds")
@@ -55,10 +55,10 @@ namespace CodingTracker.Data.Migrations
                     b.Property<bool>("GoalSet")
                         .HasColumnType("boolean");
 
-                    b.Property<DateOnly>("StartDate")
+                    b.Property<DateOnly>("StartDateLocal")
                         .HasColumnType("date");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime>("StartTimeLocal")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")

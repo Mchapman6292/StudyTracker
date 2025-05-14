@@ -371,7 +371,6 @@ namespace CodingTracker.View.TimerDisplayService
             int durationInt = (int)(stopwatchTimer.Elapsed.TotalSeconds);
             _codingSessionManager.SetDurationSeconds(durationInt);
             _codingSessionManager.SetCodingSessionEndTimeAndDate(DateTime.Now);
-            await _codingSessionManager.EndCodingSessionAsync();
 
             _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
         }

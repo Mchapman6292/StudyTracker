@@ -13,10 +13,10 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
 
         public int UserId { get; set; }
 
-        public DateOnly StartDate { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateOnly EndDate { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateOnly StartDateUTC { get; set; }
+        public DateTime StartTimeUTC { get; set; }
+        public DateOnly EndDateUTC { get; set; }
+        public DateTime EndTimeUTC { get; set; }
         public int DurationSeconds { get; set; }
 
         public string DurationHHMM { get; set; }

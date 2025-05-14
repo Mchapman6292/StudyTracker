@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.NotificationManagers;
@@ -22,17 +21,15 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
-        private readonly IApplicationControl _applicationControl;
         private readonly IFormSwitcher _formSwitcher;
         private readonly IStopWatchTimerService _stopWatchTimerService;
 
 
-        public ExitFlowManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IApplicationControl applicationControl, IFormSwitcher formSwitcher, IStopWatchTimerService stopWatchTimerService)
+        public ExitFlowManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IFormSwitcher formSwitcher, IStopWatchTimerService stopWatchTimerService)
         {
             _codingSessionManager = codingSessionManager;
             _appLogger = appLogger;
             _notificationManager = notificationManager;
-            _applicationControl = applicationControl;
             _formSwitcher = formSwitcher;
             _stopWatchTimerService = stopWatchTimerService;
         }
@@ -64,7 +61,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
                     {
                         _stopWatchTimerService.StopTimer();
                         TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
-                        _codingSessionManager.NEWUpdateCodingSessionTimerEnded(duration);
+                        _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
                     }
 
                     _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);

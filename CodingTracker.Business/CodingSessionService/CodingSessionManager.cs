@@ -1,16 +1,20 @@
-﻿using CodingTracker.Common.BusinessInterfaces;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {
+    /// <summary>
+    /// Important design points
+    /// - There are two classes used in the management/saving of the coding session: CodingSession & CodingSessionEntity
+    /// - CodingSession is used while the coding session is active, with all current session values being saved to the _currentCodingSession property.
+    /// - When the CodingSession is complete it is converted to a CodingSessionEntity & all DateTimes are converted to utc.
+
     public class CodingSessionManager : ICodingSessionManager
     {
         #region Properties
@@ -27,15 +31,14 @@ namespace CodingTracker.Business.CodingSessionManagers
         private bool IsCodingSessionActive { get; set; } = false;
         private bool IsSessionTimerActive { get; set; } = false;
 
-        // This is used to store the GoalTime that is passed to the TimerDisplayForm, not relevant to CodingSessionEntity goalTime.
-        private string _formGoalTimeHHMM { get; set; }
-        private bool _isFormGoalSet { get; set; }
-
         #endregion
 
         #region Constructor
 
-        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator, ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService)
+        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator,
+                                  ICodingSessionRepository codingSessionRepository,
+                                  IUserCredentialRepository userCredentialRepository,
+                                  IUtilityService utilityService)
         {
             _appLogger = appLogger;
             _inputValidator = inputValidator;
@@ -46,119 +49,36 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         #endregion
 
-        #region Session Management
+        #region Controller Methods
 
-        public void StartCodingSession(DateTime startTime, int? sessionGoalSeconds, bool codingGoalSet)
+        /// <summary>
+        ///  Creates the CodingSession object and sets it to _currentCodingSession.
+        ///  This is called in SessionGoalPage from the start or skip button.
+        ///  If the user wants to set a session goal the start button is used, if skip is used then the SessionGoal is set to 0.
+
+
+        public void InitializeCodingSessionAndSetGoal(int sessionGoalSeconds, bool codingGoalSet)
         {
             CodingSession session = CreateCurrentCodingSession();
             SetCurrentCodingSession(session);
-            SetCodingSessionStartTimeAndDate(startTime);
-            UpdateISCodingSessionActive(true);
-            UpdateIsSessionTimerActive(true);
             SetCurrentSessionGoalSeconds(sessionGoalSeconds);
             SetCurrentSessionGoalSet(codingGoalSet);
         }
 
         /// <summary>
-        /// Controller method that calls other methods to established the final values for the CodingSession class before it is converted to a CodingSessionEntity and added to the database. All checks for valid CodingSession values are done within the child methods.
-        /// </summary>
-       
-        public async Task EndCodingSessionAsync()
+        /// This is called in the load method of the CountdownTimerForm, sets the StartTime & Date.
+        ///  Is also responsible for Updating bools IsCodingSessionActive & IsSessionTimerActive.
+
+        public void StartCodingSessionAndUpdateActiveBooleans(DateTime startTime)
         {
-            // Set EndTime & EndDate.
-            DateTime endTime = DateTime.Now;
-            DateOnly currentendDate = DateOnly.FromDateTime(endTime);
-
-            // Calculate DurationSeconds & format to DurationHHMM
-            int currentDurationSeconds = CalculateDurationSeconds(_currentCodingSession.StartTime, endTime);
-            string currentDurationHHMM = _utilityService.ConvertDurationSecondsToHHMMStringWithSpace(currentDurationSeconds);
-            SetDurationHHMM(currentDurationHHMM);
-            SetDurationSeconds(currentDurationSeconds);
-            SetCodingSessionEndTimeAndDate(endTime);
-
-            UpdateGoalCompletionStatus();
-
-            CheckAllRequiredCurrentCodingSessionDetailNotNull();
-
-            //Dates are stored as local time in CodingSession as these are the values the user will see.
-            CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
-            _utilityService.ConvertCodingSessionDatesToUTC(currentCodingSessionEntity);
-
-            bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
-
-            UpdateISCodingSessionActive(false);
-        }
-
-        public async Task EndCodingSessionWithTimerFinished()
-        {
-            // Duration, EndTime & EndDate are all set once timer completes or exit buttons are actioned. 
-            string currentDurationHHMM = ConvertIntToHHMMStringWitSemiColon(_currentCodingSession.DurationSeconds);
-
-            UpdateGoalCompletionStatus();
-
-            //Dates are stored as local time in CodingSession as these are the values the user will see.
-            CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
-
-            bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
-
-            UpdateISCodingSessionActive(false);
-        }
-
-        // This is called upon successful login, If a user never starts the timer the Session is never saved to the database. 
-        public async Task OldStartCodingSession(string username)
-        {
-            _appLogger.Info($"Starting {nameof(OldStartCodingSession)}");
-
-            UserCredentialEntity userCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
-
-            Initialize_CurrentCodingSession(userCredential.UserId);
-
-            UpdateISCodingSessionActive(true); // This is when have start a second/third session etc, a new CodingSession object is created, only when the a user completes a timed study session is this converted to a CodingSesisonEntity and added to the database. 
-
-            _appLogger.Info($"Coding session started CurrentCodingSession user id = {_currentCodingSession.UserId}.");
-        }
-
-        public void Initialize_CurrentCodingSession(int userId)
-        {
-            _appLogger.Info($"Starting {nameof(Initialize_CurrentCodingSession)}");
-            DateTime currentDateTime = DateTime.UtcNow;
-
-            CodingSession codingSession = new CodingSession
-            {
-                UserId = userId,
-            };
-
-            _appLogger.Info($"New coding session created. UserId: {codingSession.UserId}, SessionId: {codingSession.SessionId}, StartDate: {codingSession.StartDate}, StartTime: {codingSession.StartTime}");
-            _currentCodingSession = codingSession;
-
+            SetCodingSessionStartTimeAndDate(startTime);
             UpdateISCodingSessionActive(true);
+            UpdateIsSessionTimerActive(true);
         }
 
-        // Remove once working
-        public async Task NEWEndCodingSessionAsync(TimeSpan? stopWatchTimerDuration)
-        {
-
-            UpdateISCodingSessionActive(false);
-
-            int durationSeconds = (int)stopWatchTimerDuration.Value.TotalSeconds;
-            string durationHHMM = _utilityService.ConvertDurationSecondsToHHMMStringWithSpace(durationSeconds);
-            SetDurationHHMM(durationHHMM);
-            SetDurationSeconds(durationSeconds);
-
-
-            SetCodingSessionEndTimeAndDate(DateTime.Now);
-            CheckAllRequiredCurrentCodingSessionDetailNotNull();
-
-            //Dates are stored as local time in CodingSession as these are the values the user will see.
-            CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
-            _utilityService.ConvertCodingSessionDatesToUTC(currentCodingSessionEntity);
-
-            bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
-
-
-        }
-
-        public void NEWUpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration)
+        /// <summary>
+        /// Updates the session when the timer has ended, setting duration and end time.
+        public void UpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration)
         {
             UpdateIsSessionTimerActive(false);
             int durationSeconds = (int)stopWatchTimerDuration.Value.TotalSeconds;
@@ -169,6 +89,9 @@ namespace CodingTracker.Business.CodingSessionManagers
             UpdateGoalCompletionStatus();
         }
 
+        /// <summary>
+        /// Updates the session with study notes and project, this is only called from the SessionNotesForm which is the end point when a coding session is being saved. 
+        /// 
         public async Task<bool> NEWUpdateCodingSessionStudyNotesAndSaveCodingSession(string studyProject, string studyNotes)
         {
             SetStudyProject(studyProject);
@@ -181,39 +104,8 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
 
-            return sessionAddedToDb; 
+            return sessionAddedToDb;
         }
-
-
-
-        public void UpdateCodingSessionNoGoalSet()
-        {
-            UpdateIsSessionTimerActive(true);
-            UpdateISCodingSessionActive(true);
-            SetCurrentSessionGoalSet(false);
-            SetCurrentSessionGoalReached(false);
-        }
-
-        public void UpdateCodingSessionGoalSet(int sessionGoalSeconds)
-        {
-            SetCurrentSessionGoalSet(true);
-            UpdateISCodingSessionActive(true);
-            SetCurrentSessionGoalSeconds(sessionGoalSeconds);
-            UpdateISCodingSessionActive(true);
-        }
-
-        public void UpdateCodingSessionEndTimes()
-        {
-            _appLogger.Info($"Starting {nameof(UpdateCodingSessionEndTimes)}");
-            DateTime currentDateTime = DateTime.UtcNow;
-            _currentCodingSession.EndDate = DateOnly.FromDateTime(currentDateTime);
-            _currentCodingSession.EndTime = currentDateTime;
-            _appLogger.Info($"currentCodingSession endDate & endTime set to {_currentCodingSession.EndDate}, {_currentCodingSession.EndTime}");
-        }
-
- 
-
-
 
         #endregion
 
@@ -252,167 +144,6 @@ namespace CodingTracker.Business.CodingSessionManagers
             return IsCodingSessionActive;
         }
 
-        public void SetCurrentUserIdPlaceholder(int userId)
-        {
-            _currentUserIdPlaceholder = userId;
-        }
-
-        public int ReturnCurrentUserIdPlaceholder()
-        {
-            return _currentUserIdPlaceholder;
-        }
-
-        public void SetStudyProject(string studyProject)
-        {
-            _currentCodingSession.StudyProject = studyProject;
-        }
-
-        public void SetStudyNotes(string studyNotes)
-        {
-            _currentCodingSession.StudyNotes = studyNotes;
-        }
-
-
-
-        #endregion
-
-        #region Time and Duration Methods
-
-        public void SetCodingSessionStartTimeAndDate(DateTime startTime)
-        {
-            _currentCodingSession.StartTime = startTime;
-            _currentCodingSession.StartDate = DateOnly.FromDateTime(startTime);
-        }
-
-        public DateTime? ReturnCurrentSessionStartTime()
-        {
-            if (_currentCodingSession.StartTime != null)
-            {
-                return _currentCodingSession.StartTime;
-            }
-            throw new InvalidOperationException($"Tried to return _currentSession.StartTime before it is initialized, this should never occur.");
-        }
-
-        public void SetCodingSessionEndTimeAndDate(DateTime endTime)
-        {
-            _currentCodingSession.EndTime = endTime;
-            _currentCodingSession.EndDate = DateOnly.FromDateTime(endTime);
-        }
-
-        public void SetDurationSeconds(int durationSeconds)
-        {
-            _currentCodingSession.DurationSeconds = durationSeconds;
-        }
-
-        public void SetDurationHHMM(string durationHHMM)
-        {
-            _currentCodingSession.DurationHHMM = durationHHMM;
-        }
-
- 
-
-        public int CalculateDurationSeconds(DateTime? startDate, DateTime? endDate)
-        {
-            _appLogger.Debug($"Values for {nameof(CalculateDurationSeconds)} startDate: {startDate}, endDate: {endDate}");
-
-            if (startDate == null)
-            {
-                _appLogger.Error($"StartDate is null for {nameof(CalculateDurationSeconds)}");
-                throw new ArgumentNullException(nameof(startDate), $"StartDate cannot be null for {nameof(CalculateDurationSeconds)}");
-            }
-            if (endDate == null)
-            {
-                _appLogger.Error($"EndDate is null for {nameof(CalculateDurationSeconds)}");
-                throw new ArgumentNullException(nameof(endDate), $"EndDate cannot be null for {nameof(CalculateDurationSeconds)}");
-            }
-            if (startDate >= endDate)
-            {
-                _appLogger.Error($"StartDate ({startDate:yyyy-MM-dd HH:mm:ss}) must be earlier than EndDate ({endDate:yyyy-MM-dd HH:mm:ss}) for {nameof(CalculateDurationSeconds)}.");
-                throw new InvalidOperationException($"StartDate ({startDate:yyyy-MM-dd HH:mm:ss}) must be earlier than EndDate ({endDate:yyyy-MM-dd HH:mm:ss}) for {nameof(CalculateDurationSeconds)}.");
-            }
-
-            _appLogger.Info($"Starting {nameof(CalculateDurationSeconds)}");
-            int durationSeconds = (int)(endDate.Value - startDate.Value).TotalSeconds;
-            _appLogger.Info($"durationSeconds calculated: {durationSeconds}");
-            return durationSeconds;
-        }
-
-
-
-        public string ConvertDurationSecondsToStringHHMM(double durationSeconds)
-        {
-            if (durationSeconds < 0)
-            {
-                _appLogger.Error($"Negative duration provided: {durationSeconds} seconds.");
-                throw new ArgumentOutOfRangeException(nameof(durationSeconds), $"DurationSeconds cannot be negative for {nameof(ConvertDurationSecondsToStringHHMM)}");
-            }
-
-            _appLogger.Info($"Starting {nameof(ConvertDurationSecondsToStringHHMM)}");
-             int hours = (int)(durationSeconds * 3600);
-            int minutes = (int)(durationSeconds % 3600) / 60;
-            string formattedTime = $"{hours:D2}:{minutes:D2}";
-            _appLogger.Info($"Converted {durationSeconds} seconds to {formattedTime}");
-            return formattedTime;
-        }
-
-        public string ConvertIntToHHMMStringWitSemiColon(double? durationSeconds)
-        {
-            if (!durationSeconds.HasValue)
-            {
-                _appLogger.Error("durationSeconds cannot be null when ending codingSession.");
-                throw new InvalidOperationException("durationSeconds cannot be null when ending codingSession.");
-            }
-
-            TimeSpan timeSpan = TimeSpan.FromSeconds(durationSeconds.Value);
-
-            int totalHours = (int)timeSpan.TotalHours;
-            int minutes = timeSpan.Minutes;
-            return $"{totalHours:D2}:{minutes:D2}";
-        }
-
-        #endregion
-
-        #region Goal Management
-
-        public int? ReturnGoalSeconds()
-        {
-            return _currentCodingSession.GoalSeconds;
-        }
-
-        public void SetCurrentSessionGoalSet(bool goalSet)
-        {
-            _currentCodingSession.GoalSet = goalSet;
-            _appLogger.Debug($"GoalSet updated to {goalSet}.");
-        }
-
-        public void SetCurrentSessionGoalReached(bool? goalReached)
-        {
-            _currentCodingSession.GoalReached = goalReached;
-        }
-
-        public bool? ReturnCurrentSessionGoalReached()
-        {
-            return _currentCodingSession.GoalReached;
-        }
-
-        public void SetCurrentSessionGoalSeconds(int? goalSeconds)
-        {
-            _currentCodingSession.GoalSeconds = goalSeconds;
-            _appLogger.Debug($"GoalSeconds set to {goalSeconds}");
-        }
-
-        public void SetGoalHoursAndGoalMins(int goalMins, bool goalSet)
-        {
-            if (goalSet)
-            {
-                _currentCodingSession.GoalSeconds = goalMins;
-                _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalSeconds}");
-                return;
-            }
-            _currentCodingSession.GoalSeconds = 0;
-            _appLogger.Debug($"CurrentCdoingSession GoalMins set to {_currentCodingSession.GoalSeconds}, default for not set.");
-        }
-
         public void UpdateGoalCompletionStatus()
         {
             try
@@ -421,7 +152,6 @@ namespace CodingTracker.Business.CodingSessionManagers
 
                 _currentCodingSession.GoalReached = false;
                 _appLogger.Debug($"Default GoalReached set to false");
-
 
                 _appLogger.Debug($"Session values - GoalSet: {(_currentCodingSession.GoalSet.HasValue ? _currentCodingSession.GoalSet.ToString() : "null")}, GoalSeconds: {(_currentCodingSession.GoalSeconds.HasValue ? _currentCodingSession.GoalSeconds.ToString() : "null")}, DurationSeconds: {_currentCodingSession.DurationSeconds}");
 
@@ -467,6 +197,104 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         #endregion
 
+        #region Property Setters
+
+        public void SetCurrentUserIdPlaceholder(int userId)
+        {
+            _currentUserIdPlaceholder = userId;
+        }
+
+        public void SetStudyProject(string studyProject)
+        {
+            _currentCodingSession.StudyProject = studyProject;
+        }
+
+        public void SetStudyNotes(string studyNotes)
+        {
+            _currentCodingSession.StudyNotes = studyNotes;
+        }
+
+        public void SetCodingSessionStartTimeAndDate(DateTime startTime)
+        {
+            _currentCodingSession.StartTimeLocal = startTime;
+            _currentCodingSession.StartDateLocal = DateOnly.FromDateTime(startTime);
+        }
+
+        public void SetCodingSessionEndTimeAndDate(DateTime endTime)
+        {
+            _currentCodingSession.EndTimeLocal = endTime;
+            _currentCodingSession.EndDateLocal = DateOnly.FromDateTime(endTime);
+        }
+
+        public void SetDurationSeconds(int durationSeconds)
+        {
+            _currentCodingSession.DurationSeconds = durationSeconds;
+        }
+
+        public void SetDurationHHMM(string durationHHMM)
+        {
+            _currentCodingSession.DurationHHMM = durationHHMM;
+        }
+
+        public void SetCurrentSessionGoalSet(bool goalSet)
+        {
+            _currentCodingSession.GoalSet = goalSet;
+            _appLogger.Debug($"GoalSet updated to {goalSet}.");
+        }
+
+        public void SetCurrentSessionGoalReached(bool? goalReached)
+        {
+            _currentCodingSession.GoalReached = goalReached;
+        }
+
+        public void SetCurrentSessionGoalSeconds(int? goalSeconds)
+        {
+            _currentCodingSession.GoalSeconds = goalSeconds;
+            _appLogger.Debug($"GoalSeconds set to {goalSeconds}");
+        }
+
+        public void SetGoalHoursAndGoalMins(int goalMins, bool goalSet)
+        {
+            if (goalSet)
+            {
+                _currentCodingSession.GoalSeconds = goalMins;
+                _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalSeconds}");
+                return;
+            }
+            _currentCodingSession.GoalSeconds = 0;
+            _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalSeconds}, default for not set.");
+        }
+
+        #endregion
+
+        #region Property Getters
+
+        public int ReturnCurrentUserIdPlaceholder()
+        {
+            return _currentUserIdPlaceholder;
+        }
+
+        public DateTime? ReturnCurrentSessionStartTime()
+        {
+            if (_currentCodingSession.StartTimeLocal != null)
+            {
+                return _currentCodingSession.StartTimeLocal;
+            }
+            throw new InvalidOperationException($"Tried to return _currentSession.StartTimeLocal before it is initialized, this should never occur.");
+        }
+
+        public int? ReturnGoalSeconds()
+        {
+            return _currentCodingSession.GoalSeconds;
+        }
+
+        public bool? ReturnCurrentSessionGoalReached()
+        {
+            return _currentCodingSession.GoalReached;
+        }
+
+        #endregion
+
         #region Validation and Conversion
 
         public void CheckAllRequiredCurrentCodingSessionDetailNotNull()
@@ -492,22 +320,22 @@ namespace CodingTracker.Business.CodingSessionManagers
             }
         }
 
+
         public CodingSessionEntity ConvertCodingSessionToCodingSessionEntity()
         {
             return new CodingSessionEntity
             {
                 UserId = _currentCodingSession.UserId,
-                StartDate = _currentCodingSession.StartDate ?? throw new ArgumentNullException($"StartDate cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
-                StartTime = _currentCodingSession.StartTime ?? throw new ArgumentNullException($"StartTime cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
-                EndDate = _currentCodingSession.EndDate ?? throw new ArgumentNullException($"EndDate cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
-                EndTime = _currentCodingSession.EndTime ?? throw new ArgumentNullException($"EndTime cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                StartDateUTC = _currentCodingSession.StartDateLocal ?? throw new ArgumentNullException($"StartDateLocal cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                StartTimeUTC = _currentCodingSession.StartTimeLocal ?? throw new ArgumentNullException($"StartTimeLocal cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                EndDateUTC = _currentCodingSession.EndDateLocal ?? throw new ArgumentNullException($"EndDateLocal cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
+                EndTimeUTC = _currentCodingSession.EndTimeLocal ?? throw new ArgumentNullException($"EndTimeLocal cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 DurationSeconds = _currentCodingSession.DurationSeconds ?? throw new ArgumentNullException($"DurationSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 DurationHHMM = _currentCodingSession.DurationHHMM ?? throw new ArgumentNullException($"DurationHHMM cannot be null when creating CdoingSesisonEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 GoalSeconds = _currentCodingSession.GoalSeconds ?? throw new ArgumentNullException($"GoalSeconds cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 GoalReached = _currentCodingSession.GoalReached ?? throw new ArgumentNullException($"GoalReached cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 StudyProject = _currentCodingSession.StudyProject ?? throw new ArgumentNullException($"StudyProject cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}"),
                 StudyNotes = _currentCodingSession.StudyNotes ?? throw new ArgumentNullException($"StudyNotes cannot be null when creating CodingSessionEntity for {nameof(ConvertCodingSessionToCodingSessionEntity)}")
-
             };
         }
 

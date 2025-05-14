@@ -364,31 +364,31 @@
             Duration.MinimumWidth = 6;
             Duration.Name = "Duration";
             // 
-            // StartDate
+            // StartDateLocal
             // 
             StartDate.HeaderText = "Start Date";
             StartDate.MinimumWidth = 6;
-            StartDate.Name = "StartDate";
+            StartDate.Name = "StartDateLocal";
             // 
-            // StartTime
+            // StartTimeLocal
             // 
             StartTime.FillWeight = 99.4923859F;
             StartTime.HeaderText = "Start Time";
             StartTime.MinimumWidth = 6;
-            StartTime.Name = "StartTime";
+            StartTime.Name = "StartTimeLocal";
             // 
-            // EndDate
+            // EndDateLocal
             // 
             EndDate.FillWeight = 99.4923859F;
             EndDate.HeaderText = "End Date";
             EndDate.MinimumWidth = 6;
-            EndDate.Name = "EndDate";
+            EndDate.Name = "EndDateLocal";
             // 
-            // EndTime
+            // EndTimeLocal
             // 
             EndTime.HeaderText = "End Time";
             EndTime.MinimumWidth = 6;
-            EndTime.Name = "EndTime";
+            EndTime.Name = "EndTimeLocal";
             // 
             // DisplayMessageBox
             // 

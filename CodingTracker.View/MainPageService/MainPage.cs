@@ -2,7 +2,6 @@
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
-using CodingTracker.Common.IApplicationControls;
 using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
@@ -24,7 +23,6 @@ namespace CodingTracker.View
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly INotificationManager _notificationManager;
-        private readonly IApplicationControl _applicationControl;
         private readonly IExitFlowManager _exitFlowManager;
 
 
@@ -33,7 +31,7 @@ namespace CodingTracker.View
 
 
 
-        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IApplicationControl applicationControl, IExitFlowManager exitFlowManager)
+        public MainPage(IApplicationLogger appLogger, IFormController formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormSwitcher formSwitcher, ISessionCalculator sessionCalculator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
             _appLogger = appLogger;
@@ -45,14 +43,20 @@ namespace CodingTracker.View
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
             _notificationManager = notificationManager;
-            _applicationControl = applicationControl;
             _exitFlowManager = exitFlowManager;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
 
-            closeButton.Click += CloseButton_Click; 
+            closeButton.Click += CloseButton_Click;
+
+            SetAnimationWindow();
 
 
+        }
+
+        private void SetAnimationWindow()
+        {
+            gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE | Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
         }
 
         private async void MainPage_Load(object sender, EventArgs e)

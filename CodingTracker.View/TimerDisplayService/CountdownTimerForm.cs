@@ -1,22 +1,17 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.IApplicationLoggers;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
-using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.TimerDisplayService.FormStatePropertyManagers;
 using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
 using Guna.UI2.WinForms;
-using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace CodingTracker.View.TimerDisplayService
 {
     public partial class CountdownTimerForm : Form
     {
+        #region Properties
+
         private bool isPaused = false;
         private bool isDragging = false;
         private Point dragStartPoint;
@@ -24,47 +19,38 @@ namespace CodingTracker.View.TimerDisplayService
         private int? sessionGoalSecondsInt;
         private double? progressTimerGoalSecondsDouble;
 
-        private readonly IFormStatePropertyManager _formStatePropertyManager;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormSwitcher _formSwitcher;
         private readonly IApplicationLogger _appLogger;
-        private readonly IUtilityService _utitlityService;
-        private readonly INotificationManager _notificationManager;
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly IExitFlowManager _exitFlowManager;
 
-        public CountdownTimerForm(IFormStatePropertyManager formStatePropertyManager, ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IUtilityService utilityService, INotificationManager notificationManager, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager)
+        #endregion
+
+        #region Constructor
+
+        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormSwitcher formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
-            _formStatePropertyManager = formStatePropertyManager;
             _codingSessionManager = codingSessionManager;
             _formSwitcher = formSwitcher;
-            _utitlityService = utilityService;
-            _notificationManager = notificationManager;
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
             _exitFlowManager = exitFlowManager;
 
             closeButton.Click += CloseButton_Click;
 
-            sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
-
             SetFormPosition();
-            _codingSessionManager.StartCodingSession(DateTime.Now, sessionGoalSecondsInt, true);
         }
 
-        private void SetFormPosition()
-        {
-            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
-            int formWidth = this.Width;
-            int formHeight = this.Height;
+        #endregion
 
-            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
-        }
+        #region Form Events
 
         private void CountdownTimerForm_Load(object sender, EventArgs e)
         {
+            int? sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
+
             progressValue = 0;
             progressBar.Value = 0;
 
@@ -73,26 +59,30 @@ namespace CodingTracker.View.TimerDisplayService
                 statusLabel.Text = "0%";
             }
 
-            if(sessionGoalSecondsInt  != 0) 
+            if (sessionGoalSecondsInt != 0)
             {
                 progressTimerGoalSecondsDouble = (double)sessionGoalSecondsInt;
             }
 
-            _codingSessionManager.SetCodingSessionStartTimeAndDate(DateTime.Now);
-            sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSecondsInt.Value, true);
+
             progressTimer.Start();
             _stopWatchTimerService.StartTimer();
         }
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
-            if(!progressTimerGoalSecondsDouble.HasValue)
+            if (!progressTimerGoalSecondsDouble.HasValue)
             {
                 return;
             }
 
-            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
-            double percentage = Math.Min(100, (elapsed.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
+            TimeSpan elapsedTime = _stopWatchTimerService.ReturnElapsedTimeSpan();
+
+            // Update the timeDisplayLabel
+            UpdateTimeDisplayLabel(elapsedTime);
+
+            double percentage = Math.Min(100, (elapsedTime.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
             progressValue = (int)percentage;
 
             progressBar.Value = progressValue;
@@ -114,35 +104,9 @@ namespace CodingTracker.View.TimerDisplayService
             }
         }
 
-        private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
-        {
-            int r = (int)(255 * (1 - progress) + 64 * progress);
-            int g = (int)(81 * (1 - progress) + 230 * progress);
-            int b = (int)(195 * (1 - progress) + 200 * progress);
-            Color mainColor = Color.FromArgb(r, g, b);
-            Color secondaryColor;
-
-            if (progress < 0.5)
-            {
-                int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
-                int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
-                int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
-                secondaryColor = Color.FromArgb(r2, g2, b2);
-            }
-            else
-            {
-                int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
-                int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
-                int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);
-                secondaryColor = Color.FromArgb(r2, g2, b2);
-            }
-
-            return (mainColor, secondaryColor);
-        }
-
         private void CloseButton_Click(object sender, EventArgs e)
         {
-             _exitFlowManager.HandleExitRequest(sender, e, this);
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
@@ -173,5 +137,138 @@ namespace CodingTracker.View.TimerDisplayService
             _formSwitcher.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
             this.WindowState = FormWindowState.Minimized;
         }
+
+        #endregion
+
+        #region UI Helper Methods
+
+        private void SetFormPosition()
+        {
+            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            int formWidth = this.Width;
+            int formHeight = this.Height;
+
+            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
+        }
+
+        /// <summary>
+        /// Updates the time display label with the current elapsed time and applies color transitions based on progress
+        /// </summary>
+        private void UpdateTimeDisplayLabel(TimeSpan elapsedTime)
+        {
+            string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
+
+            if (timeDisplayLabel.Text != formattedTimeSpan || timeDisplayLabel.Tag == null)
+            {
+                if (progressTimerGoalSecondsDouble.HasValue)
+                {
+                    double progress = Math.Min(1.0, elapsedTime.TotalSeconds / progressTimerGoalSecondsDouble.Value);
+                    (Color mainColor, Color secondaryColor) = GetProgressColors(progress);
+
+                    if (timeDisplayLabel.Tag == null || !((Color)timeDisplayLabel.Tag).ToArgb().Equals(mainColor.ToArgb()))
+                    {
+                        ApplyColorTransition(timeDisplayLabel, (Color)(timeDisplayLabel.Tag ?? Color.White), mainColor);
+                        timeDisplayLabel.Tag = mainColor;
+                    }
+
+                    timeDisplayLabel.Text = formattedTimeSpan;
+
+                    if (elapsedTime.Seconds % 10 == 0)
+                    {
+                        ApplyPulseEffect(timeDisplayLabel);
+                    }
+                }
+                else
+                {
+                    timeDisplayLabel.Text = formattedTimeSpan;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Applies a smooth color transition effect between two colors on a label
+        /// </summary>
+        private void ApplyColorTransition(Guna2HtmlLabel label, Color fromColor, Color toColor)
+        {
+            System.Windows.Forms.Timer transitionTimer = new System.Windows.Forms.Timer();
+            transitionTimer.Interval = 5;
+
+            int steps = 10;
+            int currentStep = 0;
+
+            transitionTimer.Tick += (s, e) => {
+                currentStep++;
+                double progress = (double)currentStep / steps;
+
+                int r = (int)(fromColor.R + (toColor.R - fromColor.R) * progress);
+                int g = (int)(fromColor.G + (toColor.G - fromColor.G) * progress);
+                int b = (int)(fromColor.B + (toColor.B - fromColor.B) * progress);
+
+                label.ForeColor = Color.FromArgb(r, g, b);
+
+                if (currentStep >= steps)
+                {
+                    transitionTimer.Stop();
+                    transitionTimer.Dispose();
+                    label.ForeColor = toColor;
+                }
+            };
+
+            transitionTimer.Start();
+        }
+
+        /// <summary>
+        /// Creates a brief pulse animation effect by temporarily increasing the font size
+        /// </summary>
+        private void ApplyPulseEffect(Guna2HtmlLabel label)
+        {
+            Font originalFont = label.Font;
+
+            Font pulseFont = new Font(originalFont.FontFamily, originalFont.Size * 1.1f, originalFont.Style);
+
+            label.Font = pulseFont;
+
+            System.Windows.Forms.Timer pulseTimer = new System.Windows.Forms.Timer();
+            pulseTimer.Interval = 200;
+            pulseTimer.Tick += (s, e) => {
+                label.Font = originalFont;
+                pulseTimer.Stop();
+                pulseTimer.Dispose();
+            };
+
+            pulseTimer.Start();
+        }
+
+        /// <summary>
+        /// Calculates the gradient colors for the progress bar based on completion percentage
+        /// </summary>
+        private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
+        {
+            int r = (int)(255 * (1 - progress) + 64 * progress);
+            int g = (int)(81 * (1 - progress) + 230 * progress);
+            int b = (int)(195 * (1 - progress) + 200 * progress);
+            Color mainColor = Color.FromArgb(r, g, b);
+            Color secondaryColor;
+
+            if (progress < 0.5)
+            {
+                int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
+                int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
+                int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
+                secondaryColor = Color.FromArgb(r2, g2, b2);
+            }
+            else
+            {
+                int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
+                int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
+                int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);
+                secondaryColor = Color.FromArgb(r2, g2, b2);
+            }
+
+            return (mainColor, secondaryColor);
+        }
+
+        #endregion
     }
 }

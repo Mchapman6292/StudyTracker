@@ -97,10 +97,10 @@ namespace CodingTracker.Logging.ApplicationLoggers
                 $"Values for codingSessionEntity \n" +
                 $"-------SessionId : {codingSessionEntity.SessionId}.\n" +
                 $"-------UserId : {codingSessionEntity.UserId}.\n" +
-                $"-------StartDate : {codingSessionEntity.StartDate}.\n" +
-                $"-------StartTime : {codingSessionEntity.StartTime}.\n" +
-                $"-------EndDate : {codingSessionEntity.EndDate}.\n" +
-                $"-------EndTime : {codingSessionEntity.EndTime}.\n" +
+                $"-------StartDateLocal : {codingSessionEntity.StartDateUTC}.\n" +
+                $"-------StartTimeLocal : {codingSessionEntity.StartTimeUTC}.\n" +
+                $"-------EndDateLocal : {codingSessionEntity.EndDateUTC}.\n" +
+                $"-------EndTimeLocal : {codingSessionEntity.EndTimeUTC}.\n" +
                 $"-------DurationSeconds : {codingSessionEntity.DurationSeconds}.\n" +
                 $"-------DurationHHMM : {codingSessionEntity.DurationHHMM}.\n" +
                 $"-------GoalSet : {codingSessionEntity.GoalSet}.\n" +

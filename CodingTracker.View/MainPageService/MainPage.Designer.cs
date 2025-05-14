@@ -184,7 +184,7 @@
             Day3Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             Day2Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             Day1Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            MainPageAnimateWidnow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
+            gunaAnimationWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             panel2.SuspendLayout();
             guna2Panel1.SuspendLayout();
             guna2GradientPanel4.SuspendLayout();
@@ -1074,10 +1074,10 @@
             Day1Label.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             Day1Label.UseGdiPlusTextRendering = true;
             // 
-            // MainPageAnimateWidnow
+            // gunaAnimationWindow
             // 
-            MainPageAnimateWidnow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_SLIDE;
-            MainPageAnimateWidnow.TargetForm = this;
+            gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
+            gunaAnimationWindow.TargetForm = this;
             // 
             // MainPage
             // 
@@ -1175,7 +1175,7 @@
         private Guna.UI2.WinForms.Guna2GradientButton CodingSessionButton;
         private Guna.UI2.WinForms.Guna2GradientButton ViewSessionsButton;
         private Guna.UI2.WinForms.Guna2HtmlLabel TodayTotalLabel;
-        private Guna.UI2.WinForms.Guna2AnimateWindow MainPageAnimateWidnow;
+        private Guna.UI2.WinForms.Guna2AnimateWindow gunaAnimationWindow;
         private Guna.UI2.WinForms.Guna2HtmlLabel AverageSessionLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel WeekTotalLabel;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
