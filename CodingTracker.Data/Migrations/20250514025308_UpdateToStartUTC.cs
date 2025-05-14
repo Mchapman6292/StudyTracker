@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-
 #nullable disable
 
 namespace CodingTracker.Data.Migrations
@@ -11,22 +10,22 @@ namespace CodingTracker.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "StartTimeLocal",
+                name: "StartTime",
                 table: "CodingSessions",
                 newName: "StartTimeUTC");
 
             migrationBuilder.RenameColumn(
-                name: "StartDateLocal",
+                name: "StartDate",
                 table: "CodingSessions",
                 newName: "StartDateUTC");
 
             migrationBuilder.RenameColumn(
-                name: "EndTimeLocal",
+                name: "EndTime",
                 table: "CodingSessions",
                 newName: "EndTimeUTC");
 
             migrationBuilder.RenameColumn(
-                name: "EndDateLocal",
+                name: "EndDate",
                 table: "CodingSessions",
                 newName: "EndDateUTC");
         }
@@ -37,22 +36,22 @@ namespace CodingTracker.Data.Migrations
             migrationBuilder.RenameColumn(
                 name: "StartTimeUTC",
                 table: "CodingSessions",
-                newName: "StartTimeLocal");
+                newName: "StartTime");
 
             migrationBuilder.RenameColumn(
                 name: "StartDateUTC",
                 table: "CodingSessions",
-                newName: "StartDateLocal");
+                newName: "StartDate");
 
             migrationBuilder.RenameColumn(
                 name: "EndTimeUTC",
                 table: "CodingSessions",
-                newName: "EndTimeLocal");
+                newName: "EndTime");
 
             migrationBuilder.RenameColumn(
                 name: "EndDateUTC",
                 table: "CodingSessions",
-                newName: "EndDateLocal");
+                newName: "EndDate");
         }
     }
 }

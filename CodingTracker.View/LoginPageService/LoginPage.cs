@@ -2,7 +2,6 @@
 using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
 using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
 using CodingTracker.View.FormService.ButtonHighlighterServices;
@@ -10,6 +9,7 @@ using Guna.UI2.WinForms;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.Common.LoggingInterfaces;
 
 namespace CodingTracker.View
 {

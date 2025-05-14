@@ -1,8 +1,8 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;

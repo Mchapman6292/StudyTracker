@@ -2,8 +2,8 @@
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 using Guna.UI2.WinForms;
 
 namespace CodingTracker.Business.MainPageService.LabelAssignments

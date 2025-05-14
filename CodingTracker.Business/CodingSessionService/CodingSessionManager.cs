@@ -3,9 +3,9 @@ using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {

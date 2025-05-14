@@ -2,7 +2,7 @@
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;

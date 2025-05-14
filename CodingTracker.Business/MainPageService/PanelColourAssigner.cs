@@ -1,5 +1,5 @@
 ﻿using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;

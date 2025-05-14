@@ -1,5 +1,5 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using Serilog;
 using System.Diagnostics;
 

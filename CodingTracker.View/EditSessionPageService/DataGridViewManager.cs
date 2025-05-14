@@ -1,8 +1,8 @@
 ﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
 using CodingTracker.View.EditSessionPageService.DataGridRowStates;
 using CodingTracker.View.FormService.ColourServices;

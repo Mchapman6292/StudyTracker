@@ -1,5 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormPageEnums;
 using CodingTracker.View.FormService;
@@ -13,10 +13,7 @@ namespace CodingTracker.View.TimerDisplayService
         #region Properties
 
         private bool isPaused = false;
-        private bool isDragging = false;
-        private Point dragStartPoint;
         private int progressValue = 0;
-        private int? sessionGoalSecondsInt;
         private double? progressTimerGoalSecondsDouble;
 
         private readonly ICodingSessionManager _codingSessionManager;
@@ -54,9 +51,9 @@ namespace CodingTracker.View.TimerDisplayService
             progressValue = 0;
             progressBar.Value = 0;
 
-            if (statusLabel != null)
+            if (percentProgressLabel != null)
             {
-                statusLabel.Text = "0%";
+                percentProgressLabel.Text = "0%";
             }
 
             if (sessionGoalSecondsInt != 0)
@@ -70,6 +67,54 @@ namespace CodingTracker.View.TimerDisplayService
             _stopWatchTimerService.StartTimer();
         }
 
+        private void ApplyColorTransitionToTimeDisplayLabel(Color targetColor)
+        {
+            if (timeDisplayLabel == null)
+                return;
+
+            if (timeDisplayLabel.Tag == null || !((Color)timeDisplayLabel.Tag).ToArgb().Equals(targetColor.ToArgb()))
+            {
+                Color currentColor = (Color)(timeDisplayLabel.Tag ?? Color.White);
+                ApplyColorTransitionToGuna2HtmlLabel(timeDisplayLabel, currentColor, targetColor);
+                timeDisplayLabel.Tag = targetColor;
+            }
+        }
+
+        private void ApplyColorTransitionToPercentProgressLabel(Color targetColor)
+        {
+            if (percentProgressLabel == null)
+                return;
+
+            if (percentProgressLabel.Tag == null || !((Color)percentProgressLabel.Tag).ToArgb().Equals(targetColor.ToArgb()))
+            {
+                Color currentColor = (Color)(percentProgressLabel.Tag ?? Color.White);
+                ApplyColorTransitionToGuna2HtmlLabel(percentProgressLabel, currentColor, targetColor);
+                percentProgressLabel.Tag = targetColor;
+            }
+        }
+
+        private void UpdateTimeDisplayLabelText(string timeText)
+        {
+            if (timeDisplayLabel == null)
+                return;
+
+            if (timeDisplayLabel.Text != timeText)
+            {
+                timeDisplayLabel.Text = timeText;
+            }
+        }
+
+        private void UpdatePercentProgressLabelText(string percentText)
+        {
+            if (percentProgressLabel == null)
+                return;
+
+            if (percentProgressLabel.Text != percentText)
+            {
+                percentProgressLabel.Text = percentText;
+            }
+        }
+
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
             if (!progressTimerGoalSecondsDouble.HasValue)
@@ -78,13 +123,12 @@ namespace CodingTracker.View.TimerDisplayService
             }
 
             TimeSpan elapsedTime = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
 
-            // Update the timeDisplayLabel
-            UpdateTimeDisplayLabel(elapsedTime);
+            UpdateTimeDisplayLabelText(formattedTimeSpan);
 
             double percentage = Math.Min(100, (elapsedTime.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
             progressValue = (int)percentage;
-
             progressBar.Value = progressValue;
 
             (Color mainColor, Color secondaryColor) = GetProgressColors(percentage / 100);
@@ -92,17 +136,18 @@ namespace CodingTracker.View.TimerDisplayService
             progressBar.ProgressColor = mainColor;
             progressBar.ProgressColor2 = secondaryColor;
 
-            if (statusLabel != null)
-            {
-                statusLabel.Text = $"{progressValue}%";
-                statusLabel.ForeColor = mainColor;
-            }
+            ApplyColorTransitionToTimeDisplayLabel(mainColor);
+
+            string percentText = $"{progressValue}%";
+            UpdatePercentProgressLabelText(percentText);
+            ApplyColorTransitionToPercentProgressLabel(mainColor);
 
             if (progressValue >= 100)
             {
                 _codingSessionManager.SetCurrentSessionGoalReached(true);
             }
         }
+
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
@@ -153,8 +198,7 @@ namespace CodingTracker.View.TimerDisplayService
         }
 
         /// <summary>
-        /// Updates the time display label with the current elapsed time and applies color transitions based on progress
-        /// </summary>
+        /// Updates the time display gunaLabel with the current elapsed time and calls ApplyColorTransitionToGuna2HtmlLabel. 
         private void UpdateTimeDisplayLabel(TimeSpan elapsedTime)
         {
             string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
@@ -168,28 +212,18 @@ namespace CodingTracker.View.TimerDisplayService
 
                     if (timeDisplayLabel.Tag == null || !((Color)timeDisplayLabel.Tag).ToArgb().Equals(mainColor.ToArgb()))
                     {
-                        ApplyColorTransition(timeDisplayLabel, (Color)(timeDisplayLabel.Tag ?? Color.White), mainColor);
+                        ApplyColorTransitionToGuna2HtmlLabel(timeDisplayLabel, (Color)(timeDisplayLabel.Tag ?? Color.White), mainColor);
                         timeDisplayLabel.Tag = mainColor;
                     }
 
-                    timeDisplayLabel.Text = formattedTimeSpan;
-
-                    if (elapsedTime.Seconds % 10 == 0)
-                    {
-                        ApplyPulseEffect(timeDisplayLabel);
-                    }
-                }
-                else
-                {
                     timeDisplayLabel.Text = formattedTimeSpan;
                 }
             }
         }
 
         /// <summary>
-        /// Applies a smooth color transition effect between two colors on a label
-        /// </summary>
-        private void ApplyColorTransition(Guna2HtmlLabel label, Color fromColor, Color toColor)
+        /// The method creates a timer with a 5ms interval, which will update the color multiple times per second.
+        private void ApplyColorTransitionToGuna2HtmlLabel(Guna2HtmlLabel label, Color fromColor, Color toColor)
         {
             System.Windows.Forms.Timer transitionTimer = new System.Windows.Forms.Timer();
             transitionTimer.Interval = 5;
@@ -218,33 +252,15 @@ namespace CodingTracker.View.TimerDisplayService
             transitionTimer.Start();
         }
 
-        /// <summary>
-        /// Creates a brief pulse animation effect by temporarily increasing the font size
-        /// </summary>
-        private void ApplyPulseEffect(Guna2HtmlLabel label)
-        {
-            Font originalFont = label.Font;
-
-            Font pulseFont = new Font(originalFont.FontFamily, originalFont.Size * 1.1f, originalFont.Style);
-
-            label.Font = pulseFont;
-
-            System.Windows.Forms.Timer pulseTimer = new System.Windows.Forms.Timer();
-            pulseTimer.Interval = 200;
-            pulseTimer.Tick += (s, e) => {
-                label.Font = originalFont;
-                pulseTimer.Stop();
-                pulseTimer.Dispose();
-            };
-
-            pulseTimer.Start();
-        }
 
         /// <summary>
         /// Calculates the gradient colors for the progress bar based on completion percentage
-        /// </summary>
+        /// Uses linear interpolation (lerp) to find the colour value between two colors relative to the progress.
+        /// 
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
         {
+            //Start with RGB 255,81,195(pink/magenta) transitioning to 64,230,200(teal/cyan)
+
             int r = (int)(255 * (1 - progress) + 64 * progress);
             int g = (int)(81 * (1 - progress) + 230 * progress);
             int b = (int)(195 * (1 - progress) + 200 * progress);
@@ -253,6 +269,10 @@ namespace CodingTracker.View.TimerDisplayService
 
             if (progress < 0.5)
             {
+                // First half: Secondary color transitions from darker pink (RGB 200,60,170) 
+                // to turquoise (RGB 0,180,190)
+
+                // When calculating the lerp we use (progress * 2) to offset only using half of the progress value. 
                 int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
                 int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
                 int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
@@ -260,6 +280,9 @@ namespace CodingTracker.View.TimerDisplayService
             }
             else
             {
+                // Second half: Secondary color transitions from turquoise (RGB 0,180,190)
+                // to bright green (RGB 72,255,180)
+
                 int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
                 int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
                 int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);

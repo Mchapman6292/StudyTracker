@@ -2,7 +2,7 @@
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 

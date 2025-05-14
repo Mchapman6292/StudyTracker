@@ -1,6 +1,6 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IUtilityServices;
+using CodingTracker.Common.LoggingInterfaces;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;

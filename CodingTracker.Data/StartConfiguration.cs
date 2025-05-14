@@ -1,5 +1,5 @@
 ﻿using CodingTracker.Common.DataInterfaces;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 

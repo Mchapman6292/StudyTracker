@@ -19,7 +19,7 @@ namespace CodingTracker.View.TimerDisplayService
         private Guna2BorderlessForm borderlessForm;
         private Guna2Panel mainPanel;
         private Guna2Button pauseButton;
-        private Guna2HtmlLabel statusLabel;
+        private Guna2HtmlLabel percentProgressLabel;
         private Guna2MessageDialog DisplayMessageBox;
 
         /// <summary>
@@ -44,29 +44,29 @@ namespace CodingTracker.View.TimerDisplayService
         private void InitializeComponent()
         {
             components = new Container();
-            CustomizableEdges customizableEdges10 = new CustomizableEdges();
-            CustomizableEdges customizableEdges11 = new CustomizableEdges();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
-            CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            CustomizableEdges customizableEdges4 = new CustomizableEdges();
-            CustomizableEdges customizableEdges5 = new CustomizableEdges();
-            CustomizableEdges customizableEdges6 = new CustomizableEdges();
-            CustomizableEdges customizableEdges7 = new CustomizableEdges();
-            CustomizableEdges customizableEdges8 = new CustomizableEdges();
-            CustomizableEdges customizableEdges9 = new CustomizableEdges();
+            CustomizableEdges customizableEdges21 = new CustomizableEdges();
+            CustomizableEdges customizableEdges22 = new CustomizableEdges();
+            CustomizableEdges customizableEdges12 = new CustomizableEdges();
+            CustomizableEdges customizableEdges13 = new CustomizableEdges();
+            CustomizableEdges customizableEdges14 = new CustomizableEdges();
+            CustomizableEdges customizableEdges15 = new CustomizableEdges();
+            CustomizableEdges customizableEdges16 = new CustomizableEdges();
+            CustomizableEdges customizableEdges17 = new CustomizableEdges();
+            CustomizableEdges customizableEdges18 = new CustomizableEdges();
+            CustomizableEdges customizableEdges19 = new CustomizableEdges();
+            CustomizableEdges customizableEdges20 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
             homeButton = new Guna2GradientButton();
             minimizeButton = new Guna2ControlBox();
             closeButton = new Guna2ControlBox();
             progressBar = new Guna2CircleProgressBar();
-            statusLabel = new Guna2HtmlLabel();
+            timeDisplayLabel = new Guna2HtmlLabel();
+            percentProgressLabel = new Guna2HtmlLabel();
             pauseButton = new Guna2Button();
             progressTimer = new System.Windows.Forms.Timer(components);
             DisplayMessageBox = new Guna2MessageDialog();
             gunaAnimationWindow = new Guna2AnimateWindow(components);
-            timeDisplayLabel = new Guna2HtmlLabel();
             mainPanel.SuspendLayout();
             progressBar.SuspendLayout();
             SuspendLayout();
@@ -88,23 +88,23 @@ namespace CodingTracker.View.TimerDisplayService
             mainPanel.Controls.Add(closeButton);
             mainPanel.Controls.Add(progressBar);
             mainPanel.Controls.Add(pauseButton);
-            customizableEdges10.BottomRight = false;
-            customizableEdges10.TopLeft = false;
-            mainPanel.CustomizableEdges = customizableEdges10;
+            customizableEdges21.BottomRight = false;
+            customizableEdges21.TopLeft = false;
+            mainPanel.CustomizableEdges = customizableEdges21;
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(10);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges11;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges22;
             mainPanel.Size = new Size(220, 220);
             mainPanel.TabIndex = 0;
             // 
             // homeButton
             // 
-            customizableEdges1.BottomRight = false;
-            customizableEdges1.TopRight = false;
-            homeButton.CustomizableEdges = customizableEdges1;
+            customizableEdges12.BottomRight = false;
+            customizableEdges12.TopRight = false;
+            homeButton.CustomizableEdges = customizableEdges12;
             homeButton.FillColor = Color.FromArgb(25, 24, 40);
             homeButton.FillColor2 = Color.FromArgb(25, 24, 40);
             homeButton.Font = new Font("Segoe UI", 9F);
@@ -112,9 +112,9 @@ namespace CodingTracker.View.TimerDisplayService
             homeButton.Image = Properties.Resources.HomeButtonIcon;
             homeButton.Location = new Point(143, 0);
             homeButton.Name = "homeButton";
-            customizableEdges2.BottomLeft = false;
-            customizableEdges2.TopLeft = false;
-            homeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            customizableEdges13.BottomLeft = false;
+            customizableEdges13.TopLeft = false;
+            homeButton.ShadowDecoration.CustomizableEdges = customizableEdges13;
             homeButton.Size = new Size(33, 21);
             homeButton.TabIndex = 11;
             homeButton.Click += homeButton_Click;
@@ -123,19 +123,19 @@ namespace CodingTracker.View.TimerDisplayService
             // 
             minimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            customizableEdges3.BottomRight = false;
-            customizableEdges3.TopLeft = false;
-            customizableEdges3.TopRight = false;
-            minimizeButton.CustomizableEdges = customizableEdges3;
+            customizableEdges14.BottomRight = false;
+            customizableEdges14.TopLeft = false;
+            customizableEdges14.TopRight = false;
+            minimizeButton.CustomizableEdges = customizableEdges14;
             minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
             minimizeButton.IconColor = Color.White;
             minimizeButton.Location = new Point(173, 0);
             minimizeButton.Name = "minimizeButton";
-            customizableEdges4.BottomLeft = false;
-            customizableEdges4.TopLeft = false;
-            minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            customizableEdges15.BottomLeft = false;
+            customizableEdges15.TopLeft = false;
+            minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges15;
             minimizeButton.Size = new Size(23, 21);
             minimizeButton.TabIndex = 9;
             // 
@@ -144,17 +144,17 @@ namespace CodingTracker.View.TimerDisplayService
             closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             closeButton.BorderRadius = 12;
             closeButton.CustomClick = true;
-            customizableEdges5.BottomLeft = false;
-            customizableEdges5.TopLeft = false;
-            closeButton.CustomizableEdges = customizableEdges5;
+            customizableEdges16.BottomLeft = false;
+            customizableEdges16.TopLeft = false;
+            closeButton.CustomizableEdges = customizableEdges16;
             closeButton.FillColor = Color.FromArgb(25, 24, 40);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.White;
             closeButton.Location = new Point(193, 0);
             closeButton.Name = "closeButton";
-            customizableEdges6.BottomRight = false;
-            customizableEdges6.TopRight = false;
-            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            customizableEdges17.BottomRight = false;
+            customizableEdges17.TopRight = false;
+            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges17;
             closeButton.Size = new Size(27, 21);
             closeButton.TabIndex = 10;
             closeButton.Click += CloseButton_Click;
@@ -164,7 +164,7 @@ namespace CodingTracker.View.TimerDisplayService
             progressBar.AnimationSpeed = 0.5F;
             progressBar.BackColor = Color.Transparent;
             progressBar.Controls.Add(timeDisplayLabel);
-            progressBar.Controls.Add(statusLabel);
+            progressBar.Controls.Add(percentProgressLabel);
             progressBar.FillColor = Color.FromArgb(45, 46, 50);
             progressBar.FillThickness = 15;
             progressBar.Font = new Font("Segoe UI", 12F);
@@ -175,39 +175,49 @@ namespace CodingTracker.View.TimerDisplayService
             progressBar.ProgressColor = Color.FromArgb(255, 81, 195);
             progressBar.ProgressColor2 = Color.FromArgb(168, 228, 255);
             progressBar.ProgressThickness = 15;
-            progressBar.ShadowDecoration.CustomizableEdges = customizableEdges7;
+            progressBar.ShadowDecoration.CustomizableEdges = customizableEdges18;
             progressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             progressBar.Size = new Size(170, 170);
             progressBar.TabIndex = 0;
             // 
-            // statusLabel
+            // timeDisplayLabel
             // 
-            statusLabel.AutoSize = false;
-            statusLabel.BackColor = Color.Transparent;
-            statusLabel.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            statusLabel.ForeColor = Color.White;
-            statusLabel.Location = new Point(10, 70);
-            statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(150, 30);
-            statusLabel.TabIndex = 0;
-            statusLabel.Text = "0%";
-            statusLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            timeDisplayLabel.BackColor = Color.Transparent;
+            timeDisplayLabel.Location = new Point(49, 106);
+            timeDisplayLabel.Name = "timeDisplayLabel";
+            timeDisplayLabel.Size = new Size(61, 17);
+            timeDisplayLabel.TabIndex = 1;
+            timeDisplayLabel.Text = "HH:MM:SS";
+            timeDisplayLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
+            // percentProgressLabel
+            // 
+            percentProgressLabel.AutoSize = false;
+            percentProgressLabel.BackColor = Color.Transparent;
+            percentProgressLabel.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            percentProgressLabel.ForeColor = Color.White;
+            percentProgressLabel.Location = new Point(10, 70);
+            percentProgressLabel.Name = "percentProgressLabel";
+            percentProgressLabel.Size = new Size(150, 30);
+            percentProgressLabel.TabIndex = 0;
+            percentProgressLabel.Text = "0%";
+            percentProgressLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // pauseButton
             // 
             pauseButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             pauseButton.BorderRadius = 12;
             pauseButton.Cursor = Cursors.Hand;
-            customizableEdges8.BottomRight = false;
-            customizableEdges8.TopLeft = false;
-            pauseButton.CustomizableEdges = customizableEdges8;
+            customizableEdges19.BottomRight = false;
+            customizableEdges19.TopLeft = false;
+            pauseButton.CustomizableEdges = customizableEdges19;
             pauseButton.FillColor = Color.FromArgb(70, 71, 117);
             pauseButton.Font = new Font("Segoe UI", 9F);
             pauseButton.ForeColor = Color.White;
             pauseButton.Image = Properties.Resources.pause;
             pauseButton.Location = new Point(0, 195);
             pauseButton.Name = "pauseButton";
-            pauseButton.ShadowDecoration.CustomizableEdges = customizableEdges9;
+            pauseButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
             pauseButton.Size = new Size(25, 25);
             pauseButton.TabIndex = 3;
             pauseButton.Click += PauseButton_Click;
@@ -225,16 +235,6 @@ namespace CodingTracker.View.TimerDisplayService
             DisplayMessageBox.Parent = null;
             DisplayMessageBox.Style = MessageDialogStyle.Default;
             DisplayMessageBox.Text = null;
-            // 
-            // timeDisplayLabel
-            // 
-            timeDisplayLabel.BackColor = Color.Transparent;
-            timeDisplayLabel.Location = new Point(49, 106);
-            timeDisplayLabel.Name = "timeDisplayLabel";
-            timeDisplayLabel.Size = new Size(77, 23);
-            timeDisplayLabel.TabIndex = 1;
-            timeDisplayLabel.Text = "HH:MM:SS";
-            timeDisplayLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // CountdownTimerForm
             // 

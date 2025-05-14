@@ -1,7 +1,5 @@
 using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
-using CodingTracker.Business.CodingSessionService;
-using CodingTracker.Business.CodingSessionService.SessionCalculators;
 using CodingTracker.Business.InputValidators;
 using CodingTracker.Business.MainPageService.LabelAssignments;
 using CodingTracker.Business.MainPageService.PanelColorControls;
@@ -14,7 +12,6 @@ using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
 using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.IApplicationLoggers;
 using CodingTracker.Common.IInputValidationResults;
 using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
@@ -41,6 +38,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.ApplicationControlService.DurationManagers;
+using CodingTracker.Common.LoggingInterfaces;
 
 
 
@@ -83,13 +81,11 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IApplicationLogger, ApplicationLogger>()
                     .AddSingleton<IUtilityService, UtilityService>()
                     .AddSingleton<IAuthenticationService, AuthenticationService>()
-                    .AddSingleton<ISessionCalculator, SessionCalculator>()
                     .AddSingleton<IFormFactory, FormFactory>()
                     .AddSingleton<IFormController, FormController>()
                     .AddSingleton<IInputValidationResult, InputValidationResult>()
                     .AddSingleton<IPanelColourControl, PanelColourControl>()
                     .AddSingleton<IFormSwitcher, FormSwitcher>()
-                    .AddSingleton<ICodingSessionCountDownTimer, CodingSessionCountDownTimer>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
                     .AddSingleton<IUserCredentialRepository, UserCredentialRepository>()

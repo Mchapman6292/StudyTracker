@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
 using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using CodingTracker.Common.IApplicationLoggers;
+using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodingTracker.Data.Repositories.UserCredentialRepositories
