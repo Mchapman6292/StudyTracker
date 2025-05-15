@@ -15,6 +15,7 @@
 
 # Mono auto generated files
 mono_crash.*
+.mono/
 
 # Build results
 [Dd]ebug/
@@ -40,6 +41,10 @@ bld/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
+
+# Visual Studio Code files
+.vscode/
+.code-workspace
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -361,3 +366,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Compressed files
+*.zip
+*.rar
+*.7z
+*.gz
+*.tar
+*.tar.gz
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
