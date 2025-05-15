@@ -9,6 +9,5 @@ namespace CodingTracker.Common.IUtilityServices
         string ConvertDoubleToHHMMString(double duration);
         int ConvertHHMMStringToSeconds(string input);
         string ConvertDurationSecondsToHHMMStringWithSpace(int durationSeconds);
-        void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions);
     }
 }
