@@ -353,7 +353,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sessionSortCriteria);
 
             // Convert dates to local time from utc. 
-            _utilityService.ConvertCodingSessionListDatesToLocal(codingSessions);
+            ConvertCodingSessionListDatesToLocal(codingSessions);
             LoadDataGridViewWithSessions(dataGrid, codingSessions);
             HideUnusuedColumns(dataGrid);
             RenameDataGridColumns(dataGrid);
@@ -488,6 +488,23 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                 }
             }
             return sessionIdsNotMarked;
+        }
+
+
+        public void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions)
+        {
+            if (!codingSessions.Any())
+            {
+                _appLogger.Info($"CodingSession list empty for {nameof(ConvertCodingSessionListDatesToLocal)}");
+                return;
+            }
+            foreach (var codingSession in codingSessions)
+            {
+                codingSession.StartDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.StartTimeUTC = codingSession.StartTimeUTC.ToLocalTime();
+                codingSession.EndDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.EndDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.EndTimeUTC = codingSession.EndTimeUTC.ToLocalTime();
+            }
         }
 
 
