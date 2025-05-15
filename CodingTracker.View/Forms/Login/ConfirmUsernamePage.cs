@@ -1,0 +1,72 @@
+﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+
+namespace CodingTracker.View.LoginPageService
+{
+    public partial class ConfirmUsernamePage : Form
+    {
+        private readonly ICodingSessionRepository _codingSessionRepository;
+        private readonly IUserCredentialRepository _userCredentialRepository;
+        private readonly IFormNavigator _formSwitcher;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IApplicationLogger _appLogger;
+        private readonly INotificationManager _notificationManager;
+
+        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger, INotificationManager notificationManager)
+        {
+            _codingSessionRepository = codingSessionRepository;
+            _userCredentialRepository = userCredentialRepository;
+            _formSwitcher = formSwitcher;
+            _authenticationService = authenticationService;
+            _appLogger = appLogger;
+
+            InitializeComponent();
+        }
+
+        private void ConfirmUsernamePage_Load(object sender, EventArgs e)
+        {
+            ConfirmUsernameButton.Visible = false;
+        }
+
+        private async void ConfirmUsernameButton_Click(object sender, EventArgs e)
+        {
+            string textBoxUsername = UsernameTextBox.Text;
+            string message = string.Empty;
+
+            if (textBoxUsername == string.Empty || textBoxUsername == "Username")
+            {
+                message = "Username cannot be blank.";
+                _notificationManager.ShowNotificationDialog(this, message);
+                return;
+            }
+
+            if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
+            {
+                message = "No username located";
+                _notificationManager.ShowNotificationDialog(this, message);
+                return;
+            }
+
+            _formSwitcher.SwitchToForm(FormPageEnum.ResetPasswordPage);
+            _authenticationService.SetUsernameForPasswordReset(textBoxUsername);
+
+        }
+
+
+
+
+
+        private void ConfirmUsernameExitButtonControlBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
+        {
+            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+        }
+    }
+}

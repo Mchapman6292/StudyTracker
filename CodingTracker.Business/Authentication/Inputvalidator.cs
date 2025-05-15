@@ -1,6 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces;
-using CodingTracker.Common.IInputValidationResults;
-using CodingTracker.Common.IInputValidators;
+using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.LoggingInterfaces;
 using System.Diagnostics;
 using System.Globalization;

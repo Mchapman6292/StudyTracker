@@ -1,0 +1,20 @@
+﻿namespace CodingTracker.View.FormManagement
+{
+    public enum FormPageEnum
+    {
+        LoginPage,
+        MainPage,
+        EditSessionPage,
+        CreateAccountPage,
+        SessionGoalPage,
+        WORKINGSessionTimerPage,
+        ConfirmUsernamePage,
+        ResetPasswordPage,
+        CountdownTimerPage,
+        OrbitalTimerPage,
+        WaveVisualizationForm,
+        TestForm,
+        SessionNotesForm
+    }
+
+}

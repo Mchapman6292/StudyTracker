@@ -1,10 +1,8 @@
-﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormService.NotificationManagers;
-using Guna.UI2.WinForms;
-using CodingTracker.View.FormPageEnums;
-using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
+﻿using Guna.UI2.WinForms;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 
 
 namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
@@ -21,11 +19,11 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
-        private readonly IFormSwitcher _formSwitcher;
+        private readonly IFormNavigator _formSwitcher;
         private readonly IStopWatchTimerService _stopWatchTimerService;
 
 
-        public ExitFlowManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IFormSwitcher formSwitcher, IStopWatchTimerService stopWatchTimerService)
+        public ExitFlowManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IFormNavigator formSwitcher, IStopWatchTimerService stopWatchTimerService)
         {
             _codingSessionManager = codingSessionManager;
             _appLogger = appLogger;

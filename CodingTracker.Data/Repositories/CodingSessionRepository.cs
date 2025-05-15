@@ -1,6 +1,6 @@
 ﻿using CodingTracker.Common.CommonEnums;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
+using CodingTracker.Common.DataInterfaces.DbContextService;
+using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
