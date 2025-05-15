@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <None Remove="AppSettings.json" />
-    <None Remove="FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4" />
+    <None Remove="Forms\FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +38,7 @@
     <Content Include="AppSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
+    <Content Include="Forms\FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -111,18 +111,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="FormMedia\PcScreenPixelArt.mp4">
+    <None Update="Forms\FormMedia\PcScreenPixelArt.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Forms\" />
-    <Folder Include="TestFolder\" />
   </ItemGroup>
 
 </Project>

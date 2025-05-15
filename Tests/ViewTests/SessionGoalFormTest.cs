@@ -1,13 +1,11 @@
-﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
-using CodingTracker.View.FormPageEnums;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormService.ButtonHighlighterServices;
-using CodingTracker.View.FormService.NotificationManagers;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.PopUpFormService;
 using Moq;
 using Xunit;
@@ -20,7 +18,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
         public void SessionGoalSetToFalseWhenNoGoalSet()
         {
             var mockSessionManager = new Mock<ICodingSessionManager>();
-            var mockFormSwitcher = new Mock<IFormSwitcher>();
+            var mockFormSwitcher = new Mock<IFormNavigator>();
             var mockInputValidator = new Mock<IInputValidator>();
             var mockNotificationManager = new Mock<INotificationManager>();
             var mockUtilityService = new Mock<IUtilityService>();

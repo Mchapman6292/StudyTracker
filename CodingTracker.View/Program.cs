@@ -1,44 +1,35 @@
 using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
 using CodingTracker.Business.InputValidators;
-using CodingTracker.Business.MainPageService.LabelAssignments;
-using CodingTracker.Business.MainPageService.PanelColorControls;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.BusinessInterfaces;
-using CodingTracker.Common.BusinessInterfaces.IAuthenticationServices;
-using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
-using CodingTracker.Common.BusinessInterfaces.IPanelColourControls;
 using CodingTracker.Common.DataInterfaces;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
-using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
-using CodingTracker.Common.IInputValidationResults;
-using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.UtilityServices;
-using CodingTracker.Data.Configurations;
 using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
-using CodingTracker.View.EditSessionPageService.DataGridRowManagers;
-using CodingTracker.View.EditSessionPageService.DataGridViewManagers;
-using CodingTracker.View.FormService;
-using CodingTracker.View.FormService.ButtonHighlighterServices;
-using CodingTracker.View.FormService.LayoutServices;
-using CodingTracker.View.FormService.NotificationManagers;
-using CodingTracker.View.KeyboardActivityTrackerService.KeyboardActivityTrackers;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
-using CodingTracker.View.TimerDisplayService.StopWatchTimerServices;
-using CodingTracker.View.TimerDisplayService.WaveVisualizationControls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
-using CodingTracker.View.ApplicationControlService.DurationManagers;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Services.EditSessionPageService;
+using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+using CodingTracker.View.ApplicationControlService;
+using CodingTracker.View.Forms.WaveVisualizer;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.DataInterfaces.DbContextService;
+using CodingTracker.Data.Configuration;
 
 
 
@@ -82,21 +73,18 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IUtilityService, UtilityService>()
                     .AddSingleton<IAuthenticationService, AuthenticationService>()
                     .AddSingleton<IFormFactory, FormFactory>()
-                    .AddSingleton<IFormController, FormController>()
+                    .AddSingleton<IFormManager, FormManager>()
                     .AddSingleton<IInputValidationResult, InputValidationResult>()
-                    .AddSingleton<IPanelColourControl, PanelColourControl>()
-                    .AddSingleton<IFormSwitcher, FormSwitcher>()
+                    .AddSingleton<IFormNavigator, FormNavigator>()
                     .AddSingleton<ICodingSessionRepository, CodingSessionRepository>()
                     .AddSingleton<ICodingSessionManager, CodingSessionManager>()
                     .AddSingleton<IUserCredentialRepository, UserCredentialRepository>()
                     .AddSingleton<IPanelColourAssigner, PanelColourAssigner>()
                     .AddSingleton<ILabelAssignment, LabelAssignment>()
                     .AddSingleton<IFormStateManagement, FormStateManagement>()
-                    .AddSingleton<ILayoutService, LayoutService>()
                     .AddSingleton<IDataGridViewManager, DataGridViewManager>()
                     .AddSingleton<IRowStateManager, RowStateManager>()
                     .AddSingleton<LoginPage>()
-                    .AddSingleton<OrbitalTimerPage>()
                     .AddSingleton<INotificationManager, NotificationManager>()
                     .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
@@ -104,8 +92,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IExitFlowManager, ExitFlowManager>()
                     .AddSingleton<WaveVisualizationTestForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
-                    .AddSingleton<IDurationManager , DurationManager>()
-                    .AddSingleton<TestForm>()
                     .AddSingleton<SessionNotesForm>()
 
 

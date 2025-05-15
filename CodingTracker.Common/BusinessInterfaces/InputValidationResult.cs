@@ -1,6 +1,4 @@
-﻿using CodingTracker.Common.IInputValidationResults;
-
-// This class encapsulates the result of a valid operation.
+﻿// This class encapsulates the result of a valid operation.
 // When a validation method (like ValidateUsername or ValidatePassword) is called, an InputValidationResult object is instantiated.
 // If an error message is added to ErrorMessages list the IsValid bool is set to false.
 

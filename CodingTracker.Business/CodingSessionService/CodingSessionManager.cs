@@ -1,9 +1,8 @@
-﻿using CodingTracker.Common.BusinessInterfaces.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.CodingSessions;
-using CodingTracker.Common.DataInterfaces.ICodingSessionRepositories;
-using CodingTracker.Common.DataInterfaces.IUserCredentialRepositories;
+using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IInputValidators;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
 
@@ -100,7 +99,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             //Dates are stored as local time in CodingSession as these are the values the user will see.
             CodingSessionEntity currentCodingSessionEntity = ConvertCodingSessionToCodingSessionEntity();
-            _utilityService.ConvertCodingSessionDatesToUTC(currentCodingSessionEntity);
+            ConvertCodingSessionDatesToUTC(currentCodingSessionEntity);
 
             bool sessionAddedToDb = await _codingSessionRepository.AddCodingSessionEntityAsync(currentCodingSessionEntity);
 
@@ -320,6 +319,30 @@ namespace CodingTracker.Business.CodingSessionManagers
             }
         }
 
+        // Ensures all session date and time values are explicitly converted to UTC for PostgreSQL compatibility.
+        public void ConvertCodingSessionDatesToUTC(CodingSessionEntity codingSession)
+        {
+            codingSession.StartDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc));
+            codingSession.StartTimeUTC = codingSession.StartTimeUTC.ToUniversalTime();
+            codingSession.EndDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.EndDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc));
+            codingSession.EndTimeUTC = codingSession.EndTimeUTC.ToUniversalTime();
+        }
+
+        public void ConvertCodingSessionListDatesToLocal(List<CodingSessionEntity> codingSessions)
+        {
+            if (!codingSessions.Any())
+            {
+                _appLogger.Info($"CodingSession list empty for {nameof(ConvertCodingSessionListDatesToLocal)}");
+                return;
+            }
+            foreach (var codingSession in codingSessions)
+            {
+                codingSession.StartDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.StartDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.StartTimeUTC = codingSession.StartTimeUTC.ToLocalTime();
+                codingSession.EndDateUTC = DateOnly.FromDateTime(DateTime.SpecifyKind(codingSession.EndDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+                codingSession.EndTimeUTC = codingSession.EndTimeUTC.ToLocalTime();
+            }
+        }
 
         public CodingSessionEntity ConvertCodingSessionToCodingSessionEntity()
         {

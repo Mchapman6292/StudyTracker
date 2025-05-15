@@ -1,4 +1,4 @@
-﻿using CodingTracker.Common.DataInterfaces.ICodingTrackerDbContexts;
+﻿using CodingTracker.Common.DataInterfaces.DbContextService;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using Microsoft.EntityFrameworkCore;
