@@ -1,80 +1,61 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormManagement;
 
-namespace CodingTracker.View.FormManagement
+public interface IFormManager
 {
+    void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form;
+    void HideCurrentForms();
+    void DisplayForm<TForm>(TForm newForm) where TForm : Form;
+}
+public class FormManager : IFormManager
+{
+    private readonly IApplicationLogger _appLogger;
+    private List<Form> currentForms = new List<Form>();
+    private readonly IFormFactory _formFactory;
 
-    public interface IFormManager
+    public FormManager(IApplicationLogger appLogger, IFormFactory formFactory)
     {
-        void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form;
-        void CloseCurrentForm();
-        void DisplayForm<TForm>(TForm newForm) where TForm : Form;
-        void CloseTargetForm(Form targetForm);
+        _appLogger = appLogger;
+        _formFactory = formFactory;
     }
-    public class FormManager : IFormManager
+
+    public void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form // Handles the logic for closing forms & implementing error handling logic via ExecutePageAction
     {
-        private readonly IApplicationLogger _appLogger;
-        private Form currentForm;
-        private readonly IFormFactory _formFactory;
-
-        public FormManager(IApplicationLogger appLogger, IFormFactory formFactory)
+        var newForm = createForm();
+        if (closeCurrent)
         {
-            _appLogger = appLogger;
-            _formFactory = formFactory;
+            HideCurrentForms();
         }
+        DisplayForm(newForm);
+    }
 
-        public void HandleAndShowForm<TForm>(Func<TForm> createForm, string methodName, bool closeCurrent = true) where TForm : Form // Handles the logic for closing forms & implementing error handling logic via ExecutePageAction
+
+    public void HideCurrentForms()
+    {
+        if (currentForms.Count > 0)
         {
-            var newForm = createForm();
-            if (closeCurrent)
+            foreach (var form in currentForms)
             {
-                CloseCurrentForm();
+                form.Hide();
+                currentForms.Remove(form);
             }
-            DisplayForm(newForm);
-        }
-
-
-        public void CloseCurrentForm()
-        {
-            if (currentForm != null)
-            {
-                currentForm.Hide();
-            }
-        }
-
-        public void DisplayForm<TForm>(TForm newForm) where TForm : Form
-        {
-            if (newForm == null)
-            {
-                _appLogger.Error($"Attempted to display a null form in {nameof(DisplayForm)}.");
-                throw new ArgumentNullException(nameof(newForm), "New form is null.");
-            }
-
-            currentForm = newForm;
-            currentForm.Show();
-            _appLogger.Info($"Opened {newForm.Name}");
-        }
-
-
-
-        public void CloseTargetForm(Form targetForm) // Probably not needed but keep for now. 
-        {
-            if (targetForm == null) return;
-
-            if (targetForm.Visible)
-            {
-                _appLogger.Info($"Closing form: {targetForm.Name}");
-                targetForm.Invoke(new Action(() =>
-                {
-                    targetForm.Hide();
-                    targetForm.Dispose();
-                }));
-            }
-        }
-
-
-        public void SwitchToActiveForm(Form targetForm)
-        {
-
         }
     }
+
+    public void DisplayForm<TForm>(TForm newForm) where TForm : Form
+    {
+        if (newForm == null)
+        {
+            _appLogger.Error($"Attempted to display a null form in {nameof(DisplayForm)}.");
+            throw new ArgumentNullException(nameof(newForm), "New form is null.");
+        }
+
+        currentForms.Add(newForm);
+        newForm.Show();
+        _appLogger.Info($"Opened {newForm.Name}");
+    }
+
+
+
+
 }

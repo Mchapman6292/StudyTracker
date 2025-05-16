@@ -36,13 +36,13 @@ namespace CodingTracker.View.FormManagement
             {
                 FormPageEnum.LoginPage => typeof(LoginPage),
                 FormPageEnum.MainPage => typeof(MainPage),
-                FormPageEnum.EditSessionPage => typeof(EditSessionPage),
-                FormPageEnum.CreateAccountPage => typeof(CreateAccountPage),
-                FormPageEnum.SessionGoalPage => typeof(SessionGoalPage),
-                FormPageEnum.WORKINGSessionTimerPage => typeof(CountdownTimerForm),
-                FormPageEnum.ResetPasswordPage => typeof(ResetPasswordPage),
-                FormPageEnum.ConfirmUsernamePage => typeof(ConfirmUsernamePage),
-                FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationTestForm),
+                FormPageEnum.EditSessionForm => typeof(EditSessionPage),
+                FormPageEnum.CreateAccountForm => typeof(CreateAccountPage),
+                FormPageEnum.SessionGoalForm => typeof(SessionGoalPage),
+                FormPageEnum.CountdownTimerForm => typeof(CountdownTimerForm),
+                FormPageEnum.ResetPasswordForm => typeof(ResetPasswordPage),
+                FormPageEnum.ConfirmUsernameForm => typeof(ConfirmUsernamePage),
+                FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationForm),
                 FormPageEnum.SessionNotesForm => typeof(SessionNotesForm),
 
 
@@ -83,12 +83,12 @@ namespace CodingTracker.View.FormManagement
 
         public Form GetOrCreateTimerDisplayForm(bool goalSet, string goalTimeHHMM = null)
         {
-            var existingForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.WORKINGSessionTimerPage);
+            var existingForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.CountdownTimerForm);
 
             if (existingForm == null || existingForm.IsDisposed)
             {
-                var newForm = CreateForm(FormPageEnum.WORKINGSessionTimerPage);
-                _formStateManagement.SetFormByFormPageEnum(FormPageEnum.WORKINGSessionTimerPage, newForm);
+                var newForm = CreateForm(FormPageEnum.CountdownTimerForm);
+                _formStateManagement.SetFormByFormPageEnum(FormPageEnum.CountdownTimerForm, newForm);
                 return newForm;
             }
             return existingForm;

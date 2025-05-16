@@ -1,4 +1,4 @@
-﻿// SessionGoalPage.Designer.cs
+﻿// SessionGoalForm.Designer.cs
 namespace CodingTracker.View.PopUpFormService
 {
     partial class SessionGoalPage
@@ -244,7 +244,7 @@ namespace CodingTracker.View.PopUpFormService
             gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
             gunaAnimationWindow.TargetForm = this;
             // 
-            // SessionGoalPage
+            // SessionGoalForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -252,7 +252,7 @@ namespace CodingTracker.View.PopUpFormService
             ClientSize = new Size(400, 280);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "SessionGoalPage";
+            Name = "SessionGoalForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Session Goal";
             Load += SessionGoalPage_Load;

@@ -16,7 +16,7 @@ namespace CodingTracker.View.TimerDisplayService
         private double? progressTimerGoalSecondsDouble;
 
         private readonly ICodingSessionManager _codingSessionManager;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly IExitFlowManager _exitFlowManager;
@@ -29,7 +29,7 @@ namespace CodingTracker.View.TimerDisplayService
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
             _exitFlowManager = exitFlowManager;
@@ -178,7 +178,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void homeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
+            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
             this.WindowState = FormWindowState.Minimized;
         }
 

@@ -1,4 +1,4 @@
-﻿// SessionGoalPage.cs
+﻿// SessionGoalForm.cs
 using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.IUtilityServices;
@@ -15,7 +15,7 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IUtilityService _utilityService;
         private readonly IFormStateManagement _formStateManagement;
         private readonly ICodingSessionManager _codingSessionManager;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IInputValidator _inputValidator;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
@@ -36,7 +36,7 @@ namespace CodingTracker.View.PopUpFormService
             IExitFlowManager exitFlowManager)
         {
             _codingSessionManager = codingSessionManager;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _inputValidator = inputValidator;
             _notificationManager = notificationManager;
             _utilityService = utilityService;
@@ -60,7 +60,7 @@ namespace CodingTracker.View.PopUpFormService
         /// <summary>
         /// Updates real-time input to update a display label as the user types, e.g 130 = 1 hours, 30 minutes.
         /// <param name="timeGoalTextBoxText">The text from timeDisplayLabel.</param>
-        /// <returns> String to be used in SessionGoalPage top label.  </returns>
+        /// <returns> String to be used in SessionGoalForm top label.  </returns>
 
         public string ParseTimeGoalTextBoxInput(string timeGoalTextBoxText)
         {
@@ -179,7 +179,7 @@ namespace CodingTracker.View.PopUpFormService
             _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSecondsInt);
             */
 
-            _formSwitcher.SwitchToForm(FormPageEnum.WORKINGSessionTimerPage);
+            _formNavigator.SwitchToTimerAndWaveForm();
         }
 
 
@@ -245,7 +245,7 @@ namespace CodingTracker.View.PopUpFormService
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
             this.Close();
         }
 
@@ -265,7 +265,7 @@ namespace CodingTracker.View.PopUpFormService
             DateTime startTime = DateTime.Now;
             _codingSessionManager.InitializeCodingSessionAndSetGoal(0, goalSet);
 
-            _formSwitcher.SwitchToForm(FormPageEnum.OrbitalTimerPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OrbitalTimerForm);
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }

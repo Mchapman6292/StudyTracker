@@ -409,7 +409,7 @@
             EditSessionPageNotificationPaint.TargetControl = TestEditSessionButton2;
             EditSessionPageNotificationPaint.Text = "Off";
             // 
-            // EditSessionPage
+            // EditSessionForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -418,8 +418,8 @@
             Controls.Add(EditSessionPageMainPanel);
             Controls.Add(guna2Panel1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "EditSessionPage";
-            Text = "EditSessionPage";
+            Name = "EditSessionForm";
+            Text = "EditSessionForm";
             Load += EditSessionPage_Load;
             guna2Panel1.ResumeLayout(false);
             EditSessionPageMainPanel.ResumeLayout(false);
