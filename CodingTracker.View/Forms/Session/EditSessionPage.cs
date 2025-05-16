@@ -80,7 +80,7 @@ namespace CodingTracker.View
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
+            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
         }
 
         #endregion
@@ -287,7 +287,7 @@ namespace CodingTracker.View
             string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
 
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, selectedCriteria);
+            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, selectedCriteria);
         }
 
         #endregion

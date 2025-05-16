@@ -35,10 +35,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
 
         /// <summary>
         /// This method is called by all exit buttons and handles all exit logic by using the CustomDialogResult enum to determine the codingSession state and take appropriate action.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <param name="currentForm"></param>
+
 
         public void HandleExitRequest(object sender, EventArgs e, Form currentForm)
         {

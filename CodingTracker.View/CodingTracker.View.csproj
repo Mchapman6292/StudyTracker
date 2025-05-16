@@ -34,16 +34,18 @@
     </COMReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="AppSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Forms\FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="AppSettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Forms\FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4</Link>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <PackageReference Include="DevExpress.DotNet.Web.ProjectTemplates" Version="23.2.5" />
     <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
     <PackageReference Include="Guna.Charts.WinForms" Version="1.1.0" />
