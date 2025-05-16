@@ -61,6 +61,16 @@ namespace CodingTracker.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] CodingTrackerLoginPagePlaceHolderMp4 {
+            get {
+                object obj = ResourceManager.GetObject("CodingTrackerLoginPagePlaceHolderMp4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap EditSessionIcon {

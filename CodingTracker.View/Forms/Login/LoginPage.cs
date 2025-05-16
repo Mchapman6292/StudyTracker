@@ -9,6 +9,7 @@ using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+using System;
 
 namespace CodingTracker.View
 {
@@ -63,6 +64,9 @@ namespace CodingTracker.View
 
         #region Media Player
 
+        private string _videoTempPath;
+
+
         private void InitializeVLCPlayer()
         {
             Core.Initialize();
@@ -76,23 +80,30 @@ namespace CodingTracker.View
             LoginPageMediaPanel.Controls.Add(_videoView);
             _videoView.BringToFront();
 
-            // Path is relative to the executable location
-            string videoFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FormMedia", "CodingTrackerLoginPagePlaceHolderMp4.mp4");
+            
+
+            string videoFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                "FormMedia", "CodingTrackerLoginPagePlaceHolderMp4.mp4");
+
+            _appLogger.Debug($"VideoFilePath: {videoFilePath}.");
 
             if (File.Exists(videoFilePath))
             {
                 var media = new Media(_libVLC, new Uri(videoFilePath));
-                media.AddOption("input-repeat=65535"); // Loop the video indefinitely
+                media.AddOption("input-repeat=65535");
                 _videoView.MediaPlayer.Play(media);
                 _videoView.MediaPlayer.Scale = 0;
                 _appLogger.Info($"VLC player loaded video from {videoFilePath}");
             }
             else
             {
-                _appLogger.Warning($"VLC player video file not found at {videoFilePath}");
-                MessageBox.Show("Video file not found at the specified path: " + videoFilePath);
+                _appLogger.Error($"VLC player video file not found at {videoFilePath}");
             }
         }
+    
+
+
+
 
         #endregion
 

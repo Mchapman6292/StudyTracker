@@ -1,53 +1,28 @@
-﻿
-using CodingTracker.Business.MainPageService.PanelColourAssigners;
-using CodingTracker.Common.CommonEnums;
-using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+﻿using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-
 
 namespace CodingTracker.View
 {
     public partial class MainPage : Form
     {
-        private readonly IApplicationLogger _appLogger;
-        private readonly IFormManager _formController;
-        private readonly IPanelColourAssigner _panelColourAssigner;
-        private readonly IFormFactory _formFactory;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly INotificationManager _notificationManager;
         private readonly IExitFlowManager _exitFlowManager;
 
-
-
-
-
-
-
-        public MainPage(IApplicationLogger appLogger, IFormManager formController, IPanelColourAssigner panelAssigner, IFormFactory formFactory, IFormNavigator formSwitcher, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IExitFlowManager exitFlowManager)
+        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
         {
             InitializeComponent();
-            _appLogger = appLogger;
-            _formController = formController;
-            _panelColourAssigner = panelAssigner;
-            _formFactory = formFactory;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formNavigator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
-            _notificationManager = notificationManager;
             _exitFlowManager = exitFlowManager;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
-
             closeButton.Click += CloseButton_Click;
-
             SetAnimationWindow();
-
-
         }
 
         private void SetAnimationWindow()
@@ -57,22 +32,15 @@ namespace CodingTracker.View
 
         private async void MainPage_Load(object sender, EventArgs e)
         {
-            // 1
             var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
-
             string todayText = results.TodayTotal;
             string weekText = results.WeekTotal;
             string averageText = results.AverageSession;
-
             _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
-
-
             _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
-
             _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
             _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
-
         }
 
         private async void MainPage_Shown(object sender, EventArgs e)
@@ -82,6 +50,7 @@ namespace CodingTracker.View
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
+            _formNavigator.SwitchToForm(FormPageEnum.WaveVisualizationForm);
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
@@ -98,65 +67,25 @@ namespace CodingTracker.View
             btn.FillColor2 = Color.FromArgb(35, 34, 50);
         }
 
-
-
         private void MainPageEditSessionsButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.EditSessionPage);
+            _formNavigator.SwitchToForm(FormPageEnum.EditSessionPage);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Custom click set to True in properties to enable behaviour overriding 
-        private async void CloseButton_Click(object sender, EventArgs e)
+        private  void CloseButton_Click(object sender, EventArgs e)
         {
-             _exitFlowManager.HandleExitRequest(sender, e, this);
+            _exitFlowManager.HandleExitRequest(sender, e, this);
         }
 
-
-
-        private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
-        {
-
-        }
+    
 
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formSwitcher.SwitchToForm(FormPageEnum.SessionGoalPage);
+            _formNavigator.SwitchToForm(FormPageEnum.SessionGoalPage);
         }
 
-        private void Last28DaysPanel_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
-
-        private void Day8Label_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void WaveTestButton_Click(object sender, EventArgs e)
-        {
-            _formSwitcher.SwitchToForm(FormPageEnum.WaveVisualizationForm);
-        }
-
-        private void guna2CircleButton1_Click(object sender, EventArgs e)
-        {
-            _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);
-        }
     }
 }
