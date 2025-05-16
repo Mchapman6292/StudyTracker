@@ -172,9 +172,8 @@ namespace CodingTracker.View
             // 
             // rememberMeToggle
             // 
-            rememberMeToggle.CheckedState.BorderColor = Color.FromArgb(102, 255, 204);
-            rememberMeToggle.CheckedState.FillColor = Color.FromArgb(102, 255, 204);
-            rememberMeToggle.CheckedState.InnerColor = Color.White;
+            rememberMeToggle.CheckedState.FillColor = Color.FromArgb(255, 128, 198);
+            rememberMeToggle.CheckedState.BorderColor = Color.FromArgb(255, 128, 198);
             rememberMeToggle.CustomizableEdges = customizableEdges5;
             rememberMeToggle.Location = new Point(58, 294);
             rememberMeToggle.Name = "rememberMeToggle";
