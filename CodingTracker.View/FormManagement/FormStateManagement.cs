@@ -67,13 +67,13 @@ namespace CodingTracker.View.FormManagement
         {
             { FormPageEnum.LoginPage, typeof(LoginPage)},
             { FormPageEnum.MainPage, typeof(MainPage)},
-            { FormPageEnum.EditSessionPage, typeof(EditSessionPage)},
-            { FormPageEnum.CreateAccountPage, typeof(CreateAccountPage)},
-            { FormPageEnum.SessionGoalPage, typeof(SessionGoalPage)},
-            { FormPageEnum.ConfirmUsernamePage, typeof(ConfirmUsernamePage)},
-            { FormPageEnum.ResetPasswordPage, typeof(ResetPasswordPage)},
-            { FormPageEnum.WORKINGSessionTimerPage, typeof(CountdownTimerForm)},
-            { FormPageEnum.WaveVisualizationForm, typeof (WaveVisualizationTestForm)},
+            { FormPageEnum.EditSessionForm, typeof(EditSessionPage)},
+            { FormPageEnum.CreateAccountForm, typeof(CreateAccountPage)},
+            { FormPageEnum.SessionGoalForm, typeof(SessionGoalPage)},
+            { FormPageEnum.ConfirmUsernameForm, typeof(ConfirmUsernamePage)},
+            { FormPageEnum.ResetPasswordForm, typeof(ResetPasswordPage)},
+            { FormPageEnum.CountdownTimerForm, typeof(CountdownTimerForm)},
+            { FormPageEnum.WaveVisualizationForm, typeof (WaveVisualizationForm)},
         };
 
         public Form GetCurrentForm()
@@ -101,7 +101,7 @@ namespace CodingTracker.View.FormManagement
 
         public bool CheckIfFormEnumIsTimerForm(FormPageEnum formEnum)
         {
-            if (formEnum == FormPageEnum.OrbitalTimerPage || formEnum == FormPageEnum.WORKINGSessionTimerPage || formEnum == FormPageEnum.WaveVisualizationForm)
+            if (formEnum == FormPageEnum.OrbitalTimerForm || formEnum == FormPageEnum.CountdownTimerForm || formEnum == FormPageEnum.WaveVisualizationForm)
             {
                 return true;
             }
@@ -115,19 +115,19 @@ namespace CodingTracker.View.FormManagement
             {
                 case FormPageEnum.MainPage:
                     return _mainPageInstance;
-                case FormPageEnum.EditSessionPage:
+                case FormPageEnum.EditSessionForm:
                     return _editSessionPageInstance;
-                case FormPageEnum.CreateAccountPage:
+                case FormPageEnum.CreateAccountForm:
                     return _createAccountPageInstance;
                 case FormPageEnum.LoginPage:
                     return _loginPageInstance;
-                case FormPageEnum.SessionGoalPage:
+                case FormPageEnum.SessionGoalForm:
                     return _popUpPageInstance;
-                case FormPageEnum.ConfirmUsernamePage:
+                case FormPageEnum.ConfirmUsernameForm:
                     return _confirmUsernamePageInstance;
-                case FormPageEnum.ResetPasswordPage:
+                case FormPageEnum.ResetPasswordForm:
                     return _resetPasswordPageInstance;
-                case FormPageEnum.WORKINGSessionTimerPage:
+                case FormPageEnum.CountdownTimerForm:
                     return _timerDisplayPageInstance;
                 default:
                     return null;
@@ -141,25 +141,25 @@ namespace CodingTracker.View.FormManagement
                 case FormPageEnum.MainPage:
                     _mainPageInstance = instance as MainPage;
                     break;
-                case FormPageEnum.EditSessionPage:
+                case FormPageEnum.EditSessionForm:
                     _editSessionPageInstance = instance as EditSessionPage;
                     break;
-                case FormPageEnum.CreateAccountPage:
+                case FormPageEnum.CreateAccountForm:
                     _createAccountPageInstance = instance as CreateAccountPage;
                     break;
                 case FormPageEnum.LoginPage:
                     _loginPageInstance = instance as LoginPage;
                     break;
-                case FormPageEnum.SessionGoalPage:
+                case FormPageEnum.SessionGoalForm:
                     _popUpPageInstance = instance as SessionGoalPage;
                     break;
-                case FormPageEnum.WORKINGSessionTimerPage:
+                case FormPageEnum.CountdownTimerForm:
                     _timerDisplayPageInstance = instance as CountdownTimerForm;
                     break;
-                case FormPageEnum.ConfirmUsernamePage:
+                case FormPageEnum.ConfirmUsernameForm:
                     _confirmUsernamePageInstance = instance as ConfirmUsernamePage;
                     break;
-                case FormPageEnum.ResetPasswordPage:
+                case FormPageEnum.ResetPasswordForm:
                     _resetPasswordPageInstance = instance as ResetPasswordPage;
                     break;
             }
@@ -171,23 +171,21 @@ namespace CodingTracker.View.FormManagement
             {
                 case FormPageEnum.MainPage:
                     return _mainPageCreated;
-                case FormPageEnum.EditSessionPage:
+                case FormPageEnum.EditSessionForm:
                     return _editSessionPageCreated;
-                case FormPageEnum.CreateAccountPage:
+                case FormPageEnum.CreateAccountForm:
                     return _createAccountPageCreated;
                 case FormPageEnum.LoginPage:
                     return _loginPageCreated;
-                case FormPageEnum.SessionGoalPage:
+                case FormPageEnum.SessionGoalForm:
                     return _popUpPageCreated;
-                case FormPageEnum.ConfirmUsernamePage:
+                case FormPageEnum.ConfirmUsernameForm:
                     return _confirmUsernamePageCreated;
-                case FormPageEnum.ResetPasswordPage:
+                case FormPageEnum.ResetPasswordForm:
                     return _resetPasswordPageCreated;
-                case FormPageEnum.CountdownTimerPage:
+                case FormPageEnum.CountdownTimerForm:
                     return _countdownTimerPageCreated;
-                case FormPageEnum.OrbitalTimerPage:
-                    return _orbitalTimerPageCreated;
-                case FormPageEnum.WORKINGSessionTimerPage:
+                case FormPageEnum.OrbitalTimerForm:
                     return _timerDisplayPageCreated;
                 default:
                     return false;

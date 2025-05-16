@@ -8,6 +8,7 @@ namespace CodingTracker.View.FormManagement
         Form SwitchToForm(FormPageEnum formType);
         void CloseLoginPage();
         Form SwitchToFormWithoutPreviousFormClosing(FormPageEnum formType);
+        void SwitchToTimerAndWaveForm();
 
     }
 
@@ -28,9 +29,9 @@ namespace CodingTracker.View.FormManagement
             _appLogger = appLogger;
         }
 
-        public Form SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountPage so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 
+        public Form SwitchToCreateAccountPage() // This is implemented to return an instance of CreateAccountForm so that the AccountCreatedCallback can be triggered. This allows for the Account Created message to be displayed on the LoginPage once a user account has been created. 
         {
-            var createAccountPage = _formFactory.CreateForm(FormPageEnum.CreateAccountPage);
+            var createAccountPage = _formFactory.CreateForm(FormPageEnum.CreateAccountForm);
             _formController.HandleAndShowForm(() => createAccountPage, nameof(CreateAccountPage), true);
             return createAccountPage;
         }
@@ -76,10 +77,6 @@ namespace CodingTracker.View.FormManagement
             newForm.Show();
 
             return newForm;
-
-
-
-
         }
 
 
@@ -91,5 +88,23 @@ namespace CodingTracker.View.FormManagement
                 loginForm.Close();
             }
         }
+
+        public void SwitchToTimerAndWaveForm()
+        {
+            var oldForm = _formStateManagement.GetCurrentForm();
+            var timerForm = _formFactory.GetOrCreateForm(FormPageEnum.CountdownTimerForm);
+            var waveForm = _formFactory.GetOrCreateForm(FormPageEnum.WaveVisualizationForm);
+
+            if (oldForm != null)
+            {
+                oldForm.Hide();
+            }
+
+            _formStateManagement.SetCurrentForm(timerForm);
+
+            timerForm.Show();
+            waveForm.Show();
+        }
+
     }
 }

@@ -168,7 +168,7 @@
             ConfirmUsernameHomeButton.TabIndex = 33;
             ConfirmUsernameHomeButton.Click += ConfirmUsernameHomeButton_Click;
             // 
-            // ConfirmUsernamePage
+            // ConfirmUsernameForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -179,8 +179,8 @@
             Controls.Add(MainPageExitControlMinimizeButton);
             Controls.Add(TextBoxPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "ConfirmUsernamePage";
-            Text = "ConfirmUsernamePage";
+            Name = "ConfirmUsernameForm";
+            Text = "ConfirmUsernameForm";
             TextBoxPanel.ResumeLayout(false);
             ResumeLayout(false);
         }

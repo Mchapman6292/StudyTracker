@@ -1,55 +1,58 @@
 ﻿using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.WaveVisualizer;
+using System.Runtime.InteropServices;
 
 namespace CodingTracker.View
 {
-    public partial class WaveVisualizationTestForm : Form
+    public partial class WaveVisualizationForm : Form
     {
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private WaveVisualizationControl waveControl;
-        private KeyboardActivityTracker activityTracker;
-        private System.Windows.Forms.Timer decayTimer;
+        private readonly IWaveVisualizationControl _waveControl;
+        private readonly IKeyboardActivityTracker _activityTracker;
 
-        public WaveVisualizationTestForm(IStopWatchTimerService stopWatchTimerService)
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        public WaveVisualizationForm(
+            IStopWatchTimerService stopWatchTimerService,
+            IWaveVisualizationControl waveControl,
+            IKeyboardActivityTracker activityTracker)
         {
-            InitializeComponent();
             _stopWatchTimerService = stopWatchTimerService;
+            _waveControl = waveControl;
+            _activityTracker = activityTracker;
 
-            this.Size = new Size(300, 150);
+            InitializeComponent();
+
+            var visualizationControl = (WaveVisualizationControl)_waveControl;
+            visualizationControl.Dock = DockStyle.Fill;
+            visualizationControl.MouseDown += WaveVisualizationForm_MouseDown;
+            this.Controls.Add(visualizationControl);
+
+            _activityTracker.ActivityChanged += ActivityTracker_ActivityChanged;
+
             this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.FromArgb(32, 33, 36);
-            this.ShowInTaskbar = false;
-            this.TopMost = true;
-            this.StartPosition = FormStartPosition.Manual;
-
-            waveControl = new WaveVisualizationControl(_stopWatchTimerService);
-            waveControl.Dock = DockStyle.Fill;
-            this.Controls.Add(waveControl);
-
-            activityTracker = new KeyboardActivityTracker(_stopWatchTimerService);
-            activityTracker.ActivityChanged += ActivityTracker_ActivityChanged;
-
-            decayTimer = new System.Windows.Forms.Timer();
-            decayTimer.Interval = 50;
-            decayTimer.Tick += DecayTimer_Tick;
-            decayTimer.Start();
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.DoubleBuffered = true;
 
             SetFormPosition();
-
-            this.MouseDown += WaveVisualizationTestForm_MouseDown;
-            this.MouseMove += WaveVisualizationTestForm_MouseMove;
-            this.MouseUp += WaveVisualizationTestForm_MouseUp;
+            this.TopMost = true;
+            this.Activate();
+            decayTimer.Start();
         }
 
         private void ActivityTracker_ActivityChanged(object sender, float intensity)
         {
-            waveControl.UpdateIntensity(intensity);
+            _waveControl.UpdateIntensity(intensity);
         }
 
         private void DecayTimer_Tick(object sender, EventArgs e)
         {
-            activityTracker.UpdateDecay();
+            _activityTracker.UpdateDecay();
         }
 
         private void SetFormPosition()
@@ -58,47 +61,68 @@ namespace CodingTracker.View
             int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
             int formWidth = this.Width;
             int formHeight = this.Height;
-
-            this.Location = new Point(screenWidth - formWidth - 20, screenHeight - formHeight - 20);
+            this.Location = new Point(screenWidth - formWidth - 20, 20);
         }
 
-        private bool isDragging = false;
-        private Point dragStartPoint;
-
-        private void WaveVisualizationTestForm_MouseDown(object sender, MouseEventArgs e)
+        private void WaveVisualizationForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                isDragging = true;
-                dragStartPoint = new Point(e.X, e.Y);
+                ReleaseCapture();
+                SendMessage(this.Handle, 0x112, 0xf012, 0);
             }
         }
 
-        private void WaveVisualizationTestForm_MouseMove(object sender, MouseEventArgs e)
+        protected override void WndProc(ref Message m)
         {
-            if (isDragging)
-            {
-                Point currentScreenPos = PointToScreen(new Point(e.X, e.Y));
-                Location = new Point(
-                    currentScreenPos.X - dragStartPoint.X,
-                    currentScreenPos.Y - dragStartPoint.Y);
-            }
-        }
+            const int WM_NCHITTEST = 0x84;
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
 
-        private void WaveVisualizationTestForm_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
+            if (m.Msg == WM_NCHITTEST)
             {
-                isDragging = false;
-            }
-        }
+                base.WndProc(ref m);
 
-        private void MainPanel_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                isDragging = false;
+                Point cursor = this.PointToClient(Cursor.Position);
+                int edge = 10;
+
+                if (cursor.X <= edge)
+                {
+                    if (cursor.Y <= edge)
+                        m.Result = (IntPtr)HTTOPLEFT;
+                    else if (cursor.Y >= this.ClientSize.Height - edge)
+                        m.Result = (IntPtr)HTBOTTOMLEFT;
+                    else
+                        m.Result = (IntPtr)HTLEFT;
+                }
+                else if (cursor.X >= this.ClientSize.Width - edge)
+                {
+                    if (cursor.Y <= edge)
+                        m.Result = (IntPtr)HTTOPRIGHT;
+                    else if (cursor.Y >= this.ClientSize.Height - edge)
+                        m.Result = (IntPtr)HTBOTTOMRIGHT;
+                    else
+                        m.Result = (IntPtr)HTRIGHT;
+                }
+                else if (cursor.Y <= edge)
+                {
+                    m.Result = (IntPtr)HTTOP;
+                }
+                else if (cursor.Y >= this.ClientSize.Height - edge)
+                {
+                    m.Result = (IntPtr)HTBOTTOM;
+                }
+
+                return;
             }
+
+            base.WndProc(ref m);
         }
     }
 }

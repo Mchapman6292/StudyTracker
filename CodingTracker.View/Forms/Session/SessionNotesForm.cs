@@ -10,7 +10,7 @@ namespace CodingTracker.View
     {
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly INotificationManager _notificationManager;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IExitFlowManager _exitFlowManager;
         private TimeSpan _sessionDuration;
 
@@ -20,7 +20,7 @@ namespace CodingTracker.View
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
             _exitFlowManager =exitFlowManager;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             closeButton.Click += CloseButton_Click;
         }
 
@@ -40,7 +40,7 @@ namespace CodingTracker.View
 
             _notificationManager.ShowNotificationDialog(this, successMessage);
 
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void SkipButton_Click(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace CodingTracker.View
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

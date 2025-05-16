@@ -168,7 +168,7 @@
             ConfirmUsernameHomeButton.TabIndex = 34;
             ConfirmUsernameHomeButton.Click += ConfirmUsernameHomeButton_Click;
             // 
-            // ResetPasswordPage
+            // ResetPasswordForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -179,8 +179,8 @@
             Controls.Add(ConfirmUsernameHomeButton);
             Controls.Add(TextBoxPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "ResetPasswordPage";
-            Text = "ResetPasswordPage";
+            Name = "ResetPasswordForm";
+            Text = "ResetPasswordForm";
             Load += ResetPasswordPage_Load;
             TextBoxPanel.ResumeLayout(false);
             ResumeLayout(false);

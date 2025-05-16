@@ -70,7 +70,7 @@ namespace CodingTracker.View
         private void MainPageEditSessionsButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formNavigator.SwitchToForm(FormPageEnum.EditSessionPage);
+            _formNavigator.SwitchToForm(FormPageEnum.EditSessionForm);
         }
 
         private  void CloseButton_Click(object sender, EventArgs e)
@@ -83,7 +83,7 @@ namespace CodingTracker.View
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)
         {
             this.Hide();
-            _formNavigator.SwitchToForm(FormPageEnum.SessionGoalPage);
+            _formNavigator.SwitchToForm(FormPageEnum.SessionGoalForm);
         }
 
 

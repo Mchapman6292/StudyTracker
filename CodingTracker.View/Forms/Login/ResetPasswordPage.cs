@@ -9,14 +9,14 @@ namespace CodingTracker.View.LoginPageService
     {
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUserCredentialRepository _userCredentialRepository;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUtilityService _utilityService;
         public ResetPasswordPage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IUtilityService utilityService)
         {
             _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _authenticationService = authenticationService;
             _utilityService = utilityService;
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace CodingTracker.View.LoginPageService
 
             message = "Password reset successful";
             ShowNotificationDialog(this, EventArgs.Empty, message);
-            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+            _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
         }
 
         private void ResetPasswordPageExitButton_Click(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+            _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
         }
     }
 }

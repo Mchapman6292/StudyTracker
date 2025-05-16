@@ -10,7 +10,7 @@ namespace CodingTracker.View.LoginPageService
     {
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUserCredentialRepository _userCredentialRepository;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IAuthenticationService _authenticationService;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
@@ -19,7 +19,7 @@ namespace CodingTracker.View.LoginPageService
         {
             _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _authenticationService = authenticationService;
             _appLogger = appLogger;
 
@@ -50,7 +50,7 @@ namespace CodingTracker.View.LoginPageService
                 return;
             }
 
-            _formSwitcher.SwitchToForm(FormPageEnum.ResetPasswordPage);
+            _formNavigator.SwitchToForm(FormPageEnum.ResetPasswordForm);
             _authenticationService.SetUsernameForPasswordReset(textBoxUsername);
 
         }
@@ -66,7 +66,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+            _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
         }
     }
 }

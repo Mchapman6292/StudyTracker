@@ -52,7 +52,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
             };
 
             form.HandleSkipButton();
-            mockFormSwitcher.Verify(m => m.SwitchToForm(FormPageEnum.OrbitalTimerPage), Times.Once);
+            mockFormSwitcher.Verify(m => m.SwitchToForm(FormPageEnum.OrbitalTimerForm), Times.Once);
 
 
         }

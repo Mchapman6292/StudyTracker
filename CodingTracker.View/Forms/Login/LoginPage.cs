@@ -18,7 +18,7 @@ namespace CodingTracker.View
         private readonly IAuthenticationService _authenticationService;
         private readonly IApplicationLogger _appLogger;
         private readonly IFormManager _formController;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
@@ -27,12 +27,12 @@ namespace CodingTracker.View
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager,IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
             _formController = formController;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _codingSessionManager = codingSessionManager;
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
@@ -49,22 +49,32 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
             // Set up button events
-            NewForgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            NewForgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+            ForgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
+            ForgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
 
 
             // Load saved settings
-            LoginPageRememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
+            rememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
             LoadSavedCredentials();
 
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
             _formStateManagement.SetCurrentForm(this);
+
         }
 
         #region Media Player
 
         private string _videoTempPath;
+
+        private void LoginPage_Load(object sender, EventArgs e)
+        {
+            _buttonHighlighterService.SetButtonHoverColors(loginButton);
+            _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
+            _buttonHighlighterService.SetButtonHoverColors(ForgotPasswordButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(ForgotPasswordButton);
+        }
 
 
         private void InitializeVLCPlayer()
@@ -80,7 +90,7 @@ namespace CodingTracker.View
             LoginPageMediaPanel.Controls.Add(_videoView);
             _videoView.BringToFront();
 
-            
+
 
             string videoFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 "FormMedia", "CodingTrackerLoginPagePlaceHolderMp4.mp4");
@@ -100,7 +110,7 @@ namespace CodingTracker.View
                 _appLogger.Error($"VLC player video file not found at {videoFilePath}");
             }
         }
-    
+
 
 
 
@@ -117,7 +127,7 @@ namespace CodingTracker.View
                 if (!string.IsNullOrEmpty(lastUsername))
                 {
                     loginPageUsernameTextbox.Text = lastUsername;
-                    LoginPageRememberMeToggle.Checked = true;
+                    rememberMeToggle.Checked = true;
                 }
             }
         }
@@ -126,7 +136,7 @@ namespace CodingTracker.View
         {
             try
             {
-                if (LoginPageRememberMeToggle.Checked)
+                if (rememberMeToggle.Checked)
                 {
                     Properties.Settings.Default.LastUsername = username;
                     Properties.Settings.Default.Save();
@@ -140,7 +150,7 @@ namespace CodingTracker.View
 
         private void LoginPageRememberMeToggle_CheckedChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.RememberMe = LoginPageRememberMeToggle.Checked;
+            Properties.Settings.Default.RememberMe = rememberMeToggle.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -190,50 +200,30 @@ namespace CodingTracker.View
 
         private void NewForgotPasswordButton_MouseEnter(object sender, EventArgs e)
         {
-            if (sender is Guna2GradientButton button)
-            {
-                _buttonHighlighterService.HighlightButtonWithHoverColour(button);
-            }
         }
 
         private void NewForgotPasswordButton_MouseLeave(object sender, EventArgs e)
         {
-            if (sender is Guna2GradientButton button)
-            {
-                _buttonHighlighterService.SetFillColorToTransparent(button);
-            }
+
         }
 
         private void LoginButton_MouseEnter(object sender, EventArgs e)
         {
-            if(sender is Guna2GradientButton button) 
-            {
-                _buttonHighlighterService.HighlightButtonWithHoverColour(button);
-            }
+
         }
 
         private void LoginButton_MouseLeave(object sender, EventArgs e)
         {
-            if (sender is Guna2GradientButton button)
-            {
-                _buttonHighlighterService.FillButtonWithBrightPink(button);
-            }
+
         }
 
         private void CreateAccountButton_MouseEnter(object sender, EventArgs e)
         {
-            if (sender is Guna2GradientButton button)
-            {
-                _buttonHighlighterService.HighlightButtonWithHoverColour(button);
-            }
+
         }
 
         private void CreateAccountButton_MouseLeave(object sender, EventArgs e)
         {
-            if (sender is Guna2GradientButton button)
-            {
-                _buttonHighlighterService.FillButtonWithBrightPink(button);
-            }
         }
 
         #endregion
@@ -258,25 +248,25 @@ namespace CodingTracker.View
 
                 SaveUsernameForNextLogin(username);
 
-                _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+                _formNavigator.SwitchToForm(FormPageEnum.MainPage);
 
             }
         }
 
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formSwitcher.SwitchToForm(FormPageEnum.CreateAccountPage);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
             _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.ConfirmUsernamePage);
+            _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-             _exitFlowManager.ExitCodingTracker();
+            _exitFlowManager.ExitCodingTracker();
         }
 
         #endregion
@@ -300,5 +290,7 @@ namespace CodingTracker.View
         }
 
         #endregion
+
+
     }
 }

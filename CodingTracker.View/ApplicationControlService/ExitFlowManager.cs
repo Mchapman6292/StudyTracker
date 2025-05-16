@@ -19,7 +19,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IStopWatchTimerService _stopWatchTimerService;
 
 
@@ -28,7 +28,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
             _codingSessionManager = codingSessionManager;
             _appLogger = appLogger;
             _notificationManager = notificationManager;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _stopWatchTimerService = stopWatchTimerService;
         }
 
@@ -59,7 +59,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
                         _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
                     }
 
-                    _formSwitcher.SwitchToForm(FormPageEnum.SessionNotesForm);
+                    _formNavigator.SwitchToForm(FormPageEnum.SessionNotesForm);
                     break;
 
                 case CustomDialogResult.ContinueSession:

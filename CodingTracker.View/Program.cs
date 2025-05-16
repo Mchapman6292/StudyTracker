@@ -90,7 +90,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
                     .AddSingleton<IExitFlowManager, ExitFlowManager>()
-                    .AddSingleton<WaveVisualizationTestForm>()
+                    .AddSingleton<WaveVisualizationForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
                     .AddSingleton<SessionNotesForm>()
 

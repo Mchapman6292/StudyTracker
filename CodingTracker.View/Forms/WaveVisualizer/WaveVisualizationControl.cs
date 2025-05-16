@@ -62,7 +62,6 @@ namespace CodingTracker.View.Forms.WaveVisualizer
             SetupAnimationTimer();
         }
 
-        // Sets up the Skia control for rendering
         private void InitializeComponent()
         {
             skControl = new SKControl();
@@ -76,7 +75,6 @@ namespace CodingTracker.View.Forms.WaveVisualizer
         {
             for (int i = 0; i < BAR_COUNT; i++)
             {
-                // Start with very minimal heights, similar to the green/pink bars in your image
                 barHeights[i] = 0.01f + (float)(random.NextDouble() * 0.01);
                 targetBarHeights[i] = barHeights[i];
                 noiseValues[i] = (float)random.NextDouble();
@@ -100,7 +98,7 @@ namespace CodingTracker.View.Forms.WaveVisualizer
 
         #region Animation and Bar Updates
 
-        // Manages the update sequence for all bars
+
         private void UpdateBars()
         {
             UpdateNoiseValues();
@@ -113,10 +111,9 @@ namespace CodingTracker.View.Forms.WaveVisualizer
         {
             for (int i = 0; i < BAR_COUNT; i++)
             {
-                // Slightly shift each noise value for continuous static
+
                 noiseValues[i] += (float)(random.NextDouble() * 0.1 - 0.05);
 
-                // Keep values bounded
                 if (noiseValues[i] < 0) noiseValues[i] += 1;
                 if (noiseValues[i] > 1) noiseValues[i] -= 1;
             }
@@ -147,7 +144,6 @@ namespace CodingTracker.View.Forms.WaveVisualizer
             }
         }
 
-        // Calculates the static effect component for a given bar
         private float CalculateStaticEffect(int index)
         {
             // Base static effect - smaller random movements

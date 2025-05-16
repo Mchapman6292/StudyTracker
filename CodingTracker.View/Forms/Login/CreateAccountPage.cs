@@ -11,7 +11,7 @@ namespace CodingTracker.View
         private readonly IInputValidator _inputValidator;
         private readonly IApplicationLogger _appLogger;
         private readonly IFormManager _formController;
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IAuthenticationService _authenticationService;
         public Action<string> AccountCreatedCallback { get; set; }
 
@@ -21,7 +21,7 @@ namespace CodingTracker.View
             _inputValidator = inputValidator;
             _appLogger = appLogger;
             _formController = formController;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _authenticationService = authentication;
 
         }
@@ -57,7 +57,7 @@ namespace CodingTracker.View
                             _appLogger.Info($"Account creation successful for user: {username}. Total Duration: {overallStopwatch.ElapsedMilliseconds}ms. TraceID: {activity.TraceId}");
 
                             AccountCreatedCallback?.Invoke("Account created successfully.");
-                            _formSwitcher.SwitchToForm(FormPageEnum.LoginPage);
+                            _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
                         }
                         else
                         {

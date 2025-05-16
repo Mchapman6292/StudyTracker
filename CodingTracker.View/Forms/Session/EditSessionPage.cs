@@ -11,14 +11,14 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 namespace CodingTracker.View
 {
     /// <summary>
-    /// EditSessionPage handles the display and editing of past coding sessions.
+    /// EditSessionForm handles the display and editing of past coding sessions.
     /// Provides controls for sorting, deleting, and toggling edit mode on session data.
     /// </summary>
     public partial class EditSessionPage : Form
     {
         #region Dependencies and State
 
-        private readonly IFormNavigator _formSwitcher;
+        private readonly IFormNavigator _formNavigator;
         private readonly IFormManager _formController;
         private readonly IApplicationLogger _appLogger;
         private readonly ICodingSessionRepository _codingSessionRepository;
@@ -57,7 +57,7 @@ namespace CodingTracker.View
             IExitFlowManager exitFlowManager)
         {
             _appLogger = appLogger;
-            _formSwitcher = formSwitcher;
+            _formNavigator = formSwitcher;
             _codingSessionRepository = codingSessionRepository;
             _dataGridViewManager = dataGridViewManager;
             _notificationManager = notificationManager;
@@ -319,12 +319,12 @@ namespace CodingTracker.View
 
         private void EditSessionPageBackButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
         {
-            _formSwitcher.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
         }
 
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
@@ -332,10 +332,7 @@ namespace CodingTracker.View
             this.Hide();
         }
 
-        private void EditSessionExitControlBox_Click(object sender, EventArgs e)
-        {
-            _formController.CloseCurrentForm();
-        }
+ 
 
         private void closeButton_Click(object sender, EventArgs e)
         {
