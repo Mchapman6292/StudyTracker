@@ -42,7 +42,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmUsernamePage));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             TextBoxPanel = new Guna.UI2.WinForms.Guna2Panel();
-            ConfirmUsernameButton = new Guna.UI2.WinForms.Guna2Button();
+            confirmUsernameButton = new Guna.UI2.WinForms.Guna2GradientButton();
             UsernameTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             ConfirmUsernamePageExitButton = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -53,7 +53,7 @@
             // 
             // TextBoxPanel
             // 
-            TextBoxPanel.Controls.Add(ConfirmUsernameButton);
+            TextBoxPanel.Controls.Add(confirmUsernameButton);
             TextBoxPanel.Controls.Add(UsernameTextBox);
             TextBoxPanel.CustomizableEdges = customizableEdges5;
             TextBoxPanel.Location = new Point(183, 111);
@@ -62,27 +62,21 @@
             TextBoxPanel.Size = new Size(385, 280);
             TextBoxPanel.TabIndex = 0;
             // 
-            // ConfirmUsernameButton
+            // confirmUsernameButton
             // 
-            ConfirmUsernameButton.Animated = true;
-            ConfirmUsernameButton.AutoRoundedCorners = true;
-            ConfirmUsernameButton.BorderRadius = 18;
-            ConfirmUsernameButton.BorderThickness = 2;
-            ConfirmUsernameButton.CustomizableEdges = customizableEdges1;
-            ConfirmUsernameButton.DisabledState.BorderColor = Color.DarkGray;
-            ConfirmUsernameButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            ConfirmUsernameButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            ConfirmUsernameButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            ConfirmUsernameButton.FillColor = Color.FromArgb(193, 20, 137);
-            ConfirmUsernameButton.Font = new Font("Segoe UI", 9F);
-            ConfirmUsernameButton.ForeColor = Color.White;
-            ConfirmUsernameButton.Location = new Point(83, 142);
-            ConfirmUsernameButton.Name = "ConfirmUsernameButton";
-            ConfirmUsernameButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            ConfirmUsernameButton.Size = new Size(200, 38);
-            ConfirmUsernameButton.TabIndex = 21;
-            ConfirmUsernameButton.Text = "Confirm Username";
-            ConfirmUsernameButton.Click += ConfirmUsernameButton_Click;
+            confirmUsernameButton.AutoRoundedCorners = true;
+            confirmUsernameButton.BorderRadius = 17;
+            confirmUsernameButton.CustomizableEdges = customizableEdges1;
+            confirmUsernameButton.FillColor = Color.FromArgb(255, 81, 195);
+            confirmUsernameButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            confirmUsernameButton.Font = new Font("Segoe UI", 9F);
+            confirmUsernameButton.ForeColor = Color.White;
+            confirmUsernameButton.Location = new Point(83, 141);
+            confirmUsernameButton.Name = "confirmUsernameButton";
+            confirmUsernameButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            confirmUsernameButton.Size = new Size(200, 36);
+            confirmUsernameButton.TabIndex = 31;
+            confirmUsernameButton.Text = "Confirm Username";
             // 
             // UsernameTextBox
             // 
@@ -128,6 +122,7 @@
             // ConfirmUsernamePageExitButton
             // 
             ConfirmUsernamePageExitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ConfirmUsernamePageExitButton.CustomClick = true;
             ConfirmUsernamePageExitButton.CustomizableEdges = customizableEdges9;
             ConfirmUsernamePageExitButton.FillColor = Color.FromArgb(25, 24, 40);
             ConfirmUsernamePageExitButton.HoverState.IconColor = Color.White;
@@ -168,7 +163,7 @@
             ConfirmUsernameHomeButton.TabIndex = 33;
             ConfirmUsernameHomeButton.Click += ConfirmUsernameHomeButton_Click;
             // 
-            // ConfirmUsernameForm
+            // ConfirmUsernamePage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -179,7 +174,7 @@
             Controls.Add(MainPageExitControlMinimizeButton);
             Controls.Add(TextBoxPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "ConfirmUsernameForm";
+            Name = "ConfirmUsernamePage";
             Text = "ConfirmUsernameForm";
             TextBoxPanel.ResumeLayout(false);
             ResumeLayout(false);
@@ -192,8 +187,8 @@
         private Guna.UI2.WinForms.Guna2TextBox PasswordTextBox;
         private Guna.UI2.WinForms.Guna2ControlBox MainPageExitControlMinimizeButton;
         private Guna.UI2.WinForms.Guna2ControlBox ConfirmUsernamePageExitButton;
-        private Guna.UI2.WinForms.Guna2Button ConfirmUsernameButton;
         private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
         private Guna.UI2.WinForms.Guna2GradientButton ConfirmUsernameHomeButton;
+        private Guna.UI2.WinForms.Guna2GradientButton confirmUsernameButton;
     }
 }

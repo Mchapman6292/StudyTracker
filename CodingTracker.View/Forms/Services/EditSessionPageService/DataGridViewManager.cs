@@ -71,10 +71,10 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             {
                 "SessionId",
                 "DurationHHMM",
-                "StartDateLocal",
-                "StartTimeLocal",
-                "EndDateLocal",
-                "EndTimeLocal"
+                "StartDateUTC",   
+                "StartTimeUTC",   
+                "EndDateUTC",     
+                "EndTimeUTC"
             };
         }
 
@@ -157,26 +157,19 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             RefreshDataGridView(dataGrid);
         }
 
-        /// <summary>
-        /// Refreshes the DataGridView to reflect any changes to its data source
-        /// </summary>
         public void RefreshDataGridView(DataGridView dataGrid)
         {
             dataGrid.Refresh();
         }
 
-        /// <summary>
-        /// Clears the DataSource and rows from the DataGridView
-        /// </summary>
+ 
         public void ClearDataGridViewDataSource(DataGridView dataGrid)
         {
             dataGrid.DataSource = null;
             dataGrid.Rows.Clear();
         }
 
-        /// <summary>
-        /// Clears all columns from the DataGridView
-        /// </summary>
+
         public void ClearDataGridViewColumns(DataGridView dataGrid)
         {
             dataGrid.Columns.Clear();
@@ -202,9 +195,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries after {nameof(CreateRowStateAndAddToDictWithDataGridRow)} called: {_rowToInfoMapping.Count}");
         }
 
-        /// <summary>
-        /// Blanket deletion of all rows in the DataGridView
-        /// </summary>
+
         private void ClearALlDataGridRows(DataGridView dataGridView)
         {
             _appLogger.Info($"Predeletion row count: {dataGridView.RowCount}.");
@@ -223,9 +214,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             _appLogger.Info($"Remaining rows: {dataGridView.Rows.Count}.");
         }
 
-        /// <summary>
-        /// Resets the DataGridView and clears the row-to-info mapping
-        /// </summary>
+
         public void ResetDataGridAndRowInfoDict(DataGridView dataGridView)
         {
             ClearALlDataGridRows(dataGridView);
@@ -236,17 +225,12 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
 
         #region RowInfo Mapping Management
 
-        /// <summary>
-        /// Adds a mapping from a DataGridViewRow to its associated RowState
-        /// </summary>
         public void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState)
         {
             _rowToInfoMapping.Add(dataGridRow, rowState);
         }
 
-        /// <summary>
-        /// Clears all entries in the row-to-info mapping
-        /// </summary>
+
         public void ClearAllInRowToInfoMapping()
         {
             _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries before {nameof(ClearAllInRowToInfoMapping)} called: {_rowToInfoMapping.Count}");
@@ -254,9 +238,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             _appLogger.Debug($"Count of {nameof(_rowToInfoMapping)} entries after {nameof(ClearAllInRowToInfoMapping)} called: {_rowToInfoMapping.Count}");
         }
 
-        /// <summary>
-        /// Clears a specific entry in the row-to-info mapping
-        /// </summary>
+
         public void ClearEntryInRowToInfoMapping(DataGridViewRow row)
         {
             _rowToInfoMapping.Remove(row);
@@ -322,9 +304,6 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             return sessionIdsNotMarked;
         }
 
-        /// <summary>
-        /// Removes entries from the row-to-info mapping that are marked for deletion
-        /// </summary>
         public void DeleteRowInfoMarkedForDeletion()
         {
             // Cannot modify a collection while iterating through it, first find all rows then delete.
@@ -363,17 +342,17 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].DisplayIndex = 1;
 
-            if (dataGrid.Columns.Contains("StartDateLocal"))
-                dataGrid.Columns["StartDateLocal"].DisplayIndex = 2;
+            if (dataGrid.Columns.Contains("StartDateUTC"))
+                dataGrid.Columns["StartDateUTC"].DisplayIndex = 2;
 
-            if (dataGrid.Columns.Contains("StartTimeLocal"))
-                dataGrid.Columns["StartTimeLocal"].DisplayIndex = 3;
+            if (dataGrid.Columns.Contains("StartTimeUTC"))
+                dataGrid.Columns["StartTimeUTC"].DisplayIndex = 3;
 
-            if (dataGrid.Columns.Contains("EndDateLocal"))
-                dataGrid.Columns["EndDateLocal"].DisplayIndex = 4;
+            if (dataGrid.Columns.Contains("EndDateUTC"))
+                dataGrid.Columns["EndDateUTC"].DisplayIndex = 4;
 
-            if (dataGrid.Columns.Contains("EndTimeLocal"))
-                dataGrid.Columns["EndTimeLocal"].DisplayIndex = 5;
+            if (dataGrid.Columns.Contains("EndTimeUTC"))
+                dataGrid.Columns["EndTimeUTC"].DisplayIndex = 5;
         }
 
 
@@ -385,17 +364,17 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
 
-            if (dataGrid.Columns.Contains("StartDateLocal"))
-                dataGrid.Columns["StartDateLocal"].HeaderText = "Start Date";
+            if (dataGrid.Columns.Contains("StartDateUTC"))
+                dataGrid.Columns["StartDateUTC"].HeaderText = "Start Date";
 
-            if (dataGrid.Columns.Contains("StartTimeLocal"))
-                dataGrid.Columns["StartTimeLocal"].HeaderText = "Start Time";
+            if (dataGrid.Columns.Contains("StartTimeUTC"))
+                dataGrid.Columns["StartTimeUTC"].HeaderText = "Start Time";
 
-            if (dataGrid.Columns.Contains("EndDateLocal"))
-                dataGrid.Columns["EndDateLocal"].HeaderText = "End Date";
+            if (dataGrid.Columns.Contains("EndDateUTC"))
+                dataGrid.Columns["EndDateUTC"].HeaderText = "End Date";
 
-            if (dataGrid.Columns.Contains("EndTimeLocal"))
-                dataGrid.Columns["EndTimeLocal"].HeaderText = "End Time";
+            if (dataGrid.Columns.Contains("EndTimeUTC"))
+                dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";
         }
 
 
@@ -411,11 +390,11 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
-                    else if (columnName == "StartDateLocal" || columnName == "EndDateLocal")
+                    else if (columnName == "StartDateUTC" || columnName == "EndDateUTC")
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
-                    else if (columnName == "StartTimeLocal" || columnName == "EndTimeLocal")
+                    else if (columnName == "StartTimeUTC" || columnName == "EndTimeUTC")
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
@@ -447,28 +426,28 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
             }
 
-            if (dataGrid.Columns.Contains("StartDateLocal"))
+            if (dataGrid.Columns.Contains("StartDateUTC"))
             {
-                dataGrid.Columns["StartDateLocal"].DefaultCellStyle.Format = "dd MMM yyyy";
-                dataGrid.Columns["StartDateLocal"].HeaderText = "Start Date";
+                dataGrid.Columns["StartDateUTC"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["StartDateUTC"].HeaderText = "Start Date";
             }
 
-            if (dataGrid.Columns.Contains("EndDateLocal"))
+            if (dataGrid.Columns.Contains("EndDateUTC"))
             {
-                dataGrid.Columns["EndDateLocal"].DefaultCellStyle.Format = "dd MMM yyyy";
-                dataGrid.Columns["EndDateLocal"].HeaderText = "End Date";
+                dataGrid.Columns["EndDateUTC"].DefaultCellStyle.Format = "dd MMM yyyy";
+                dataGrid.Columns["EndDateUTC"].HeaderText = "End Date";
             }
 
-            if (dataGrid.Columns.Contains("StartTimeLocal"))
+            if (dataGrid.Columns.Contains("StartTimeUTC"))
             {
-                dataGrid.Columns["StartTimeLocal"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["StartTimeLocal"].HeaderText = "Start Time";
+                dataGrid.Columns["StartTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["StartTimeUTC"].HeaderText = "Start Time";
             }
 
-            if (dataGrid.Columns.Contains("EndTimeLocal"))
+            if (dataGrid.Columns.Contains("EndTimeUTC"))
             {
-                dataGrid.Columns["EndTimeLocal"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["EndTimeLocal"].HeaderText = "End Time";
+                dataGrid.Columns["EndTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
+                dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";
             }
         }
 

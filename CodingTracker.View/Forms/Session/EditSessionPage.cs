@@ -112,7 +112,10 @@ namespace CodingTracker.View
             UpdateDeleteSessionButtonVisibility();
         }
 
-        private void UpdateIsEditSession(bool isEditSession) => IsEditSession = isEditSession;
+        private void UpdateIsEditSession(bool isEditSession)
+        {
+            IsEditSession = isEditSession;
+        }
 
         private void UpdateDeleteSessionButtonEnabled(bool? isEditSession = null)
         {
