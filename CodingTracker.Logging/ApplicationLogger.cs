@@ -105,7 +105,8 @@ namespace CodingTracker.Logging.ApplicationLoggers
                 $"-------DurationHHMM : {codingSessionEntity.DurationHHMM}.\n" +
                 $"-------GoalSet : {codingSessionEntity.GoalSet}.\n" +
                 $"-------GoalSeconds : {codingSessionEntity.GoalSeconds}.\n" +
-                $"-------GoalReached : {codingSessionEntity.GoalReached}.";
+                $"-------GoalReached : {codingSessionEntity.GoalReached}.\n" +
+                $"-------StudyProject : {codingSessionEntity.StudyProject}";
 
             Info(session);
         }

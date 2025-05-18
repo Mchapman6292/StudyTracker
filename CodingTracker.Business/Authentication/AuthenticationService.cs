@@ -134,7 +134,7 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
 
 
-        public bool CheckPasswordValid(string password, out string? message)
+        public bool ValidatePasswordAndReturnErrorMessage(string password, out string? message)
         {
             if (!password.Any(c => Char.IsUpper(c)))
             {

@@ -30,5 +30,20 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
         public string StudyNotes { get; set; }
 
 
+
+        // These hold the local time for start and end times, used mainly for the DataGridViewManager class. 
+        [NotMapped]
+        public DateOnly StartDateLocal => DateOnly.FromDateTime(DateTime.SpecifyKind(StartDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+
+        [NotMapped]
+        public DateTime StartTimeLocal => StartTimeUTC.ToLocalTime();
+
+        [NotMapped]
+        public DateOnly EndDateLocal => DateOnly.FromDateTime(DateTime.SpecifyKind(EndDateUTC.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc).ToLocalTime());
+
+        [NotMapped]
+        public DateTime EndTimeLocal => EndTimeUTC.ToLocalTime();
+
+
     }
 }

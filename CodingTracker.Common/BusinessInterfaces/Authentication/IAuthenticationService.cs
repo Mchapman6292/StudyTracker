@@ -17,7 +17,7 @@ namespace CodingTracker.Common.BusinessInterfaces.Authentication
 
         Task DeleteAllUserCredential();
 
-        bool CheckPasswordValid(string password, out string? message);
+        bool ValidatePasswordAndReturnErrorMessage(string password, out string? message);
 
 
     }
