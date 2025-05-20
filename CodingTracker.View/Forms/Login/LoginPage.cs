@@ -49,8 +49,8 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
             // Set up button events
-            ForgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            ForgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+            forgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
+            forgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
 
 
@@ -71,9 +71,9 @@ namespace CodingTracker.View
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
             _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
-            _buttonHighlighterService.SetButtonHoverColors(ForgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(forgotPasswordButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
-            _buttonHighlighterService.SetButtonBackColorAndBorderColor(ForgotPasswordButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(forgotPasswordButton);
         }
 
 

@@ -4,6 +4,7 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormManagement;
 using Guna.UI2.WinForms;
+using CodingTracker.View.Forms.Services.SharedFormServices.IconDrawingManager;
 
 namespace CodingTracker.View.TimerDisplayService
 {
@@ -20,12 +21,13 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly IExitFlowManager _exitFlowManager;
+        private readonly IIconDrawingManager _iconDrawingManager;
 
         #endregion
 
         #region Constructor
 
-        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager)
+        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager, IIconDrawingManager iconDrawingManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
@@ -35,6 +37,7 @@ namespace CodingTracker.View.TimerDisplayService
             _exitFlowManager = exitFlowManager;
 
             closeButton.Click += CloseButton_Click;
+            _iconDrawingManager = iconDrawingManager;
 
             SetFormPosition();
         }
@@ -61,6 +64,8 @@ namespace CodingTracker.View.TimerDisplayService
             }
 
             _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSecondsInt.Value, true);
+
+
 
             progressTimer.Start();
             _stopWatchTimerService.StartTimer();
@@ -159,14 +164,16 @@ namespace CodingTracker.View.TimerDisplayService
             {
                 _stopWatchTimerService.StartTimer();
                 progressTimer.Start();
-                pauseButton.Image = Properties.Resources.pause;
+                pauseButton.Text = "⏸";
+                pauseButton.TextOffset = new Point(2, 0);
                 isPaused = false;
             }
             else
             {
                 _stopWatchTimerService.StopTimer();
                 progressTimer.Stop();
-                pauseButton.Image = Properties.Resources.playButton;
+                pauseButton.Text = "▶";
+                pauseButton.TextOffset = new Point(3, 0);
                 isPaused = true;
             }
         }
@@ -254,38 +261,53 @@ namespace CodingTracker.View.TimerDisplayService
 
         /// <summary>
         /// Calculates the gradient colors for the progress bar based on completion percentage
-        /// Uses linear interpolation (lerp) to find the colour value between two colors relative to the progress.
-        /// 
+        /// Uses a smooth gradient transition throughout the entire progress range
+        /// </summary>
         private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
         {
-            //Start with RGB 255,81,195(pink/magenta) transitioning to 64,230,200(teal/cyan)
+            // Define start, middle, and end colors for a smooth transition
+            Color startColor = Color.FromArgb(255, 81, 195);  // Pink/magenta
+            Color middleColor = Color.FromArgb(180, 120, 210); // Purple transition
+            Color endColor = Color.FromArgb(64, 230, 200);    // Teal/cyan
 
-            int r = (int)(255 * (1 - progress) + 64 * progress);
-            int g = (int)(81 * (1 - progress) + 230 * progress);
-            int b = (int)(195 * (1 - progress) + 200 * progress);
-            Color mainColor = Color.FromArgb(r, g, b);
-            Color secondaryColor;
+            Color mainColor, secondaryColor;
 
             if (progress < 0.5)
             {
-                // First half: Secondary color transitions from darker pink (RGB 200,60,170) 
-                // to turquoise (RGB 0,180,190)
+                // First half: Transition from start to middle
+                double adjustedProgress = progress * 2; // Scale to 0-1 range for first half
 
-                // When calculating the lerp we use (progress * 2) to offset only using half of the progress value. 
-                int r2 = (int)(200 * (1 - progress * 2) + 0 * progress * 2);
-                int g2 = (int)(60 * (1 - progress * 2) + 180 * progress * 2);
-                int b2 = (int)(170 * (1 - progress * 2) + 190 * progress * 2);
-                secondaryColor = Color.FromArgb(r2, g2, b2);
+                int r = (int)(startColor.R + (middleColor.R - startColor.R) * adjustedProgress);
+                int g = (int)(startColor.G + (middleColor.G - startColor.G) * adjustedProgress);
+                int b = (int)(startColor.B + (middleColor.B - startColor.B) * adjustedProgress);
+
+                mainColor = Color.FromArgb(r, g, b);
+
+                // Secondary color is slightly darker/richer version of main color
+                secondaryColor = Color.FromArgb(
+                    (int)(r * 0.8),
+                    (int)(g * 0.85),
+                    (int)(b * 0.9)
+                );
             }
             else
             {
-                // Second half: Secondary color transitions from turquoise (RGB 0,180,190)
-                // to bright green (RGB 72,255,180)
+                // Second half: Transition from middle to end
+                double adjustedProgress = (progress - 0.5) * 2; // Scale to 0-1 range for second half
 
-                int r2 = (int)(0 * (1 - (progress - 0.5) * 2) + 72 * (progress - 0.5) * 2);
-                int g2 = (int)(180 * (1 - (progress - 0.5) * 2) + 255 * (progress - 0.5) * 2);
-                int b2 = (int)(190 * (1 - (progress - 0.5) * 2) + 180 * (progress - 0.5) * 2);
-                secondaryColor = Color.FromArgb(r2, g2, b2);
+                int r = (int)(middleColor.R + (endColor.R - middleColor.R) * adjustedProgress);
+                int g = (int)(middleColor.G + (endColor.G - middleColor.G) * adjustedProgress);
+                int b = (int)(middleColor.B + (endColor.B - middleColor.B) * adjustedProgress);
+
+                mainColor = Color.FromArgb(r, g, b);
+
+                // Secondary color is slightly brighter version of main color
+                // This creates the shimmering effect seen in many modern UI timers
+                secondaryColor = Color.FromArgb(
+                    Math.Min(255, (int)(r * 1.2)),
+                    Math.Min(255, (int)(g * 1.1)),
+                    Math.Min(255, (int)(b * 1.05))
+                );
             }
 
             return (mainColor, secondaryColor);

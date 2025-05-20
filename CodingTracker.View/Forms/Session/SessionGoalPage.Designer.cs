@@ -205,6 +205,8 @@ namespace CodingTracker.View.PopUpFormService
             // 
             setTimeGoalButton.BorderRadius = 8;
             setTimeGoalButton.CustomizableEdges = customizableEdges9;
+            setTimeGoalButton.FillColor = Color.FromArgb(255, 81, 195);
+            setTimeGoalButton.FillColor2 = Color.FromArgb(168, 228, 255);
             setTimeGoalButton.Font = new Font("Segoe UI", 9F);
             setTimeGoalButton.ForeColor = Color.White;
             setTimeGoalButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
@@ -220,6 +222,8 @@ namespace CodingTracker.View.PopUpFormService
             // 
             skipButton.BorderRadius = 8;
             skipButton.CustomizableEdges = customizableEdges11;
+            skipButton.FillColor = Color.FromArgb(255, 81, 195);
+            skipButton.FillColor2 = Color.FromArgb(168, 228, 255);
             skipButton.Font = new Font("Segoe UI", 9F);
             skipButton.ForeColor = Color.White;
             skipButton.Location = new Point(215, 170);
@@ -244,7 +248,7 @@ namespace CodingTracker.View.PopUpFormService
             gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_ACTIVATE;
             gunaAnimationWindow.TargetForm = this;
             // 
-            // SessionGoalForm
+            // SessionGoalPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -252,7 +256,7 @@ namespace CodingTracker.View.PopUpFormService
             ClientSize = new Size(400, 280);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "SessionGoalForm";
+            Name = "SessionGoalPage";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Session Goal";
             Load += SessionGoalPage_Load;

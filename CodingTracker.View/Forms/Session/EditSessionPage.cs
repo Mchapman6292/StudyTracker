@@ -25,6 +25,7 @@ namespace CodingTracker.View
         private readonly IDataGridViewManager _dataGridViewManager;
         private readonly INotificationManager _notificationManager;
         private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonHighlighterService _buttonHighlighterService;
 
         private bool IsEditSession { get; set; } = false;
         private List<int> _currentHighlightedRows = new();
@@ -54,7 +55,8 @@ namespace CodingTracker.View
             ICodingSessionRepository codingSessionRepository,
             IDataGridViewManager dataGridViewManager,
             INotificationManager notificationManager,
-            IExitFlowManager exitFlowManager)
+            IExitFlowManager exitFlowManager,
+            IButtonHighlighterService buttonHighlighterService)
         {
             _appLogger = appLogger;
             _formNavigator = formSwitcher;
@@ -62,6 +64,7 @@ namespace CodingTracker.View
             _dataGridViewManager = dataGridViewManager;
             _notificationManager = notificationManager;
             _exitFlowManager = exitFlowManager;
+            _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();
             InitializeComboBoxDropDowns();
@@ -81,6 +84,11 @@ namespace CodingTracker.View
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
             await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
+            _buttonHighlighterService.SetButtonHoverColors(toggleEditSessionsButton);
+            _buttonHighlighterService.SetButtonHoverColors(deleteSessionButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(toggleEditSessionsButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(deleteSessionButton);
+
         }
 
         #endregion
@@ -89,7 +97,7 @@ namespace CodingTracker.View
 
         private void TestEditSessionButton2_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateIsEditSession(TestEditSessionButton2.Checked);
+            UpdateIsEditSession(toggleEditSessionsButton.Checked);
             SetEditMode();
         }
 
@@ -119,12 +127,12 @@ namespace CodingTracker.View
 
         private void UpdateDeleteSessionButtonEnabled(bool? isEditSession = null)
         {
-            EditSessionPageDeleteButton.Enabled = isEditSession ?? IsEditSession;
+            deleteSessionButton.Enabled = isEditSession ?? IsEditSession;
         }
 
         private void UpdateDeleteSessionButtonVisibility()
         {
-            EditSessionPageDeleteButton.Visible = IsEditSession;
+            deleteSessionButton.Visible = IsEditSession;
         }
 
         private async void EditSessionPageDeleteButton_Click(object sender, EventArgs e)
@@ -239,9 +247,9 @@ namespace CodingTracker.View
 
         private void SetEditSessionButtonColours()
         {
-            TestEditSessionButton2.FillColor = IsEditSession ? ColourService.Teal : ColourService.DarkGrey;
-            TestEditSessionButton2.BorderColor = IsEditSession ? ColourService.LightTeal : ColourService.MediumGrey;
-            TestEditSessionButton2.ForeColor = IsEditSession ? ColourService.White : ColourService.LightGrey;
+            toggleEditSessionsButton.FillColor = IsEditSession ? ColourService.Teal : ColourService.DarkGrey;
+            toggleEditSessionsButton.BorderColor = IsEditSession ? ColourService.LightTeal : ColourService.MediumGrey;
+            toggleEditSessionsButton.ForeColor = IsEditSession ? ColourService.White : ColourService.LightGrey;
         }
 
         private void DisableDataGridViewSelectionHighlighting()
@@ -335,7 +343,7 @@ namespace CodingTracker.View
             this.Hide();
         }
 
- 
+
 
         private void closeButton_Click(object sender, EventArgs e)
         {
@@ -350,5 +358,7 @@ namespace CodingTracker.View
         }
 
         #endregion
+
+
     }
 }
