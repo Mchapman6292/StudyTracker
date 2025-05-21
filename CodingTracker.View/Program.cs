@@ -30,6 +30,8 @@ using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessio
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.DataInterfaces.DbContextService;
 using CodingTracker.Data.Configuration;
+using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
+using CodingTracker.View.Forms.Services.SharedFormServices;
 
 
 
@@ -93,6 +95,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<WaveVisualizationForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
                     .AddSingleton<SessionNotesForm>()
+                    .AddSingleton<ICountdownTimerColorManager, CountdownTimerColorManager>()
 
 
 

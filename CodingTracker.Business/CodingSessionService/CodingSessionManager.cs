@@ -27,6 +27,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         private readonly IUserCredentialRepository _userCredentialRepository;
         private readonly IUtilityService _utilityService;
 
+
         private bool IsCodingSessionActive { get; set; } = false;
         private bool IsSessionTimerActive { get; set; } = false;
 
@@ -34,10 +35,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         #region Constructor
 
-        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator,
-                                  ICodingSessionRepository codingSessionRepository,
-                                  IUserCredentialRepository userCredentialRepository,
-                                  IUtilityService utilityService)
+        public CodingSessionManager(IApplicationLogger appLogger, IInputValidator inputValidator,ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository,IUtilityService utilityService)
         {
             _appLogger = appLogger;
             _inputValidator = inputValidator;
@@ -68,7 +66,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         /// This is called in the load method of the CountdownTimerForm, sets the StartTime & Date.
         ///  Is also responsible for Updating bools IsCodingSessionActive & IsSessionTimerActive.
 
-        public void StartCodingSessionAndUpdateActiveBooleans(DateTime startTime)
+        public void UpdateSessionStartTimeAndActiveBoolsToTrue(DateTime startTime)
         {
             SetCodingSessionStartTimeAndDate(startTime);
             UpdateISCodingSessionActive(true);
@@ -79,6 +77,7 @@ namespace CodingTracker.Business.CodingSessionManagers
         /// Updates the session when the timer has ended, setting duration and end time.
         public void UpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration)
         {
+
             UpdateIsSessionTimerActive(false);
             int durationSeconds = (int)stopWatchTimerDuration.Value.TotalSeconds;
             string durationHHMM = _utilityService.ConvertDurationSecondsToHHMMStringWithSpace(durationSeconds);
@@ -105,6 +104,13 @@ namespace CodingTracker.Business.CodingSessionManagers
 
             return sessionAddedToDb;
         }
+
+        public void EndCodingSessionWithoutSaving()
+        {
+            UpdateISCodingSessionActive(false);
+            UpdateIsSessionTimerActive(false); ;
+        }
+
 
         #endregion
 

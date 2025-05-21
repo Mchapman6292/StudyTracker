@@ -75,7 +75,7 @@ namespace CodingTracker.View
 
         private  void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequest(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
     
