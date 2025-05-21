@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.View.Forms
+﻿using Guna.UI2.WinForms;
+
+namespace CodingTracker.View.Forms
 {
     partial class TestForm
     {
@@ -95,14 +97,13 @@
             mainPanel.TabIndex = 0;
             // 
             // circleProgressBar
-            // 
-            circleProgressBar.AnimationSpeed = 0.8F;
+            circleProgressBar.AnimationSpeed = 0.6F; // ENHANCEMENT 1: Smoother animation
             circleProgressBar.BackColor = Color.Transparent;
             circleProgressBar.Controls.Add(trackOutline);
             circleProgressBar.Controls.Add(timeLabel);
             circleProgressBar.Controls.Add(sessionNameLabel);
             circleProgressBar.FillColor = Color.FromArgb(48, 49, 54);
-            circleProgressBar.FillThickness = 8;
+            circleProgressBar.FillThickness = 10; // ENHANCEMENT 2: Thicker background
             circleProgressBar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             circleProgressBar.ForeColor = Color.White;
             circleProgressBar.Location = new Point(50, 40);
@@ -110,29 +111,95 @@
             circleProgressBar.Name = "circleProgressBar";
             circleProgressBar.ProgressColor = Color.FromArgb(255, 81, 195);
             circleProgressBar.ProgressColor2 = Color.FromArgb(168, 228, 255);
-            circleProgressBar.ProgressThickness = 8;
+            circleProgressBar.ProgressEndCap = System.Drawing.Drawing2D.LineCap.Round; // ENHANCEMENT 2: Rounded ends
+            circleProgressBar.ProgressStartCap = System.Drawing.Drawing2D.LineCap.Round; // ENHANCEMENT 2: Rounded starts
+            circleProgressBar.ProgressThickness = 10; // ENHANCEMENT 2: Matching thickness
+            circleProgressBar.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal; // ENHANCEMENT 3: Diagonal gradient
+            circleProgressBar.ShadowDecoration.Enabled = true; // ENHANCEMENT 3: Enable shadow
+            circleProgressBar.ShadowDecoration.Color = Color.FromArgb(60, 0, 0, 0); // ENHANCEMENT 3: Shadow color
+            circleProgressBar.ShadowDecoration.Depth = 3; // ENHANCEMENT 3: Shadow depth
+            circleProgressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle; // ENHANCEMENT 3: Shadow mode
             circleProgressBar.ShadowDecoration.CustomizableEdges = customizableEdges2;
             circleProgressBar.Size = new Size(220, 220);
             circleProgressBar.TabIndex = 1;
+            circleProgressBar.UseTransparentBackground = true; // ENHANCEMENT 1: Enable transparency
             circleProgressBar.Value = 25;
-            // 
-            // trackOutline
-            // 
+
+            // TRACK OUTLINE SETUP
+            // ------------------
             trackOutline.BackColor = Color.Transparent;
             trackOutline.Dock = DockStyle.Fill;
-            trackOutline.FillColor = Color.Transparent;
+            trackOutline.FillColor = Color.FromArgb(10, 255, 255, 255); // ENHANCEMENT 4: Subtle inner glow
             trackOutline.FillThickness = 1;
             trackOutline.Font = new Font("Segoe UI", 12F);
             trackOutline.ForeColor = Color.White;
             trackOutline.Location = new Point(0, 0);
             trackOutline.Minimum = 0;
             trackOutline.Name = "trackOutline";
-            trackOutline.ProgressColor = Color.FromArgb(80, 80, 90);
-            trackOutline.ProgressThickness = 1;
+            trackOutline.ProgressColor = Color.FromArgb(30, 255, 255, 255); // ENHANCEMENT 4: Subtle track indication
+            trackOutline.ProgressThickness = 2; // ENHANCEMENT 4: Thinner outline track
             trackOutline.ShadowDecoration.CustomizableEdges = customizableEdges1;
             trackOutline.Size = new Size(220, 220);
             trackOutline.TabIndex = 0;
             trackOutline.Value = 100;
+
+            // ENHANCEMENT 5: Add Glow Effect
+            // -----------------------------
+            Guna.UI2.WinForms.Guna2CircleProgressBar glowEffect = new Guna.UI2.WinForms.Guna2CircleProgressBar();
+            glowEffect.FillColor = Color.Transparent;
+            glowEffect.ProgressColor = Color.FromArgb(40, 255, 255, 255);
+            glowEffect.ProgressThickness = 15;
+            glowEffect.ProgressBrushMode = Guna.UI2.WinForms.Enums.BrushMode.SolidTransition;
+            glowEffect.Value = 100;
+            glowEffect.Dock = DockStyle.Fill;
+            glowEffect.Name = "glowEffect";
+            trackOutline.Controls.Add(glowEffect);
+
+            // ENHANCEMENT 6: Create Outer Ring
+            // ------------------------------
+            Guna.UI2.WinForms.Guna2CircleProgressBar outerRing = new Guna.UI2.WinForms.Guna2CircleProgressBar();
+            outerRing.FillColor = Color.FromArgb(25, 24, 40);
+            outerRing.ProgressColor = Color.FromArgb(20, 255, 255, 255);
+            outerRing.ProgressThickness = 1;
+            outerRing.Value = 100;
+            outerRing.Name = "outerRing";
+            outerRing.Size = new Size(240, 240);
+            outerRing.Location = new Point(40, 30);
+            mainPanel.Controls.Add(outerRing);
+            mainPanel.Controls.SetChildIndex(outerRing, mainPanel.Controls.GetChildIndex(circleProgressBar) + 1);
+
+            // ENHANCEMENT 7: Text Display Enhancements
+            timeLabel.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+            timeLabel.AutoSize = false;
+            timeLabel.Size = new Size(150, 55);
+            timeLabel.Location = new Point(35, 80);
+            timeLabel.TextAlignment = ContentAlignment.MiddleCenter;
+
+            // Create a slight shadow effect by layering (if you really want a shadow effect)
+            Guna2HtmlLabel shadowLabel = new Guna2HtmlLabel();
+            shadowLabel.Text = timeLabel.Text;
+            shadowLabel.Font = timeLabel.Font;
+            shadowLabel.Size = timeLabel.Size;
+            shadowLabel.Location = new Point(timeLabel.Location.X + 1, timeLabel.Location.Y + 1);
+            shadowLabel.ForeColor = Color.FromArgb(80, 0, 0, 0);
+            shadowLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            shadowLabel.AutoSize = false;
+            shadowLabel.Name = "shadowLabel";
+            circleProgressBar.Controls.Add(shadowLabel);
+            circleProgressBar.Controls.SetChildIndex(shadowLabel, circleProgressBar.Controls.GetChildIndex(timeLabel) + 1);
+
+            // ENHANCEMENT 10: Consistent Color Scheme
+            // -------------------------------------
+            Color primaryAccent = Color.FromArgb(255, 81, 195);
+            Color secondaryAccent = Color.FromArgb(168, 228, 255);
+
+            pauseButton.FillColor = primaryAccent;
+            pauseButton.FillColor2 = secondaryAccent;
+            stopButton.FillColor = primaryAccent;
+            stopButton.FillColor2 = secondaryAccent;
+            restartButton.FillColor = primaryAccent;
+            restartButton.FillColor2 = secondaryAccent;
+
             // 
             // timeLabel
             // 

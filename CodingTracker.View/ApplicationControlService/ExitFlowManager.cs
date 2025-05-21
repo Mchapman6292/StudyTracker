@@ -10,7 +10,7 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
 
     public interface IExitFlowManager
     {
-        void HandleExitRequest(object sender, EventArgs e, Form currentForm);
+        void HandleExitRequestAndStopSession(object sender, EventArgs e, Form currentForm);
         void ExitCodingTracker();
     }
 
@@ -34,22 +34,23 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
 
 
         /// <summary>
-        /// This method is called by all exit buttons and handles all exit logic by using the CustomDialogResult enum to determine the codingSession state and take appropriate action.
+        /// This method is called by all exit buttons and handles all exit logic by using the CustomDialogResultEnum enum to determine the codingSession state and take appropriate action.
 
 
-        public void HandleExitRequest(object sender, EventArgs e, Form currentForm)
+        public void HandleExitRequestAndStopSession(object sender, EventArgs e, Form currentForm)
         {
-            CustomDialogResult exitResult = _notificationManager.ShowExitMessageDialog(currentForm);
+            CustomDialogResultEnum exitResult = _notificationManager.ShowExitMessageDialog(currentForm);
 
             switch(exitResult)
             {
-                case CustomDialogResult.Exit:
+                case CustomDialogResultEnum.Exit:
                     // Exit CodingTracker
                     ExitCodingTracker();
                     break;
 
-                case CustomDialogResult.SaveCurrentSessionAndExit:
-                    //
+                case CustomDialogResultEnum.SaveCurrentSessionAndExit:
+                case CustomDialogResultEnum.StopSession:
+
                     bool sessionTimerActive = _codingSessionManager.ReturnIsSessionTimerActive();
 
                     if(sessionTimerActive)
@@ -62,9 +63,11 @@ namespace CodingTracker.View.ApplicationControlService.ExitFlowManagers
                     _formNavigator.SwitchToForm(FormPageEnum.SessionNotesForm);
                     break;
 
-                case CustomDialogResult.ContinueSession:
+                case CustomDialogResultEnum.ContinueSession:
                     // Continue with current session.
                     break;
+
+
             }
         }
 

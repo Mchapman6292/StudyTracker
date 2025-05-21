@@ -10,6 +10,9 @@ using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using System;
+using System.Linq.Expressions;
+using Npgsql;
+using CodingTracker.View.Forms;
 
 namespace CodingTracker.View
 {
@@ -24,10 +27,11 @@ namespace CodingTracker.View
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly IExitFlowManager _exitFlowManager;
+        private readonly INotificationManager _notificationManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager, INotificationManager notificationManager)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -38,6 +42,7 @@ namespace CodingTracker.View
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
             _exitFlowManager = exitFlowManager;
+            _notificationManager = notificationManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -60,7 +65,7 @@ namespace CodingTracker.View
 
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
             _formStateManagement.SetCurrentForm(this);
-
+            _notificationManager = notificationManager;
         }
 
         #region Media Player
@@ -232,27 +237,49 @@ namespace CodingTracker.View
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
+
+            loginButton.Enabled = false;
+
             _appLogger.Info($"Starting {nameof(LoginButton_Click)}.");
 
-            string username = loginPageUsernameTextbox.Text;
-            string password = LoginPagePasswordTextbox.Text;
-            bool isValidLogin = await _authenticationService.AuthenticateLogin(username, password);
-
-            await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
-
-            if (isValidLogin)
+            try
             {
-                UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredentialIfLoginAuthenticated(isValidLogin, username);
+                string username = loginPageUsernameTextbox.Text;
+                string password = LoginPagePasswordTextbox.Text;
+                bool isValidLogin = await _authenticationService.AuthenticateLogin(username, password);
 
-                _codingSessionManager.SetCurrentUserIdPlaceholder(userCredential.UserId);
 
-                SaveUsernameForNextLogin(username);
+                if (isValidLogin)
+                {
+                    UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredential(username);
 
-                _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                    _codingSessionManager.SetCurrentUserIdPlaceholder(userCredential.UserId);
 
+                    SaveUsernameForNextLogin(username);
+
+                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                }
+                if(!isValidLogin) 
+                {
+                    _notificationManager.ShowNotificationDialog(this, "Username or password is incorrect please try again.");
+                }
+            }
+            catch (NpgsqlException ex)
+            {
+                _appLogger.Error($"Database error during login: {ex.Message}", ex);
+                _notificationManager.ShowNotificationDialog(this,$"Unable to connect to the database.");
+            }
+
+            finally
+            {
+                loginButton.Enabled = true;
             }
         }
 
+        /*Change back once testing complete 
+         var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
+        _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
+        */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
             var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);

@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.Entities.UserCredentialEntities;
-using System.Diagnostics;
 
 namespace CodingTracker.Common.BusinessInterfaces.Authentication
 {
@@ -11,7 +10,8 @@ namespace CodingTracker.Common.BusinessInterfaces.Authentication
 
         Task<bool> AuthenticateLogin(string username, string password);
 
-        Task<UserCredentialEntity> ReturnUserCredentialIfLoginAuthenticated(bool loginAuthenticated, string username);
+
+        Task<UserCredentialEntity> ReturnUserCredential(string username);
 
         Task<bool> ResetPassword(string username, string newPassword);
 

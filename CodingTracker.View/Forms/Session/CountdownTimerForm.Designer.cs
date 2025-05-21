@@ -20,8 +20,7 @@ namespace CodingTracker.View.TimerDisplayService
         private Guna2BorderlessForm borderlessForm;
         private Guna2Panel mainPanel;
         private Guna2GradientButton pauseButton;
-        private Guna2GradientButton stopButton;
-        private Guna2GradientButton restartButton;
+        private Guna2GradientButton restartSessionButton;
         private Guna2HtmlLabel timeDisplayLabel;
         private Guna2HtmlLabel sessionNameLabel;
         private Guna2Panel controlPanel;
@@ -50,6 +49,7 @@ namespace CodingTracker.View.TimerDisplayService
         {
             components = new Container();
             CustomizableEdges customizableEdges17 = new CustomizableEdges();
+            CustomizableEdges customizableEdges18 = new CustomizableEdges();
             CustomizableEdges customizableEdges1 = new CustomizableEdges();
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             CustomizableEdges customizableEdges3 = new CustomizableEdges();
@@ -78,8 +78,8 @@ namespace CodingTracker.View.TimerDisplayService
             timeDisplayLabel = new Guna2HtmlLabel();
             controlPanel = new Guna2Panel();
             pauseButton = new Guna2GradientButton();
+            restartSessionButton = new Guna2GradientButton();
             stopButton = new Guna2GradientButton();
-            restartButton = new Guna2GradientButton();
             progressTimer = new System.Windows.Forms.Timer(components);
             DisplayMessageBox = new Guna2MessageDialog();
             gunaAnimationWindow = new Guna2AnimateWindow(components);
@@ -107,13 +107,15 @@ namespace CodingTracker.View.TimerDisplayService
             mainPanel.Controls.Add(closeButton);
             mainPanel.Controls.Add(progressBar);
             mainPanel.Controls.Add(controlPanel);
-            mainPanel.CustomizableEdges = customizableEdges11;
+            customizableEdges17.BottomRight = false;
+            customizableEdges17.TopLeft = false;
+            mainPanel.CustomizableEdges = customizableEdges17;
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(10);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges17;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
             mainPanel.Size = new Size(320, 400);
             mainPanel.TabIndex = 0;
             // 
@@ -137,7 +139,7 @@ namespace CodingTracker.View.TimerDisplayService
             homeButton.Font = new Font("Segoe UI", 9F);
             homeButton.ForeColor = Color.White;
             homeButton.Image = Properties.Resources.HomeButtonIcon;
-            homeButton.Location = new Point(243, 0);
+            homeButton.Location = new Point(245, 0);
             homeButton.Name = "homeButton";
             homeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
             homeButton.Size = new Size(27, 21);
@@ -184,7 +186,7 @@ namespace CodingTracker.View.TimerDisplayService
             progressBar.BackColor = Color.Transparent;
             progressBar.Controls.Add(trackOutline);
             progressBar.FillColor = Color.FromArgb(48, 49, 54);
-            progressBar.FillThickness = 8;
+            progressBar.FillThickness = 14;
             progressBar.Font = new Font("Segoe UI", 12F);
             progressBar.ForeColor = Color.White;
             progressBar.Location = new Point(50, 40);
@@ -192,7 +194,7 @@ namespace CodingTracker.View.TimerDisplayService
             progressBar.Name = "progressBar";
             progressBar.ProgressColor = Color.FromArgb(255, 81, 195);
             progressBar.ProgressColor2 = Color.FromArgb(168, 228, 255);
-            progressBar.ProgressThickness = 8;
+            progressBar.ProgressThickness = 14;
             progressBar.ShadowDecoration.CustomizableEdges = customizableEdges8;
             progressBar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             progressBar.Size = new Size(220, 220);
@@ -200,10 +202,10 @@ namespace CodingTracker.View.TimerDisplayService
             // 
             // trackOutline
             // 
+            trackOutline.Anchor = AnchorStyles.None;
             trackOutline.BackColor = Color.Transparent;
             trackOutline.Controls.Add(percentProgressLabel);
             trackOutline.Controls.Add(timeDisplayLabel);
-            trackOutline.Dock = DockStyle.Fill;
             trackOutline.FillColor = Color.Transparent;
             trackOutline.FillThickness = 1;
             trackOutline.Font = new Font("Segoe UI", 12F);
@@ -211,7 +213,8 @@ namespace CodingTracker.View.TimerDisplayService
             trackOutline.Location = new Point(0, 0);
             trackOutline.Minimum = 0;
             trackOutline.Name = "trackOutline";
-            trackOutline.ProgressColor = Color.FromArgb(80, 80, 90);
+            trackOutline.ProgressColor = Color.Transparent;
+            trackOutline.ProgressColor2 = Color.Transparent;
             trackOutline.ProgressThickness = 1;
             trackOutline.ShadowDecoration.CustomizableEdges = customizableEdges7;
             trackOutline.Size = new Size(220, 220);
@@ -222,32 +225,32 @@ namespace CodingTracker.View.TimerDisplayService
             // 
             percentProgressLabel.AutoSize = false;
             percentProgressLabel.BackColor = Color.Transparent;
-            percentProgressLabel.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            percentProgressLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             percentProgressLabel.ForeColor = Color.White;
-            percentProgressLabel.Location = new Point(61, 148);
+            percentProgressLabel.Location = new Point(81, 148);
             percentProgressLabel.Name = "percentProgressLabel";
-            percentProgressLabel.Size = new Size(84, 20);
+            percentProgressLabel.Size = new Size(53, 24);
             percentProgressLabel.TabIndex = 3;
+            percentProgressLabel.Text = "5%";
             percentProgressLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // timeDisplayLabel
             // 
             timeDisplayLabel.BackColor = Color.Transparent;
-            timeDisplayLabel.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            timeDisplayLabel.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
             timeDisplayLabel.ForeColor = Color.White;
-            timeDisplayLabel.Location = new Point(61, 73);
+            timeDisplayLabel.Location = new Point(58, 89);
             timeDisplayLabel.Name = "timeDisplayLabel";
-            timeDisplayLabel.Size = new Size(84, 47);
+            timeDisplayLabel.Size = new Size(141, 39);
             timeDisplayLabel.TabIndex = 2;
-            timeDisplayLabel.Text = "00:00";
-            timeDisplayLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            timeDisplayLabel.Text = "00 : 00 : 00";
             // 
             // controlPanel
             // 
             controlPanel.BackColor = Color.Transparent;
             controlPanel.Controls.Add(pauseButton);
+            controlPanel.Controls.Add(restartSessionButton);
             controlPanel.Controls.Add(stopButton);
-            controlPanel.Controls.Add(restartButton);
             controlPanel.CustomizableEdges = customizableEdges15;
             controlPanel.FillColor = Color.Transparent;
             controlPanel.Location = new Point(20, 290);
@@ -284,59 +287,60 @@ namespace CodingTracker.View.TimerDisplayService
             pauseButton.TextOffset = new Point(3, 0);
             pauseButton.Click += PauseButton_Click;
             // 
+            // restartSessionButton
+            // 
+            restartSessionButton.BackColor = Color.Transparent;
+            restartSessionButton.BorderRadius = 24;
+            restartSessionButton.CustomizableEdges = customizableEdges11;
+            restartSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            restartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            restartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            restartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            restartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            restartSessionButton.FillColor = Color.FromArgb(170, 60, 130);
+            restartSessionButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            restartSessionButton.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            restartSessionButton.ForeColor = Color.White;
+            restartSessionButton.Location = new Point(192, 16);
+            restartSessionButton.Name = "restartSessionButton";
+            restartSessionButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
+            restartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            restartSessionButton.ShadowDecoration.Depth = 5;
+            restartSessionButton.ShadowDecoration.Enabled = true;
+            restartSessionButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
+            restartSessionButton.Size = new Size(48, 48);
+            restartSessionButton.TabIndex = 7;
+            restartSessionButton.Text = "⟳";
+            restartSessionButton.TextOffset = new Point(3, 0);
+            restartSessionButton.Click += RestartSessionButton_Click;
+            // 
             // stopButton
             // 
             stopButton.BackColor = Color.Transparent;
-            stopButton.BorderRadius = 10;
-            customizableEdges11.BottomRight = false;
-            customizableEdges11.TopLeft = false;
-            stopButton.CustomizableEdges = customizableEdges11;
+            stopButton.BorderColor = Color.FromArgb(170, 60, 130);
+            stopButton.BorderRadius = 24;
+            stopButton.CustomizableEdges = customizableEdges13;
             stopButton.DisabledState.BorderColor = Color.DarkGray;
             stopButton.DisabledState.CustomBorderColor = Color.DarkGray;
             stopButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             stopButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
             stopButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            stopButton.FillColor = Color.FromArgb(255, 81, 195);
-            stopButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            stopButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            stopButton.FillColor = Color.FromArgb(170, 60, 130);
+            stopButton.FillColor2 = Color.FromArgb(100, 170, 200);
+            stopButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
             stopButton.ForeColor = Color.White;
-            stopButton.Location = new Point(105, 16);
+            stopButton.Location = new Point(116, 16);
             stopButton.Name = "stopButton";
             stopButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
-            stopButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            stopButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             stopButton.ShadowDecoration.Depth = 5;
             stopButton.ShadowDecoration.Enabled = true;
             stopButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            stopButton.Size = new Size(70, 48);
-            stopButton.TabIndex = 6;
-            stopButton.Text = "Stop";
-            stopButton.Click += CloseButton_Click;
-            // 
-            // restartButton
-            // 
-            restartButton.BackColor = Color.Transparent;
-            restartButton.BorderRadius = 24;
-            restartButton.CustomizableEdges = customizableEdges13;
-            restartButton.DisabledState.BorderColor = Color.DarkGray;
-            restartButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            restartButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            restartButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            restartButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            restartButton.FillColor = Color.FromArgb(170, 60, 130);
-            restartButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            restartButton.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            restartButton.ForeColor = Color.White;
-            restartButton.Location = new Point(192, 16);
-            restartButton.Name = "restartButton";
-            restartButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
-            restartButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            restartButton.ShadowDecoration.Depth = 5;
-            restartButton.ShadowDecoration.Enabled = true;
-            restartButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            restartButton.Size = new Size(48, 48);
-            restartButton.TabIndex = 7;
-            restartButton.Text = "⟳";
-            restartButton.TextOffset = new Point(3, 0);
+            stopButton.Size = new Size(48, 48);
+            stopButton.TabIndex = 8;
+            stopButton.Text = "■";
+            stopButton.TextOffset = new Point(2, 0);
+            stopButton.Click += StopButton_Click;
             // 
             // progressTimer
             // 
@@ -378,5 +382,6 @@ namespace CodingTracker.View.TimerDisplayService
         private Guna2GradientButton homeButton;
         private Guna2AnimateWindow gunaAnimationWindow;
         private Guna2HtmlLabel percentProgressLabel;
+        private Guna2GradientButton stopButton;
     }
 }

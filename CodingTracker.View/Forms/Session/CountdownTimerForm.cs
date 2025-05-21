@@ -4,7 +4,9 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
 using CodingTracker.View.FormManagement;
 using Guna.UI2.WinForms;
-using CodingTracker.View.Forms.Services.SharedFormServices.IconDrawingManager;
+using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+
 
 namespace CodingTracker.View.TimerDisplayService
 {
@@ -21,13 +23,15 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly IExitFlowManager _exitFlowManager;
-        private readonly IIconDrawingManager _iconDrawingManager;
+        private readonly ICountdownTimerColorManager _countdownTimerColorManager;
+        private readonly INotificationManager _notificationManager;
+
 
         #endregion
 
         #region Constructor
 
-        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager, IIconDrawingManager iconDrawingManager)
+        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager, ICountdownTimerColorManager countdownTimerColorManager, INotificationManager notificationManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
@@ -35,11 +39,12 @@ namespace CodingTracker.View.TimerDisplayService
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
             _exitFlowManager = exitFlowManager;
+            _notificationManager = notificationManager;
 
             closeButton.Click += CloseButton_Click;
-            _iconDrawingManager = iconDrawingManager;
 
             SetFormPosition();
+            _countdownTimerColorManager = countdownTimerColorManager;
         }
 
         #endregion
@@ -48,10 +53,9 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void CountdownTimerForm_Load(object sender, EventArgs e)
         {
-            int? sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds();
+            // Change after testing          int? sessionGoalSecondsInt = _codingSessionManager.ReturnGoalSeconds(); 
+            int? sessionGoalSecondsInt = 20;
 
-            progressValue = 0;
-            progressBar.Value = 0;
 
             if (percentProgressLabel != null)
             {
@@ -69,6 +73,7 @@ namespace CodingTracker.View.TimerDisplayService
 
             progressTimer.Start();
             _stopWatchTimerService.StartTimer();
+            timeDisplayLabel.BringToFront();
         }
 
         private void ApplyColorTransitionToTimeDisplayLabel(Color targetColor)
@@ -79,7 +84,7 @@ namespace CodingTracker.View.TimerDisplayService
             if (timeDisplayLabel.Tag == null || !((Color)timeDisplayLabel.Tag).ToArgb().Equals(targetColor.ToArgb()))
             {
                 Color currentColor = (Color)(timeDisplayLabel.Tag ?? Color.White);
-                ApplyColorTransitionToGuna2HtmlLabel(timeDisplayLabel, currentColor, targetColor);
+                _countdownTimerColorManager.ApplyColorTransitionToGuna2HtmlLabel(timeDisplayLabel, currentColor, targetColor);
                 timeDisplayLabel.Tag = targetColor;
             }
         }
@@ -92,21 +97,11 @@ namespace CodingTracker.View.TimerDisplayService
             if (percentProgressLabel.Tag == null || !((Color)percentProgressLabel.Tag).ToArgb().Equals(targetColor.ToArgb()))
             {
                 Color currentColor = (Color)(percentProgressLabel.Tag ?? Color.White);
-                ApplyColorTransitionToGuna2HtmlLabel(percentProgressLabel, currentColor, targetColor);
+                _countdownTimerColorManager.ApplyColorTransitionToGuna2HtmlLabel(percentProgressLabel, currentColor, targetColor);
                 percentProgressLabel.Tag = targetColor;
             }
         }
 
-        private void UpdateTimeDisplayLabelText(string timeText)
-        {
-            if (timeDisplayLabel == null)
-                return;
-
-            if (timeDisplayLabel.Text != timeText)
-            {
-                timeDisplayLabel.Text = timeText;
-            }
-        }
 
         private void UpdatePercentProgressLabelText(string percentText)
         {
@@ -119,6 +114,11 @@ namespace CodingTracker.View.TimerDisplayService
             }
         }
 
+        private void UpdateProgressBarValue(int percentage)
+        {
+            progressBar.Value = percentage;
+        }
+
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
             if (!progressTimerGoalSecondsDouble.HasValue)
@@ -127,24 +127,23 @@ namespace CodingTracker.View.TimerDisplayService
             }
 
             TimeSpan elapsedTime = _stopWatchTimerService.ReturnElapsedTimeSpan();
-            string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
 
-            UpdateTimeDisplayLabelText(formattedTimeSpan);
+            UpdateTimeDisplayLabel(elapsedTime);
 
             double percentage = Math.Min(100, (elapsedTime.TotalSeconds / progressTimerGoalSecondsDouble.Value) * 100);
             progressValue = (int)percentage;
-            progressBar.Value = progressValue;
+            UpdateProgressBarValue(progressValue);
 
-            (Color mainColor, Color secondaryColor) = GetProgressColors(percentage / 100);
+            (Color mainColor, Color secondaryColor) = _countdownTimerColorManager.GetProgressColors(percentage / 100);
 
             progressBar.ProgressColor = mainColor;
             progressBar.ProgressColor2 = secondaryColor;
 
-            ApplyColorTransitionToTimeDisplayLabel(mainColor);
+
 
             string percentText = $"{progressValue}%";
             UpdatePercentProgressLabelText(percentText);
-            ApplyColorTransitionToPercentProgressLabel(mainColor);
+
 
             if (progressValue >= 100)
             {
@@ -155,7 +154,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequest(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
@@ -209,110 +208,48 @@ namespace CodingTracker.View.TimerDisplayService
         {
             string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
 
-            if (timeDisplayLabel.Text != formattedTimeSpan || timeDisplayLabel.Tag == null)
-            {
-                if (progressTimerGoalSecondsDouble.HasValue)
-                {
-                    double progress = Math.Min(1.0, elapsedTime.TotalSeconds / progressTimerGoalSecondsDouble.Value);
-                    (Color mainColor, Color secondaryColor) = GetProgressColors(progress);
-
-                    if (timeDisplayLabel.Tag == null || !((Color)timeDisplayLabel.Tag).ToArgb().Equals(mainColor.ToArgb()))
-                    {
-                        ApplyColorTransitionToGuna2HtmlLabel(timeDisplayLabel, (Color)(timeDisplayLabel.Tag ?? Color.White), mainColor);
-                        timeDisplayLabel.Tag = mainColor;
-                    }
-
-                    timeDisplayLabel.Text = formattedTimeSpan;
-                }
-            }
-        }
-
-        /// <summary>
-        /// The method creates a timer with a 5ms interval, which will update the color multiple times per second.
-        private void ApplyColorTransitionToGuna2HtmlLabel(Guna2HtmlLabel label, Color fromColor, Color toColor)
-        {
-            System.Windows.Forms.Timer transitionTimer = new System.Windows.Forms.Timer();
-            transitionTimer.Interval = 5;
-
-            int steps = 10;
-            int currentStep = 0;
-
-            transitionTimer.Tick += (s, e) => {
-                currentStep++;
-                double progress = (double)currentStep / steps;
-
-                int r = (int)(fromColor.R + (toColor.R - fromColor.R) * progress);
-                int g = (int)(fromColor.G + (toColor.G - fromColor.G) * progress);
-                int b = (int)(fromColor.B + (toColor.B - fromColor.B) * progress);
-
-                label.ForeColor = Color.FromArgb(r, g, b);
-
-                if (currentStep >= steps)
-                {
-                    transitionTimer.Stop();
-                    transitionTimer.Dispose();
-                    label.ForeColor = toColor;
-                }
-            };
-
-            transitionTimer.Start();
+            timeDisplayLabel.Text = formattedTimeSpan;
         }
 
 
-        /// <summary>
-        /// Calculates the gradient colors for the progress bar based on completion percentage
-        /// Uses a smooth gradient transition throughout the entire progress range
-        /// </summary>
-        private (Color MainColor, Color SecondaryColor) GetProgressColors(double progress)
-        {
-            // Define start, middle, and end colors for a smooth transition
-            Color startColor = Color.FromArgb(255, 81, 195);  // Pink/magenta
-            Color middleColor = Color.FromArgb(180, 120, 210); // Purple transition
-            Color endColor = Color.FromArgb(64, 230, 200);    // Teal/cyan
-
-            Color mainColor, secondaryColor;
-
-            if (progress < 0.5)
-            {
-                // First half: Transition from start to middle
-                double adjustedProgress = progress * 2; // Scale to 0-1 range for first half
-
-                int r = (int)(startColor.R + (middleColor.R - startColor.R) * adjustedProgress);
-                int g = (int)(startColor.G + (middleColor.G - startColor.G) * adjustedProgress);
-                int b = (int)(startColor.B + (middleColor.B - startColor.B) * adjustedProgress);
-
-                mainColor = Color.FromArgb(r, g, b);
-
-                // Secondary color is slightly darker/richer version of main color
-                secondaryColor = Color.FromArgb(
-                    (int)(r * 0.8),
-                    (int)(g * 0.85),
-                    (int)(b * 0.9)
-                );
-            }
-            else
-            {
-                // Second half: Transition from middle to end
-                double adjustedProgress = (progress - 0.5) * 2; // Scale to 0-1 range for second half
-
-                int r = (int)(middleColor.R + (endColor.R - middleColor.R) * adjustedProgress);
-                int g = (int)(middleColor.G + (endColor.G - middleColor.G) * adjustedProgress);
-                int b = (int)(middleColor.B + (endColor.B - middleColor.B) * adjustedProgress);
-
-                mainColor = Color.FromArgb(r, g, b);
-
-                // Secondary color is slightly brighter version of main color
-                // This creates the shimmering effect seen in many modern UI timers
-                secondaryColor = Color.FromArgb(
-                    Math.Min(255, (int)(r * 1.2)),
-                    Math.Min(255, (int)(g * 1.1)),
-                    Math.Min(255, (int)(b * 1.05))
-                );
-            }
-
-            return (mainColor, secondaryColor);
-        }
 
         #endregion
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            _stopWatchTimerService.StopTimer();
+            progressTimer.Stop();
+
+            Guna2MessageDialog stopDialog = _notificationManager.ReturnStopSessionDialog();
+            DialogResult result = stopDialog.Show();
+
+            switch(result)
+            {
+                case DialogResult.Cancel:
+                    _stopWatchTimerService.StartTimer();
+                    progressTimer.Stop();
+                    return;
+
+                case DialogResult.No:
+
+                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                    break;
+
+                case DialogResult.Yes:
+                    _stopWatchTimerService.StopTimer();
+                    TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
+                    _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
+                    _formNavigator.SwitchToForm(FormPageEnum.SessionNotesForm);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// The logic for starting a coding session is in the forms load method, to restart just reload the form.
+
+        private void RestartSessionButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.CountdownTimerForm);
+        }
     }
 }

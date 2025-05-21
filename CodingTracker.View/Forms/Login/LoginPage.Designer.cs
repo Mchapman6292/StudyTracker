@@ -64,8 +64,7 @@ namespace CodingTracker.View
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            loginPageErrorTextbox = new Label();
-            label1 = new Label();
+            rememberMeTextBox = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             LoginPageVLCPLayer = new LibVLCSharp.WinForms.VideoView();
             loginPageUsernameTextbox = new Guna.UI2.WinForms.Guna2TextBox();
@@ -86,22 +85,14 @@ namespace CodingTracker.View
             guna2Panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // loginPageErrorTextbox
+            // rememberMeTextBox
             // 
-            loginPageErrorTextbox.Location = new Point(58, 447);
-            loginPageErrorTextbox.Name = "loginPageErrorTextbox";
-            loginPageErrorTextbox.Size = new Size(226, 23);
-            loginPageErrorTextbox.TabIndex = 5;
-            loginPageErrorTextbox.Visible = false;
-            // 
-            // label1
-            // 
-            label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(99, 294);
-            label1.Name = "label1";
-            label1.Size = new Size(100, 23);
-            label1.TabIndex = 10;
-            label1.Text = "Remember me";
+            rememberMeTextBox.ForeColor = SystemColors.ButtonFace;
+            rememberMeTextBox.Location = new Point(99, 294);
+            rememberMeTextBox.Name = "rememberMeTextBox";
+            rememberMeTextBox.Size = new Size(100, 23);
+            rememberMeTextBox.TabIndex = 10;
+            rememberMeTextBox.Text = "Remember me";
             // 
             // LoginPageVLCPLayer
             // 
@@ -145,7 +136,7 @@ namespace CodingTracker.View
             // LoginPagePasswordTextbox
             // 
             LoginPagePasswordTextbox.AutoRoundedCorners = true;
-            LoginPagePasswordTextbox.BorderColor = Color.FromArgb(168, 228, 255);
+            LoginPagePasswordTextbox.BorderColor = Color.FromArgb(255, 81, 195);
             LoginPagePasswordTextbox.BorderRadius = 17;
             LoginPagePasswordTextbox.CustomizableEdges = customizableEdges3;
             LoginPagePasswordTextbox.DefaultText = "";
@@ -172,8 +163,10 @@ namespace CodingTracker.View
             // 
             // rememberMeToggle
             // 
-            rememberMeToggle.CheckedState.BorderColor = Color.FromArgb(255, 128, 198);
-            rememberMeToggle.CheckedState.FillColor = Color.FromArgb(255, 128, 198);
+            rememberMeToggle.CheckedState.BorderColor = Color.FromArgb(200, 220, 255);
+            rememberMeToggle.CheckedState.BorderThickness = 2;
+            rememberMeToggle.CheckedState.FillColor = Color.Transparent;
+            rememberMeToggle.CheckedState.InnerColor = Color.FromArgb(168, 228, 255);
             rememberMeToggle.CustomizableEdges = customizableEdges5;
             rememberMeToggle.Location = new Point(58, 294);
             rememberMeToggle.Name = "rememberMeToggle";
@@ -330,10 +323,10 @@ namespace CodingTracker.View
             createAccountButton.FillColor2 = Color.FromArgb(35, 34, 50);
             createAccountButton.Font = new Font("Segoe UI", 9F);
             createAccountButton.ForeColor = Color.White;
-            createAccountButton.Location = new Point(220, 291);
+            createAccountButton.Location = new Point(196, 291);
             createAccountButton.Name = "createAccountButton";
             createAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            createAccountButton.Size = new Size(156, 23);
+            createAccountButton.Size = new Size(123, 23);
             createAccountButton.TabIndex = 28;
             createAccountButton.Text = "Create Account";
             createAccountButton.Click += NewCreateAccountButton_Click;
@@ -354,8 +347,7 @@ namespace CodingTracker.View
             Controls.Add(rememberMeToggle);
             Controls.Add(LoginPagePasswordTextbox);
             Controls.Add(loginPageUsernameTextbox);
-            Controls.Add(label1);
-            Controls.Add(loginPageErrorTextbox);
+            Controls.Add(rememberMeTextBox);
             Controls.Add(LoginPageMediaPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "LoginPage";
@@ -383,7 +375,7 @@ namespace CodingTracker.View
 
         #endregion
         private Label loginPageErrorTextbox;
-        private Label label1;
+        private Label rememberMeTextBox;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private LibVLCSharp.WinForms.VideoView LoginPageVLCPLayer;
         private Guna.UI2.WinForms.Guna2TextBox loginPageUsernameTextbox;

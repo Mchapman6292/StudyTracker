@@ -6,7 +6,7 @@
     public interface ICodingSessionManager
     {
         void InitializeCodingSessionAndSetGoal(int sessionGoalSeconds, bool codingGoalSet);
-        void StartCodingSessionAndUpdateActiveBooleans(DateTime startTime);
+        void UpdateSessionStartTimeAndActiveBoolsToTrue(DateTime startTime);
         void UpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration);
         Task<bool> NEWUpdateCodingSessionStudyNotesAndSaveCodingSession(string studyProject, string studyNotes);
 

@@ -10,6 +10,7 @@ namespace CodingTracker.View.ApplicationControlService
         double ReturnElapsedMilliseconds();
         void StopTimer();
         void StartTimer();
+        void RestartTimer();
     }
 
     /// <summary>
@@ -50,6 +51,10 @@ namespace CodingTracker.View.ApplicationControlService
             sessionTimer.Stop();
         }
 
+        public void RestartTimer()
+        {
+            sessionTimer.Restart();
+        }
 
 
 

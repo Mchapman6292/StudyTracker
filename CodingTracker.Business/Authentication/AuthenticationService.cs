@@ -96,16 +96,11 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         }
 
 
-        public async Task<UserCredentialEntity> ReturnUserCredentialIfLoginAuthenticated(bool loginAuthenticated, string username)
-        {
-            if (loginAuthenticated)
-            {
-                _appLogger.Debug($"Login authenticated fro {username}.");
-                return await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
-            }
-            throw new ArgumentException($"loginAuthenticated bool for {nameof(ReturnUserCredentialIfLoginAuthenticated)} loginAuthenticated: {loginAuthenticated}.");
-        }
 
+        public async Task<UserCredentialEntity> ReturnUserCredential(string username)
+        {
+            return await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
+        }
 
 
 
