@@ -3,7 +3,7 @@ using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 
@@ -19,7 +19,7 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IInputValidator _inputValidator;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
@@ -33,7 +33,7 @@ namespace CodingTracker.View.PopUpFormService
             IApplicationLogger appLogger,
             IFormStateManagement formStateManagement,
             IButtonHighlighterService buttonHighlighterService,
-            IExitFlowManager exitFlowManager)
+            IButtonNotificationManager buttonNotificationManager)
         {
             _codingSessionManager = codingSessionManager;
             _formNavigator = formSwitcher;
@@ -43,7 +43,7 @@ namespace CodingTracker.View.PopUpFormService
             _appLogger = appLogger;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
 
             InitializeComponent();
         }
@@ -139,16 +139,28 @@ namespace CodingTracker.View.PopUpFormService
 
 
 
-        private bool ValidateTimeFormat(string time)
+        private bool ValidateTimeFormat(out bool valid, out List<string> errorMessages, string time)
         {
+            errorMessages = new List<string>();
+            valid = true;
+
             if (time.Length != 4 || !int.TryParse(time, out int _))
+            {
+                string invalidFormatError = "Please enter valid time format HH:MM.";
+                errorMessages.Add(invalidFormatError);
+                valid = false;
                 return false;
+            }
 
             int hours = int.Parse(time.Substring(0, 2));
             int minutes = int.Parse(time.Substring(2, 2));
 
             if (hours > 23 || minutes > 59)
+            {
+                valid = false;
+                errorMessages.Add("Please enter valid goal, hours < 23 & minutes < 59");
                 return false;
+            }
 
             return true;
         }
@@ -158,26 +170,21 @@ namespace CodingTracker.View.PopUpFormService
             string timeInputString = timeGoalTextBox.Text;
             int sessionGoalSeconds = ConvertHHMMStringToDurationSeconds(timeInputString);
 
+            bool valid = false;
+            List<string> errorMessages = new List<string>();
+
             _appLogger.Debug($"SetTimeGoalButton pressed:TimeInputString: {timeInputString}, sessionGoalSecondsInt: {sessionGoalSeconds}");
             DateTime startTime = DateTime.Now;
-            bool goalSet = true;
 
 
             _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
 
-            if (!ValidateTimeFormat(timeInputString))
+            if (!ValidateTimeFormat(out valid, out errorMessages, timeInputString))
             {
-                string message = "Please enter a valid time in HHMM format";
-                return;
+                _notificationManager.ShowDialogWithMultipleMessages(this, errorMessages);
+                timeGoalTextBox.Text = string.Empty;
             }
 
-
-
-            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, goalSet);
-            /*
-            _formStatePropertyManager.SetIsFormGoalSet(true);
-            _formStatePropertyManager.SetFormGoalSeconds(sessionGoalSecondsInt);
-            */
 
             _formNavigator.SwitchToTimerAndWaveForm();
         }
@@ -256,18 +263,14 @@ namespace CodingTracker.View.PopUpFormService
         /// </summary>
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
+            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         public void HandleSkipButton()
         {
-            bool goalSet = false;
-            DateTime startTime = DateTime.Now;
-            _codingSessionManager.InitializeCodingSessionAndSetGoal(0, goalSet);
 
-            _formNavigator.SwitchToForm(FormPageEnum.OrbitalTimerForm);
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            _formNavigator.SwitchToForm(FormPageEnum.ElapsedTimerForm);
+ 
         }
     }
 }

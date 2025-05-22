@@ -8,6 +8,7 @@
         CreateAccountForm,
         SessionGoalForm,
         CountdownTimerForm,
+        ElapsedTimerForm,
         ConfirmUsernameForm,
         ResetPasswordForm,
         OrbitalTimerForm,

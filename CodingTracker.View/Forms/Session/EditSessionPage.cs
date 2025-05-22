@@ -1,6 +1,6 @@
 ﻿using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
@@ -24,7 +24,7 @@ namespace CodingTracker.View
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IDataGridViewManager _dataGridViewManager;
         private readonly INotificationManager _notificationManager;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly IButtonHighlighterService _buttonHighlighterService;
 
         private bool IsEditSession { get; set; } = false;
@@ -55,7 +55,7 @@ namespace CodingTracker.View
             ICodingSessionRepository codingSessionRepository,
             IDataGridViewManager dataGridViewManager,
             INotificationManager notificationManager,
-            IExitFlowManager exitFlowManager,
+            IButtonNotificationManager buttonNotificationManager,
             IButtonHighlighterService buttonHighlighterService)
         {
             _appLogger = appLogger;
@@ -63,7 +63,7 @@ namespace CodingTracker.View
             _codingSessionRepository = codingSessionRepository;
             _dataGridViewManager = dataGridViewManager;
             _notificationManager = notificationManager;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();
@@ -73,8 +73,7 @@ namespace CodingTracker.View
             UpdateDeleteSessionButtonVisibility();
 
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
-            closeButton.Click += closeButton_Click;
-            LogDataGridViewColour();
+ 
         }
 
         #endregion
@@ -345,17 +344,8 @@ namespace CodingTracker.View
 
 
 
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
-        }
 
-        public void LogDataGridViewColour()
-        {
-            Color headerColor = EditSessionPageDataGridView.ColumnHeadersDefaultCellStyle.BackColor;
-            _appLogger.Debug($"Header color RGB: ({headerColor.R}, {headerColor.G}, {headerColor.B})");
-            _appLogger.Debug($"Header color Hex: #{headerColor.R:X2}{headerColor.G:X2}{headerColor.B:X2}");
-        }
+
 
         #endregion
 

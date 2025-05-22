@@ -6,9 +6,10 @@
     public interface ICodingSessionManager
     {
         void InitializeCodingSessionAndSetGoal(int sessionGoalSeconds, bool codingGoalSet);
-        void UpdateSessionStartTimeAndActiveBoolsToTrue(DateTime startTime);
+        void UpdateSessionStartTimeAndActiveBoolsToTrue();
         void UpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration);
         Task<bool> NEWUpdateCodingSessionStudyNotesAndSaveCodingSession(string studyProject, string studyNotes);
+        void ResetCurrentCodingSession();
 
 
         void UpdateISCodingSessionActive(bool active);
@@ -28,6 +29,7 @@
         void SetCurrentSessionGoalReached(bool? goalReached);
         void SetCurrentSessionGoalSeconds(int? goalSeconds);
         void SetGoalHoursAndGoalMins(int goalMins, bool goalSet);
+        void UpdateSessionTimerActiveBooleansToFalse();
 
 
         int ReturnCurrentUserIdPlaceholder();

@@ -3,7 +3,7 @@ using CodingTracker.Common.Entities.UserCredentialEntities;
 using Guna.UI2.WinForms;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
@@ -26,12 +26,12 @@ namespace CodingTracker.View
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly INotificationManager _notificationManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager, INotificationManager notificationManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -41,7 +41,7 @@ namespace CodingTracker.View
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
@@ -293,7 +293,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.ExitCodingTracker();
+            _buttonNotificationManager.ExitCodingTracker();
         }
 
         #endregion

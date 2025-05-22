@@ -3,7 +3,7 @@ using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessio
 using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.PopUpFormService;
@@ -25,7 +25,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockLogger = new Mock<IApplicationLogger>();
             var mockFormStateManagement = new Mock<IFormStateManagement>();
             var mockButtonHighlighterService = new Mock<IButtonHighlighterService>();
-            var exitFlowManager = new Mock<IExitFlowManager>();
+            var buttonNotificationManager = new Mock<IButtonNotificationManager>();
 
             var form = new SessionGoalPage(
                 mockSessionManager.Object,
@@ -36,7 +36,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
                 mockLogger.Object,
                 mockFormStateManagement.Object,
                 mockButtonHighlighterService.Object,
-                exitFlowManager.Object
+                buttonNotificationManager.Object
             );
         
 

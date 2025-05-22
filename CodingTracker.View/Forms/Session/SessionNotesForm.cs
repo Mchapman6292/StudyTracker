@@ -1,5 +1,5 @@
 ﻿using Guna.UI2.WinForms;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
@@ -11,15 +11,15 @@ namespace CodingTracker.View
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly INotificationManager _notificationManager;
         private readonly IFormNavigator _formNavigator;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
         private TimeSpan _sessionDuration;
 
-        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormNavigator formSwitcher, IExitFlowManager exitFlowManager)
+        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormNavigator formSwitcher, IButtonNotificationManager buttonNotificationManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
-            _exitFlowManager =exitFlowManager;
+            _buttonNotificationManager =buttonNotificationManager;
             _formNavigator = formSwitcher;
             closeButton.Click += CloseButton_Click;
         }
@@ -62,7 +62,7 @@ namespace CodingTracker.View
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
+            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)

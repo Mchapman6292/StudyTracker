@@ -1,4 +1,4 @@
-﻿using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+﻿using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
@@ -10,15 +10,15 @@ namespace CodingTracker.View
         private readonly IFormNavigator _formNavigator;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
 
-        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager)
+        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager)
         {
             InitializeComponent();
             _formNavigator = formNavigator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
@@ -75,7 +75,7 @@ namespace CodingTracker.View
 
         private  void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
+            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
     

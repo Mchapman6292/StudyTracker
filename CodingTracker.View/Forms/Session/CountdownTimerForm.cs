@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using Guna.UI2.WinForms;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
@@ -22,7 +22,7 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IFormNavigator _formNavigator;
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly ICountdownTimerColorManager _countdownTimerColorManager;
         private readonly INotificationManager _notificationManager;
 
@@ -31,14 +31,14 @@ namespace CodingTracker.View.TimerDisplayService
 
         #region Constructor
 
-        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager exitFlowManager, ICountdownTimerColorManager countdownTimerColorManager, INotificationManager notificationManager)
+        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IButtonNotificationManager buttonNotificationManager, ICountdownTimerColorManager countdownTimerColorManager, INotificationManager notificationManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _formNavigator = formSwitcher;
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
             _notificationManager = notificationManager;
 
             closeButton.Click += CloseButton_Click;
@@ -154,7 +154,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
+            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
@@ -177,10 +177,6 @@ namespace CodingTracker.View.TimerDisplayService
             }
         }
 
-        private void MinimizeButton_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
 
         private void homeButton_Click(object sender, EventArgs e)
         {
@@ -217,31 +213,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            _stopWatchTimerService.StopTimer();
-            progressTimer.Stop();
-
-            Guna2MessageDialog stopDialog = _notificationManager.ReturnStopSessionDialog();
-            DialogResult result = stopDialog.Show();
-
-            switch(result)
-            {
-                case DialogResult.Cancel:
-                    _stopWatchTimerService.StartTimer();
-                    progressTimer.Stop();
-                    return;
-
-                case DialogResult.No:
-
-                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
-                    break;
-
-                case DialogResult.Yes:
-                    _stopWatchTimerService.StopTimer();
-                    TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
-                    _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
-                    _formNavigator.SwitchToForm(FormPageEnum.SessionNotesForm);
-                    break;
-            }
+            _buttonNotificationManager.HandleStopButtonRequest(this);
         }
 
         /// <summary>
@@ -250,6 +222,11 @@ namespace CodingTracker.View.TimerDisplayService
         private void RestartSessionButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.CountdownTimerForm);
+        }
+
+        private void minimizeButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

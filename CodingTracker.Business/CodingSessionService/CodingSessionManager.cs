@@ -66,9 +66,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         /// This is called in the load method of the CountdownTimerForm, sets the StartTime & Date.
         ///  Is also responsible for Updating bools IsCodingSessionActive & IsSessionTimerActive.
 
-        public void UpdateSessionStartTimeAndActiveBoolsToTrue(DateTime startTime)
+        public void UpdateSessionStartTimeAndActiveBoolsToTrue()
         {
-            SetCodingSessionStartTimeAndDate(startTime);
+            SetCodingSessionStartTimeAndDate(DateTime.Now);
             UpdateISCodingSessionActive(true);
             UpdateIsSessionTimerActive(true);
         }
@@ -77,7 +77,6 @@ namespace CodingTracker.Business.CodingSessionManagers
         /// Updates the session when the timer has ended, setting duration and end time.
         public void UpdateCodingSessionTimerEnded(TimeSpan? stopWatchTimerDuration)
         {
-
             UpdateIsSessionTimerActive(false);
             int durationSeconds = (int)stopWatchTimerDuration.Value.TotalSeconds;
             string durationHHMM = _utilityService.ConvertDurationSecondsToHHMMStringWithSpace(durationSeconds);
@@ -105,11 +104,14 @@ namespace CodingTracker.Business.CodingSessionManagers
             return sessionAddedToDb;
         }
 
-        public void EndCodingSessionWithoutSaving()
+        public void ResetCurrentCodingSession()
         {
-            UpdateISCodingSessionActive(false);
-            UpdateIsSessionTimerActive(false); ;
+            CodingSession blankCodingSession = CreateCurrentCodingSession();
+
+            _currentCodingSession = blankCodingSession;
         }
+
+  
 
 
         #endregion
@@ -268,6 +270,12 @@ namespace CodingTracker.Business.CodingSessionManagers
             }
             _currentCodingSession.GoalSeconds = 0;
             _appLogger.Debug($"CurrentCodingSession GoalMins set to {_currentCodingSession.GoalSeconds}, default for not set.");
+        }
+
+        public void UpdateSessionTimerActiveBooleansToFalse()
+        {
+            UpdateISCodingSessionActive(false);
+            UpdateIsSessionTimerActive(false); ;
         }
 
         #endregion

@@ -160,6 +160,7 @@ namespace CodingTracker.View.TimerDisplayService
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
             minimizeButton.Size = new Size(27, 21);
             minimizeButton.TabIndex = 9;
+            minimizeButton.Click += minimizeButton_Click;
             // 
             // closeButton
             // 
