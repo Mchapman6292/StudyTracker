@@ -35,7 +35,7 @@ namespace CodingTracker.View
 
         private string[] SortOptions = new[]
         {
-            "Session Id",
+            "StudyProject",
             "Duration",
             "Start Date",
             "Start Time",

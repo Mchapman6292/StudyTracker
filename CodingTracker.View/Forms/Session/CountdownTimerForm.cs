@@ -68,11 +68,12 @@ namespace CodingTracker.View.TimerDisplayService
             }
 
             _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSecondsInt.Value, true);
+            _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
 
-
+            _stopWatchTimerService.RestartTimer();
+            _stopWatchTimerService.StartTimer();
 
             progressTimer.Start();
-            _stopWatchTimerService.StartTimer();
             timeDisplayLabel.BringToFront();
         }
 
@@ -213,7 +214,12 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void StopButton_Click(object sender, EventArgs e)
         {
+            TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
             _buttonNotificationManager.HandleStopButtonRequest(this);
+
+            _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
+
+    
         }
 
         /// <summary>

@@ -82,6 +82,7 @@ namespace CodingTracker.View.ApplicationControlService.ButtonNotificationManager
                     TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
                     _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
                     _codingSessionManager.UpdateSessionTimerActiveBooleansToFalse();
+                    _formNavigator.SwitchToForm(FormPageEnum.SessionNotesForm);
                     break;
 
                 case StopSessionDialogResultEnum.StopWithoutSaving:
