@@ -65,14 +65,14 @@
             deleteSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             toggleEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
             EditSessionPageDataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
-            StudyTopic = new DataGridViewTextBoxColumn();
+            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            EditSessionPageNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
+            StudyProject = new DataGridViewTextBoxColumn();
             Duration = new DataGridViewTextBoxColumn();
             StartDate = new DataGridViewTextBoxColumn();
             StartTime = new DataGridViewTextBoxColumn();
             EndDate = new DataGridViewTextBoxColumn();
             EndTime = new DataGridViewTextBoxColumn();
-            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
-            EditSessionPageNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
             guna2Panel1.SuspendLayout();
             EditSessionPageMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)EditSessionPageDataGridView).BeginInit();
@@ -303,7 +303,7 @@
             EditSessionPageDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             EditSessionPageDataGridView.ColumnHeadersHeight = 40;
             EditSessionPageDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            EditSessionPageDataGridView.Columns.AddRange(new DataGridViewColumn[] { StudyTopic, Duration, StartDate, StartTime, EndDate, EndTime });
+            EditSessionPageDataGridView.Columns.AddRange(new DataGridViewColumn[] { StudyProject, Duration, StartDate, StartTime, EndDate, EndTime });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.FromArgb(37, 46, 81);
             dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -352,12 +352,31 @@
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionForeColor = Color.Crimson;
             EditSessionPageDataGridView.CellClick += EditModeDataGridView_CellClick;
             // 
-            // StudyTopic
+            // DisplayMessageBox
             // 
-            StudyTopic.FillWeight = 101.522842F;
-            StudyTopic.HeaderText = "Study Topic";
-            StudyTopic.MinimumWidth = 6;
-            StudyTopic.Name = "StudyTopic";
+            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            DisplayMessageBox.Caption = null;
+            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            DisplayMessageBox.Parent = null;
+            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
+            DisplayMessageBox.Text = null;
+            // 
+            // EditSessionPageNotificationPaint
+            // 
+            EditSessionPageNotificationPaint.Alignment = Guna.UI2.WinForms.Enums.CustomContentAlignment.MiddleCenter;
+            EditSessionPageNotificationPaint.FillColor = Color.FromArgb(64, 63, 79);
+            EditSessionPageNotificationPaint.Location = new Point(67, 7);
+            EditSessionPageNotificationPaint.Offset = new Point(30, 0);
+            EditSessionPageNotificationPaint.Size = new Size(30, 18);
+            EditSessionPageNotificationPaint.TargetControl = toggleEditSessionsButton;
+            EditSessionPageNotificationPaint.Text = "Off";
+            // 
+            // StudyProject
+            // 
+            StudyProject.FillWeight = 101.522842F;
+            StudyProject.HeaderText = "Study Project";
+            StudyProject.MinimumWidth = 6;
+            StudyProject.Name = "StudyProject";
             // 
             // Duration
             // 
@@ -390,25 +409,6 @@
             EndTime.HeaderText = "End Time";
             EndTime.MinimumWidth = 6;
             EndTime.Name = "EndTime";
-            // 
-            // DisplayMessageBox
-            // 
-            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            DisplayMessageBox.Caption = null;
-            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
-            DisplayMessageBox.Parent = null;
-            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
-            DisplayMessageBox.Text = null;
-            // 
-            // EditSessionPageNotificationPaint
-            // 
-            EditSessionPageNotificationPaint.Alignment = Guna.UI2.WinForms.Enums.CustomContentAlignment.MiddleCenter;
-            EditSessionPageNotificationPaint.FillColor = Color.FromArgb(64, 63, 79);
-            EditSessionPageNotificationPaint.Location = new Point(67, 7);
-            EditSessionPageNotificationPaint.Offset = new Point(30, 0);
-            EditSessionPageNotificationPaint.Size = new Size(30, 18);
-            EditSessionPageNotificationPaint.TargetControl = toggleEditSessionsButton;
-            EditSessionPageNotificationPaint.Text = "Off";
             // 
             // EditSessionPage
             // 
@@ -445,7 +445,7 @@
         private Guna.UI2.WinForms.Guna2NotificationPaint EditSessionPageNotificationPaint;
         private Guna.UI2.WinForms.Guna2DateTimePicker EditSessionPageTimePicker;
         private Guna.UI2.WinForms.Guna2GradientButton deleteSessionButton;
-        private DataGridViewTextBoxColumn StudyTopic;
+        private DataGridViewTextBoxColumn StudyProject;
         private DataGridViewTextBoxColumn Duration;
         private DataGridViewTextBoxColumn StartDate;
         private DataGridViewTextBoxColumn StartTime;

@@ -13,6 +13,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace CodingTracker.View.Forms.Services.EditSessionPageService
 {
+    public enum DataGridViewColumns
+    {
+        StudyProject,
+        Duration,
+        StartDate,
+        StartTime,
+        EndDate,
+        EndTime
+    }
+
     public interface IDataGridViewManager
     {
         void AddPairToRowToInfoMapping(DataGridViewRow dataGridRow, RowState rowState);
@@ -59,6 +69,8 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
 
         #region Constructor
 
+
+
         public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IRowStateManager dataGridRowStateManager, IConfiguration configuration, IUtilityService utilityService)
         {
             _appLogger = appLogger;
@@ -69,7 +81,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
             _visibleColumns = new List<string>
             {
-                "SessionId",
+                "StudyProject",
                 "DurationHHMM",
                 "StartDateUTC",   
                 "StartTimeUTC",   
@@ -94,13 +106,18 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             ClearDataGridViewColumns(dataGrid);
             List<CodingSessionEntity> codingSessions = await _codingSessionRepository.GetSessionBySessionSortCriteriaAsync(_numberOfSessions, sessionSortCriteria);
 
+            CodingSessionEntity testEntity = codingSessions.FirstOrDefault();
+
+            _appLogger.LogCodingSessionEntity(testEntity);
+            
+
             // Convert dates to local time from utc. 
             ConvertCodingSessionListDatesToLocal(codingSessions);
             LoadDataGridViewWithSessions(dataGrid, codingSessions);
             HideUnusuedColumns(dataGrid);
             RenameDataGridColumns(dataGrid);
             FormatDataGridViewDateData(dataGrid);
-            RefreshDataGridView(dataGrid);
+              RefreshDataGridView(dataGrid);
             CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
         }
 
@@ -176,7 +193,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
         }
 
         /// <summary>
-        /// Creates RowState objects for each row in the DataGridView and maps them in the dictionary
+        ///
         /// </summary>
         public void CreateRowStateAndAddToDictWithDataGridRow(DataGridView dataGrid)
         {
