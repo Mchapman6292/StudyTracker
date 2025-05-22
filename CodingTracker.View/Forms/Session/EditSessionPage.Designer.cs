@@ -42,14 +42,12 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -64,7 +62,6 @@
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             EditSessionPageMainPanel = new Guna.UI2.WinForms.Guna2Panel();
-            testButton = new Guna.UI2.WinForms.Guna2GradientButton();
             deleteSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             toggleEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
             EditSessionPageDataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -221,48 +218,19 @@
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
             closeButton.Size = new Size(45, 29);
             closeButton.TabIndex = 26;
-            closeButton.Click += closeButton_Click;
             // 
             // EditSessionPageMainPanel
             // 
-            EditSessionPageMainPanel.Controls.Add(testButton);
             EditSessionPageMainPanel.Controls.Add(deleteSessionButton);
             EditSessionPageMainPanel.Controls.Add(toggleEditSessionsButton);
             EditSessionPageMainPanel.Controls.Add(EditSessionPageDataGridView);
-            EditSessionPageMainPanel.CustomizableEdges = customizableEdges19;
+            EditSessionPageMainPanel.CustomizableEdges = customizableEdges17;
             EditSessionPageMainPanel.Dock = DockStyle.Bottom;
             EditSessionPageMainPanel.Location = new Point(0, 81);
             EditSessionPageMainPanel.Name = "EditSessionPageMainPanel";
-            EditSessionPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            EditSessionPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
             EditSessionPageMainPanel.Size = new Size(1300, 639);
             EditSessionPageMainPanel.TabIndex = 1;
-            // 
-            // testButton
-            // 
-            testButton.Animated = true;
-            testButton.AutoRoundedCorners = true;
-            testButton.BackColor = Color.FromArgb(35, 34, 50);
-            testButton.BorderColor = Color.FromArgb(128, 127, 145);
-            testButton.BorderRadius = 15;
-            testButton.BorderThickness = 2;
-            testButton.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            testButton.CustomizableEdges = customizableEdges13;
-            testButton.DisabledState.BorderColor = Color.DarkGray;
-            testButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            testButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            testButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            testButton.FillColor = Color.FromArgb(255, 81, 195);
-            testButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            testButton.Font = new Font("Segoe UI", 9F);
-            testButton.ForeColor = Color.White;
-            testButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            testButton.Image = (Image)resources.GetObject("testButton.Image");
-            testButton.ImageSize = new Size(40, 40);
-            testButton.Location = new Point(904, 590);
-            testButton.Name = "testButton";
-            testButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            testButton.Size = new Size(105, 33);
-            testButton.TabIndex = 26;
             // 
             // deleteSessionButton
             // 
@@ -273,7 +241,7 @@
             deleteSessionButton.BorderRadius = 15;
             deleteSessionButton.BorderThickness = 2;
             deleteSessionButton.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            deleteSessionButton.CustomizableEdges = customizableEdges15;
+            deleteSessionButton.CustomizableEdges = customizableEdges13;
             deleteSessionButton.DisabledState.BorderColor = Color.DarkGray;
             deleteSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             deleteSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -286,7 +254,7 @@
             deleteSessionButton.ImageSize = new Size(40, 30);
             deleteSessionButton.Location = new Point(1175, 590);
             deleteSessionButton.Name = "deleteSessionButton";
-            deleteSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            deleteSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             deleteSessionButton.Size = new Size(105, 33);
             deleteSessionButton.TabIndex = 25;
             deleteSessionButton.Click += EditSessionPageDeleteButton_Click;
@@ -300,7 +268,7 @@
             toggleEditSessionsButton.BorderRadius = 15;
             toggleEditSessionsButton.BorderThickness = 2;
             toggleEditSessionsButton.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            toggleEditSessionsButton.CustomizableEdges = customizableEdges17;
+            toggleEditSessionsButton.CustomizableEdges = customizableEdges15;
             toggleEditSessionsButton.DisabledState.BorderColor = Color.DarkGray;
             toggleEditSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
             toggleEditSessionsButton.DisabledState.FillColor = Color.FromArgb(255, 81, 195);
@@ -313,7 +281,7 @@
             toggleEditSessionsButton.ImageSize = new Size(40, 40);
             toggleEditSessionsButton.Location = new Point(1036, 590);
             toggleEditSessionsButton.Name = "toggleEditSessionsButton";
-            toggleEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            toggleEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
             toggleEditSessionsButton.Size = new Size(105, 33);
             toggleEditSessionsButton.TabIndex = 23;
             toggleEditSessionsButton.CheckedChanged += TestEditSessionButton2_CheckedChanged;
@@ -483,6 +451,5 @@
         private DataGridViewTextBoxColumn StartTime;
         private DataGridViewTextBoxColumn EndDate;
         private DataGridViewTextBoxColumn EndTime;
-        private Guna.UI2.WinForms.Guna2GradientButton testButton;
     }
 }

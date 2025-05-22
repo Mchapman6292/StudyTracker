@@ -120,7 +120,6 @@ namespace CodingTracker.View
             loginPageUsernameTextbox.FocusedState.BorderColor = Color.FromArgb(168, 228, 255);
             loginPageUsernameTextbox.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             loginPageUsernameTextbox.ForeColor = Color.White;
-            loginPageUsernameTextbox.HoverState.BorderColor = Color.FromArgb(168, 228, 255);
             loginPageUsernameTextbox.Location = new Point(44, 149);
             loginPageUsernameTextbox.Name = "loginPageUsernameTextbox";
             loginPageUsernameTextbox.PasswordChar = '\0';
@@ -147,7 +146,6 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.FillColor = Color.FromArgb(35, 34, 50);
             LoginPagePasswordTextbox.FocusedState.BorderColor = Color.FromArgb(168, 228, 255);
             LoginPagePasswordTextbox.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            LoginPagePasswordTextbox.HoverState.BorderColor = Color.FromArgb(168, 228, 255);
             LoginPagePasswordTextbox.Location = new Point(44, 225);
             LoginPagePasswordTextbox.Name = "LoginPagePasswordTextbox";
             LoginPagePasswordTextbox.PasswordChar = '●';

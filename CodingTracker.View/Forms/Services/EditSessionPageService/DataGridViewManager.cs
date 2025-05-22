@@ -336,8 +336,8 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                 }
             }
 
-            if (dataGrid.Columns.Contains("SessionId"))
-                dataGrid.Columns["SessionId"].DisplayIndex = 0;
+            if (dataGrid.Columns.Contains("StudyProject"))
+                dataGrid.Columns["StudyProject"].DisplayIndex = 0;
 
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].DisplayIndex = 1;
@@ -353,13 +353,15 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
 
             if (dataGrid.Columns.Contains("EndTimeUTC"))
                 dataGrid.Columns["EndTimeUTC"].DisplayIndex = 5;
-        }
 
+            if (dataGrid.Columns.Contains("SessionId"))
+                dataGrid.Columns["SessionId"].Visible = false;
+        }
 
         public void RenameDataGridColumns(DataGridView dataGrid)
         {
-            if (dataGrid.Columns.Contains("SessionId"))
-                dataGrid.Columns["SessionId"].HeaderText = "Session ID";
+            if (dataGrid.Columns.Contains("StudyProject"))
+                dataGrid.Columns["StudyProject"].HeaderText = "Study Project";
 
             if (dataGrid.Columns.Contains("DurationHHMM"))
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
@@ -375,8 +377,10 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
 
             if (dataGrid.Columns.Contains("EndTimeUTC"))
                 dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";
-        }
 
+            if (dataGrid.Columns.Contains("SessionId"))
+                dataGrid.Columns["SessionId"].HeaderText = "Session ID";
+        }
 
         public void ReSizeColumns(DataGridView dataGrid)
         {
@@ -386,7 +390,11 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                 {
                     DataGridViewColumn column = dataGrid.Columns[columnName];
 
-                    if (columnName == "SessionId")
+                    if (columnName == "StudyProject")
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                    else if (columnName == "SessionId")
                     {
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     }
@@ -411,14 +419,16 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             dataGrid.AutoResizeColumns();
         }
 
-        /// <summary>
-        /// Formats date and time data in the DataGridView
-        /// </summary>
         public void FormatDataGridViewDateData(DataGridView dataGrid)
         {
+            if (dataGrid.Columns.Contains("StudyProject"))
+            {
+                dataGrid.Columns["StudyProject"].HeaderText = "Study Project";
+            }
+
             if (dataGrid.Columns.Contains("SessionId"))
             {
-                dataGrid.Columns["SessionId"].HeaderText = "Session Id";
+                dataGrid.Columns["SessionId"].HeaderText = "Session ID";
             }
 
             if (dataGrid.Columns.Contains("DurationHHMM"))

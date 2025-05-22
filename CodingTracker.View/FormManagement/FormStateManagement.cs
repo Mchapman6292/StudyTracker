@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Session;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
@@ -8,6 +9,8 @@ namespace CodingTracker.View.FormManagement
 {
     public interface IFormStateManagement
     {
+        public bool ShowCountdownTimerGoalVisuals { get; set; }
+        void UpdateShowCountdownTimerGoalVisuals(bool showVisuals);
         Form GetCurrentForm();
         void SetCurrentForm(Form form);
         void AddActiveTimerForm(FormPageEnum formEnum, Form form);
@@ -35,6 +38,7 @@ namespace CodingTracker.View.FormManagement
         private CountdownTimerForm _timerDisplayPageInstance;
         private ConfirmUsernamePage _confirmUsernamePageInstance;
         private ResetPasswordPage _resetPasswordPageInstance;
+        private ElapsedTimerPage _elapsedTimerPageInstance;
 
         private readonly IApplicationLogger _appLogger;
 
@@ -51,6 +55,10 @@ namespace CodingTracker.View.FormManagement
         private bool _countdownTimerPageCreated = false;
         private bool _orbitalTimerPageCreated = false;
         private bool _timerDisplayPageCreated = false;
+        private bool _elapsedTimerPageCrated = false;
+
+
+        public bool ShowCountdownTimerGoalVisuals { get; set; }    
 
         Form _currentForm;
 
@@ -129,6 +137,8 @@ namespace CodingTracker.View.FormManagement
                     return _resetPasswordPageInstance;
                 case FormPageEnum.CountdownTimerForm:
                     return _timerDisplayPageInstance;
+                case FormPageEnum.ElapsedTimerForm:
+                    return _elapsedTimerPageInstance;
                 default:
                     return null;
             }
@@ -162,6 +172,9 @@ namespace CodingTracker.View.FormManagement
                 case FormPageEnum.ResetPasswordForm:
                     _resetPasswordPageInstance = instance as ResetPasswordPage;
                     break;
+                case FormPageEnum.ElapsedTimerForm:
+                    _elapsedTimerPageInstance = instance as ElapsedTimerPage;
+                        break;
             }
         }
 
@@ -187,6 +200,8 @@ namespace CodingTracker.View.FormManagement
                     return _countdownTimerPageCreated;
                 case FormPageEnum.OrbitalTimerForm:
                     return _timerDisplayPageCreated;
+                case FormPageEnum.ElapsedTimerForm:
+                    return _elapsedTimerPageCrated;
                 default:
                     return false;
             }
@@ -198,7 +213,10 @@ namespace CodingTracker.View.FormManagement
         }
 
 
-
+        public void UpdateShowCountdownTimerGoalVisuals(bool showVisuals)
+        {
+            ShowCountdownTimerGoalVisuals = showVisuals;    
+        }
 
 
 

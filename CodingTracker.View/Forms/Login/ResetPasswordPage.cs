@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.IUtilityServices;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 
@@ -14,9 +14,9 @@ namespace CodingTracker.View.LoginPageService
         private readonly IAuthenticationService _authenticationService;
         private readonly IUtilityService _utilityService;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IExitFlowManager _exitFlowManager;
+        private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly INotificationManager _notificationManager;
-        public ResetPasswordPage(IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IUtilityService utilityService, IButtonHighlighterService buttonHighlighterService, IExitFlowManager exitFlowManager, INotificationManager notificationManager)
+        public ResetPasswordPage(IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IUtilityService utilityService, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager)
         {
 
             _userCredentialRepository = userCredentialRepository;
@@ -24,7 +24,7 @@ namespace CodingTracker.View.LoginPageService
             _authenticationService = authenticationService;
             _utilityService = utilityService;
             _buttonHighlighterService = buttonHighlighterService;
-            _exitFlowManager = exitFlowManager;
+            _buttonNotificationManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             InitializeComponent();
         }
@@ -65,7 +65,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ResetPasswordPageExitButton_Click(object sender, EventArgs e)
         {
-            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
+            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)

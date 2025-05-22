@@ -16,7 +16,7 @@ using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.ApplicationControlService.ExitFlowManagers;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -32,6 +32,7 @@ using CodingTracker.Common.DataInterfaces.DbContextService;
 using CodingTracker.Data.Configuration;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
+using CodingTracker.View.Forms.Session;
 
 
 
@@ -91,7 +92,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
                     .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
-                    .AddSingleton<IExitFlowManager, ExitFlowManager>()
+                    .AddSingleton<IButtonNotificationManager, ButtonNotificationManager>()
                     .AddSingleton<WaveVisualizationForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
                     .AddSingleton<SessionNotesForm>()
@@ -107,6 +108,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<CountdownTimerForm>()
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
+                    .AddTransient<ElapsedTimerPage>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
