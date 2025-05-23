@@ -36,7 +36,7 @@ using CodingTracker.View.Forms.Session;
 
 
 
-
+// Add good session indicator? / mouse up /down?
 
 namespace CodingTracker.View.Program
 {
@@ -109,6 +109,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
                     .AddTransient<ElapsedTimerPage>()
+                    .AddSingleton<SessionRatingForm>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();

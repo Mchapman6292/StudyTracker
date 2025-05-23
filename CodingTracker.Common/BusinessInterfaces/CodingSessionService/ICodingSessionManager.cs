@@ -29,6 +29,7 @@
         void SetCurrentSessionGoalReached(bool? goalReached);
         void SetCurrentSessionGoalSeconds(int? goalSeconds);
         void SetGoalHoursAndGoalMins(int goalMins, bool goalSet);
+        void SetSessionStarRating(int rating);
         void UpdateSessionTimerActiveBooleansToFalse();
 
 

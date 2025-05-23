@@ -65,14 +65,14 @@
             deleteSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             toggleEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
             EditSessionPageDataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
-            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
-            EditSessionPageNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
             StudyProject = new DataGridViewTextBoxColumn();
             Duration = new DataGridViewTextBoxColumn();
             StartDate = new DataGridViewTextBoxColumn();
             StartTime = new DataGridViewTextBoxColumn();
             EndDate = new DataGridViewTextBoxColumn();
             EndTime = new DataGridViewTextBoxColumn();
+            DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
+            EditSessionPageNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
             guna2Panel1.SuspendLayout();
             EditSessionPageMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)EditSessionPageDataGridView).BeginInit();
@@ -308,20 +308,21 @@
             dataGridViewCellStyle3.BackColor = Color.FromArgb(37, 46, 81);
             dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle3.ForeColor = SystemColors.ControlLight;
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(105, 151, 219);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(94, 148, 255);
             dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             EditSessionPageDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             EditSessionPageDataGridView.GridColor = Color.FromArgb(35, 34, 50);
             EditSessionPageDataGridView.Location = new Point(23, 0);
+            EditSessionPageDataGridView.MultiSelect = false;
             EditSessionPageDataGridView.Name = "EditSessionPageDataGridView";
             EditSessionPageDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = Color.FromArgb(37, 46, 81);
             dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle4.ForeColor = SystemColors.InactiveCaption;
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(105, 151, 219);
-            dataGridViewCellStyle4.SelectionForeColor = Color.DarkSlateBlue;
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(94, 148, 255);
+            dataGridViewCellStyle4.SelectionForeColor = Color.White;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
             EditSessionPageDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             EditSessionPageDataGridView.RowHeadersVisible = false;
@@ -348,28 +349,9 @@
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(180, 20, 50);
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.Height = 40;
-            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionBackColor = Color.Crimson;
-            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionForeColor = Color.Crimson;
+            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(94, 148, 255);
+            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionForeColor = Color.White;
             EditSessionPageDataGridView.CellClick += EditModeDataGridView_CellClick;
-            // 
-            // DisplayMessageBox
-            // 
-            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            DisplayMessageBox.Caption = null;
-            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
-            DisplayMessageBox.Parent = null;
-            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
-            DisplayMessageBox.Text = null;
-            // 
-            // EditSessionPageNotificationPaint
-            // 
-            EditSessionPageNotificationPaint.Alignment = Guna.UI2.WinForms.Enums.CustomContentAlignment.MiddleCenter;
-            EditSessionPageNotificationPaint.FillColor = Color.FromArgb(64, 63, 79);
-            EditSessionPageNotificationPaint.Location = new Point(67, 7);
-            EditSessionPageNotificationPaint.Offset = new Point(30, 0);
-            EditSessionPageNotificationPaint.Size = new Size(30, 18);
-            EditSessionPageNotificationPaint.TargetControl = toggleEditSessionsButton;
-            EditSessionPageNotificationPaint.Text = "Off";
             // 
             // StudyProject
             // 
@@ -409,6 +391,25 @@
             EndTime.HeaderText = "End Time";
             EndTime.MinimumWidth = 6;
             EndTime.Name = "EndTime";
+            // 
+            // DisplayMessageBox
+            // 
+            DisplayMessageBox.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            DisplayMessageBox.Caption = null;
+            DisplayMessageBox.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            DisplayMessageBox.Parent = null;
+            DisplayMessageBox.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
+            DisplayMessageBox.Text = null;
+            // 
+            // EditSessionPageNotificationPaint
+            // 
+            EditSessionPageNotificationPaint.Alignment = Guna.UI2.WinForms.Enums.CustomContentAlignment.MiddleCenter;
+            EditSessionPageNotificationPaint.FillColor = Color.FromArgb(64, 63, 79);
+            EditSessionPageNotificationPaint.Location = new Point(67, 7);
+            EditSessionPageNotificationPaint.Offset = new Point(30, 0);
+            EditSessionPageNotificationPaint.Size = new Size(30, 18);
+            EditSessionPageNotificationPaint.TargetControl = toggleEditSessionsButton;
+            EditSessionPageNotificationPaint.Text = "Off";
             // 
             // EditSessionPage
             // 

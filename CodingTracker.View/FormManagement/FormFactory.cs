@@ -46,6 +46,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationForm),
                 FormPageEnum.SessionNotesForm => typeof(SessionNotesForm),
                 FormPageEnum.ElapsedTimerForm => typeof(ElapsedTimerPage),
+                FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
 
 
 

@@ -14,7 +14,8 @@
         OrbitalTimerForm,
         WaveVisualizationForm,
         TestForm,
-        SessionNotesForm
+        SessionNotesForm,
+        SessionRatingForm
     }
 
 }

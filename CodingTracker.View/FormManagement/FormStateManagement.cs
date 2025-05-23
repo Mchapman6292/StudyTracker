@@ -39,6 +39,7 @@ namespace CodingTracker.View.FormManagement
         private ConfirmUsernamePage _confirmUsernamePageInstance;
         private ResetPasswordPage _resetPasswordPageInstance;
         private ElapsedTimerPage _elapsedTimerPageInstance;
+        private SessionRatingForm _sessionRatingFormInstance;
 
         private readonly IApplicationLogger _appLogger;
 
@@ -53,12 +54,12 @@ namespace CodingTracker.View.FormManagement
         private bool _confirmUsernamePageCreated = false;
         private bool _resetPasswordPageCreated = false;
         private bool _countdownTimerPageCreated = false;
-        private bool _orbitalTimerPageCreated = false;
         private bool _timerDisplayPageCreated = false;
         private bool _elapsedTimerPageCrated = false;
+        private bool _sessionRatingFormCreated = false;
 
 
-        public bool ShowCountdownTimerGoalVisuals { get; set; }    
+        public bool ShowCountdownTimerGoalVisuals { get; set; }
 
         Form _currentForm;
 
@@ -72,17 +73,18 @@ namespace CodingTracker.View.FormManagement
 
 
         private readonly Dictionary<FormPageEnum, Type> _formTypes = new Dictionary<FormPageEnum, Type>
-        {
-            { FormPageEnum.LoginPage, typeof(LoginPage)},
-            { FormPageEnum.MainPage, typeof(MainPage)},
-            { FormPageEnum.EditSessionForm, typeof(EditSessionPage)},
-            { FormPageEnum.CreateAccountForm, typeof(CreateAccountPage)},
-            { FormPageEnum.SessionGoalForm, typeof(SessionGoalPage)},
-            { FormPageEnum.ConfirmUsernameForm, typeof(ConfirmUsernamePage)},
-            { FormPageEnum.ResetPasswordForm, typeof(ResetPasswordPage)},
-            { FormPageEnum.CountdownTimerForm, typeof(CountdownTimerForm)},
-            { FormPageEnum.WaveVisualizationForm, typeof (WaveVisualizationForm)},
-        };
+       {
+           { FormPageEnum.LoginPage, typeof(LoginPage)},
+           { FormPageEnum.MainPage, typeof(MainPage)},
+           { FormPageEnum.EditSessionForm, typeof(EditSessionPage)},
+           { FormPageEnum.CreateAccountForm, typeof(CreateAccountPage)},
+           { FormPageEnum.SessionGoalForm, typeof(SessionGoalPage)},
+           { FormPageEnum.ConfirmUsernameForm, typeof(ConfirmUsernamePage)},
+           { FormPageEnum.ResetPasswordForm, typeof(ResetPasswordPage)},
+           { FormPageEnum.CountdownTimerForm, typeof(CountdownTimerForm)},
+           { FormPageEnum.WaveVisualizationForm, typeof (WaveVisualizationForm)},
+           { FormPageEnum.SessionRatingForm, typeof(SessionRatingForm)},
+       };
 
         public Form GetCurrentForm()
         {
@@ -139,6 +141,8 @@ namespace CodingTracker.View.FormManagement
                     return _timerDisplayPageInstance;
                 case FormPageEnum.ElapsedTimerForm:
                     return _elapsedTimerPageInstance;
+                case FormPageEnum.SessionRatingForm:
+                    return _sessionRatingFormInstance;
                 default:
                     return null;
             }
@@ -174,7 +178,10 @@ namespace CodingTracker.View.FormManagement
                     break;
                 case FormPageEnum.ElapsedTimerForm:
                     _elapsedTimerPageInstance = instance as ElapsedTimerPage;
-                        break;
+                    break;
+                case FormPageEnum.SessionRatingForm:
+                    _sessionRatingFormInstance = instance as SessionRatingForm;
+                    break;
             }
         }
 
@@ -202,6 +209,8 @@ namespace CodingTracker.View.FormManagement
                     return _timerDisplayPageCreated;
                 case FormPageEnum.ElapsedTimerForm:
                     return _elapsedTimerPageCrated;
+                case FormPageEnum.SessionRatingForm:
+                    return _sessionRatingFormCreated;
                 default:
                     return false;
             }
@@ -215,7 +224,7 @@ namespace CodingTracker.View.FormManagement
 
         public void UpdateShowCountdownTimerGoalVisuals(bool showVisuals)
         {
-            ShowCountdownTimerGoalVisuals = showVisuals;    
+            ShowCountdownTimerGoalVisuals = showVisuals;
         }
 
 

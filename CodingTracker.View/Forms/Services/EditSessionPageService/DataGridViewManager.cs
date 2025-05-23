@@ -457,24 +457,24 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
             {
                 dataGrid.Columns["StartDateUTC"].DefaultCellStyle.Format = "dd MMM yyyy";
                 dataGrid.Columns["StartDateUTC"].HeaderText = "Start Date";
-            }
 
-            if (dataGrid.Columns.Contains("EndDateUTC"))
-            {
-                dataGrid.Columns["EndDateUTC"].DefaultCellStyle.Format = "dd MMM yyyy";
-                dataGrid.Columns["EndDateUTC"].HeaderText = "End Date";
-            }
+                if (dataGrid.Columns.Contains("EndDateUTC"))
+                {
+                    dataGrid.Columns["EndDateUTC"].DefaultCellStyle.Format = "dd MMM yyyy";
+                    dataGrid.Columns["EndDateUTC"].HeaderText = "End Date";
+                }
 
-            if (dataGrid.Columns.Contains("StartTimeUTC"))
-            {
-                dataGrid.Columns["StartTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["StartTimeUTC"].HeaderText = "Start Time";
-            }
+                if (dataGrid.Columns.Contains("StartTimeUTC"))
+                {
+                    dataGrid.Columns["StartTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
+                    dataGrid.Columns["StartTimeUTC"].HeaderText = "Start Time";
+                }
 
-            if (dataGrid.Columns.Contains("EndTimeUTC"))
-            {
-                dataGrid.Columns["EndTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
-                dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";
+                if (dataGrid.Columns.Contains("EndTimeUTC"))
+                {
+                    dataGrid.Columns["EndTimeUTC"].DefaultCellStyle.Format = "h:mm tt";
+                    dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";
+                }
             }
         }
 

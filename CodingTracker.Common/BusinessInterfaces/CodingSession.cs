@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+
 namespace CodingTracker.Common.CodingSessions
 {
     public class CodingSession
@@ -20,6 +22,8 @@ namespace CodingTracker.Common.CodingSessions
         public bool? GoalReached { get; set; }
         public string StudyProject { get; set; } = string.Empty;
         public string StudyNotes { get; set; } = string.Empty ;
+        
+        public int? SessionStarRating { get; set; }
 
 
 
@@ -29,8 +33,5 @@ namespace CodingTracker.Common.CodingSessions
 
 
 
-
-
-
-    }
+}
 }
