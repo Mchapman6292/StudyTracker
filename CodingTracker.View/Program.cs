@@ -33,6 +33,7 @@ using CodingTracker.Data.Configuration;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Session;
+using CodingTracker.View.Forms;
 
 
 
@@ -40,6 +41,9 @@ using CodingTracker.View.Forms.Session;
 
 namespace CodingTracker.View.Program
 {
+
+    //https://github.com/am-523?tab=repositories
+
     internal static class Program
     {
         [STAThread]
@@ -100,7 +104,6 @@ namespace CodingTracker.View.Program
 
 
 
-
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()
@@ -110,6 +113,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<ConfirmUsernamePage>()
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
+                    .AddSingleton<TestForm>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();

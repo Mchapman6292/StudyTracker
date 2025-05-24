@@ -123,7 +123,7 @@ namespace CodingTracker.View.TimerDisplayService
             // 
             sessionNameLabel.BackColor = Color.Transparent;
             sessionNameLabel.Font = new Font("Segoe UI", 10F);
-            sessionNameLabel.ForeColor = Color.FromArgb(180, 180, 180);
+            sessionNameLabel.ForeColor = Color.FromArgb(120, 120, 120);
             sessionNameLabel.Location = new Point(98, 266);
             sessionNameLabel.Name = "sessionNameLabel";
             sessionNameLabel.Size = new Size(115, 19);

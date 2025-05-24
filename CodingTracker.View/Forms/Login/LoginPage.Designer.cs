@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
 
 namespace CodingTracker.View
 {
@@ -79,7 +80,7 @@ namespace CodingTracker.View
             LoginPageCreationSuccessTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
-            loginButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            loginButton = new CustomGradientButton();
             forgotPasswordButton = new Guna.UI2.WinForms.Guna2GradientButton();
             createAccountButton = new Guna.UI2.WinForms.Guna2GradientButton();
             guna2Transition1 = new Guna.UI2.WinForms.Guna2Transition();
@@ -283,6 +284,7 @@ namespace CodingTracker.View
             // loginButton
             // 
             loginButton.Animated = true;
+            loginButton.EnableHoverRipple = true;
             loginButton.UseTransparentBackground = true;
             loginButton.AutoRoundedCorners = true;
             loginButton.BorderRadius = 17;
@@ -425,7 +427,7 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox LoginPageExitControlBox;
         private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
-        private Guna.UI2.WinForms.Guna2GradientButton loginButton;
+        private CustomGradientButton loginButton;
         private Guna.UI2.WinForms.Guna2GradientButton forgotPasswordButton;
         private Guna.UI2.WinForms.Guna2GradientButton createAccountButton;
         private Guna.UI2.WinForms.Guna2Transition guna2Transition1;

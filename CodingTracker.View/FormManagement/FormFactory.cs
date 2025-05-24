@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Session;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
@@ -47,6 +48,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.SessionNotesForm => typeof(SessionNotesForm),
                 FormPageEnum.ElapsedTimerForm => typeof(ElapsedTimerPage),
                 FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
+                FormPageEnum.TestForm => typeof(TestForm),
 
 
 
