@@ -49,7 +49,7 @@
     <PackageReference Include="DevExpress.DotNet.Web.ProjectTemplates" Version="23.2.5" />
     <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
     <PackageReference Include="Guna.Charts.WinForms" Version="1.1.0" />
-    <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.6" />
+    <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.7" />
     <PackageReference Include="LibVLCSharp" Version="3.9.1" />
     <PackageReference Include="LibVLCSharp.WinForms" Version="3.9.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />

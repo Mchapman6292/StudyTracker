@@ -1,4 +1,6 @@
 ﻿using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
+using Guna.Charts.WinForms;
+
 
 namespace CodingTracker.View
 {
@@ -111,10 +113,21 @@ namespace CodingTracker.View
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges160 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges101 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges102 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.Charts.WinForms.LPoint lPoint5 = new Guna.Charts.WinForms.LPoint();
-            Guna.Charts.WinForms.LPoint lPoint6 = new Guna.Charts.WinForms.LPoint();
-            Guna.Charts.WinForms.LPoint lPoint7 = new Guna.Charts.WinForms.LPoint();
-            Guna.Charts.WinForms.LPoint lPoint8 = new Guna.Charts.WinForms.LPoint();
+            ChartFont chartFont9 = new ChartFont();
+            ChartFont chartFont10 = new ChartFont();
+            ChartFont chartFont11 = new ChartFont();
+            ChartFont chartFont12 = new ChartFont();
+            Grid grid4 = new Grid();
+            Tick tick4 = new Tick();
+            ChartFont chartFont13 = new ChartFont();
+            Grid grid5 = new Grid();
+            Tick tick5 = new Tick();
+            ChartFont chartFont14 = new ChartFont();
+            Grid grid6 = new Grid();
+            PointLabel pointLabel2 = new PointLabel();
+            ChartFont chartFont15 = new ChartFont();
+            Tick tick6 = new Tick();
+            ChartFont chartFont16 = new ChartFont();
             closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             minimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             panel2 = new Panel();
@@ -190,7 +203,8 @@ namespace CodingTracker.View
             Day1Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             starRatingPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             gunaAnimationWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
-            StarRatingDonut = new Guna.Charts.WinForms.GunaDoughnutDataset();
+            starChart = new GunaChart();
+            doughnutDataset = new GunaDoughnutDataset();
             panel2.SuspendLayout();
             guna2Panel1.SuspendLayout();
             guna2GradientPanel4.SuspendLayout();
@@ -198,6 +212,7 @@ namespace CodingTracker.View
             TodayTotalPanel.SuspendLayout();
             bottomHalfParentPanel.SuspendLayout();
             Last28DaysPanel.SuspendLayout();
+            starRatingPanel.SuspendLayout();
             SuspendLayout();
             // 
             // closeButton
@@ -1050,6 +1065,7 @@ namespace CodingTracker.View
             // 
             // starRatingPanel
             // 
+            starRatingPanel.Controls.Add(starChart);
             starRatingPanel.CustomizableEdges = customizableEdges101;
             starRatingPanel.Location = new Point(755, 3);
             starRatingPanel.Name = "starRatingPanel";
@@ -1062,15 +1078,44 @@ namespace CodingTracker.View
             gunaAnimationWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
             gunaAnimationWindow.TargetForm = this;
             // 
-            // StarRatingDonut
+            // starChart
             // 
-            StarRatingDonut.BorderWidth = 2;
-            lPoint5.Y = 0D;
-            lPoint6.Y = 0D;
-            lPoint7.Y = 0D;
-            lPoint8.Y = 0D;
-            StarRatingDonut.DataPoints.AddRange(new Guna.Charts.WinForms.LPoint[] { lPoint5, lPoint6, lPoint7, lPoint8 });
-            StarRatingDonut.Label = "Doughnut1";
+            chartFont9.FontName = "Arial";
+            starChart.Legend.LabelFont = chartFont9;
+            starChart.Location = new Point(3, 30);
+            starChart.Name = "starChart";
+            starChart.Size = new Size(334, 260);
+            starChart.TabIndex = 0;
+            chartFont10.FontName = "Arial";
+            chartFont10.Size = 12;
+            chartFont10.Style = ChartFontStyle.Bold;
+            starChart.Title.Font = chartFont10;
+            chartFont11.FontName = "Arial";
+            starChart.Tooltips.BodyFont = chartFont11;
+            chartFont12.FontName = "Arial";
+            chartFont12.Size = 9;
+            chartFont12.Style = ChartFontStyle.Bold;
+            starChart.Tooltips.TitleFont = chartFont12;
+            starChart.XAxes.GridLines = grid4;
+            chartFont13.FontName = "Arial";
+            tick4.Font = chartFont13;
+            starChart.XAxes.Ticks = tick4;
+            starChart.YAxes.GridLines = grid5;
+            chartFont14.FontName = "Arial";
+            tick5.Font = chartFont14;
+            starChart.YAxes.Ticks = tick5;
+            starChart.ZAxes.GridLines = grid6;
+            chartFont15.FontName = "Arial";
+            pointLabel2.Font = chartFont15;
+            starChart.ZAxes.PointLabels = pointLabel2;
+            chartFont16.FontName = "Arial";
+            tick6.Font = chartFont16;
+            starChart.ZAxes.Ticks = tick6;
+            starChart.Datasets.Add(doughnutDataset);
+            // 
+            // doughnutDataset
+            // 
+            doughnutDataset.Label = "Doughnut1";
             // 
             // MainPage
             // 
@@ -1094,6 +1139,7 @@ namespace CodingTracker.View
             bottomHalfParentPanel.ResumeLayout(false);
             Last28DaysPanel.ResumeLayout(false);
             Last28DaysPanel.PerformLayout();
+            starRatingPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1174,6 +1220,7 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
         private CustomGradientButton StartSessionButton;
         private Guna.UI2.WinForms.Guna2GradientPanel starRatingPanel;
-        private Guna.Charts.WinForms.GunaDoughnutDataset StarRatingDonut;
+        private GunaChart starChart;
+        private GunaDoughnutDataset doughnutDataset;
     }
 }

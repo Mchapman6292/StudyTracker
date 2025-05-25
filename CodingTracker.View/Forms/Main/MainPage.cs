@@ -4,6 +4,8 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
+using Guna.Charts.WinForms;
+using Guna.Charts.WinForms;
 
 namespace CodingTracker.View
 {
@@ -15,6 +17,8 @@ namespace CodingTracker.View
         private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly INotificationManager _notificationManager;
         private readonly ICodingSessionRepository _codingSessionRepository;
+
+
 
         public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository)
         {
@@ -47,6 +51,8 @@ namespace CodingTracker.View
             _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
             _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
+            await PopulateDoughnutDataSet();
         }
 
         private async void MainPage_Shown(object sender, EventArgs e)
@@ -88,12 +94,12 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.EditSessionForm);
         }
 
-        private  void CloseButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
-    
+
 
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)
         {
@@ -105,10 +111,29 @@ namespace CodingTracker.View
 
         public async Task LoadRatingsIntoDonutChart()
         {
-            Dictionary<int,int> sortedStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
+            Dictionary<int, int> sortedStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
 
-            Don
         }
 
+        private async Task PopulateDoughnutDataSet()
+        {
+            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
+
+            // Clear existing data points
+            doughnutDataset.DataPoints.Clear();
+
+            // Populate with star rating data
+            foreach (var rating in sessionStarRatings)
+            {
+                doughnutDataset.DataPoints.Add(new LPoint()
+                {
+                    Label = $"⭐ {rating.Key} Star{(rating.Key > 1 ? "s" : "")}",
+                    Y = rating.Value  // The count of sessions with this rating
+                });
+            }
+
+            // Update the chart to reflect changes
+            starChart.Update();
+        }
     }
 }
