@@ -81,7 +81,7 @@ namespace CodingTracker.View
             LoginPageAnimateWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
             guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
             loginButton = new CustomGradientButton();
-            forgotPasswordButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            forgotPasswordButton = new CustomGradientButton();
             createAccountButton = new Guna.UI2.WinForms.Guna2GradientButton();
             guna2Transition1 = new Guna.UI2.WinForms.Guna2Transition();
             ((System.ComponentModel.ISupportInitialize)LoginPageVLCPLayer).BeginInit();
@@ -296,7 +296,7 @@ namespace CodingTracker.View
             loginButton.ForeColor = Color.White;
             loginButton.Location = new Point(44, 352);
             loginButton.Name = "loginButton";
-            loginButton.ShadowDecoration.CustomizableEdges = customizableEdges22;
+
             loginButton.Size = new Size(115, 36);
             loginButton.TabIndex = 27;
             loginButton.Text = "Login";
@@ -306,6 +306,8 @@ namespace CodingTracker.View
             // 
             // forgotPasswordButton
             // 
+            forgotPasswordButton.Animated = true;
+            forgotPasswordButton.EnableHoverRipple = true;
             forgotPasswordButton.AutoRoundedCorners = true;
             forgotPasswordButton.BorderRadius = 17;
             forgotPasswordButton.CustomizableEdges = customizableEdges17;
@@ -428,7 +430,7 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2AnimateWindow LoginPageAnimateWindow;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private CustomGradientButton loginButton;
-        private Guna.UI2.WinForms.Guna2GradientButton forgotPasswordButton;
+        private CustomGradientButton forgotPasswordButton;
         private Guna.UI2.WinForms.Guna2GradientButton createAccountButton;
         private Guna.UI2.WinForms.Guna2Transition guna2Transition1;
     }

@@ -2,6 +2,7 @@
 using Guna.UI2.WinForms;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
+using System.Drawing;
 
 namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons
 {
@@ -33,6 +34,9 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
         {
             this.MouseEnter += OnCustomMouseEnter;
             this.MouseLeave += OnCustomMouseLeave;
+            
+            // Seems to be responsible for running one animation at a time, if not set ripple effect bugs out.
+            AnimationManager.Singular = true;
         }
 
         private void OnCustomMouseEnter(object sender, EventArgs e)
@@ -55,21 +59,13 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
 
         public void TriggerRippleAnimation()
         {
-            var innerRect = GetInnerRectangle();
-            Point centerPoint = new Point(
-                (int)(innerRect.X + innerRect.Width / 2),
-                (int)(innerRect.Y + innerRect.Height / 2)
-            );
+            Point centerPoint = new Point(this.Width / 2, this.Height / 2);
             AnimationManager?.StartNewAnimation(AnimationDirection.In, centerPoint);
         }
 
         public void StopRippleAnimation()
         {
-            var innerRect = GetInnerRectangle();
-            Point centerPoint = new Point(
-                (int)(innerRect.X + innerRect.Width / 2),
-                (int)(innerRect.Y + innerRect.Height / 2)
-            );
+            Point centerPoint = new Point(this.Width / 2, this.Height / 2);
             AnimationManager?.StartNewAnimation(AnimationDirection.Out, centerPoint);
         }
 
@@ -93,22 +89,28 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
             {
                 double progress = AnimationManager.GetProgress(i);
 
-                var innerRect = GetInnerRectangle();
-                float centerX = innerRect.X + (innerRect.Width / 2.0f);
-                float centerY = innerRect.Y + (innerRect.Height / 2.0f);
+                float centerX = this.Width / 2;
+                float centerY = this.Height / 2;
 
-
+                /// Need to calculate the distance from the center to the furthest point so we use LERP.
+                //// result = start + (end - start) * t
+               
+                
                 Color rippleColor = Color.FromArgb(
                     (int)Math.Max(1, 101 - progress * 100),
                     Color.White);
 
-                float maxDistance = (float)Math.Sqrt((innerRect.Width * innerRect.Width) + (innerRect.Height * innerRect.Height));
-                float rippleRadius = (float)(progress * maxDistance / 2);
+                // Pythagorean theorem: a^2 + b^2 = c^2
+                float maxDistance = (float)Math.Sqrt((this.Width / 2.0) * (this.Width / 2.0) +(this.Height / 2.0) * (this.Height / 2.0));
+                float rippleRadius = (float)progress * maxDistance;
 
+                /// SetClip sets drawing to only be done within a certain area, keeping as might be needed.
+                /*
+                var originalClip = g.Clip;
+                g.SetClip();
+                */
 
                 var originalClip = g.Clip;
-                g.SetClip(innerRect);
-
                 try
                 {
                     using (var brush = new SolidBrush(rippleColor))
@@ -127,7 +129,13 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
                 {
                     g.Clip = originalClip;
                 }
+
             }
+        }
+
+        public Size CalculateButtonEdges()
+        {
+            return  this.GetPreferredSize(this.Size);
         }
 
         /// <summary>
@@ -136,42 +144,7 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
         /// 
         private RectangleF GetInnerRectangle()
         {
-
-            int radius = this.BorderRadius;
-
-            if (this.AutoRoundedCorners)
-            {
-                radius = Math.Min(this.Width, this.Height) / 2;
-            }
-
-            if (radius <= 0)
-            {
-                return new RectangleF(0, 0, this.Width, this.Height);
-            }
-
-            float left = 0;
-            float top = 0;
-            float right = this.Width;
-            float bottom = this.Height;
-
-            if (!this.CustomizableEdges.TopLeft || !this.CustomizableEdges.BottomLeft)
-            {
-                left = radius;
-            }
-            if (!this.CustomizableEdges.TopLeft || !this.CustomizableEdges.TopRight)
-            {
-                top = radius;
-            }
-            if (!this.CustomizableEdges.TopRight || !this.CustomizableEdges.BottomRight)
-            {
-                right = this.Width - radius;
-            }
-            if (!this.CustomizableEdges.BottomLeft || !this.CustomizableEdges.BottomRight)
-            {
-                bottom = this.Height - radius;
-            }
-
-            return new RectangleF(left, top, right - left, bottom - top);
+            return RectangleF.Empty;
         }
 
 
@@ -201,5 +174,7 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
                 base.OnClick(e);
             }
         }
+
+
     }
 }

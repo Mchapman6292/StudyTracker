@@ -39,10 +39,13 @@ using CodingTracker.View.Forms;
 
 // Add good session indicator? / mouse up /down?
 
+
+
 namespace CodingTracker.View.Program
 {
 
     //https://github.com/am-523?tab=repositories
+    //https://github.com/am-523/Animation-Slide-Panel-2/blob/main/tab.Designer.cs
 
     internal static class Program
     {
