@@ -33,13 +33,20 @@ using CodingTracker.Data.Configuration;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Session;
+using CodingTracker.View.Forms;
 
 
+
+// Add good session indicator? / mouse up /down?
 
 
 
 namespace CodingTracker.View.Program
 {
+
+    //https://github.com/am-523?tab=repositories
+    //https://github.com/am-523/Animation-Slide-Panel-2/blob/main/tab.Designer.cs
+
     internal static class Program
     {
         [STAThread]
@@ -100,7 +107,6 @@ namespace CodingTracker.View.Program
 
 
 
-
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()
@@ -109,6 +115,8 @@ namespace CodingTracker.View.Program
                     .AddTransient<ResetPasswordPage>()
                     .AddTransient<ConfirmUsernamePage>()
                     .AddTransient<ElapsedTimerPage>()
+                    .AddSingleton<SessionRatingForm>()
+                    .AddSingleton<TestForm>()
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();

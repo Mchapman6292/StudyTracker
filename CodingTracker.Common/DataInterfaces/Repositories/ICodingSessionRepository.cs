@@ -30,5 +30,7 @@ namespace CodingTracker.Common.DataInterfaces.Repositories
         Task<double> GetTodaysTotalDurationAsync();
         Task<double> GetWeekTotalDurationAsync();
         Task<(double todayTotal, double weekTotal, double average)> GetLabelDurationsAsync();
+
+        Task<Dictionary<int, int>> GetStarRatingsWithZeroValueDefault();
     }
 }

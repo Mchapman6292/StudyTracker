@@ -237,9 +237,10 @@ namespace CodingTracker.View
 
         private async void LoginButton_Click(object sender, EventArgs e)
         {
-
+            /*
             loginButton.Enabled = false;
-
+            */
+            await Task.Delay(1000);
             _appLogger.Info($"Starting {nameof(LoginButton_Click)}.");
 
             try
@@ -272,7 +273,9 @@ namespace CodingTracker.View
 
             finally
             {
+                /*
                 loginButton.Enabled = true;
+                */
             }
         }
 
@@ -288,7 +291,7 @@ namespace CodingTracker.View
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
+            _formNavigator.SwitchToForm(FormPageEnum.TestForm);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)

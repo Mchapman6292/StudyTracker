@@ -34,13 +34,23 @@ namespace CodingTracker.View
         {
             string studyProject = ProjectNameTextBox.Text;
             string studyNotes = SessionNotesTextBox.Text;
+
+
+
+            // Change after testing
+            _codingSessionManager.SetSessionStarRating(4);
+
+
+
+
+
             bool sessionAdded = await _codingSessionManager.NEWUpdateCodingSessionStudyNotesAndSaveCodingSession(studyProject, studyNotes);
 
             string successMessage = sessionAdded ? "Coding session saved successfully." : "Error saving coding session.";
 
             _notificationManager.ShowNotificationDialog(this, successMessage);
 
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.SessionRatingForm);
         }
 
         private void SkipButton_Click(object sender, EventArgs e)

@@ -1,4 +1,6 @@
-﻿using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
@@ -11,14 +13,18 @@ namespace CodingTracker.View
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly INotificationManager _notificationManager;
+        private readonly ICodingSessionRepository _codingSessionRepository;
 
-        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager)
+        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository)
         {
             InitializeComponent();
             _formNavigator = formNavigator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
             _buttonNotificationManager = buttonNotificationManager;
+            _notificationManager = notificationManager;
+            _codingSessionRepository = codingSessionRepository;
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
@@ -50,7 +56,16 @@ namespace CodingTracker.View
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.WaveVisualizationForm);
+            Size buttonSize = CodingSessionButton.CalculateButtonEdges();
+
+            int height = buttonSize.Height;
+            int width = buttonSize.Width;
+
+            string message = $"height = {height}, width = {width}.";
+
+            _notificationManager.ShowNotificationDialog(this, message);
+
+
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
@@ -86,6 +101,14 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.SessionGoalForm);
         }
 
+
+
+        public async Task LoadRatingsIntoDonutChart()
+        {
+            Dictionary<int,int> sortedStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
+
+            Don
+        }
 
     }
 }

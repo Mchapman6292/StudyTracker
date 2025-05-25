@@ -65,7 +65,7 @@
             deleteSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             toggleEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
             EditSessionPageDataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
-            StudyTopic = new DataGridViewTextBoxColumn();
+            StudyProject = new DataGridViewTextBoxColumn();
             Duration = new DataGridViewTextBoxColumn();
             StartDate = new DataGridViewTextBoxColumn();
             StartTime = new DataGridViewTextBoxColumn();
@@ -303,25 +303,26 @@
             EditSessionPageDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             EditSessionPageDataGridView.ColumnHeadersHeight = 40;
             EditSessionPageDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            EditSessionPageDataGridView.Columns.AddRange(new DataGridViewColumn[] { StudyTopic, Duration, StartDate, StartTime, EndDate, EndTime });
+            EditSessionPageDataGridView.Columns.AddRange(new DataGridViewColumn[] { StudyProject, Duration, StartDate, StartTime, EndDate, EndTime });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.FromArgb(37, 46, 81);
             dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle3.ForeColor = SystemColors.ControlLight;
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(105, 151, 219);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(94, 148, 255);
             dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             EditSessionPageDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             EditSessionPageDataGridView.GridColor = Color.FromArgb(35, 34, 50);
             EditSessionPageDataGridView.Location = new Point(23, 0);
+            EditSessionPageDataGridView.MultiSelect = false;
             EditSessionPageDataGridView.Name = "EditSessionPageDataGridView";
             EditSessionPageDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = Color.FromArgb(37, 46, 81);
             dataGridViewCellStyle4.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle4.ForeColor = SystemColors.InactiveCaption;
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(105, 151, 219);
-            dataGridViewCellStyle4.SelectionForeColor = Color.DarkSlateBlue;
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(94, 148, 255);
+            dataGridViewCellStyle4.SelectionForeColor = Color.White;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
             EditSessionPageDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             EditSessionPageDataGridView.RowHeadersVisible = false;
@@ -348,16 +349,16 @@
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(180, 20, 50);
             EditSessionPageDataGridView.ThemeStyle.RowsStyle.Height = 40;
-            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionBackColor = Color.Crimson;
-            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionForeColor = Color.Crimson;
+            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(94, 148, 255);
+            EditSessionPageDataGridView.ThemeStyle.RowsStyle.SelectionForeColor = Color.White;
             EditSessionPageDataGridView.CellClick += EditModeDataGridView_CellClick;
             // 
-            // StudyTopic
+            // StudyProject
             // 
-            StudyTopic.FillWeight = 101.522842F;
-            StudyTopic.HeaderText = "Study Topic";
-            StudyTopic.MinimumWidth = 6;
-            StudyTopic.Name = "StudyTopic";
+            StudyProject.FillWeight = 101.522842F;
+            StudyProject.HeaderText = "Study Project";
+            StudyProject.MinimumWidth = 6;
+            StudyProject.Name = "StudyProject";
             // 
             // Duration
             // 
@@ -445,7 +446,7 @@
         private Guna.UI2.WinForms.Guna2NotificationPaint EditSessionPageNotificationPaint;
         private Guna.UI2.WinForms.Guna2DateTimePicker EditSessionPageTimePicker;
         private Guna.UI2.WinForms.Guna2GradientButton deleteSessionButton;
-        private DataGridViewTextBoxColumn StudyTopic;
+        private DataGridViewTextBoxColumn StudyProject;
         private DataGridViewTextBoxColumn Duration;
         private DataGridViewTextBoxColumn StartDate;
         private DataGridViewTextBoxColumn StartTime;

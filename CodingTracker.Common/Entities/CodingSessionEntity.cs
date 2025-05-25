@@ -28,6 +28,7 @@ namespace CodingTracker.Common.Entities.CodingSessionEntities
 
         public string StudyProject { get; set; } 
         public string StudyNotes { get; set; }
+        public int SessionStarRating { get; set; }
 
 
 

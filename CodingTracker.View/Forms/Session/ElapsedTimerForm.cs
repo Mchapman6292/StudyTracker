@@ -62,19 +62,28 @@ namespace CodingTracker.View.Forms.Session
 
         }
 
+        private void UpdateDurationLabelText(string durationString)
+        {
+            durationLabel.Text = durationString;
+        }
+
         private void WinFormsTimer_Tick(object? sender, EventArgs e) 
         {
             TimeSpan elapsedTime = _stopWatchTimerService.ReturnElapsedTimeSpan();
 
             string formattedTimeSpan = elapsedTime.ToString(@"hh\:mm\:ss");
 
-            durationLabel.Text = formattedTimeSpan;
+            UpdateDurationLabelText(formattedTimeSpan);
 
         }
 
         private void RestartSessionButton_Click(object sender, EventArgs e) 
         {
-            _formNavigator.SwitchToForm(FormPageEnum.ElapsedTimerForm);
+            _codingSessionManager.ResetCurrentCodingSession();
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
+            _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
+            _stopWatchTimerService.RestartTimer();
+            _stopWatchTimerService.StartTimer();
         }
 
         private void StopButton_Click(Object sender, EventArgs e) 
