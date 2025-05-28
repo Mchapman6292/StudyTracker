@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -7,7 +6,7 @@ using System.Text;
 
 
 
-namespace CodingTracker.Common.UtilityServices
+namespace CodingTracker.Common.Utilities
 {
     public class UtilityService : IUtilityService
     {
@@ -64,7 +63,7 @@ namespace CodingTracker.Common.UtilityServices
         {
             int hours = int.Parse(input.Substring(0, 2));
             int minutes = int.Parse(input.Substring(2, 2));
-            var result = ((hours * 3600) + minutes * 60);
+            var result = hours * 3600 + minutes * 60;
 
             _appLogger.Debug($"Result of {nameof(ConvertDoubleToHHMMString)}: {result}.");
             return result;

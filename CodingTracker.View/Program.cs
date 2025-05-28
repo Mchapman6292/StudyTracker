@@ -8,9 +8,8 @@ using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessio
 using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.DataInterfaces.DbContextService;
 using CodingTracker.Common.DataInterfaces.Repositories;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.Common.UtilityServices;
+using CodingTracker.Common.Utilities;
 using CodingTracker.Data.Configuration;
 using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;

@@ -3,8 +3,8 @@ using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessio
 using CodingTracker.Common.CodingSessions;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 
 namespace CodingTracker.Business.CodingSessionManagers
 {

@@ -1,25 +1,32 @@
 ﻿using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormService.ColourServices;
 using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
+
 
 namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 {
     public enum SessionColor
     {
-        Blue,        // For 0 minutes
-        Coral,       // For less than 60 minutes
-        Rose,        // For 1 to less than 2 hours
-        Amber,       // For 2 to less than 3 hours
-        Emerald,     // For 3 hours and more
-        Slate        // For errors/null   
+        Slate,
+        Blue,
+        Rose,
+        Amber,
+        Coral,
+        Emerald
     }
+
+
+
+
+
 
     public interface IPanelColourAssigner
     {
         Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days();
-        (Color StartColor, Color EndColor) GetSessionGradientColors(SessionColor color);
+        (Color StartColor, Color EndColor) GetSessionGradientColours(SessionColor color);
         SessionColor DetermineSessionColor(double? sessionDurationSeconds);
         List<DateTime> GetDatesPrevious28days();
     }
@@ -53,7 +60,7 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
                     DateOnly sessionDate = session.StartDateUTC;
 
                     SessionColor colorEnum = DetermineSessionColor(totalDurationSeconds);
-                    (Color StartColor, Color EndColor) gradientColors = GetSessionGradientColors(colorEnum);
+                    (Color StartColor, Color EndColor) gradientColors = GetUpdatedSessionGradientColors(totalDurationSeconds);
                     sessionGradients.Add(gradientColors);
 
                 }
@@ -63,7 +70,6 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 
         public SessionColor DetermineSessionColor(double? sessionDurationSeconds)
         {
-            using (new Activity(nameof(DetermineSessionColor))) { }
             if (!sessionDurationSeconds.HasValue || sessionDurationSeconds <= 0)
             {
                 return SessionColor.Emerald;
@@ -86,68 +92,89 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
             }
         }
 
-        public (Color StartColor, Color EndColor) GetSessionGradientColors(SessionColor color)
+
+        public (Color gradientOneColor, Color gradientTwoColor) GetUpdatedSessionGradientColors(double? durationSeconds)
         {
-            var activity = new Activity(nameof(GetSessionGradientColors)).Start();
-            var stopwatch = Stopwatch.StartNew();
-            _appLogger.Debug($"Starting {nameof(GetSessionGradientColors)} ceID: {activity.TraceId}");
-            try
+            if (!durationSeconds.HasValue || durationSeconds <= 0)
             {
-                (Color StartColor, Color EndColor) result;
-                switch (color)
-                {
-                    case SessionColor.Blue:
-                        result = (Color.FromArgb(86, 180, 211), Color.FromArgb(64, 116, 199));
-                        break;
-                    case SessionColor.Coral:
-                        result = (Color.FromArgb(255, 138, 138), Color.FromArgb(235, 107, 107));
-                        break;
-                    case SessionColor.Rose:
-                        result = (Color.FromArgb(247, 99, 119), Color.FromArgb(226, 54, 78));
-                        break;
-                    case SessionColor.Amber:
-                        result = (Color.FromArgb(255, 209, 138), Color.FromArgb(255, 190, 92));
-                        break;
-                    case SessionColor.Emerald:
-                        result = (Color.FromArgb(72, 219, 143), Color.FromArgb(46, 204, 113));
-                        break;
-                    case SessionColor.Slate:
-                        result = (Color.FromArgb(65, 65, 85), Color.FromArgb(45, 45, 65));
-                        break;
-                    default:
-                        result = (Color.FromArgb(86, 180, 211), Color.FromArgb(64, 116, 199));
-                        break;
-                }
-                stopwatch.Stop();
-                return result;
+                return (ColorService.SessionSlateStart, ColorService.SessionSlateEnd);
             }
-            finally
+            else if (durationSeconds > 0 && durationSeconds <= 1800)
             {
-                stopwatch.Stop();
-                activity.Stop();
+                return (ColorService.SessionBlueStart, ColorService.SessionBlueEnd);
+            }
+            else if (durationSeconds > 1800 && durationSeconds <= 3600)
+            {
+                return (ColorService.SessionRoseStart, ColorService.SessionRoseEnd);
+            }
+            else if (durationSeconds > 3600 && durationSeconds <= 5400)
+            {
+                return (ColorService.SessionAmberStart, ColorService.SessionAmberEnd);
+            }
+            else if (durationSeconds > 5400 && durationSeconds <= 7200)
+            {
+                return (ColorService.SessionCoralStart, ColorService.SessionCoralEnd);
+            }
+            else // > 7200
+            {
+                return (ColorService.SessionEmeraldStart, ColorService.SessionEmeraldEnd);
             }
         }
 
-        public List<DateTime> GetDatesPrevious28days() // Potential mismatch with sql lite db dates?
+
+
+        public (Color StartColor, Color EndColor) GetSessionGradientColours(SessionColor color)
         {
-            using (var activity = new Activity(nameof(GetDatesPrevious28days)).Start())
+            (Color StartColor, Color EndColor) result;
+            switch (color)
             {
-                var stopwatch = Stopwatch.StartNew();
-                _appLogger.Debug($"Getting dates for the previous 28 days. TraceID: {activity.TraceId}");
+                case SessionColor.Blue:
+                    result = (Color.FromArgb(70, 71, 117), Color.FromArgb(45, 46, 80));
+                    break;
+                case SessionColor.Coral:
+                    result = (Color.FromArgb(255, 81, 195), Color.FromArgb(220, 60, 170));
+                    break;
+                case SessionColor.Rose:
+                    result = (Color.FromArgb(255, 100, 180), Color.FromArgb(255, 81, 195));
+                    break;
+                case SessionColor.Amber:
+                    result = (Color.FromArgb(168, 228, 255), Color.FromArgb(130, 200, 255));
+                    break;
+                case SessionColor.Emerald:
+                    result = (Color.FromArgb(100, 220, 220), Color.FromArgb(168, 228, 255));
+                    break;
+                case SessionColor.Slate:
+                    result = (Color.FromArgb(32, 33, 36), Color.FromArgb(25, 24, 40));
+                    break;
+                default:
+                    result = (Color.FromArgb(70, 71, 117), Color.FromArgb(45, 46, 80));
+                    break;
+            }
+            return result;
+        }
 
-                List<DateTime> dates = new List<DateTime>();
-                DateTime today = DateTime.Today;
 
-                for (int i = 1; i <= 29; i++)
-                {
-                    dates.Add(today.AddDays(-i));
-                }
 
-                stopwatch.Stop();
-                _appLogger.Info($"Retrieved dates for the previous 28 days. Count: {dates.Count}, Execution Time: {stopwatch.ElapsedMilliseconds}ms, Trace ID: {activity.TraceId}");
 
-                return dates;
+
+
+
+        public List<DateTime> GetDatesPrevious28days()
+        {
+            List<DateTime> dates = new List<DateTime>();
+            DateTime today = DateTime.Today;
+
+            for (int i = 1; i <= 29; i++)
+            {
+                dates.Add(today.AddDays(-i));
+            }
+
+            return dates;
             }
         }
-    }
-}
+
+
+
+ 
+
+   }

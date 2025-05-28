@@ -98,7 +98,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
         public async Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions)
         {
-            return await _dbContext.CodingSessions
+                return await _dbContext.CodingSessions
                     .OrderByDescending(s => s.StartDateUTC)
                     .Take(numberOfSessions)
                     .ToListAsync();

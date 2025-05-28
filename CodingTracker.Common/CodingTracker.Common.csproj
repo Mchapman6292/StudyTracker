@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="BusinessInterfaces\MainPagePanelService\" />
-    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
