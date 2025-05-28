@@ -203,7 +203,7 @@ namespace CodingTracker.View
 
         private void HighlightRow(DataGridViewRow row)
         {
-            row.DefaultCellStyle.BackColor = ColourService.RowDeletionCrimsonRed;
+            row.DefaultCellStyle.BackColor = ColorService.RowDeletionCrimsonRed;
         }
 
         private void AddHighlightedRowToCurrentHighlightedRows(DataGridViewRow row)
@@ -232,23 +232,23 @@ namespace CodingTracker.View
 
         private void UpdateDefaultSelectionColors()
         {
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = ColourService.DarkerGrey;
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = ColourService.DarkerGrey;
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = ColorService.DarkerGrey;
+            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = ColorService.DarkerGrey;
         }
 
         private void SetEditSessionNotificationPaintColours()
         {
             EditSessionPageNotificationPaint.Text = IsEditSession ? "On" : "Off";
-            EditSessionPageNotificationPaint.FillColor = IsEditSession ? ColourService.Teal : ColourService.DarkGrey;
-            EditSessionPageNotificationPaint.BorderColor = IsEditSession ? ColourService.LightTeal : ColourService.MediumGrey;
-            EditSessionPageNotificationPaint.ForeColor = IsEditSession ? ColourService.White : ColourService.LightGrey;
+            EditSessionPageNotificationPaint.FillColor = IsEditSession ? ColorService.Teal : ColorService.DarkGrey;
+            EditSessionPageNotificationPaint.BorderColor = IsEditSession ? ColorService.LightTeal : ColorService.MediumGrey;
+            EditSessionPageNotificationPaint.ForeColor = IsEditSession ? ColorService.White : ColorService.LightGrey;
         }
 
         private void SetEditSessionButtonColours()
         {
-            toggleEditSessionsButton.FillColor = IsEditSession ? ColourService.Teal : ColourService.DarkGrey;
-            toggleEditSessionsButton.BorderColor = IsEditSession ? ColourService.LightTeal : ColourService.MediumGrey;
-            toggleEditSessionsButton.ForeColor = IsEditSession ? ColourService.White : ColourService.LightGrey;
+            toggleEditSessionsButton.FillColor = IsEditSession ? ColorService.Teal : ColorService.DarkGrey;
+            toggleEditSessionsButton.BorderColor = IsEditSession ? ColorService.LightTeal : ColorService.MediumGrey;
+            toggleEditSessionsButton.ForeColor = IsEditSession ? ColorService.White : ColorService.LightGrey;
         }
 
         private void DisableDataGridViewSelectionHighlighting()
@@ -306,15 +306,15 @@ namespace CodingTracker.View
 
         private void CustomizeDatePicker()
         {
-            EditSessionPageTimePicker.BackColor = ColourService.DarkerGrey;
-            EditSessionPageTimePicker.FillColor = ColourService.DarkerGrey;
-            EditSessionPageTimePicker.BorderColor = ColourService.MediumGrey;
-            EditSessionPageTimePicker.ForeColor = ColourService.White;
+            EditSessionPageTimePicker.BackColor = ColorService.DarkerGrey;
+            EditSessionPageTimePicker.FillColor = ColorService.DarkerGrey;
+            EditSessionPageTimePicker.BorderColor = ColorService.MediumGrey;
+            EditSessionPageTimePicker.ForeColor = ColorService.White;
             EditSessionPageTimePicker.Font = new Font("Segoe UI", 10F);
-            EditSessionPageTimePicker.FocusedColor = ColourService.LightTeal;
+            EditSessionPageTimePicker.FocusedColor = ColorService.LightTeal;
             EditSessionPageTimePicker.Size = new Size(200, 36);
             EditSessionPageTimePicker.ShadowDecoration.Enabled = true;
-            EditSessionPageTimePicker.ShadowDecoration.Color = ColourService.MediumGrey;
+            EditSessionPageTimePicker.ShadowDecoration.Color = ColorService.MediumGrey;
         }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)

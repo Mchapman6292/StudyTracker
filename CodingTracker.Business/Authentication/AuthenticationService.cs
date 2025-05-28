@@ -3,8 +3,8 @@ using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using System.Diagnostics;
 
 

@@ -2,8 +2,9 @@
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.Repositories;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
+using CodingTracker.View.FormService.ColourServices;
 using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.Forms.Services.MainPageService
@@ -26,6 +27,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUtilityService _utilityService;
         private readonly IPanelColourAssigner _panelColourAssigner;
+
 
 
 
@@ -176,6 +178,8 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             {
                 gradientPanels[i].FillColor = panelGradients[i].StartColor;
                 gradientPanels[i].FillColor2 = panelGradients[i].EndColor;
+                gradientPanels[i].GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
+
             }
         }
 
@@ -183,6 +187,8 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 
         public void UpdateDateLabelsWithHTML(Panel parentPanel)
         {
+
+
             List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
             var gunaDateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
 
@@ -199,13 +205,9 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 
 
 
-        private void ApplyRoundedCornersToPanel(Guna2GradientPanel panel)
+        public void FormatLast28DaysDates()
         {
-            panel.BorderRadius = 30;
-            panel.ShadowDecoration.Enabled = true;
-            panel.ShadowDecoration.Depth = 5;
-            panel.ShadowDecoration.Color = Color.FromArgb(30, 0, 0, 0);
-            panel.BorderThickness = 0;
+
         }
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CodingTracker.View.Forms.Services.MainPageService.DonutChartManagers
 {
-    public class DonutChartManager
+    public class ChartVisualizationService
     {
         private readonly ICodingSessionRepository _codingSessionRepository;
 
-        public DonutChartManager(ICodingSessionRepository codingSessionRepository)
+        public ChartVisualizationService(ICodingSessionRepository codingSessionRepository)
         {
             _codingSessionRepository = codingSessionRepository;
         }

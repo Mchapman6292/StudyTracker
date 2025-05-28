@@ -40,8 +40,6 @@ namespace CodingTracker.View.Forms
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            mainPanel.SuspendLayout();
             SuspendLayout();
             // 
             // borderlessForm
@@ -57,7 +55,6 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
-            mainPanel.Controls.Add(tableLayoutPanel1);
             mainPanel.CustomizableEdges = customizableEdges1;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
@@ -70,46 +67,6 @@ namespace CodingTracker.View.Forms
             mainPanel.Size = new Size(1300, 720);
             mainPanel.TabIndex = 0;
             // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 28;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.57F));
-            tableLayoutPanel1.Location = new Point(67, 354);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(794, 263);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
             // TestForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -121,12 +78,9 @@ namespace CodingTracker.View.Forms
             Name = "TestForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Modern Timer Test";
-            mainPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-
-        private TableLayoutPanel tableLayoutPanel1;
     }
 }

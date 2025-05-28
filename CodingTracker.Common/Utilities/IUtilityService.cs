@@ -1,6 +1,6 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
 
-namespace CodingTracker.Common.IUtilityServices
+namespace CodingTracker.Common.Utilities
 {
     public interface IUtilityService
     {

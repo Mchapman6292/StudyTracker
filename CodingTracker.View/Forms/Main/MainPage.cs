@@ -4,6 +4,10 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
+using Guna.Charts.WinForms;
+using Guna.UI2.AnimatorNS;
+using Guna.UI2.WinForms;
+using System.Windows.Forms;
 
 namespace CodingTracker.View
 {
@@ -15,6 +19,11 @@ namespace CodingTracker.View
         private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly INotificationManager _notificationManager;
         private readonly ICodingSessionRepository _codingSessionRepository;
+
+        private Guna2Transition chartAnimator;
+        private Guna2Panel hoverInfoPanel;
+        private System.Windows.Forms.Timer hoverDelayTimer;
+        private Guna.Charts.WinForms.Animation starChartAnimation;
 
         public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository)
         {
@@ -29,6 +38,20 @@ namespace CodingTracker.View
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
             SetAnimationWindow();
+
+            InitializeAnimator();
+
+
+        }
+
+        private void InitializeAnimator()
+        {
+            Guna.Charts.WinForms.Animation starChartAnimation = new Guna.Charts.WinForms.Animation(Easing.EaseInCirc, 500);
+            starChart.Animation = starChartAnimation;
+
+
+
+
         }
 
         private void SetAnimationWindow()
@@ -47,6 +70,9 @@ namespace CodingTracker.View
             _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
             _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
+
+            await PopulateDoughnutDataSet(); 
         }
 
         private async void MainPage_Shown(object sender, EventArgs e)
@@ -64,8 +90,6 @@ namespace CodingTracker.View
             string message = $"height = {height}, width = {width}.";
 
             _notificationManager.ShowNotificationDialog(this, message);
-
-
         }
 
         private void MainPageCodingSessionButton_MouseEnter(object sender, EventArgs e)
@@ -88,12 +112,10 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.EditSessionForm);
         }
 
-        private  void CloseButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
         }
-
-    
 
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)
         {
@@ -101,14 +123,54 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.SessionGoalForm);
         }
 
-
-
         public async Task LoadRatingsIntoDonutChart()
         {
-            Dictionary<int,int> sortedStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
-
-            Don
+            Dictionary<int, int> sortedStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
         }
+
+        private async Task PopulateDoughnutDataSet()
+        {
+            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
+
+            doughnutDataset.DataPoints.Clear();
+
+            // Configure hover effects
+            doughnutDataset.BorderWidth = 2;
+
+            doughnutDataset.FillColors.Clear();
+
+            doughnutDataset.FillColors.Add(Color.FromArgb(255, 81, 195));   // Primary Pink
+            doughnutDataset.FillColors.Add(Color.FromArgb(255, 120, 200));  // Light Pink
+            doughnutDataset.FillColors.Add(Color.FromArgb(200, 150, 220));  // Pink-Purple blend
+            doughnutDataset.FillColors.Add(Color.FromArgb(150, 180, 240));  // Purple-Blue blend
+            doughnutDataset.FillColors.Add(Color.FromArgb(100, 200, 250));  // Blue-Cyan blend
+            doughnutDataset.FillColors.Add(Color.FromArgb(100, 220, 220));  // Cyan
+            doughnutDataset.FillColors.Add(Color.FromArgb(168, 228, 255));
+
+            foreach (var rating in sessionStarRatings)
+            {
+                doughnutDataset.DataPoints.Add(new LPoint()
+                {
+                    Label = $"⭐ {rating.Key} Star{(rating.Key > 1 ? "s" : "")}",
+                    Y = rating.Value
+                });
+            }
+
+            starChart.Update();
+        }
+
+
+        public void SetLabelVisibility()
+        {
+            foreach(Control control in Last28DaysPanel.Controls)
+            {
+                if (control is Guna.UI2.WinForms.Guna2HtmlLabel htmlLabel)
+                {
+
+                }
+            }    
+        }
+
 
     }
 }

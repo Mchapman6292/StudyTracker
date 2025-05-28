@@ -1,7 +1,7 @@
-﻿using CodingTracker.Common.IUtilityServices;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
+using CodingTracker.Common.Utilities;
 
 namespace CodingTracker.View
 {

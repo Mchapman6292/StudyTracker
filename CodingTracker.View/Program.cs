@@ -3,37 +3,35 @@ using CodingTracker.Business.CodingSessionManagers;
 using CodingTracker.Business.InputValidators;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces;
-using CodingTracker.Common.IUtilityServices;
-using CodingTracker.Common.UtilityServices;
+using CodingTracker.Common.DataInterfaces.DbContextService;
+using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
+using CodingTracker.Data.Configuration;
 using CodingTracker.Data.DbContextService.CodingTrackerDbContexts;
 using CodingTracker.Data.Repositories.CodingSessionRepositories;
 using CodingTracker.Data.Repositories.UserCredentialRepositories;
 using CodingTracker.Logging.ApplicationLoggers;
+using CodingTracker.View.ApplicationControlService;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms;
+using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
+using CodingTracker.View.Forms.Services.EditSessionPageService;
+using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using CodingTracker.View.Forms.Session;
+using CodingTracker.View.Forms.WaveVisualizer;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
-using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.Forms.Services.EditSessionPageService;
-using CodingTracker.View.Forms.Services.MainPageService;
-using CodingTracker.View.FormManagement;
-using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.View.ApplicationControlService;
-using CodingTracker.View.Forms.WaveVisualizer;
-using CodingTracker.View.Forms.Services.WaveVisualizerService;
-using CodingTracker.Common.BusinessInterfaces.Authentication;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
-using CodingTracker.Common.DataInterfaces.Repositories;
-using CodingTracker.Common.DataInterfaces.DbContextService;
-using CodingTracker.Data.Configuration;
-using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
-using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.View.Forms.Session;
-using CodingTracker.View.Forms;
 
 
 
@@ -60,7 +58,7 @@ namespace CodingTracker.View.Program
 
             ApplicationConfiguration.Initialize();
 
-            var formFactory = serviceProvider.GetRequiredService<IFormFactory>();
+            var formFactory = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IFormFactory>(serviceProvider);
             var loginPage = formFactory.GetOrCreateLoginPage();
 
             Application.Run(loginPage);
@@ -75,6 +73,9 @@ namespace CodingTracker.View.Program
             IConfiguration configuration = configurationBuilder.Build();
 
             var connectionString = configuration.GetSection("DatabaseConfig:ConnectionString").Value;
+            var syncFusionKey = configuration.GetSection("SyncFusion:LicenseKey").Value;
+
+
 
             services.AddSingleton<IConfiguration>(configuration)
                     .AddSingleton<IStartConfiguration, StartConfiguration>()
@@ -123,8 +124,7 @@ namespace CodingTracker.View.Program
 
 
 
-            var startConfiguration = services.BuildServiceProvider()
-                                             .GetRequiredService<IStartConfiguration>();
+            var startConfiguration = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IStartConfiguration>(services.BuildServiceProvider());
             startConfiguration.LoadConfiguration();
         }
     }

@@ -291,7 +291,7 @@ namespace CodingTracker.View
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.TestForm);
+            _formNavigator.SwitchToForm(FormPageEnum.WaveVisualizationForm);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)

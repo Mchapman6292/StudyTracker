@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.DataInterfaces.DbContextService;
 using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.IUtilityServices;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 

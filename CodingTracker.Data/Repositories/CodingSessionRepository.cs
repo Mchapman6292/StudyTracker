@@ -98,7 +98,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
 
         public async Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions)
         {
-            return await _dbContext.CodingSessions
+                return await _dbContext.CodingSessions
                     .OrderByDescending(s => s.StartDateUTC)
                     .Take(numberOfSessions)
                     .ToListAsync();
@@ -241,23 +241,18 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         //Used for DonutChart on main page, add default values of zero so the pie chart shows a small section to indicate 0 counts of that rating.
         public async Task<Dictionary<int, int>> GetStarRatingsWithZeroValueDefault()
         {
+            // Remove OrderBy from the database query - we'll handle ordering in memory
             Dictionary<int, int> starRatings = await _dbContext.CodingSessions
                 .GroupBy(s => s.SessionStarRating)
-                .OrderBy(g => g.Key)
                 .ToDictionaryAsync(g => g.Key, g => g.Count());
-            
-            var starRatingsWithZero = new Dictionary<int, int>();   
 
-            for(int i = 1; i <= 5; i++) 
+            var starRatingsWithZero = new Dictionary<int, int>();
+            for (int i = 1; i <= 5; i++)
             {
                 starRatingsWithZero[i] = starRatings.GetValueOrDefault(i, 0);
             }
-
             return starRatingsWithZero;
-
-
         }
-
 
     }
 }
