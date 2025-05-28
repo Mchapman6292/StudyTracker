@@ -1,6 +1,7 @@
 ﻿using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.WaveVisualizer;
+using Guna.Charts.WinForms;
 using System.Runtime.InteropServices;
 
 namespace CodingTracker.View
@@ -124,5 +125,7 @@ namespace CodingTracker.View
 
             base.WndProc(ref m);
         }
+
+        public Animation
     }
 }
