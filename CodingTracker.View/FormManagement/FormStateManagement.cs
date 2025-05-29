@@ -34,7 +34,6 @@ namespace CodingTracker.View.FormManagement
         private ResetPasswordPage _resetPasswordPageInstance;
         private ElapsedTimerPage _elapsedTimerPageInstance;
         private SessionRatingForm _sessionRatingFormInstance;
-        private WaveVisualizationForm _waveVisualizationFormInstance;
 
         private readonly IApplicationLogger _appLogger;
 
@@ -74,7 +73,7 @@ namespace CodingTracker.View.FormManagement
             { FormPageEnum.ConfirmUsernameForm, typeof(ConfirmUsernamePage)},
             { FormPageEnum.ResetPasswordForm, typeof(ResetPasswordPage)},
             { FormPageEnum.CountdownTimerForm, typeof(CountdownTimerForm)},
-            { FormPageEnum.WaveVisualizationForm, typeof(WaveVisualizationForm)},
+
             { FormPageEnum.SessionRatingForm, typeof(SessionRatingForm)},
         };
 
@@ -137,8 +136,7 @@ namespace CodingTracker.View.FormManagement
                     return _elapsedTimerPageInstance;
                 case FormPageEnum.SessionRatingForm:
                     return _sessionRatingFormInstance;
-                case FormPageEnum.WaveVisualizationForm:
-                    return _waveVisualizationFormInstance;
+
                 default:
                     return null;
             }
@@ -177,9 +175,6 @@ namespace CodingTracker.View.FormManagement
                     break;
                 case FormPageEnum.SessionRatingForm:
                     _sessionRatingFormInstance = instance as SessionRatingForm;
-                    break;
-                case FormPageEnum.WaveVisualizationForm:
-                    _waveVisualizationFormInstance = instance as WaveVisualizationForm;
                     break;
             }
         }

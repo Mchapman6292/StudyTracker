@@ -5,7 +5,7 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.View.Forms.WaveVisualizer.WaveVisualizationControls;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using Guna.Charts.WinForms;
 using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
@@ -26,7 +26,13 @@ namespace CodingTracker.View
         private readonly IFormFactory _formFactory;
         private readonly IStopWatchTimerService _stopWatchTimerService;
 
-        private WaveVisualizationControl _waveVisualizationControl;
+        private IWaveRenderer _waveRenderer;
+        private IWaveBarStateManager _barStateManager;
+        private IWaveColorManager _colorManager;
+        private IWaveVisualizationHost _visualizationHost;
+
+
+        private WaveVisualizationHost waveVisualizationControl;
 
         private Guna2Transition chartAnimator;
         private Guna2Panel hoverInfoPanel;
@@ -40,7 +46,20 @@ namespace CodingTracker.View
 
         private Stopwatch waveStopWatch = new Stopwatch();
 
-        public MainPage(IFormNavigator formNavigator, ILabelAssignment labelAssignment, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, IFormStateManagement formStateManagement, IFormFactory formFactory, IStopWatchTimerService stopWatchTimerService)
+        public MainPage(
+            IFormNavigator formNavigator,
+            ILabelAssignment labelAssignment,
+            IButtonHighlighterService buttonHighlighterService,
+            IButtonNotificationManager buttonNotificationManager,
+            INotificationManager notificationManager,
+            ICodingSessionRepository codingSessionRepository,
+            IFormStateManagement formStateManagement,
+            IFormFactory formFactory,
+            IStopWatchTimerService stopWatchTimerService,
+            IWaveRenderer waveRenderer,
+            IWaveBarStateManager barStateManager,
+            IWaveColorManager colorManager
+        )
         {
             InitializeComponent();
             _formNavigator = formNavigator;
@@ -52,24 +71,23 @@ namespace CodingTracker.View
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _stopWatchTimerService = stopWatchTimerService;
+            _waveRenderer = waveRenderer;
+            _barStateManager = barStateManager;
+            _colorManager = colorManager;
+
+            InitializeWaveForm();
+
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
             waveTimer.Tick += WaveTimer_Tick;
-         
+
             waveStopWatch.Start();
             waveTimer.Start();
+
             SetAnimationWindow();
-
-
             InitializeAnimator();
-
-
-
-
         }
-
-
 
         private void WaveTimer_Tick(object sender, EventArgs e)
         {
@@ -78,20 +96,20 @@ namespace CodingTracker.View
             if (currentIntensity > 1.0f)
                 currentIntensity = 0.4f;
 
-            _waveVisualizationControl.UpdateIntensity(currentIntensity);
+            waveVisualizationControl.UpdateIntensity(currentIntensity);
         }
-
 
         private void InitializeWaveForm()
         {
-            _waveVisualizationControl = new WaveVisualizationControl(_stopWatchTimerService);
+            waveVisualizationControl = new WaveVisualizationHost(_waveRenderer, _barStateManager,_colorManager,_stopWatchTimerService);
 
-            starRatingPanel.Controls.Add(_waveVisualizationControl);
+            starRatingPanel.Controls.Add(waveVisualizationControl);
 
-            _waveVisualizationControl.Size = new Size(362, 86);
-            _waveVisualizationControl.Dock = DockStyle.Bottom;
-            _waveVisualizationControl.BackColor = Color.FromArgb(35, 34, 50);
+            waveVisualizationControl.Size = new Size(362, 86);
+            waveVisualizationControl.Dock = DockStyle.Bottom;
+            waveVisualizationControl.BackColor = Color.FromArgb(35, 34, 50);
         }
+
 
 
 

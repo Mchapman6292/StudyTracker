@@ -25,7 +25,6 @@ using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.Session;
-using CodingTracker.View.Forms.WaveVisualizer.WaveVisualizationControls;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
@@ -116,12 +115,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TestForm>()
-                    .AddTransient<WaveVisualizationForm>()
-                    .AddTransient<IActivityIntensityProvider, ActivityIntensityProvider>()
-                    .AddTransient<IWaveAppearanceProvider, WaveAppearanceProvider>()
-                    .AddTransient<IWaveAnimator, WaveAnimator>()
-                    .AddTransient<IWaveIllustrator, WaveIllustrator>()
-                    .AddTransient<IWaveVisualizationControl, WaveVisualizationControl>()
+
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();

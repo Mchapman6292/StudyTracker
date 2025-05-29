@@ -44,7 +44,6 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.CountdownTimerForm => typeof(CountdownTimerForm),
                 FormPageEnum.ResetPasswordForm => typeof(ResetPasswordPage),
                 FormPageEnum.ConfirmUsernameForm => typeof(ConfirmUsernamePage),
-                FormPageEnum.WaveVisualizationForm => typeof(WaveVisualizationForm),
                 FormPageEnum.SessionNotesForm => typeof(SessionNotesForm),
                 FormPageEnum.ElapsedTimerForm => typeof(ElapsedTimerPage),
                 FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
