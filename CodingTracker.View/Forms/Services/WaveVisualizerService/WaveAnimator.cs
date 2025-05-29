@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System;
 
 namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 {
@@ -12,6 +12,10 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         void UpdateFromKeyboardActivity(float keyboardIntensity);
         void UpdateAnimation();
         float GetBarHeight(int index);
+
+        // Helper methods for visualization
+        float ApplyExponentialScale(float value);
+        float CalculateCenterPosition(float height);
     }
 
     public class WaveAnimator : IWaveAnimator
@@ -24,7 +28,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 
         private readonly float[] barHeights;
         private readonly float[] targetBarHeights;
-        private readonly float[] noiseOffsets;
+        private readonly float[] staticValues;
         private readonly Random random;
 
         private readonly IActivityIntensityProvider intensityProvider;
@@ -41,7 +45,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 
             barHeights = new float[appearanceProvider.DefaultBarCount];
             targetBarHeights = new float[appearanceProvider.DefaultBarCount];
-            noiseOffsets = new float[appearanceProvider.DefaultBarCount];
+            staticValues = new float[appearanceProvider.DefaultBarCount];
             random = new Random();
 
             currentIntensity = ActivityIntensity.Dormant;
@@ -65,7 +69,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         public void UpdateAnimation()
         {
             UpdateTransition();
-            UpdateNoiseOffsets();
+            UpdateStaticFlicker();
             UpdateTargetHeights();
             UpdateCurrentHeights();
         }
@@ -81,7 +85,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             {
                 barHeights[i] = CalculateInitialHeight();
                 targetBarHeights[i] = CalculateInitialHeight();
-                noiseOffsets[i] = CalculateInitialNoiseOffset(i);
+                staticValues[i] = CalculateInitialStaticValue();
             }
         }
 
@@ -91,7 +95,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             {
                 targetIntensity = newIntensity;
                 isTransitioning = true;
-                transitionProgress = CalculateInitialTransitionProgress();
+                transitionProgress = 0.0f;
             }
         }
 
@@ -99,157 +103,145 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         {
             if (isTransitioning)
             {
-                transitionProgress = AdvanceTransitionProgress(transitionProgress);
+                transitionProgress = Math.Min(1.0f, transitionProgress + TransitionSpeed);
 
-                if (IsTransitionComplete(transitionProgress))
+                if (transitionProgress >= 1.0f)
                 {
-                    transitionProgress = CalculateCompleteTransition();
                     currentIntensity = targetIntensity;
                     isTransitioning = false;
                 }
             }
         }
 
-        private void UpdateNoiseOffsets()
+        private void UpdateStaticFlicker()
         {
-            IntensitySettings settings = GetCurrentSettings();
-            float adjustedSpeed = CalculateNoiseSpeed(settings.NoiseMultiplier);
-
+            // Update random static values for each bar
             for (int i = 0; i < appearanceProvider.DefaultBarCount; i++)
             {
-                noiseOffsets[i] = AdvanceNoiseOffset(noiseOffsets[i], adjustedSpeed);
+                staticValues[i] = (float)random.NextDouble();
             }
         }
 
         private void UpdateTargetHeights()
         {
-            float time = CalculateAnimationTime();
             IntensitySettings settings = GetCurrentSettings();
+            float intensityBlend = GetIntensityBlend();
 
             for (int i = 0; i < appearanceProvider.DefaultBarCount; i++)
             {
-                targetBarHeights[i] = CalculateWaveForBar(i, time, settings);
+                if (intensityBlend < 0.1f)
+                {
+                    // Dormant state - minimal static
+                    targetBarHeights[i] = CalculateDormantHeight(settings);
+                }
+                else
+                {
+                    // Active states - lightning/synthesizer effect
+                    targetBarHeights[i] = CalculateLightningHeight(i, settings, intensityBlend);
+                }
             }
         }
 
         private void UpdateCurrentHeights()
         {
             IntensitySettings settings = GetCurrentSettings();
+            float intensityBlend = GetIntensityBlend();
+            float responsiveness = CalculateResponsiveness(settings);
 
             for (int i = 0; i < appearanceProvider.DefaultBarCount; i++)
             {
-                barHeights[i] = SmoothTowardsTarget(barHeights[i], targetBarHeights[i], settings.SmoothingFactor);
+                if (intensityBlend < 0.1f)
+                {
+                    // Dormant - direct static flicker
+                    barHeights[i] = ApplyStaticFlicker(targetBarHeights[i], settings);
+                }
+                else
+                {
+                    // Active - sharp synthesizer response
+                    barHeights[i] = ApplySynthesizerResponse(barHeights[i], targetBarHeights[i], responsiveness, settings);
+                }
+
+                barHeights[i] = EnsureMinimumHeight(barHeights[i]);
             }
         }
 
-        private double CalculateSessionSeconds(float keyboardIntensity)
+        private float CalculateDormantHeight(IntensitySettings settings)
         {
-            return keyboardIntensity * 7200;
+            // Minimal static flicker for dormant state
+            if (random.NextDouble() < 0.02 * settings.FrequencyMultiplier)
+            {
+                return (float)(random.NextDouble() * 0.15 * settings.AmplitudeMultiplier);
+            }
+            return (float)(random.NextDouble() * 0.05 * settings.AmplitudeMultiplier);
         }
 
-        private float CalculateInitialHeight()
+        private float CalculateLightningHeight(int barIndex, IntensitySettings settings, float intensityBlend)
         {
-            return 0.1f;
+            float randomValue = (float)random.NextDouble();
+
+            // Frequency-based spike chances
+            float majorSpikeChance = intensityBlend * 0.15f * settings.FrequencyMultiplier;
+            float mediumSpikeChance = intensityBlend * 0.25f * settings.FrequencyMultiplier;
+            float minorSpikeChance = intensityBlend * 0.4f * settings.FrequencyMultiplier;
+
+            // Apply noise multiplier for variation
+            float noiseOffset = (float)(random.NextDouble() * settings.NoiseMultiplier);
+
+            if (randomValue < majorSpikeChance)
+            {
+                // Major spike - full height with amplitude multiplier
+                return (0.7f + (float)(random.NextDouble() * 0.3f)) * settings.AmplitudeMultiplier + noiseOffset;
+            }
+            else if (randomValue < mediumSpikeChance)
+            {
+                // Medium spike
+                return (0.3f + (float)(random.NextDouble() * 0.4f * intensityBlend)) * settings.AmplitudeMultiplier + noiseOffset;
+            }
+            else if (randomValue < minorSpikeChance)
+            {
+                // Minor spike
+                return (0.1f + (float)(random.NextDouble() * 0.2f * intensityBlend)) * settings.AmplitudeMultiplier + noiseOffset;
+            }
+            else
+            {
+                // Base static level
+                return (float)(random.NextDouble() * 0.08f * settings.AmplitudeMultiplier);
+            }
         }
 
-        private float CalculateInitialNoiseOffset(int barIndex)
+        private float ApplyStaticFlicker(float targetHeight, IntensitySettings settings)
         {
-            return barIndex * appearanceProvider.WaveSpacing;
+            // Direct static flicker with noise multiplier
+            float flicker = (float)(random.NextDouble() * 0.03 - 0.015) * settings.NoiseMultiplier;
+            return targetHeight + flicker;
         }
 
-        private float CalculateInitialTransitionProgress()
+        private float ApplySynthesizerResponse(float currentHeight, float targetHeight, float responsiveness, IntensitySettings settings)
         {
-            return 0.0f;
+            // Sharp, immediate response for synthesizer effect
+            if (targetHeight > currentHeight * 2.0f)
+            {
+                // Instant jump for large spikes
+                return targetHeight * (0.6f + responsiveness * 0.4f);
+            }
+            else if (targetHeight < currentHeight * 0.3f)
+            {
+                // Quick drop with some static
+                return targetHeight + (float)(random.NextDouble() * 0.05f * settings.NoiseMultiplier);
+            }
+            else
+            {
+                // Normal transition with responsiveness
+                float difference = targetHeight - currentHeight;
+                float staticNoise = (float)(random.NextDouble() * 0.03f - 0.015f) * settings.NoiseMultiplier;
+                return currentHeight + (difference * responsiveness) + staticNoise;
+            }
         }
 
-        private float AdvanceTransitionProgress(float currentProgress)
+        private float CalculateResponsiveness(IntensitySettings settings)
         {
-            return currentProgress + TransitionSpeed;
-        }
-
-        private bool IsTransitionComplete(float progress)
-        {
-            return progress >= 1.0f;
-        }
-
-        private float CalculateCompleteTransition()
-        {
-            return 1.0f;
-        }
-
-        private float CalculateBaseSineWave(float time, float phase, float frequency)
-        {
-            return (float)Math.Sin(2 * Math.PI * frequency * time + phase);
-        }
-
-        private float CalculatePhaseOffset(int barIndex)
-        {
-            return barIndex * appearanceProvider.WaveSpacing;
-        }
-
-        private float CalculateNoiseValue(float noiseOffset)
-        {
-            return (float)Math.Sin(noiseOffset);
-        }
-
-        private float CalculateJitterValue()
-        {
-            return (float)(random.NextDouble() * 0.02 - 0.01);
-        }
-
-        private float CalculateAnimationTime()
-        {
-            return Environment.TickCount / 1000.0f;
-        }
-
-        private float CalculateNoiseSpeed(float noiseMultiplier)
-        {
-            return appearanceProvider.NoiseSpeed * noiseMultiplier;
-        }
-
-        private float AdvanceNoiseOffset(float currentOffset, float speed)
-        {
-            return WrapNoiseOffset(currentOffset + speed);
-        }
-
-        private float SmoothTowardsTarget(float currentValue, float targetValue, float smoothingFactor)
-        {
-            return currentValue + (targetValue - currentValue) * smoothingFactor;
-        }
-
-        private float CombineWaveComponents(float mainWave, float noise, float jitter, float noiseWeight)
-        {
-            return mainWave + (noise * noiseWeight) + jitter;
-        }
-
-        private float ClampToValidRange(float value, float minValue, float maxValue)
-        {
-            return Math.Max(minValue, Math.Min(maxValue, value));
-        }
-
-        private float CalculateWaveForBar(int barIndex, float time, IntensitySettings settings)
-        {
-            float phase = CalculatePhaseOffset(barIndex);
-            float mainWave = CalculateBaseSineWave(time, phase, settings.FrequencyMultiplier);
-            float scaledAmplitude = CalculateScaledAmplitude(settings.AmplitudeMultiplier);
-
-            float noise = CalculateNoiseValue(noiseOffsets[barIndex]);
-            float jitter = CalculateJitterValue();
-            float noiseWeight = CalculateNoiseWeight(settings.NoiseMultiplier);
-
-            float waveHeight = CombineWaveComponents(mainWave * scaledAmplitude, noise, jitter, noiseWeight);
-
-            return ClampToValidRange(Math.Abs(waveHeight), 0.01f, 1.0f);
-        }
-
-        private float CalculateScaledAmplitude(float amplitudeMultiplier)
-        {
-            return appearanceProvider.BaseWaveHeight * amplitudeMultiplier;
-        }
-
-        private float CalculateNoiseWeight(float noiseMultiplier)
-        {
-            return noiseMultiplier * 0.1f;
+            // Use smoothing factor inversely - lower smoothing = more responsive
+            return 1.0f - settings.SmoothingFactor;
         }
 
         private IntensitySettings GetCurrentSettings()
@@ -259,6 +251,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
                 return intensityProvider.GetSettings(currentIntensity);
             }
 
+            // Blend settings during transition
             IntensitySettings current = intensityProvider.GetSettings(currentIntensity);
             IntensitySettings target = intensityProvider.GetSettings(targetIntensity);
 
@@ -275,20 +268,49 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             return new IntensitySettings(blendedAmplitude, blendedFrequency, blendedNoise, blendedSmoothing);
         }
 
+        private float GetIntensityBlend()
+        {
+            return appearanceProvider.GetIntensityBlend(currentIntensity);
+        }
+
         private float LinearInterpolate(float startValue, float endValue, float blendAmount)
         {
             return startValue + (endValue - startValue) * blendAmount;
         }
 
-        private float WrapNoiseOffset(float offset)
+        private double CalculateSessionSeconds(float keyboardIntensity)
         {
-            const float maxOffset = (float)(2 * Math.PI * 10);
-            return offset > maxOffset ? offset - maxOffset : offset;
+            return keyboardIntensity * 7200;
+        }
+
+        private float CalculateInitialHeight()
+        {
+            return 0.01f + (float)(random.NextDouble() * 0.01);
+        }
+
+        private float CalculateInitialStaticValue()
+        {
+            return (float)random.NextDouble();
+        }
+
+        private float EnsureMinimumHeight(float value)
+        {
+            return Math.Max(value, 0.01f);
         }
 
         private bool IsValidIndex(int index)
         {
             return index >= 0 && index < appearanceProvider.DefaultBarCount;
+        }
+
+        public float ApplyExponentialScale(float value)
+        {
+            return value * value;
+        }
+
+        public float CalculateCenterPosition(float height)
+        {
+            return height / 2.0f;
         }
     }
 }

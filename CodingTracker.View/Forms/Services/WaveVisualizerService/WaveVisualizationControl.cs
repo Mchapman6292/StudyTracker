@@ -1,89 +1,95 @@
-﻿using CodingTracker.View.Forms.WaveVisualizer;
+﻿using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
 
-namespace CodingTracker.View.Forms.Services.WaveVisualizerService
+namespace CodingTracker.View.Forms.WaveVisualizer.WaveVisualizationControls
 {
-    public class WaveVisualizationControl : UserControl, IWaveVisualizationControl
+    public interface IWaveVisualizationControl
     {
-        private SKControl skControl;
+        void UpdateIntensity(float intensity);
+        void UpdateFromSessionData(double sessionSeconds);
+        void StartAnimation();
+        void StopAnimation();
+    }
+
+    public class WaveVisualizationControl : SKControl, IWaveVisualizationControl
+    {
+        private readonly IWaveAnimator waveAnimator;
+        private readonly IWaveIllustrator waveIllustrator;
         private System.Windows.Forms.Timer animationTimer;
+        private bool isAnimating = false;
 
-        private readonly WaveAnimationEngine animationEngine;
-        private readonly WaveDrawingService renderingEngine;
-
-        public WaveVisualizationControl()
+        public WaveVisualizationControl(IWaveAnimator animator, IWaveIllustrator illustrator)
         {
-            animationEngine = new WaveAnimationEngine();
-            renderingEngine = new WaveDrawingService();
+            this.waveAnimator = animator;
+            this.waveIllustrator = illustrator;
 
-            InitializeComponent();
             SetupAnimationTimer();
-        }
 
-        public void UpdateIntensity(float keyboardIntensity)
-        {
-            animationEngine.UpdateFromKeyboardActivity(keyboardIntensity);
-        }
-
-        public void UpdateFromSessionData(double sessionSeconds)
-        {
-            animationEngine.UpdateFromSessionData(sessionSeconds);
-        }
-
-        public void StartAnimation()
-        {
-            animationTimer.Start();
-        }
-
-        public void StopAnimation()
-        {
-            animationTimer.Stop();
-        }
-
-        private void InitializeComponent()
-        {
-            skControl = new SKControl();
-            skControl.Dock = DockStyle.Fill;
-            skControl.PaintSurface += SkControl_PaintSurface;
-            this.Controls.Add(skControl);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint |
+                         ControlStyles.UserPaint |
+                         ControlStyles.DoubleBuffer |
+                         ControlStyles.ResizeRedraw, true);
         }
 
         private void SetupAnimationTimer()
         {
             animationTimer = new System.Windows.Forms.Timer();
             animationTimer.Interval = 16;
-            animationTimer.Tick += OnAnimationTick;
+            animationTimer.Tick += AnimationTimer_Tick;
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            if (isAnimating)
+            {
+                waveAnimator.UpdateAnimation();
+                this.Invalidate();
+            }
+        }
+
+        protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
+        {
+            base.OnPaintSurface(e);
+
+            var canvas = e.Surface.Canvas;
+            var width = e.Info.Width;
+            var height = e.Info.Height;
+
+            waveIllustrator.RenderWaveVisualization(canvas, width, height, waveAnimator);
+        }
+
+        public void UpdateIntensity(float intensity)
+        {
+            waveAnimator.UpdateFromKeyboardActivity(intensity);
+            this.Invalidate();
+        }
+
+        public void UpdateFromSessionData(double sessionSeconds)
+        {
+            waveAnimator.UpdateFromSessionData(sessionSeconds);
+            this.Invalidate();
+        }
+
+        public void StartAnimation()
+        {
+            isAnimating = true;
             animationTimer.Start();
+            waveAnimator.UpdateAnimation();
+            this.Invalidate();
         }
 
-        private void OnAnimationTick(object sender, EventArgs e)
+        public void StopAnimation()
         {
-            animationEngine.UpdateAnimation();
-            skControl.Invalidate();
-        }
-
-        private void SkControl_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
-        {
-            renderingEngine.RenderWaveVisualization(
-                e.Surface.Canvas,
-                e.Info.Width,
-                e.Info.Height,
-                animationEngine
-            );
+            isAnimating = false;
+            animationTimer.Stop();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                animationTimer?.Stop();
                 animationTimer?.Dispose();
-                skControl?.Dispose();
             }
             base.Dispose(disposing);
         }

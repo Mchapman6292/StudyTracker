@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System;
 
 namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 {
@@ -10,6 +11,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
     public class WaveIllustrator : IWaveIllustrator
     {
         private readonly IWaveAppearanceProvider appearanceProvider;
+        private readonly Random random = new Random();
 
         public WaveIllustrator(IWaveAppearanceProvider appearanceProvider)
         {
@@ -19,7 +21,8 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         public void RenderWaveVisualization(SKCanvas canvas, int width, int height, IWaveAnimator animator)
         {
             ClearCanvas(canvas);
-            DrawAllBars(canvas, width, height, animator);
+            DrawSpectrumBars(canvas, width, height, animator);
+            DrawLightningConnections(canvas, width, height, animator);
         }
 
         private void ClearCanvas(SKCanvas canvas)
@@ -27,32 +30,33 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             canvas.Clear(appearanceProvider.BackgroundColor);
         }
 
-        private void DrawAllBars(SKCanvas canvas, int width, int height, IWaveAnimator animator)
+        private void DrawSpectrumBars(SKCanvas canvas, int width, int height, IWaveAnimator animator)
         {
             float barWidth = CalculateBarWidth(width, animator.BarCount);
-            float centerY = CalculateCenterPosition(height);
+            float centerY = animator.CalculateCenterPosition(height);
 
             for (int i = 0; i < animator.BarCount; i++)
             {
-                DrawSingleBar(canvas, i, barWidth, centerY, height, animator);
+                DrawSpectrumBar(canvas, i, barWidth, centerY, height, animator);
             }
         }
 
-        private void DrawSingleBar(SKCanvas canvas, int barIndex, float barWidth, float centerY, int maxHeight, IWaveAnimator animator)
+        private void DrawSpectrumBar(SKCanvas canvas, int barIndex, float barWidth, float centerY, int maxHeight, IWaveAnimator animator)
         {
             float normalizedHeight = animator.GetBarHeight(barIndex);
-            float pixelHeight = ConvertToPixelHeight(normalizedHeight, maxHeight);
+            float scaledHeight = animator.ApplyExponentialScale(normalizedHeight);
+            float pixelHeight = ConvertToSpectrumHeight(scaledHeight, maxHeight, animator.CurrentIntensity, animator);
 
             float x = CalculateBarXPosition(barIndex, barWidth);
-            float y = CalculateBarYPosition(centerY, pixelHeight);
+            float y = centerY - pixelHeight / 2;
 
-            SKColor barColor = GetBarColor(barIndex, animator.BarCount, animator.CurrentIntensity);
+            SKColor barColor = GetSpectrumBarColor(barIndex, animator.BarCount, animator.CurrentIntensity, normalizedHeight, animator);
 
-            DrawBarShape(canvas, x, y, barWidth, pixelHeight, barColor);
+            DrawSolidBar(canvas, x, y, barWidth, pixelHeight, barColor);
             DrawBarGlow(canvas, x, y, barWidth, pixelHeight, barColor, animator.CurrentIntensity);
         }
 
-        private void DrawBarShape(SKCanvas canvas, float x, float y, float width, float height, SKColor color)
+        private void DrawSolidBar(SKCanvas canvas, float x, float y, float width, float height, SKColor color)
         {
             using (var paint = new SKPaint
             {
@@ -61,8 +65,9 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
                 Style = SKPaintStyle.Fill
             })
             {
-                float adjustedWidth = CalculateAdjustedBarWidth(width);
-                canvas.DrawRect(x, y, adjustedWidth, height, paint);
+                float adjustedWidth = width * 0.8f;
+                float centerOffset = (width - adjustedWidth) / 2;
+                canvas.DrawRect(x + centerOffset, y, adjustedWidth, height, paint);
             }
         }
 
@@ -70,7 +75,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         {
             GlowSettings glowSettings = appearanceProvider.GetGlowSettings(intensity);
 
-            if (ShouldDrawGlow(glowSettings))
+            if (ShouldDrawGlow(glowSettings) && height > 10)
             {
                 SKColor glowColor = CreateGlowColor(baseColor, glowSettings);
 
@@ -81,15 +86,179 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
                     MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, glowSettings.BlurRadius)
                 })
                 {
-                    float adjustedWidth = CalculateAdjustedBarWidth(width);
-                    float glowX = CalculateGlowXPosition(x);
-                    float glowY = CalculateGlowYPosition(y);
-                    float glowWidth = CalculateGlowWidth(adjustedWidth);
-                    float glowHeight = CalculateGlowHeight(height);
+                    float adjustedWidth = width * 0.8f;
+                    float centerOffset = (width - adjustedWidth) / 2;
+                    float glowExpansion = glowSettings.BlurRadius;
 
-                    canvas.DrawRect(glowX, glowY, glowWidth, glowHeight, glowPaint);
+                    canvas.DrawRect(
+                        x + centerOffset - glowExpansion,
+                        y - glowExpansion,
+                        adjustedWidth + (glowExpansion * 2),
+                        height + (glowExpansion * 2),
+                        glowPaint);
                 }
             }
+        }
+
+        private void DrawLightningConnections(SKCanvas canvas, int width, int height, IWaveAnimator animator)
+        {
+            float barWidth = CalculateBarWidth(width, animator.BarCount);
+            float centerY = animator.CalculateCenterPosition(height);
+            float intensityBlend = animator.ApplyExponentialScale(appearanceProvider.GetIntensityBlend(animator.CurrentIntensity));
+
+            if (intensityBlend < 0.1f) return;
+
+            SKPoint[] barTops = new SKPoint[animator.BarCount];
+            SKPoint[] barBottoms = new SKPoint[animator.BarCount];
+            SKPoint[] barMiddles = new SKPoint[animator.BarCount];
+
+            for (int i = 0; i < animator.BarCount; i++)
+            {
+                float normalizedHeight = animator.GetBarHeight(i);
+                float scaledHeight = animator.ApplyExponentialScale(normalizedHeight);
+                float pixelHeight = ConvertToSpectrumHeight(scaledHeight, height, animator.CurrentIntensity, animator);
+                float x = CalculateBarXPosition(i, barWidth) + barWidth / 2;
+
+                float jitterScale = 1.0f - intensityBlend * 0.5f;
+                float jitterY = (float)(random.NextDouble() * 1.5 - 0.75) * jitterScale;
+
+                barTops[i] = new SKPoint(x, centerY - pixelHeight / 2 + jitterY);
+                barBottoms[i] = new SKPoint(x, centerY + pixelHeight / 2 + jitterY);
+
+                float middleOffset = (float)Math.Sin(i * 0.2f + normalizedHeight * 5) * (1.5f + intensityBlend * 3);
+                barMiddles[i] = new SKPoint(x, centerY + middleOffset + jitterY);
+            }
+
+            DrawLightningPath(canvas, barTops, intensityBlend);
+            DrawLightningPath(canvas, barBottoms, intensityBlend);
+            DrawLightningPath(canvas, barMiddles, intensityBlend * 0.7f);
+        }
+
+        private void DrawLightningPath(SKCanvas canvas, SKPoint[] points, float intensity)
+        {
+            if (points.Length < 2) return;
+
+            using (var paint = new SKPaint
+            {
+                Color = GetLightningColor(intensity),
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 1.0f + intensity * 2.0f
+            })
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    if (random.NextDouble() < 0.7f + intensity * 0.3f)
+                    {
+                        float sizeVariation = (float)(random.NextDouble() * 0.8f);
+                        float baseDotSize = 0.8f + intensity * 2.0f;
+                        float dotSize = baseDotSize + sizeVariation;
+
+                        byte baseAlpha = (byte)(50 + intensity * 205);
+                        SKColor dotColor = GetDotColor(i, points.Length).WithAlpha(baseAlpha);
+
+                        DrawDot(canvas, points[i], dotSize, dotColor, intensity);
+                    }
+                }
+            }
+        }
+
+        private void DrawDot(SKCanvas canvas, SKPoint position, float dotSize, SKColor dotColor, float glowIntensity)
+        {
+            using (var paint = new SKPaint
+            {
+                Color = dotColor,
+                IsAntialias = true,
+                Style = SKPaintStyle.Fill
+            })
+            {
+                canvas.DrawCircle(position.X, position.Y, dotSize, paint);
+
+                float minGlow = 0.1f;
+                float glowScale = glowIntensity > minGlow ? glowIntensity : minGlow;
+
+                byte glowAlpha = (byte)(dotColor.Alpha * (0.2f + glowIntensity * 0.3f));
+                using (var glowPaint = new SKPaint
+                {
+                    Color = dotColor.WithAlpha(glowAlpha),
+                    IsAntialias = true,
+                    MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 0.5f + 3 * glowScale)
+                })
+                {
+                    canvas.DrawCircle(position.X, position.Y, dotSize * (1.2f + glowScale * 1.0f), glowPaint);
+                }
+            }
+        }
+
+        private SKColor GetDotColor(int position, int totalCount)
+        {
+            float colorPosition = (float)position / totalCount;
+            SKColor lowColor = appearanceProvider.GetColorAtPosition(appearanceProvider.GetLowActivityColors(), colorPosition);
+            SKColor highColor = appearanceProvider.GetColorAtPosition(appearanceProvider.GetHighActivityColors(), colorPosition);
+            return appearanceProvider.BlendColors(lowColor, highColor, 0.5f);
+        }
+
+        private void DrawLightningSegment(SKCanvas canvas, SKPaint paint, SKPoint start, SKPoint end, float intensity)
+        {
+            using (var path = new SKPath())
+            {
+                path.MoveTo(start);
+
+                int segments = (int)(1 + intensity * 3);
+                float deltaX = (end.X - start.X) / segments;
+                float deltaY = (end.Y - start.Y) / segments;
+
+                for (int i = 1; i < segments; i++)
+                {
+                    float currentX = start.X + (deltaX * i);
+                    float currentY = start.Y + (deltaY * i);
+
+                    float jitterX = (float)(random.NextDouble() * 15 - 7.5) * intensity;
+                    float jitterY = (float)(random.NextDouble() * 8 - 4) * intensity;
+
+                    path.LineTo(currentX + jitterX, currentY + jitterY);
+                }
+
+                path.LineTo(end);
+                canvas.DrawPath(path, paint);
+            }
+        }
+
+        private void DrawRandomLightningBolts(SKCanvas canvas, SKPoint[] tops, float bottomY, float intensity)
+        {
+            int boltCount = (int)(intensity * 6);
+
+            using (var paint = new SKPaint
+            {
+                Color = GetLightningColor(intensity).WithAlpha((byte)(intensity * 150)),
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 0.5f + intensity * 1.0f
+            })
+            {
+                for (int i = 0; i < boltCount; i++)
+                {
+                    int startIndex = random.Next(tops.Length);
+                    int endIndex = Math.Min(startIndex + random.Next(2, 8), tops.Length - 1);
+
+                    SKPoint startPoint = tops[startIndex];
+                    SKPoint endPoint = new SKPoint(tops[endIndex].X, bottomY);
+
+                    DrawLightningSegment(canvas, paint, startPoint, endPoint, intensity * 0.7f);
+                }
+            }
+        }
+
+        private SKColor GetLightningColor(float intensity)
+        {
+            byte alpha = (byte)(60 + intensity * 195);
+
+            if (intensity < 0.3f)
+                return new SKColor(120, 160, 255, alpha);
+            else if (intensity < 0.6f)
+                return new SKColor(160, 200, 255, alpha);
+            else
+                return new SKColor(200, 230, 255, alpha);
         }
 
         private float CalculateBarWidth(int totalWidth, int barCount)
@@ -97,29 +266,19 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             return totalWidth / (float)barCount;
         }
 
-        private float CalculateCenterPosition(float height)
+        private float ConvertToSpectrumHeight(float normalizedHeight, int maxHeight, ActivityIntensity intensity, IWaveAnimator animator)
         {
-            return height / 2.0f;
-        }
-
-        private float ConvertToPixelHeight(float normalizedHeight, int maxHeight)
-        {
-            return Math.Abs(normalizedHeight) * maxHeight * 0.4f;
+            float intensityBlend = animator.ApplyExponentialScale(appearanceProvider.GetIntensityBlend(intensity));
+            float baseMaxHeight = maxHeight / 8.0f;
+            float dynamicHeight = maxHeight / 3.0f;
+            float maxBarHeight = baseMaxHeight + (dynamicHeight - baseMaxHeight) * intensityBlend;
+            float finalHeight = normalizedHeight * maxBarHeight;
+            return Math.Max(finalHeight, 0.3f);
         }
 
         private float CalculateBarXPosition(int barIndex, float barWidth)
         {
             return barIndex * barWidth;
-        }
-
-        private float CalculateBarYPosition(float centerY, float pixelHeight)
-        {
-            return centerY - (pixelHeight / 2.0f);
-        }
-
-        private float CalculateAdjustedBarWidth(float width)
-        {
-            return width * 0.8f;
         }
 
         private bool ShouldDrawGlow(GlowSettings glowSettings)
@@ -132,35 +291,19 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             return new SKColor(baseColor.Red, baseColor.Green, baseColor.Blue, (byte)glowSettings.MaxAlpha);
         }
 
-        private float CalculateGlowXPosition(float x)
-        {
-            return x - 2;
-        }
-
-        private float CalculateGlowYPosition(float y)
-        {
-            return y - 2;
-        }
-
-        private float CalculateGlowWidth(float adjustedWidth)
-        {
-            return adjustedWidth + 4;
-        }
-
-        private float CalculateGlowHeight(float height)
-        {
-            return height + 4;
-        }
-
-        private SKColor GetBarColor(int barIndex, int totalBars, ActivityIntensity intensity)
+        private SKColor GetSpectrumBarColor(int barIndex, int totalBars, ActivityIntensity intensity, float height, IWaveAnimator animator)
         {
             float position = CalculateColorPosition(barIndex, totalBars);
-            float intensityBlend = appearanceProvider.GetIntensityBlend(intensity);
+            float intensityBlend = animator.ApplyExponentialScale(appearanceProvider.GetIntensityBlend(intensity));
 
             SKColor lowColor = appearanceProvider.GetColorAtPosition(appearanceProvider.GetLowActivityColors(), position);
             SKColor highColor = appearanceProvider.GetColorAtPosition(appearanceProvider.GetHighActivityColors(), position);
 
-            return appearanceProvider.BlendColors(lowColor, highColor, intensityBlend);
+            SKColor baseColor = appearanceProvider.BlendColors(lowColor, highColor, intensityBlend);
+
+            byte baseAlpha = (byte)(40 + intensityBlend * 90);
+            byte glowAlpha = (byte)(baseAlpha + animator.ApplyExponentialScale(intensityBlend) * 125);
+            return baseColor.WithAlpha(glowAlpha);
         }
 
         private float CalculateColorPosition(int barIndex, int totalBars)

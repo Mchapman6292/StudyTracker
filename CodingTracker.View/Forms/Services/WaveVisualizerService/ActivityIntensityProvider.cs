@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CodingTracker.View.Forms.Services.WaveVisualizerService.ActivityIntensityProvider;
 
 namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 {
@@ -13,7 +9,42 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
         IntensitySettings GetSettings(ActivityIntensity intensity);
     }
 
-    
+    public class ActivityIntensityProvider : IActivityIntensityProvider
+    {
+        public const int LightActivityThreshold = 1800;
+        public const int ModerateActivityThreshold = 3600;
+        public const int HighActivityThreshold = 5400;
+
+        private static readonly Dictionary<ActivityIntensity, IntensitySettings> Settings =
+            new Dictionary<ActivityIntensity, IntensitySettings>
+            {
+            { ActivityIntensity.Dormant, new IntensitySettings(0.1f, 0.3f, 0.1f, 0.8f) },
+            { ActivityIntensity.Light, new IntensitySettings(0.3f, 0.6f, 0.3f, 0.7f) },
+            { ActivityIntensity.Moderate, new IntensitySettings(0.6f, 1.0f, 0.6f, 0.6f) },
+            { ActivityIntensity.High, new IntensitySettings(0.8f, 1.4f, 0.9f, 0.5f) },
+            { ActivityIntensity.Peak, new IntensitySettings(1.0f, 1.8f, 1.2f, 0.4f) }
+            };
+
+        public ActivityIntensity GetIntensityFromDuration(double sessionSeconds)
+        {
+            if (sessionSeconds <= 0)
+                return ActivityIntensity.Dormant;
+            else if (sessionSeconds <= LightActivityThreshold)
+                return ActivityIntensity.Light;
+            else if (sessionSeconds <= ModerateActivityThreshold)
+                return ActivityIntensity.Moderate;
+            else if (sessionSeconds <= HighActivityThreshold)
+                return ActivityIntensity.High;
+            else
+                return ActivityIntensity.Peak;
+        }
+
+        public IntensitySettings GetSettings(ActivityIntensity intensity)
+        {
+            return Settings[intensity];
+        }
+    }
+
     public enum ActivityIntensity
     {
         Dormant,
@@ -36,42 +67,6 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             FrequencyMultiplier = frequency;
             NoiseMultiplier = noise;
             SmoothingFactor = smoothing;
-        }
-    }
-
-    public class ActivityIntensityProvider : IActivityIntensityProvider
-    {
-        public const int LightActivityThreshold = 1800;
-        public const int ModerateActivityThreshold = 3600;
-        public const int HighActivityThreshold = 5400;
-
-        private static readonly Dictionary<ActivityIntensity, IntensitySettings> Settings =
-            new Dictionary<ActivityIntensity, IntensitySettings>
-            {
-            { ActivityIntensity.Dormant, new IntensitySettings(0.1f, 0.5f, 0.2f, 0.05f) },
-            { ActivityIntensity.Light, new IntensitySettings(0.3f, 0.8f, 0.5f, 0.10f) },
-            { ActivityIntensity.Moderate, new IntensitySettings(0.6f, 1.2f, 0.8f, 0.15f) },
-            { ActivityIntensity.High, new IntensitySettings(0.9f, 1.6f, 1.2f, 0.20f) },
-            { ActivityIntensity.Peak, new IntensitySettings(1.2f, 2.0f, 1.5f, 0.25f) }
-            };
-
-        public ActivityIntensity GetIntensityFromDuration(double sessionSeconds)
-        {
-            if (sessionSeconds <= 0)
-                return ActivityIntensity.Dormant;
-            else if (sessionSeconds <= LightActivityThreshold)
-                return ActivityIntensity.Light;
-            else if (sessionSeconds <= ModerateActivityThreshold)
-                return ActivityIntensity.Moderate;
-            else if (sessionSeconds <= HighActivityThreshold)
-                return ActivityIntensity.High;
-            else
-                return ActivityIntensity.Peak;
-        }
-
-        public IntensitySettings GetSettings(ActivityIntensity intensity)
-        {
-            return Settings[intensity];
         }
     }
 }
