@@ -1,155 +1,128 @@
-﻿using CodingTracker.View.Forms.Services.WaveVisualizerService;
+﻿using CodingTracker.View.ApplicationControlService;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.WaveVisualizer.WaveVisualizationControls;
+using System.Runtime.InteropServices;
 
 namespace CodingTracker.View
 {
     public partial class WaveVisualizationForm : Form
     {
-        private readonly IWaveVisualizationControl _waveVisualizationControl;
-        private System.Windows.Forms.Timer testTimer;
-        private float currentTestIntensity = 0.0f;
-        private bool intensityIncreasing = true;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IWaveVisualizationControl _waveControl;
+        private readonly IKeyboardActivityTracker _activityTracker;
 
-        public WaveVisualizationForm(IWaveVisualizationControl waveControl)
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        public WaveVisualizationForm(
+            IStopWatchTimerService stopWatchTimerService,
+            IWaveVisualizationControl waveControl,
+            IKeyboardActivityTracker activityTracker)
         {
-            this._waveVisualizationControl = waveControl;
+            _stopWatchTimerService = stopWatchTimerService;
+            _waveControl = waveControl;
+            _activityTracker = activityTracker;
+
             InitializeComponent();
-            SetupTestForm();
-            SetupTestTimer();
-        }
 
-        private void SetupTestForm()
-        {
-            this.Text = "Wave Visualization Test";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.Sizable;
-
-            var visualizationControl = (WaveVisualizationControl)_waveVisualizationControl;
+            var visualizationControl = (WaveVisualizationControl)_waveControl;
             visualizationControl.Dock = DockStyle.Fill;
+            visualizationControl.MouseDown += WaveVisualizationForm_MouseDown;
             this.Controls.Add(visualizationControl);
 
-            this.KeyPreview = true;
-            this.KeyDown += TestForm_KeyDown;
+            _activityTracker.ActivityChanged += ActivityTracker_ActivityChanged;
 
-            _waveVisualizationControl.StartAnimation();
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.DoubleBuffered = true;
+
+            SetFormPosition();
+            this.TopMost = true;
+            this.Activate();
+            decayTimer.Start();
         }
 
-        private void SetupTestTimer()
+        private void ActivityTracker_ActivityChanged(object sender, float intensity)
         {
-            testTimer = new System.Windows.Forms.Timer();
-            testTimer.Interval = CalculateTestTimerInterval();
-            testTimer.Tick += TestTimer_Tick;
-            testTimer.Start();
+            _waveControl.UpdateIntensity(intensity);
         }
 
-        private void TestTimer_Tick(object sender, EventArgs e)
+        private void DecayTimer_Tick(object sender, EventArgs e)
         {
-            UpdateTestIntensity();
-            _waveVisualizationControl.UpdateIntensity(currentTestIntensity);
+            _activityTracker.UpdateDecay();
         }
 
-        private void TestForm_KeyDown(object sender, KeyEventArgs e)
+        private void SetFormPosition()
         {
-            switch (e.KeyCode)
+            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            int formWidth = this.Width;
+            int formHeight = this.Height;
+            this.Location = new Point(screenWidth - formWidth - 20, 20);
+        }
+
+        private void WaveVisualizationForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                case Keys.D1:
-                    SimulateActivityLevel(ActivityIntensity.Dormant);
-                    break;
-                case Keys.D2:
-                    SimulateActivityLevel(ActivityIntensity.Light);
-                    break;
-                case Keys.D3:
-                    SimulateActivityLevel(ActivityIntensity.Moderate);
-                    break;
-                case Keys.D4:
-                    SimulateActivityLevel(ActivityIntensity.High);
-                    break;
-                case Keys.D5:
-                    SimulateActivityLevel(ActivityIntensity.Peak);
-                    break;
-                case Keys.Space:
-                    ToggleTestTimer();
-                    break;
+                ReleaseCapture();
+                SendMessage(this.Handle, 0x112, 0xf012, 0);
             }
         }
 
-        private void UpdateTestIntensity()
+        protected override void WndProc(ref Message m)
         {
-            if (intensityIncreasing)
+            const int WM_NCHITTEST = 0x84;
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
+
+            if (m.Msg == WM_NCHITTEST)
             {
-                currentTestIntensity = IncreaseIntensity(currentTestIntensity);
-                if (IsMaxIntensity(currentTestIntensity))
+                base.WndProc(ref m);
+
+                Point cursor = this.PointToClient(Cursor.Position);
+                int edge = 10;
+
+                if (cursor.X <= edge)
                 {
-                    intensityIncreasing = false;
+                    if (cursor.Y <= edge)
+                        m.Result = (IntPtr)HTTOPLEFT;
+                    else if (cursor.Y >= this.ClientSize.Height - edge)
+                        m.Result = (IntPtr)HTBOTTOMLEFT;
+                    else
+                        m.Result = (IntPtr)HTLEFT;
                 }
-            }
-            else
-            {
-                currentTestIntensity = DecreaseIntensity(currentTestIntensity);
-                if (IsMinIntensity(currentTestIntensity))
+                else if (cursor.X >= this.ClientSize.Width - edge)
                 {
-                    intensityIncreasing = true;
+                    if (cursor.Y <= edge)
+                        m.Result = (IntPtr)HTTOPRIGHT;
+                    else if (cursor.Y >= this.ClientSize.Height - edge)
+                        m.Result = (IntPtr)HTBOTTOMRIGHT;
+                    else
+                        m.Result = (IntPtr)HTRIGHT;
                 }
+                else if (cursor.Y <= edge)
+                {
+                    m.Result = (IntPtr)HTTOP;
+                }
+                else if (cursor.Y >= this.ClientSize.Height - edge)
+                {
+                    m.Result = (IntPtr)HTBOTTOM;
+                }
+
+                return;
             }
-        }
 
-        private void SimulateActivityLevel(ActivityIntensity intensity)
-        {
-            double sessionSeconds = CalculateSessionSecondsForIntensity(intensity);
-            _waveVisualizationControl.UpdateFromSessionData(sessionSeconds);
-        }
-
-        private void ToggleTestTimer()
-        {
-            if (testTimer.Enabled)
-            {
-                testTimer.Stop();
-                _waveVisualizationControl.StopAnimation();
-            }
-            else
-            {
-                testTimer.Start();
-                _waveVisualizationControl.StartAnimation();
-            }
-        }
-
-        private int CalculateTestTimerInterval()
-        {
-            return 100;
-        }
-
-        private float IncreaseIntensity(float currentIntensity)
-        {
-            return Math.Min(1.0f, currentIntensity + 0.02f);
-        }
-
-        private float DecreaseIntensity(float currentIntensity)
-        {
-            return Math.Max(0.0f, currentIntensity - 0.02f);
-        }
-
-        private bool IsMaxIntensity(float intensity)
-        {
-            return intensity >= 1.0f;
-        }
-
-        private bool IsMinIntensity(float intensity)
-        {
-            return intensity <= 0.0f;
-        }
-
-        private double CalculateSessionSecondsForIntensity(ActivityIntensity intensity)
-        {
-            return intensity switch
-            {
-                ActivityIntensity.Dormant => 0,
-                ActivityIntensity.Light => 900,
-                ActivityIntensity.Moderate => 2700,
-                ActivityIntensity.High => 4500,
-                ActivityIntensity.Peak => 7200,
-                _ => 0
-            };
+            base.WndProc(ref m);
         }
     }
 }

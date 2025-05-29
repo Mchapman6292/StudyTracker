@@ -62,6 +62,8 @@ namespace CodingTracker.View.FormManagement
         public Form GetOrCreateForm(FormPageEnum formType)
         {
             var existingForm = _formStateManagement.GetFormByFormPageEnum(formType);
+
+
             if (existingForm == null || existingForm.IsDisposed)
             {
                 var newForm = CreateForm(formType);

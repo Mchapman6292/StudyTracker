@@ -1,4 +1,5 @@
-﻿using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
+﻿using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
 using Guna.Charts.WinForms;
 using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
@@ -217,6 +218,8 @@ namespace CodingTracker.View
             Last28DaysPanel.SuspendLayout();
             starRatingPanel.SuspendLayout();
             SuspendLayout();
+
+
             // 
             // closeButton
             // 
@@ -1078,6 +1081,7 @@ namespace CodingTracker.View
             starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges102;
             starRatingPanel.Size = new Size(362, 342);
             starRatingPanel.TabIndex = 7;
+            
             // 
             // starChart
             // 
@@ -1236,5 +1240,8 @@ namespace CodingTracker.View
         private GunaChart starChart;
         private GunaDoughnutDataset doughnutDataset;
         private Panel leftSideButtonPanel;
+
+
+ 
     }
 }

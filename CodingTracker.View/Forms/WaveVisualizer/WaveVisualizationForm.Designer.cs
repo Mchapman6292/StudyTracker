@@ -6,9 +6,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        private Button increaseIntensityButton;
-        private Button decreaseIntensityButton;
+        private System.Windows.Forms.Timer decayTimer = new System.Windows.Forms.Timer();
 
         /// <summary>
         /// Clean up any resources being used.
@@ -30,33 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            increaseIntensityButton = new Button();
-            decreaseIntensityButton = new Button();
             SuspendLayout();
-            // 
-            // increaseIntensityButton
-            // 
-            increaseIntensityButton.BackColor = Color.FromArgb(70, 71, 117);
-            increaseIntensityButton.FlatStyle = FlatStyle.Flat;
-            increaseIntensityButton.ForeColor = Color.White;
-            increaseIntensityButton.Location = new Point(700, 20);
-            increaseIntensityButton.Name = "increaseIntensityButton";
-            increaseIntensityButton.Size = new Size(75, 30);
-            increaseIntensityButton.TabIndex = 0;
-            increaseIntensityButton.Text = "Increase";
-            increaseIntensityButton.UseVisualStyleBackColor = false;
-            // 
-            // decreaseIntensityButton
-            // 
-            decreaseIntensityButton.BackColor = Color.FromArgb(70, 71, 117);
-            decreaseIntensityButton.FlatStyle = FlatStyle.Flat;
-            decreaseIntensityButton.ForeColor = Color.White;
-            decreaseIntensityButton.Location = new Point(615, 20);
-            decreaseIntensityButton.Name = "decreaseIntensityButton";
-            decreaseIntensityButton.Size = new Size(75, 30);
-            decreaseIntensityButton.TabIndex = 1;
-            decreaseIntensityButton.Text = "Decrease";
-            decreaseIntensityButton.UseVisualStyleBackColor = false;
             // 
             // WaveVisualizationForm
             // 
@@ -64,8 +36,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(800, 600);
-            Controls.Add(increaseIntensityButton);
-            Controls.Add(decreaseIntensityButton);
             FormBorderStyle = FormBorderStyle.None;
             Name = "WaveVisualizationForm";
             StartPosition = FormStartPosition.CenterScreen;
