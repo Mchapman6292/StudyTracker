@@ -103,6 +103,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<SessionNotesForm>()
                     .AddSingleton<ICountdownTimerColorManager, CountdownTimerColorManager>()
 
+                    .AddSingleton<IWaveRenderer, WaveRenderer>()
+                    .AddSingleton<IWaveColorManager, WaveColorManager>()
+                    .AddSingleton<IWaveBarStateManager, WaveBarStateManager>()
+                    .AddSingleton<WaveVisualizationHost>()
 
 
                     .AddSingleton<MainPage>()

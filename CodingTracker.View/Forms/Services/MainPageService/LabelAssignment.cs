@@ -11,12 +11,13 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 {
     public interface ILabelAssignment
     {
-        void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, string todayText, string weekText, string averageText);
+        void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, Guna2HtmlLabel streakLabel, string todayText, string weekText, string averageText);    
         Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync();
         void UpdateMainPageLabel(Guna2HtmlLabel label, string text);
         void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
         void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
         void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime);
+        public void FormatStreakLabel(Guna2HtmlLabel label, int streakDays);
         Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel);
         void UpdateDateLabelsWithHTML(Panel parentPanel);
     }
@@ -68,11 +69,13 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             return (todayText, weekText, averageText);
         }
 
-        public void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, string todayText, string weekText, string averageText)
+        public void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, Guna2HtmlLabel  streakLabel, string todayText, string weekText, string averageText)
         {
             FormatTodayLabelText(todayLabel, todayText);
             FormatWeekTotalLabel(weekLabel, weekText);
             FormatAverageSessionLabel(averageLabel, averageText);
+            FormatStreakLabel(streakLabel, 6);
+
         }
 
         /*
@@ -143,7 +146,17 @@ namespace CodingTracker.View.Forms.Services.MainPageService
         }
 
 
+        public void FormatStreakLabel(Guna2HtmlLabel label, int streakDays)
+        {
+            string html = $@"
+    <div style='font-family: Segoe UI;'>
+        <div style='font-size: 14px; font-weight: 600; color: white; text-transform: uppercase;'>Current Streak</div>
+        <div style='font-size: 24px; font-weight: 700; color: white;'>{streakDays} Day{(streakDays != 1 ? "s" : "")}</div>
+    </div>";
 
+            label.Text = html;
+            label.BackColor = Color.Transparent;
+        }
 
 
 

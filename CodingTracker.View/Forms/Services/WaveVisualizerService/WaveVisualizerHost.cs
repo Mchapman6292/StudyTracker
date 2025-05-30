@@ -5,35 +5,25 @@ using System.Windows.Forms;
 
 namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 {
-    public interface IWaveVisualizationHost
-    {
-        Control GetControl();
-        void Start();
-        void Stop();
-        void UpdateIntensity(float intensity);
-        event EventHandler PaintRequested;
-    }
 
-    public class WaveVisualizationHost : UserControl, IWaveVisualizationHost
+    public class WaveVisualizationHost : UserControl
     {
         private readonly SKControl _skControl;
         private readonly System.Windows.Forms.Timer _animationTimer;
         private readonly IWaveRenderer _waveRenderer;
-        private readonly IWaveBarStateManager _barStateManager;
+        private readonly IWaveBarStateManager _waveBarStateManager;
         private readonly IWaveColorManager _colorManager;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private float _intensity;
+        public float _intensity { get; set; }
 
-        public event EventHandler PaintRequested;
 
-        public WaveVisualizationHost(
-            IWaveRenderer waveRenderer,
-            IWaveBarStateManager barStateManager,
-            IWaveColorManager colorManager,
-            IStopWatchTimerService stopWatchTimerService)
+        // Remove once testing complete. 
+        public float Intensity => _intensity;
+
+        public WaveVisualizationHost(IWaveRenderer waveRenderer,IWaveBarStateManager barStateManager, IWaveColorManager colorManager, IStopWatchTimerService stopWatchTimerService)
         {
             _waveRenderer = waveRenderer;
-            _barStateManager = barStateManager;
+            _waveBarStateManager = barStateManager;
             _colorManager = colorManager;
             _stopWatchTimerService = stopWatchTimerService;
 
@@ -53,11 +43,10 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
                  e.Surface.Canvas,
                  e.Info.Width,
                  e.Info.Height,
-                 _barStateManager.BarHeights,
-                 _barStateManager.NoiseValues,
+                 _waveBarStateManager.BarHeights,
+                 _waveBarStateManager.NoiseValues,
                  _intensity);
 
-                PaintRequested?.Invoke(s, e);
             };
             Controls.Add(_skControl);
         }
@@ -67,7 +56,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             _animationTimer.Interval = 16;
             _animationTimer.Tick += (s, e) =>
             {
-                _barStateManager.UpdateBars(_intensity, _stopWatchTimerService.ReturnElapsedSeconds);
+                _waveBarStateManager.UpdateBars(_intensity, _stopWatchTimerService.ReturnElapsedSeconds);
                 _skControl.Invalidate();
             };
         }

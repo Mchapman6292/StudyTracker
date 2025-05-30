@@ -9,6 +9,7 @@ using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using Guna.Charts.WinForms;
 using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
+using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -29,18 +30,15 @@ namespace CodingTracker.View
         private IWaveRenderer _waveRenderer;
         private IWaveBarStateManager _barStateManager;
         private IWaveColorManager _colorManager;
-        private IWaveVisualizationHost _visualizationHost;
 
 
-        private WaveVisualizationHost waveVisualizationControl;
+
+        private WaveVisualizationHost waveVisualizationHost;
 
         private Guna2Transition chartAnimator;
         private Guna2Panel hoverInfoPanel;
-        private System.Windows.Forms.Timer waveTimer = new System.Windows.Forms.Timer();
 
 
-        // Remove once tested. 
-        private float currentIntensity = 0.4f;
 
         private Guna.Charts.WinForms.Animation starChartAnimation;
 
@@ -75,39 +73,54 @@ namespace CodingTracker.View
             _barStateManager = barStateManager;
             _colorManager = colorManager;
 
-            InitializeWaveForm();
+            waveVisualizationHost = new WaveVisualizationHost(_waveRenderer, _barStateManager, _colorManager, _stopWatchTimerService);
+
 
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
-            waveTimer.Tick += WaveTimer_Tick;
+ 
 
             waveStopWatch.Start();
-            waveTimer.Start();
 
+
+  
             SetAnimationWindow();
             InitializeAnimator();
         }
 
-        private void WaveTimer_Tick(object sender, EventArgs e)
+
+
+
+
+        private void SetWaveHostSize()
         {
-            currentIntensity += 0.01f;
+            starRatingPanel.Controls.Add(waveVisualizationHost);
 
-            if (currentIntensity > 1.0f)
-                currentIntensity = 0.4f;
+            waveVisualizationHost.Size = new Size(362, 70);
+            waveVisualizationHost.Dock = DockStyle.Bottom;
+            waveVisualizationHost.BackColor = Color.FromArgb(35, 34, 50);
 
-            waveVisualizationControl.UpdateIntensity(currentIntensity);
+            waveVisualizationHost.Start();
+
+            waveVisualizationHost.UpdateIntensity(1.0f);    
         }
+        
 
-        private void InitializeWaveForm()
+        private void waveStopWatch_Tick(object sender, EventArgs e)
         {
-            waveVisualizationControl = new WaveVisualizationHost(_waveRenderer, _barStateManager,_colorManager,_stopWatchTimerService);
+            float intensity = waveVisualizationHost.Intensity;
 
-            starRatingPanel.Controls.Add(waveVisualizationControl);
+            if (intensity > 1.0f)
+            {
+                intensity = 0.1f;
+                waveStopWatch.Stop();
+            }
 
-            waveVisualizationControl.Size = new Size(362, 86);
-            waveVisualizationControl.Dock = DockStyle.Bottom;
-            waveVisualizationControl.BackColor = Color.FromArgb(35, 34, 50);
+            intensity += 0.1f;
+
+            waveVisualizationHost.UpdateIntensity(intensity);
+            
         }
 
 
@@ -132,13 +145,13 @@ namespace CodingTracker.View
             string todayText = results.TodayTotal;
             string weekText = results.WeekTotal;
             string averageText = results.AverageSession;
-            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
+            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
             _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
             _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
             _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
 
-            InitializeWaveForm();
+            SetWaveHostSize();
 
 
             await PopulateDoughnutDataSet(); 
@@ -147,6 +160,13 @@ namespace CodingTracker.View
         private async void MainPage_Shown(object sender, EventArgs e)
         {
             await _labelAssignment.UpdateLast28DayBoxesWithAssignedColorsAsync(Last28DaysPanel);
+
+            if (!starRatingPanel.Controls.Contains(waveVisualizationHost))
+            {
+                throw new InvalidOperationException($"Host not in starPanels");
+            }
+
+
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
