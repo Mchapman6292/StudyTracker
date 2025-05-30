@@ -25,14 +25,13 @@ using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.Session;
-using CodingTracker.View.Forms.WaveVisualizer;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
 
 
 // Add good session indicator? / mouse up /down?
@@ -99,9 +98,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<INotificationManager, NotificationManager>()
                     .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
-                    .AddSingleton<IWaveVisualizationControl, WaveVisualizationControl>()
                     .AddSingleton<IButtonNotificationManager, ButtonNotificationManager>()
-                    .AddSingleton<WaveVisualizationForm>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
                     .AddSingleton<SessionNotesForm>()
                     .AddSingleton<ICountdownTimerColorManager, CountdownTimerColorManager>()
@@ -118,6 +115,7 @@ namespace CodingTracker.View.Program
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TestForm>()
+
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
                     options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
