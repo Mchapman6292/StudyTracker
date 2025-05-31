@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 
-
 namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 {
     public enum SessionColor
@@ -23,10 +22,10 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 
 
 
+
     public interface IPanelColourAssigner
     {
         Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days();
-        (Color StartColor, Color EndColor) GetSessionGradientColours(SessionColor color);
         SessionColor DetermineSessionColor(double? sessionDurationSeconds);
         List<DateTime> GetDatesPrevious28days();
     }
@@ -37,6 +36,10 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         private readonly List<(DateTime Day, double TotalDurationMinutes)> _dailyDurations;
         private readonly List<SessionColor> _sessionColors;
         private readonly ICodingSessionRepository _codingSessionRepository;
+
+
+        
+
 
         public PanelColourAssigner(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository)
         {
@@ -123,37 +126,6 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
 
 
 
-        public (Color StartColor, Color EndColor) GetSessionGradientColours(SessionColor color)
-        {
-            (Color StartColor, Color EndColor) result;
-            switch (color)
-            {
-                case SessionColor.Blue:
-                    result = (Color.FromArgb(70, 71, 117), Color.FromArgb(45, 46, 80));
-                    break;
-                case SessionColor.Coral:
-                    result = (Color.FromArgb(255, 81, 195), Color.FromArgb(220, 60, 170));
-                    break;
-                case SessionColor.Rose:
-                    result = (Color.FromArgb(255, 100, 180), Color.FromArgb(255, 81, 195));
-                    break;
-                case SessionColor.Amber:
-                    result = (Color.FromArgb(168, 228, 255), Color.FromArgb(130, 200, 255));
-                    break;
-                case SessionColor.Emerald:
-                    result = (Color.FromArgb(100, 220, 220), Color.FromArgb(168, 228, 255));
-                    break;
-                case SessionColor.Slate:
-                    result = (Color.FromArgb(32, 33, 36), Color.FromArgb(25, 24, 40));
-                    break;
-                default:
-                    result = (Color.FromArgb(70, 71, 117), Color.FromArgb(45, 46, 80));
-                    break;
-            }
-            return result;
-        }
-
-
 
 
 
@@ -170,11 +142,16 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
             }
 
             return dates;
-            }
+        }
+        
+
+        
+        public void UpdateLast28DayPanelsBySessionDuration()
+        {
+
         }
 
 
 
- 
-
-   }
+    }
+}
