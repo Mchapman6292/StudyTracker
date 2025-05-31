@@ -13,13 +13,14 @@ namespace CodingTracker.View.Forms.Services.MainPageService
     {
         void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, Guna2HtmlLabel streakLabel, string todayText, string weekText, string averageText);    
         Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync();
-        void UpdateMainPageLabel(Guna2HtmlLabel label, string text);
         void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
         void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
         void FormatAverageSessionLabel(Guna2HtmlLabel label, string formattedTime);
         public void FormatStreakLabel(Guna2HtmlLabel label, int streakDays);
         Task UpdateLast28DayBoxesWithAssignedColorsAsync(Panel parentPanel);
         void UpdateDateLabelsWithHTML(Panel parentPanel);
+
+
     }
 
     public class LabelAssignment : ILabelAssignment
@@ -28,6 +29,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IUtilityService _utilityService;
         private readonly IPanelColourAssigner _panelColourAssigner;
+
 
 
 
@@ -43,16 +45,6 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 
 
 
-        public void ClearMainPageLabel(Guna2HtmlLabel label)
-        {
-            label.Text = string.Empty;
-        }
-
-        public void UpdateMainPageLabel(Guna2HtmlLabel label, string text)
-        {
-            ClearMainPageLabel(label);
-            label.Text = text;
-        }
 
         // Returns tuple of totals.
         public async Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync()
@@ -145,21 +137,15 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             label.BackColor = Color.Transparent;
         }
 
-
         public void FormatStreakLabel(Guna2HtmlLabel label, int streakDays)
         {
             string html = $@"
-    <div style='font-family: Segoe UI;'>
-        <div style='font-size: 14px; font-weight: 600; color: white; text-transform: uppercase;'>Current Streak</div>
-        <div style='font-size: 24px; font-weight: 700; color: white;'>{streakDays} Day{(streakDays != 1 ? "s" : "")}</div>
-    </div>";
-
+            <span style='font-family: Segoe UI; font-size: 18px; font-weight: 600; color: white; text-transform: uppercase;'>
+                Current Streak: {streakDays} Day{(streakDays != 1 ? "s" : "")}
+            </span>";
             label.Text = html;
             label.BackColor = Color.Transparent;
         }
-
-
-
 
 
 
@@ -169,11 +155,11 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             _appLogger.Info($"labelDate passed to {nameof(FormatDateLabel)}: {labelDate}.");
 
             string html = $@"
-    <div style='font-family: Segoe UI; padding: 2px 0;'>
-        <div style='font-size: 10.5px; line-height: 1.5; letter-spacing: 0.5px; font-weight: 300; color: #e0e0e0;'>
-            {labelDate:dd/MM/yyyy}
-        </div>
-    </div>";
+            <div style='font-family: Segoe UI; padding: 2px 0;'>
+                <div style='font-size: 10.5px; line-height: 1.5; letter-spacing: 0.5px; font-weight: 300; color: #e0e0e0;'>
+                    {labelDate:dd/MM/yyyy}
+                </div>
+            </div>";
 
             label.Text = html;
             label.BackColor = Color.Transparent;

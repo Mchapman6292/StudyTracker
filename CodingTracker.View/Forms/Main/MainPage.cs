@@ -39,6 +39,7 @@ namespace CodingTracker.View
         private Guna2Panel hoverInfoPanel;
 
 
+        public Dictionary<Guna2HtmlLabel, Guna2GradientPanel> LabelToPanelMap { get; private set; }
 
         private Guna.Charts.WinForms.Animation starChartAnimation;
 
@@ -83,8 +84,10 @@ namespace CodingTracker.View
 
             waveStopWatch.Start();
 
+            InitializeLabelToPanelMap();
 
-  
+
+
             SetAnimationWindow();
             InitializeAnimator();
         }
@@ -153,6 +156,7 @@ namespace CodingTracker.View
 
             SetWaveHostSize();
 
+ 
 
             await PopulateDoughnutDataSet(); 
         }
@@ -166,7 +170,7 @@ namespace CodingTracker.View
                 throw new InvalidOperationException($"Host not in starPanels");
             }
 
-
+            HideDatesWithNoDuration();
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -249,23 +253,84 @@ namespace CodingTracker.View
         }
 
 
-        public void SetLabelVisibility()
-        {
-            foreach(Control control in Last28DaysPanel.Controls)
-            {
-                if (control is Guna.UI2.WinForms.Guna2HtmlLabel htmlLabel)
-                {
-
-                }
-            }    
-        }
-
+  
 
         private void SetWaveFormSettings()
         {
             Form waveForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.WaveVisualizationForm);
             
 
+        }
+
+
+        private void InitializeLabelToPanelMap()
+        {
+            LabelToPanelMap = new Dictionary<Guna2HtmlLabel, Guna2GradientPanel>
+            {
+                { Day1Label, dayOneColourPanel },
+                { Day2Label, dayTwoColorPanel },
+                { Day3Label, dayThreeColorPanel },
+                { Day4Label, dayFourColorPanel },
+                { Day5Label, dayFiveColorPanel },
+                { Day6Label, daySixColorPanel },
+                { Day7Label, daySevenColorPanel },
+                { Day8Label, dayEightColorPanel },
+                { Day9Label, dayNineColorPanel },
+                { Day10Label, dayTenColorPanel },
+                { Day11Label, dayElevenColorPanel },
+                { Day12Label, dayTwelveColorPanel },
+                { Day13Label, dayThirteenColorPanel },
+                { Day14Label, dayFourteenColorPanel },
+                { Day15Label, dayFifteenColorPanel },
+                { Day16Label, daySixteenColorPanel },
+                { Day17Label, daySeventeenColorPanel },
+                { Day18Label, dayEighteenColorPanel },
+                { Day19Label, dayNineteenColorPanel },
+                { Day20Label, dayTwentyColorPanel },
+                { Day21Label, dayTwentyOneColorPanel },
+                { Day22Label, dayTwentyTwoColorPanel },
+                { Day23Label, dayTwentyThreeColorPanel },
+                { Day24Label, dayTwentyFourColorPanel },
+                { Day25Label, dayTwentyFiveColorPanel },
+                { Day26Label, dayTwentySixColorPanel },
+                { Day27Label, dayTwentySevenColorPanel },
+                { Day28Label, dayTwentyEightColorPanel }
+            };
+        }
+
+        private void HideDatesWithNoDuration()
+        {
+            int labels = 0;
+
+            foreach(var labelAndPanelPair in LabelToPanelMap)
+            {
+                if(labelAndPanelPair.Value.FillColor == Color.Empty || labelAndPanelPair.Value.FillColor2 == Color.Empty)
+                {
+                    Guna2HtmlLabel targetLabel = labelAndPanelPair.Key;
+                    string currentHtml = targetLabel.Text;
+                    string newHtml = currentHtml.Replace("color: #e0e0e0", "color: #808080"); // Gray color
+                    targetLabel.Text = newHtml;
+
+                }
+
+                else
+                {
+                    labels++;
+                }
+            }
+            string panels = $"{labels} not text not changed.";
+            _notificationManager.ShowNotificationDialog(this, panels);
+        }
+
+        private void LogPanelColor()
+        {
+            var target = LabelToPanelMap.FirstOrDefault();
+
+            Color targetColor = target.Value.FillColor;
+
+            string message = $"Label color: {targetColor.ToString()}.";
+
+            _notificationManager.ShowNotificationDialog(this, message);
         }
 
     }
