@@ -31,7 +31,7 @@ using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using CodingTracker.View.Forms.WaveVisualizer;
 
 
 // Add good session indicator? / mouse up /down?
@@ -107,6 +107,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IWaveColorManager, WaveColorManager>()
                     .AddSingleton<IWaveBarStateManager, WaveBarStateManager>()
                     .AddSingleton<WaveVisualizationHost>()
+                    .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
 
 
                     .AddSingleton<MainPage>()

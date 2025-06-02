@@ -66,8 +66,9 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             FormatTodayLabelText(todayLabel, todayText);
             FormatWeekTotalLabel(weekLabel, weekText);
             FormatAverageSessionLabel(averageLabel, averageText);
+            /*
             FormatStreakLabel(streakLabel, 6);
-
+            */
         }
 
         /*

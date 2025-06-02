@@ -1,7 +1,8 @@
-﻿using SkiaSharp;
+﻿using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using SkiaSharp;
 using System;
 
-namespace CodingTracker.View.Forms.Services.WaveVisualizerService
+namespace CodingTracker.View.Forms.WaveVisualizer
 {
     public interface IWaveRenderer
     {
@@ -151,7 +152,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             if (normalizedPosition > fadeStart)
             {
                 float fadeAmount = (normalizedPosition - fadeStart) / (1.0f - fadeStart);
-                alpha = 1.0f - (fadeAmount * 0.5f);
+                alpha = 1.0f - fadeAmount * 0.5f;
             }
 
             return (byte)(255 * alpha * (0.4f + intensity * 0.6f));

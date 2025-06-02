@@ -122,8 +122,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Forms\WaveVisualizer\" />
-  </ItemGroup>
-
 </Project>

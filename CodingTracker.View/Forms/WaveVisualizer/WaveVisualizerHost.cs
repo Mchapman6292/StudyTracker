@@ -1,9 +1,10 @@
 ﻿using CodingTracker.View.ApplicationControlService;
+using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using SkiaSharp.Views.Desktop;
 using System;
 using System.Windows.Forms;
 
-namespace CodingTracker.View.Forms.Services.WaveVisualizerService
+namespace CodingTracker.View.Forms.WaveVisualizer
 {
 
     public class WaveVisualizationHost : UserControl
@@ -27,14 +28,14 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             _colorManager = colorManager;
             _stopWatchTimerService = stopWatchTimerService;
 
-            _skControl = new SKControl();
+            _skControl = new SKControl();   
             _animationTimer = new System.Windows.Forms.Timer();
 
-            InitializeComponent();
+            InitializeComponents();
             SetupAnimationTimer();
         }
 
-        private void InitializeComponent()
+        private void InitializeComponents()
         {
             _skControl.Dock = DockStyle.Fill;
             _skControl.PaintSurface += (s, e) =>
