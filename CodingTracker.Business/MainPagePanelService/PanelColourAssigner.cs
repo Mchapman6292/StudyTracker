@@ -36,6 +36,7 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         private readonly List<(DateTime Day, double TotalDurationMinutes)> _dailyDurations;
         private readonly List<SessionColor> _sessionColors;
         private readonly ICodingSessionRepository _codingSessionRepository;
+   
 
 
         
@@ -45,6 +46,8 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
+            _appLogger = _appLogger;
+
         }
 
         public async Task<List<(Color StartColor, Color EndColor)>> AssignGradientColorsToSessionsInLast28Days()
@@ -145,11 +148,7 @@ namespace CodingTracker.Business.MainPageService.PanelColourAssigners
         }
         
 
-        
-        public void UpdateLast28DayPanelsBySessionDuration()
-        {
-
-        }
+ 
 
 
 
