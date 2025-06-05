@@ -1,6 +1,5 @@
 ﻿using Guna.UI2.WinForms;
 using CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons;
-
 namespace CodingTracker.View.Forms
 {
     partial class TestForm
@@ -9,11 +8,9 @@ namespace CodingTracker.View.Forms
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         // Control declarations
         private Guna.UI2.WinForms.Guna2BorderlessForm borderlessForm;
         private Guna.UI2.WinForms.Guna2Panel mainPanel;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -26,9 +23,7 @@ namespace CodingTracker.View.Forms
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -80,7 +75,6 @@ namespace CodingTracker.View.Forms
             Text = "Modern Timer Test";
             ResumeLayout(false);
         }
-
         #endregion
     }
 }

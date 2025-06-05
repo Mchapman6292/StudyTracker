@@ -368,7 +368,7 @@
             // 
             // StartDate
             // 
-            StartDate.HeaderText = "Start Date";
+            StartDate.HeaderText = "Start PanelDateLocal";
             StartDate.MinimumWidth = 6;
             StartDate.Name = "StartDate";
             // 
@@ -382,7 +382,7 @@
             // EndDate
             // 
             EndDate.FillWeight = 99.4923859F;
-            EndDate.HeaderText = "End Date";
+            EndDate.HeaderText = "End PanelDateLocal";
             EndDate.MinimumWidth = 6;
             EndDate.Name = "EndDate";
             // 

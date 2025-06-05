@@ -90,8 +90,8 @@ namespace CodingTracker.View.Forms.WaveVisualizer
 
         private void DrawDottedLine(SKCanvas canvas, SKPoint[] points, float intensity, float alphaMultiplier)
         {
-            float dotSpacing = 8.0f;  // Increased from 3.0f for wider gaps
-            float dotRadius = 0.4f;   // Reduced from 0.8f for smaller dots
+            float dotSpacing = 8.0f;  
+            float dotRadius = 0.4f;   
 
             for (int i = 0; i < points.Length - 1; i++)
             {
@@ -108,10 +108,10 @@ namespace CodingTracker.View.Forms.WaveVisualizer
                         float t = (float)d / dotCount;
                         SKPoint dotPos = InterpolatePoint(start, end, t);
 
-                        byte alpha = (byte)(30 + intensity * 50 * alphaMultiplier);  // Much lower alpha
+                        byte alpha = (byte)(30 + intensity * 50 * alphaMultiplier);  
                         SKColor dotColor = _colorManager.GetInterpolatedColor(i, intensity).WithAlpha(alpha);
 
-                        // Very subtle glow
+                   
                         DrawSingleDot(canvas, dotPos, dotRadius, dotColor, intensity * 0.1f);
                     }
                 }

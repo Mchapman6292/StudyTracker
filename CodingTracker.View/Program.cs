@@ -32,6 +32,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.Forms.WaveVisualizer;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories.PanelHelpers;
 
 
 // Add good session indicator? / mouse up /down?
@@ -108,6 +111,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IWaveBarStateManager, WaveBarStateManager>()
                     .AddSingleton<WaveVisualizationHost>()
                     .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
+                    .AddSingleton<IDurationPanelHelper, DurationPanelHelper>()
 
 
                     .AddSingleton<MainPage>()
@@ -120,6 +124,11 @@ namespace CodingTracker.View.Program
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TestForm>()
+
+
+                    .AddSingleton< IDurationParentPanelFactory, DurationParentPanelFactory>()
+                    .AddSingleton<IDurationPanelFactory, DurationPanelFactory>()
+
 
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
