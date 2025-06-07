@@ -111,14 +111,14 @@ namespace CodingTracker.View.Forms.Session
             mainPanel.Size = new Size(320, 400);
             mainPanel.TabIndex = 0;
             // 
-            // DurationLabel
+            // DurationTotalLabel
             // 
             durationLabel.AutoSize = false;
             durationLabel.BackColor = Color.Transparent;
             durationLabel.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             durationLabel.ForeColor = Color.White;
             durationLabel.Location = new Point(60, 130);
-            durationLabel.Name = "DurationLabel";
+            durationLabel.Name = "DurationTotalLabel";
             durationLabel.Size = new Size(185, 55);
             durationLabel.TabIndex = 12;
             durationLabel.Text = "00 : 00 : 00";

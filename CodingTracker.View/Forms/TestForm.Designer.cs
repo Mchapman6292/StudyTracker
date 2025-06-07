@@ -31,10 +31,14 @@ namespace CodingTracker.View.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
+            testAcitivtyControllerPanel = new Guna2GradientPanel();
+            mainPanel.SuspendLayout();
             SuspendLayout();
             // 
             // borderlessForm
@@ -50,17 +54,32 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
-            mainPanel.CustomizableEdges = customizableEdges1;
+            mainPanel.Controls.Add(testAcitivtyControllerPanel);
+            mainPanel.CustomizableEdges = customizableEdges3;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 80);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
             mainPanel.Size = new Size(1300, 720);
             mainPanel.TabIndex = 0;
+            // 
+            // testAcitivtyControllerPanel
+            // 
+            testAcitivtyControllerPanel.BackColor = Color.Transparent;
+            testAcitivtyControllerPanel.BorderColor = Color.FromArgb(70, 71, 117);
+            testAcitivtyControllerPanel.BorderRadius = 8;
+            testAcitivtyControllerPanel.BorderThickness = 1;
+            testAcitivtyControllerPanel.CustomizableEdges = customizableEdges1;
+            testAcitivtyControllerPanel.FillColor = Color.FromArgb(45, 46, 60);
+            testAcitivtyControllerPanel.Location = new Point(160, 240);
+            testAcitivtyControllerPanel.Name = "testAcitivtyControllerPanel";
+            testAcitivtyControllerPanel.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            testAcitivtyControllerPanel.Size = new Size(513, 250);
+            testAcitivtyControllerPanel.TabIndex = 1;
             // 
             // TestForm
             // 
@@ -73,8 +92,11 @@ namespace CodingTracker.View.Forms
             Name = "TestForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Modern Timer Test";
+            mainPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
         #endregion
+
+        private Guna2GradientPanel testAcitivtyControllerPanel;
     }
 }

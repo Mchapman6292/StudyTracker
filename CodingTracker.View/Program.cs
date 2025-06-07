@@ -34,7 +34,8 @@ using Microsoft.Extensions.DependencyInjection;
 using CodingTracker.View.Forms.WaveVisualizer;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories.PanelHelpers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 
 
 // Add good session indicator? / mouse up /down?
@@ -112,7 +113,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<WaveVisualizationHost>()
                     .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
                     .AddSingleton<IDurationPanelHelper, DurationPanelHelper>()
-
+                    .AddSingleton<ISessionVisualizationController, SessionVisualizationController>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
@@ -128,6 +129,7 @@ namespace CodingTracker.View.Program
 
                     .AddSingleton< IDurationParentPanelFactory, DurationParentPanelFactory>()
                     .AddSingleton<IDurationPanelFactory, DurationPanelFactory>()
+                    .AddSingleton<ISessionContainerPanelFactory, SessionContainerPanelFactory>()
 
 
 

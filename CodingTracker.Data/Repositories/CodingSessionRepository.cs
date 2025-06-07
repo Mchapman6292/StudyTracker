@@ -5,6 +5,7 @@ using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using System;
 
 
 namespace CodingTracker.Data.Repositories.CodingSessionRepositories
@@ -277,6 +278,22 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             }
 
             return result;
+        }
+
+        // returns CodingSessionEntity with date onyl if 
+        public async Task<Dictionary<DateOnly, List<CodingSessionEntity>>> GetSessionsGroupedByDateLastSevenDays()
+        {
+            DateTime yesterday = DateTime.UtcNow.AddDays(-1);
+            DateTime startDate = yesterday.AddDays(-7);
+
+            var actualSessions = await _dbContext.CodingSessions
+                              .Where(s => s.StartTimeUTC > startDate && s.StartTimeUTC < yesterday)
+                              .OrderBy(s => s.StartDateUTC)
+                              .ToListAsync();
+
+            return actualSessions
+                .GroupBy(s => s.StartDateUTC)
+                .ToDictionary(g => g.Key, g => g.ToList());
         }
 
 

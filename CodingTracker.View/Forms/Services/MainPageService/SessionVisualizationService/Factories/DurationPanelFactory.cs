@@ -1,8 +1,10 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories.PanelHelpers;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
+using CodingTracker.View.Forms.Services.SharedFormServices;
 
- namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories
+namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories
 {
     /* Requirements 
       - Scale for different session lengths for each panel.
@@ -17,7 +19,8 @@ using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Pa
 
     public interface IDurationPanelFactory
     {
-        DurationPanel CreateDurationPanel(CodingSessionEntity codingSession, DurationParentPanel parentPanel);
+        DurationPanel CreateDurationPanel(CodingSessionEntity codingSession);
+        List<DurationPanel> CreateMultipleDurationPanelsForOneDaySortedByStartTime(List<CodingSessionEntity> codingSessionsForOneDay);
 
 
     }
@@ -45,25 +48,48 @@ using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Pa
         private Color FourHoursPlusFillColor1 = Color.FromArgb(235, 255, 180, 90);
         private Color FourHoursPlusFillColor2 = Color.FromArgb(235, 255, 130, 80);
 
+        
+
         private readonly IDurationPanelHelper _durationPanelHelper;
+        private readonly IApplicationLogger _appLogger;
 
 
-        public DurationPanelFactory(IDurationPanelHelper durationPanelHelper)
+        public DurationPanelFactory(IDurationPanelHelper durationPanelHelper, IApplicationLogger appLogger)
         {
             _durationPanelHelper = durationPanelHelper;
+            _appLogger = appLogger;
+
         }
 
 
-        public DurationPanel CreateDurationPanel(CodingSessionEntity codingSession, DurationParentPanel parentPanel)
+        public List<DurationPanel> CreateMultipleDurationPanelsForOneDaySortedByStartTime(List<CodingSessionEntity> codingSessionsForOneDay)
+        {
+
+            List<DurationPanel> sortedDurationPanels = new List<DurationPanel>();
+
+            List<CodingSessionEntity> sortedCodingSessions = codingSessionsForOneDay.OrderBy(s => s.StartTimeUTC).ToList();
+
+
+
+            foreach ( var session in sortedCodingSessions )
+            {
+                sortedDurationPanels.Add(CreateDurationPanel(session));
+            }
+            return sortedDurationPanels;
+
+        }
+
+
+        public DurationPanel CreateDurationPanel(CodingSessionEntity codingSession )
         {
             var durationPanel = new DurationPanel()
             {
                 Size = SetDurationPanelSize(codingSession.DurationSeconds),
                 DurationHHMM = codingSession.DurationHHMM,
                 DurationSeconds = codingSession.DurationSeconds,
-                StartTimeLocal = codingSession.StartTimeUTC.ToLocalTime(),
-                EndTimeLocal = codingSession.EndTimeUTC.ToLocalTime(),
-                StudyNotes = codingSession.StudyNotes,
+                StartTimeLocal = codingSession.StartTimeLocal,
+                EndTimeLocal = codingSession.EndTimeLocal,
+                StudyProject = codingSession.StudyNotes,
 
                 AutoSize = false,
                 Padding = new Padding(0),
@@ -74,6 +100,7 @@ using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Pa
                 Anchor = AnchorStyles.Left | AnchorStyles.Top
 
             };
+
 
             _durationPanelHelper.SetDurationPanelName(durationPanel, codingSession.StartTimeLocal, codingSession.SessionId);
             SetDurationPanelColours(durationPanel, codingSession.DurationSeconds);

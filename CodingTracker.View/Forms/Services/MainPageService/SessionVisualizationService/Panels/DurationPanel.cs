@@ -8,17 +8,14 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         public int DurationSeconds { get; set; }
         public DateTime StartTimeLocal { get; set; }
         public DateTime EndTimeLocal { get; set; }
-        public string StudyNotes { get; set; }
+        public string StudyProject { get; set; }
 
 
 
         public DurationPanel()
         {
-            this.BackColor = Color.Transparent;
             this.BorderRadius = 2;
-            this.Dock = DockStyle.Left;
-
-            // Set up hover events right here
+            Height = 3;
             this.MouseEnter += OnMouseEnter;
             this.MouseLeave += OnMouseLeave;
             this.Click += OnClick;
@@ -43,7 +40,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         private void OnClick(object sender, EventArgs e)
         {
             
-            MessageBox.Show($"Duration: {DurationHHMM}s\nNotes: {StudyNotes}");
+            MessageBox.Show($"Duration: {DurationHHMM}s\nNotes: {StudyProject}");
         }
     }
 }

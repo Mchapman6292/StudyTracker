@@ -1,10 +1,14 @@
-﻿using CodingTracker.View.Forms.Services.SharedFormServices;
-using System.Drawing.Drawing2D;
+﻿using CodingTracker.Common.CommonEnums;
+using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.View.Forms.Services.MainPageService.DoughnutSegments;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
-using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.SharedFormServices;
+using Guna.UI2.WinForms;
+using System.ComponentModel;
+using System.Drawing.Drawing2D;
 
 namespace CodingTracker.View.Forms
 {
@@ -14,14 +18,17 @@ namespace CodingTracker.View.Forms
         private readonly INotificationManager _notificationManager;
         private readonly IDurationPanelFactory _durationPanelFactory;
         private readonly IDurationParentPanelFactory _durationParentPanelFactory;
+        private readonly ISessionContainerPanelFactory _sessionContainerPanelFactory;
         private readonly ICodingSessionRepository _codingSessionRepository;
+        private readonly ISessionVisualizationController _sessionVisualizationController;
 
-        public DurationParentPanel testParentPanel;
+
     
 
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository)
+
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController)
         {
             InitializeComponent();
             _buttonHighligherService = buttonHighlighterService;
@@ -29,6 +36,8 @@ namespace CodingTracker.View.Forms
             _durationParentPanelFactory = durationParentPanelFactory;
             _durationPanelFactory = durationPanelFactory;
             _codingSessionRepository = codingSessionRepository;
+            _sessionContainerPanelFactory = sessionContainerPanelFactory;
+            _sessionVisualizationController = sessionVisualizationController;
 
 
             this.Load += TestForm_Load;
@@ -40,46 +49,16 @@ namespace CodingTracker.View.Forms
         }
 
 
-        private void TestForm_Shown(object sender, EventArgs e)
-        {
-            testParentPanel.DurationLabel.BringToFront();
-            testParentPanel.DateLabel.BringToFront();
-        }
 
 
         private async Task InitializeTestPanelAsync()
         {
             try
             {
-                DateOnly testDate = new DateOnly(2025, 5, 25);
-                List<CodingSessionEntity> allSessionsFromTestDate = await _codingSessionRepository.GetAllCodingSessionsByDateOnlyForStartDateAsync(testDate);
-                CodingSessionEntity testEntity = allSessionsFromTestDate.FirstOrDefault(e => e != null);
+                await _sessionVisualizationController.CreateAllVisualPanelsAsync(testAcitivtyControllerPanel);
 
-                if (testEntity == null)
-                {
-                    _notificationManager.ShowNotificationDialog(this, "No test entity found for the specified date.");
-                    return;
-                }
+                _sessionVisualizationController.UpdateAllDurationLabels(testAcitivtyControllerPanel);
 
-                testParentPanel = _durationParentPanelFactory.CreateDurationParentPanel(testEntity, testDate);
-                DurationPanel durationPanel = _durationPanelFactory.CreateDurationPanel(testEntity, testParentPanel);
-
-                this.Controls.Add(testParentPanel);
-                testParentPanel.Controls.Add(durationPanel);
-
-                BringLabelsToFront();
-
-                if (this.Controls.Contains(testParentPanel))
-                {
-                    _notificationManager.ShowNotificationDialog(this, "testPanel added.");
-                }
-                else
-                {
-                    _notificationManager.ShowNotificationDialog(this, "Not added.");
-                }
-
-                testParentPanel.BringToFront();
-                testParentPanel.Location = new Point(650, 350);
             }
             catch (Exception ex)
             {
@@ -87,20 +66,19 @@ namespace CodingTracker.View.Forms
             }
         }
 
-        private void BringLabelsToFront()
-        {
-            if (testParentPanel != null)
-            {
-                if (testParentPanel.DurationLabel != null)
-                {
-                    testParentPanel.DurationLabel.BringToFront();
-                }
 
-                if (testParentPanel.DateLabel != null)
-                {
-                    testParentPanel.DateLabel.BringToFront();
-                }
+
+        private void LogControlZOrder(Control container, string containerName)
+        {
+            var message = $"{containerName} contains {container.Controls.Count} controls:\n";
+
+            for (int i = 0; i < container.Controls.Count; i++)
+            {
+                var control = container.Controls[i];
+                message += $"  [{i}] {control.GetType().Name} - {control.Name}\n";
             }
+
+            _notificationManager.ShowNotificationDialog(this, message);
         }
 
 

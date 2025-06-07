@@ -156,7 +156,7 @@ namespace CodingTracker.View
             starRatingPanel = new Guna2GradientPanel();
             guna2HtmlLabel2 = new Guna2HtmlLabel();
             Last28DaysPanel = new Guna2GradientPanel();
-            timelinePanel = new Guna2Panel();
+            testActivityPanel = new Guna2Panel();
             todayDateLabel = new Guna2HtmlLabel();
             may2RowPanel = new Guna2Panel();
             may2DateLabel = new Guna2HtmlLabel();
@@ -204,7 +204,7 @@ namespace CodingTracker.View
             bottomHalfParentPanel.SuspendLayout();
             starRatingPanel.SuspendLayout();
             Last28DaysPanel.SuspendLayout();
-            timelinePanel.SuspendLayout();
+            testActivityPanel.SuspendLayout();
             may2RowPanel.SuspendLayout();
             may2SessionPanel.SuspendLayout();
             may3RowPanel.SuspendLayout();
@@ -579,7 +579,7 @@ namespace CodingTracker.View
             Last28DaysPanel.BackColor = Color.Transparent;
             Last28DaysPanel.BorderColor = Color.Transparent;
             Last28DaysPanel.BorderRadius = 25;
-            Last28DaysPanel.Controls.Add(timelinePanel);
+            Last28DaysPanel.Controls.Add(testActivityPanel);
             Last28DaysPanel.Controls.Add(zeroPanel);
             Last28DaysPanel.Controls.Add(zeroLabel);
             Last28DaysPanel.Controls.Add(twoToFourLabel);
@@ -602,24 +602,24 @@ namespace CodingTracker.View
             Last28DaysPanel.Size = new Size(575, 326);
             Last28DaysPanel.TabIndex = 6;
             // 
-            // timelinePanel
+            // testActivityPanel
             // 
-            timelinePanel.BackColor = Color.Transparent;
-            timelinePanel.BorderColor = Color.FromArgb(70, 71, 117);
-            timelinePanel.BorderRadius = 8;
-            timelinePanel.BorderThickness = 1;
-            timelinePanel.Controls.Add(todayDateLabel);
-            timelinePanel.Controls.Add(may2RowPanel);
-            timelinePanel.Controls.Add(may3RowPanel);
-            timelinePanel.Controls.Add(yesterdayRowPanel);
-            timelinePanel.Controls.Add(todayRowPanel);
-            timelinePanel.CustomizableEdges = customizableEdges69;
-            timelinePanel.FillColor = Color.FromArgb(45, 46, 60);
-            timelinePanel.Location = new Point(20, 20);
-            timelinePanel.Name = "timelinePanel";
-            timelinePanel.ShadowDecoration.CustomizableEdges = customizableEdges70;
-            timelinePanel.Size = new Size(513, 250);
-            timelinePanel.TabIndex = 0;
+            testActivityPanel.BackColor = Color.Transparent;
+            testActivityPanel.BorderColor = Color.FromArgb(70, 71, 117);
+            testActivityPanel.BorderRadius = 8;
+            testActivityPanel.BorderThickness = 1;
+            testActivityPanel.Controls.Add(todayDateLabel);
+            testActivityPanel.Controls.Add(may2RowPanel);
+            testActivityPanel.Controls.Add(may3RowPanel);
+            testActivityPanel.Controls.Add(yesterdayRowPanel);
+            testActivityPanel.Controls.Add(todayRowPanel);
+            testActivityPanel.CustomizableEdges = customizableEdges69;
+            testActivityPanel.FillColor = Color.FromArgb(45, 46, 60);
+            testActivityPanel.Location = new Point(20, 20);
+            testActivityPanel.Name = "testActivityPanel";
+            testActivityPanel.ShadowDecoration.CustomizableEdges = customizableEdges70;
+            testActivityPanel.Size = new Size(513, 250);
+            testActivityPanel.TabIndex = 0;
             // 
             // todayDateLabel
             // 
@@ -1192,8 +1192,8 @@ namespace CodingTracker.View
             starRatingPanel.PerformLayout();
             Last28DaysPanel.ResumeLayout(false);
             Last28DaysPanel.PerformLayout();
-            timelinePanel.ResumeLayout(false);
-            timelinePanel.PerformLayout();
+            testActivityPanel.ResumeLayout(false);
+            testActivityPanel.PerformLayout();
             may2RowPanel.ResumeLayout(false);
             may2RowPanel.PerformLayout();
             may2SessionPanel.ResumeLayout(false);
@@ -1243,7 +1243,7 @@ namespace CodingTracker.View
         private Guna2HtmlLabel AverageSessionLabel;
         private Guna2HtmlLabel streakLabel;
         private Guna2GradientPanel Last28DaysPanel;
-        private Guna2Panel timelinePanel;
+        private Guna2Panel testActivityPanel;
         private Guna2Panel may2RowPanel;
         private Guna2HtmlLabel may2DateLabel;
         private Guna2Panel may2SessionPanel;
