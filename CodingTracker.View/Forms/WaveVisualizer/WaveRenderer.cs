@@ -1,7 +1,8 @@
-﻿using SkiaSharp;
+﻿using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using SkiaSharp;
 using System;
 
-namespace CodingTracker.View.Forms.Services.WaveVisualizerService
+namespace CodingTracker.View.Forms.WaveVisualizer
 {
     public interface IWaveRenderer
     {
@@ -89,8 +90,8 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
 
         private void DrawDottedLine(SKCanvas canvas, SKPoint[] points, float intensity, float alphaMultiplier)
         {
-            float dotSpacing = 8.0f;  // Increased from 3.0f for wider gaps
-            float dotRadius = 0.4f;   // Reduced from 0.8f for smaller dots
+            float dotSpacing = 8.0f;  
+            float dotRadius = 0.4f;   
 
             for (int i = 0; i < points.Length - 1; i++)
             {
@@ -107,10 +108,10 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
                         float t = (float)d / dotCount;
                         SKPoint dotPos = InterpolatePoint(start, end, t);
 
-                        byte alpha = (byte)(30 + intensity * 50 * alphaMultiplier);  // Much lower alpha
+                        byte alpha = (byte)(30 + intensity * 50 * alphaMultiplier);  
                         SKColor dotColor = _colorManager.GetInterpolatedColor(i, intensity).WithAlpha(alpha);
 
-                        // Very subtle glow
+                   
                         DrawSingleDot(canvas, dotPos, dotRadius, dotColor, intensity * 0.1f);
                     }
                 }
@@ -151,7 +152,7 @@ namespace CodingTracker.View.Forms.Services.WaveVisualizerService
             if (normalizedPosition > fadeStart)
             {
                 float fadeAmount = (normalizedPosition - fadeStart) / (1.0f - fadeStart);
-                alpha = 1.0f - (fadeAmount * 0.5f);
+                alpha = 1.0f - fadeAmount * 0.5f;
             }
 
             return (byte)(255 * alpha * (0.4f + intensity * 0.6f));

@@ -31,7 +31,11 @@ using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using CodingTracker.View.Forms.WaveVisualizer;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 
 
 // Add good session indicator? / mouse up /down?
@@ -43,6 +47,7 @@ namespace CodingTracker.View.Program
 
     //https://github.com/am-523?tab=repositories
     //https://github.com/am-523/Animation-Slide-Panel-2/blob/main/tab.Designer.cs
+    //https://dribbble.com/tags/dark-theme-dashboard
 
     internal static class Program
     {
@@ -107,7 +112,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IWaveColorManager, WaveColorManager>()
                     .AddSingleton<IWaveBarStateManager, WaveBarStateManager>()
                     .AddSingleton<WaveVisualizationHost>()
-
+                    .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
+                    .AddSingleton<IDurationPanelHelper, DurationPanelHelper>()
+                    .AddSingleton<ISessionVisualizationController, SessionVisualizationController>()
+                    .AddSingleton<IDurationPanelPositionManager, DurationPanelPositionManager>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
@@ -119,6 +127,12 @@ namespace CodingTracker.View.Program
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TestForm>()
+
+
+                    .AddSingleton< IDurationParentPanelFactory, DurationParentPanelFactory>()
+                    .AddSingleton<IDurationPanelFactory, DurationPanelFactory>()
+                    .AddSingleton<ISessionContainerPanelFactory, SessionContainerPanelFactory>()
+
 
 
                     .AddDbContext<CodingTrackerDbContext>(options =>

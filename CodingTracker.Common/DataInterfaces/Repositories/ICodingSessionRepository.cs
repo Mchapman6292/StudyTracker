@@ -32,5 +32,9 @@ namespace CodingTracker.Common.DataInterfaces.Repositories
         Task<(double todayTotal, double weekTotal, double average)> GetLabelDurationsAsync();
 
         Task<Dictionary<int, int>> GetStarRatingsWithZeroValueDefault();
+        Task<List<int>> GetLast28DayDurationSecondsWithDefaultZeroValues();
+
+        Task<Dictionary<DateOnly, List<CodingSessionEntity>>> GetSessionsGroupedByDateLastSevenDays();
+
     }
 }

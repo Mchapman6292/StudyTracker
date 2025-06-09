@@ -37,9 +37,9 @@ namespace CodingTracker.View
         {
             "StudyProject",
             "Duration",
-            "Start Date",
+            "Start PanelDateLocal",
             "Start Time",
-            "End Date",
+            "End PanelDateLocal",
             "End Time"
         };
 

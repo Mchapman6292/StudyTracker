@@ -1,17 +1,24 @@
-﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.Entities.CodingSessionEntities;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
+using CodingTracker.View.Forms.WaveVisualizer;
 using Guna.Charts.WinForms;
 using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
 using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
+using FontAwesome.Sharp;
+
 
 namespace CodingTracker.View
 {
@@ -26,10 +33,14 @@ namespace CodingTracker.View
         private readonly IFormStateManagement _formStateManagement;
         private readonly IFormFactory _formFactory;
         private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IApplicationLogger _appLogger;
 
         private IWaveRenderer _waveRenderer;
         private IWaveBarStateManager _barStateManager;
         private IWaveColorManager _colorManager;
+        private readonly IPanelColourAssigner _panelColorAssigner;
+        private readonly ILast28DayPanelSettings _last28DayPanelSettings;
+
 
 
 
@@ -40,6 +51,8 @@ namespace CodingTracker.View
 
 
         public Dictionary<Guna2HtmlLabel, Guna2GradientPanel> LabelToPanelMap { get; private set; }
+
+        public List<(Guna2GradientPanel, int)> sessionDurationsToPanelMap;
 
         private Guna.Charts.WinForms.Animation starChartAnimation;
 
@@ -57,7 +70,10 @@ namespace CodingTracker.View
             IStopWatchTimerService stopWatchTimerService,
             IWaveRenderer waveRenderer,
             IWaveBarStateManager barStateManager,
-            IWaveColorManager colorManager
+            IWaveColorManager colorManager,
+            IPanelColourAssigner panelColourAssigner,
+            ILast28DayPanelSettings last28DayPanelSettings,
+            IApplicationLogger appLogger
         )
         {
             InitializeComponent();
@@ -73,6 +89,9 @@ namespace CodingTracker.View
             _waveRenderer = waveRenderer;
             _barStateManager = barStateManager;
             _colorManager = colorManager;
+            _panelColorAssigner = panelColourAssigner;
+            _last28DayPanelSettings = last28DayPanelSettings;
+            _appLogger = appLogger;
 
             waveVisualizationHost = new WaveVisualizationHost(_waveRenderer, _barStateManager, _colorManager, _stopWatchTimerService);
 
@@ -80,11 +99,11 @@ namespace CodingTracker.View
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
- 
+
 
             waveStopWatch.Start();
 
-            InitializeLabelToPanelMap();
+
 
 
 
@@ -98,17 +117,18 @@ namespace CodingTracker.View
 
         private void SetWaveHostSize()
         {
-            starRatingPanel.Controls.Add(waveVisualizationHost);
+            WaveVisualizationPanel.Controls.Add(waveVisualizationHost);
 
             waveVisualizationHost.Size = new Size(362, 70);
             waveVisualizationHost.Dock = DockStyle.Bottom;
+
             waveVisualizationHost.BackColor = Color.FromArgb(35, 34, 50);
 
             waveVisualizationHost.Start();
 
-            waveVisualizationHost.UpdateIntensity(1.0f);    
+            waveVisualizationHost.UpdateIntensity(1.0f);
         }
-        
+
 
         private void waveStopWatch_Tick(object sender, EventArgs e)
         {
@@ -123,7 +143,7 @@ namespace CodingTracker.View
             intensity += 0.1f;
 
             waveVisualizationHost.UpdateIntensity(intensity);
-            
+
         }
 
 
@@ -144,33 +164,37 @@ namespace CodingTracker.View
 
         private async void MainPage_Load(object sender, EventArgs e)
         {
-            var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
-            string todayText = results.TodayTotal;
-            string weekText = results.WeekTotal;
-            string averageText = results.AverageSession;
-            _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
-            _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
-            _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
-            _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
-            _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
-
-            SetWaveHostSize();
-
- 
-
-            await PopulateDoughnutDataSet(); 
-        }
-
-        private async void MainPage_Shown(object sender, EventArgs e)
-        {
-            await _labelAssignment.UpdateLast28DayBoxesWithAssignedColorsAsync(Last28DaysPanel);
-
-            if (!starRatingPanel.Controls.Contains(waveVisualizationHost))
+            this.Enabled = false;
+            try
             {
-                throw new InvalidOperationException($"Host not in starPanels");
+                var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
+                string todayText = results.TodayTotal;
+                string weekText = results.WeekTotal;
+                string averageText = results.AverageSession;
+                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
+                _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
+                _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
+                _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
+                _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
+                SetWaveHostSize();
+;
+                await PopulateDoughnutDataSet();
+   
+
+                Last28DaysPanel.BringToFront();
             }
 
-            HideDatesWithNoDuration();
+            finally
+            {
+                this.Enabled = true;
+            }
+        }
+
+
+        private void MainPage_Shown(object sender, EventArgs e)
+        {
+            
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -224,21 +248,28 @@ namespace CodingTracker.View
         private async Task PopulateDoughnutDataSet()
         {
             Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingsWithZeroValueDefault();
-
             doughnutDataset.DataPoints.Clear();
 
             // Configure hover effects
             doughnutDataset.BorderWidth = 2;
-
             doughnutDataset.FillColors.Clear();
 
-            doughnutDataset.FillColors.Add(Color.FromArgb(255, 81, 195));   // Primary Pink
-            doughnutDataset.FillColors.Add(Color.FromArgb(255, 120, 200));  // Light Pink
-            doughnutDataset.FillColors.Add(Color.FromArgb(200, 150, 220));  // Pink-Purple blend
-            doughnutDataset.FillColors.Add(Color.FromArgb(150, 180, 240));  // Purple-Blue blend
-            doughnutDataset.FillColors.Add(Color.FromArgb(100, 200, 250));  // Blue-Cyan blend
-            doughnutDataset.FillColors.Add(Color.FromArgb(100, 220, 220));  // Cyan
-            doughnutDataset.FillColors.Add(Color.FromArgb(168, 228, 255));
+            doughnutDataset.FillColors.Add(Color.FromArgb(40, 100, 120));    // 0 stars - Dark cyan (like zero duration)
+            doughnutDataset.FillColors.Add(Color.FromArgb(80, 200, 220));    // 1 star - Light cyan (like under 1 hour)
+            doughnutDataset.FillColors.Add(Color.FromArgb(140, 120, 220));   // 2 stars - Purple-blue (like 1-2 hours)
+            doughnutDataset.FillColors.Add(Color.FromArgb(180, 100, 200));   // 3 stars - Purple (like 2-4 hours start)
+            doughnutDataset.FillColors.Add(Color.FromArgb(255, 120, 180));   // 4 stars - Pink-purple (like 2-4 hours end)
+            doughnutDataset.FillColors.Add(Color.FromArgb(255, 80, 140));    // 5 stars - Intense orange-purple
+
+            doughnutDataset.BorderColors.Clear();
+            doughnutDataset.BorderColors.Add(Color.FromArgb(60, 120, 140));     // 0 stars - Darker cyan border
+            doughnutDataset.BorderColors.Add(Color.FromArgb(100, 220, 240));    // 1 star - Bright cyan border
+            doughnutDataset.BorderColors.Add(Color.FromArgb(160, 140, 240));    // 2 stars - Purple-blue border
+            doughnutDataset.BorderColors.Add(Color.FromArgb(200, 120, 220));    // 3 stars - Purple border
+            doughnutDataset.BorderColors.Add(Color.FromArgb(255, 140, 200));    // 4 stars - Pink border
+            doughnutDataset.BorderColors.Add(Color.FromArgb(255, 100, 160));    // 5 stars - Intense pink-orange border
+
+
 
             foreach (var rating in sessionStarRatings)
             {
@@ -253,58 +284,25 @@ namespace CodingTracker.View
         }
 
 
-  
+
 
         private void SetWaveFormSettings()
         {
             Form waveForm = _formStateManagement.GetFormByFormPageEnum(FormPageEnum.WaveVisualizationForm);
-            
+
 
         }
 
 
-        private void InitializeLabelToPanelMap()
-        {
-            LabelToPanelMap = new Dictionary<Guna2HtmlLabel, Guna2GradientPanel>
-            {
-                { Day1Label, dayOneColourPanel },
-                { Day2Label, dayTwoColorPanel },
-                { Day3Label, dayThreeColorPanel },
-                { Day4Label, dayFourColorPanel },
-                { Day5Label, dayFiveColorPanel },
-                { Day6Label, daySixColorPanel },
-                { Day7Label, daySevenColorPanel },
-                { Day8Label, dayEightColorPanel },
-                { Day9Label, dayNineColorPanel },
-                { Day10Label, dayTenColorPanel },
-                { Day11Label, dayElevenColorPanel },
-                { Day12Label, dayTwelveColorPanel },
-                { Day13Label, dayThirteenColorPanel },
-                { Day14Label, dayFourteenColorPanel },
-                { Day15Label, dayFifteenColorPanel },
-                { Day16Label, daySixteenColorPanel },
-                { Day17Label, daySeventeenColorPanel },
-                { Day18Label, dayEighteenColorPanel },
-                { Day19Label, dayNineteenColorPanel },
-                { Day20Label, dayTwentyColorPanel },
-                { Day21Label, dayTwentyOneColorPanel },
-                { Day22Label, dayTwentyTwoColorPanel },
-                { Day23Label, dayTwentyThreeColorPanel },
-                { Day24Label, dayTwentyFourColorPanel },
-                { Day25Label, dayTwentyFiveColorPanel },
-                { Day26Label, dayTwentySixColorPanel },
-                { Day27Label, dayTwentySevenColorPanel },
-                { Day28Label, dayTwentyEightColorPanel }
-            };
-        }
-
+        /*
+  
         private void HideDatesWithNoDuration()
         {
             int labels = 0;
 
-            foreach(var labelAndPanelPair in LabelToPanelMap)
+            foreach (var labelAndPanelPair in LabelToPanelMap)
             {
-                if(labelAndPanelPair.Value.FillColor == Color.Empty || labelAndPanelPair.Value.FillColor2 == Color.Empty)
+                if (labelAndPanelPair.Value.FillColor == Color.Empty || labelAndPanelPair.Value.FillColor2 == Color.Empty)
                 {
                     Guna2HtmlLabel targetLabel = labelAndPanelPair.Key;
                     string currentHtml = targetLabel.Text;
@@ -321,17 +319,120 @@ namespace CodingTracker.View
             string panels = $"{labels} not text not changed.";
             _notificationManager.ShowNotificationDialog(this, panels);
         }
+        */
 
-        private void LogPanelColor()
+
+        /*
+        private void InitializeSessionDurationToPanelMap()
         {
-            var target = LabelToPanelMap.FirstOrDefault();
-
-            Color targetColor = target.Value.FillColor;
-
-            string message = $"Label color: {targetColor.ToString()}.";
-
-            _notificationManager.ShowNotificationDialog(this, message);
+            sessionDurationsToPanelMap = new List<(Guna2GradientPanel, int)>
+            {
+                (dayOneColourPanel, 0), (dayTwoColorPanel, 0), (dayThreeColorPanel, 0), (dayFourColorPanel, 0), (dayFiveColorPanel, 0), (daySixColorPanel, 0), (daySevenColorPanel, 0),
+                (dayEightColorPanel, 0), (dayNineColorPanel, 0), (dayTenColorPanel, 0), (dayElevenColorPanel, 0), (dayTwelveColorPanel, 0), (dayThirteenColorPanel, 0), (dayFourteenColorPanel, 0),
+                (dayFifteenColorPanel, 0), (daySixteenColorPanel, 0), (daySeventeenColorPanel, 0), (dayEighteenColorPanel, 0), (dayNineteenColorPanel, 0), (dayTwentyColorPanel, 0), (dayTwentyOneColorPanel, 0),
+                (dayTwentyTwoColorPanel, 0), (dayTwentyThreeColorPanel, 0), (dayTwentyFourColorPanel, 0), (dayTwentyFiveColorPanel, 0), (dayTwentySixColorPanel, 0), (dayTwentySevenColorPanel, 0), (dayTwentyEightColorPanel, 0)
+            };
         }
 
+        */
+
+        /*
+        private async Task UpdateSessionDurationToPanelMapAsync()
+        {
+            List<int> orderedSessionDurations = await _codingSessionRepository.GetLast28DayDurationSecondsWithDefaultZeroValues();
+
+            int durationsIndex = 0;
+
+            if (orderedSessionDurations.Count != sessionDurationsToPanelMap.Count)
+            {
+                _appLogger.Error($"Number of session durations is not equal to the number of durations in {nameof(sessionDurationsToPanelMap)}.");
+            }
+
+            for (int i = 0; i < orderedSessionDurations.Count; i++)
+            {
+                sessionDurationsToPanelMap[i] = (sessionDurationsToPanelMap[i].Item1, orderedSessionDurations[i]);
+                _appLogger.Info($"Panel: {sessionDurationsToPanelMap[i].Item1.Name} duration: {orderedSessionDurations[i]}.");
+
+            }
+        }
+        */
+
+        /*
+
+        private List<Guna2GradientPanel> GetOrderedPanelsList()
+        {
+            return new List<Guna2GradientPanel>
+            {
+                dayOneColourPanel, dayTwoColorPanel, dayThreeColorPanel, dayFourColorPanel, dayFiveColorPanel, daySixColorPanel, daySevenColorPanel,
+                dayEightColorPanel, dayNineColorPanel, dayTenColorPanel, dayElevenColorPanel, dayTwelveColorPanel, dayThirteenColorPanel, dayFourteenColorPanel,
+                dayFifteenColorPanel, daySixteenColorPanel, daySeventeenColorPanel, dayEighteenColorPanel, dayNineteenColorPanel, dayTwentyColorPanel, dayTwentyOneColorPanel,
+                dayTwentyTwoColorPanel, dayTwentyThreeColorPanel, dayTwentyFourColorPanel, dayTwentyFiveColorPanel, dayTwentySixColorPanel, dayTwentySevenColorPanel, dayTwentyEightColorPanel
+            };
+        }
+        */
+
+        /*
+        private async Task AssignLast28PanelVisualsAsync()
+        {
+            Dictionary<SessionDurationEnum, Guna2GradientPanel> last28DayDurations = _last28DayPanelSettings.ReturnDurationPanelSettingsDict();
+
+            List<Guna2GradientPanel> dayPanelList = GetOrderedPanelsList();
+            await UpdateSessionDurationToPanelMapAsync();
+
+            foreach (var (panel, durationSeconds) in sessionDurationsToPanelMap)
+            {
+                SessionDurationEnum durationEnum = _last28DayPanelSettings.ConvertDurationSecondsToSessionDurationEnum(durationSeconds);
+                Guna2GradientPanel templatePanel = last28DayDurations[durationEnum];
+
+                panel.FillColor = templatePanel.FillColor;
+                panel.FillColor2 = templatePanel.FillColor2;
+                panel.BorderColor = templatePanel.BorderColor;
+                panel.BorderThickness = templatePanel.BorderThickness;
+                panel.ShadowDecoration.Enabled = templatePanel.ShadowDecoration.Enabled;
+                panel.ShadowDecoration.Color = templatePanel.ShadowDecoration.Color;
+                panel.ShadowDecoration.Shadow = templatePanel.ShadowDecoration.Shadow;
+            }
+        }
+        */
+
+
+        private void AdjustStarPanelToolLocations()
+        {
+
+        }
+        private void StandardizeVerticalSpacing()
+        {
+            int startX = 38;
+            int columnWidth = 160;
+
+            int[] labelXPositions = {
+               startX,
+                startX + columnWidth,
+                startX + (2 * columnWidth),
+                startX + (3 * columnWidth)
+            };
+
+            int panelOffset = 77;
+            int startY = 17;
+            int rowSpacing = 39;
+
+            var panels = Last28DaysPanel.Controls.OfType<Guna2GradientPanel>().OrderBy(p => p.Name).ToArray();
+            var labels = Last28DaysPanel.Controls.OfType<Guna2HtmlLabel>().OrderBy(l => l.Name).ToArray();
+
+            for (int i = 0; i < 28; i++)
+            {
+                int column = i / 7;
+                int row = i % 7;
+                int yPosition = startY + (row * rowSpacing);
+                int labelX = labelXPositions[column];
+                int panelX = labelX + panelOffset;
+
+                labels[i].Location = new Point(labelX, yPosition);
+                panels[i].Location = new Point(panelX, yPosition);
+            }
+        }
+
+     
     }
 }
+

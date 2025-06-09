@@ -4,6 +4,8 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using System;
 
 
 namespace CodingTracker.Data.Repositories.CodingSessionRepositories
@@ -96,13 +98,13 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         }
 
 
-        public async Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions)
-        {
-                return await _dbContext.CodingSessions
-                    .OrderByDescending(s => s.StartDateUTC)
-                    .Take(numberOfSessions)
-                    .ToListAsync();
-        }
+            public async Task<List<CodingSessionEntity>> GetRecentSessionsAsync(int numberOfSessions)
+            {
+                    return await _dbContext.CodingSessions
+                        .OrderByDescending(s => s.StartDateUTC)
+                        .Take(numberOfSessions)
+                        .ToListAsync();
+            }
 
         public async Task<List<CodingSessionEntity>> GetSessionBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy)
         {
@@ -253,6 +255,47 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
             }
             return starRatingsWithZero;
         }
+
+        // Returns list of session durations beginning with 28 days previous date, adds 0 value for durationSeconds if no entry on that date. 
+        public async Task<List<int>> GetLast28DayDurationSecondsWithDefaultZeroValues()
+        {
+            DateOnly todayDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            DateOnly startDate = todayDate.AddDays(-27);
+
+            var sessionData = await _dbContext.CodingSessions
+                .Where(s => s.StartDateUTC >= startDate && s.StartDateUTC <= todayDate)
+                .GroupBy(s => s.StartDateUTC)
+                .Select(group => new { Date = group.Key, TotalDuration = group.Sum(s => s.DurationSeconds) })
+                .ToListAsync();
+
+            var sessionDict = sessionData.ToDictionary(x => x.Date, x => x.TotalDuration);
+
+            var result = new List<int>();
+            for (int i = 27; i >= 0; i--)
+            {
+                var currentDate = todayDate.AddDays(-i);
+                result.Add(sessionDict.TryGetValue(currentDate, out var duration) ? duration : 0);
+            }
+
+            return result;
+        }
+
+        // returns CodingSessionEntity with date onyl if 
+        public async Task<Dictionary<DateOnly, List<CodingSessionEntity>>> GetSessionsGroupedByDateLastSevenDays()
+        {
+            DateTime yesterday = DateTime.UtcNow.AddDays(-1);
+            DateTime startDate = yesterday.AddDays(-7);
+
+            var actualSessions = await _dbContext.CodingSessions
+                              .Where(s => s.StartTimeUTC > startDate && s.StartTimeUTC < yesterday)
+                              .OrderBy(s => s.StartDateUTC)
+                              .ToListAsync();
+
+            return actualSessions
+                .GroupBy(s => s.StartDateUTC)
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+
 
     }
 }
