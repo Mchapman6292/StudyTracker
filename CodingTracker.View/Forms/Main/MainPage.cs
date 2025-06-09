@@ -7,17 +7,21 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.WaveVisualizer;
+using FontAwesome.Sharp;
 using Guna.Charts.WinForms;
 using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
 using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using FontAwesome.Sharp;
 
 
 namespace CodingTracker.View
@@ -40,6 +44,8 @@ namespace CodingTracker.View
         private IWaveColorManager _colorManager;
         private readonly IPanelColourAssigner _panelColorAssigner;
         private readonly ILast28DayPanelSettings _last28DayPanelSettings;
+        private readonly ISessionVisualizationController _sessionVisualizationController;
+        private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
 
 
 
@@ -73,7 +79,11 @@ namespace CodingTracker.View
             IWaveColorManager colorManager,
             IPanelColourAssigner panelColourAssigner,
             ILast28DayPanelSettings last28DayPanelSettings,
-            IApplicationLogger appLogger
+            IApplicationLogger appLogger,
+            ISessionVisualizationController sessionVisualizationController,
+            IDurationParentPanelPositionManager durationPanelPositionManager
+
+
         )
         {
             InitializeComponent();
@@ -92,6 +102,8 @@ namespace CodingTracker.View
             _panelColorAssigner = panelColourAssigner;
             _last28DayPanelSettings = last28DayPanelSettings;
             _appLogger = appLogger;
+            _sessionVisualizationController = sessionVisualizationController;
+            _durationPanelPositionManager = durationPanelPositionManager;
 
             waveVisualizationHost = new WaveVisualizationHost(_waveRenderer, _barStateManager, _colorManager, _stopWatchTimerService);
 
@@ -109,6 +121,27 @@ namespace CodingTracker.View
 
             SetAnimationWindow();
             InitializeAnimator();
+            _sessionVisualizationController = sessionVisualizationController;
+        }
+
+
+        private async Task InitializeActivityDurationPanel()
+        {
+            List<DurationParentPanel> dppList = await _sessionVisualizationController.CreateDurationParentPanelsWithDataAsync(activityParentPanel);
+
+            if (dppList.Count > 0)
+            {
+                foreach (var dpp in dppList)
+                {
+                    _sessionVisualizationController.LogDurationParentPanel(dpp);
+                    activityParentPanel.Controls.Add(dpp);
+
+
+                }
+            }
+            _durationPanelPositionManager.SetPanelPositionsAfterContainerAdd(dppList);
+
+
         }
 
 
@@ -192,9 +225,9 @@ namespace CodingTracker.View
         }
 
 
-        private void MainPage_Shown(object sender, EventArgs e)
+        private async void MainPage_Shown(object sender, EventArgs e)
         {
-            
+            await InitializeActivityDurationPanel();
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)

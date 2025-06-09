@@ -2,7 +2,6 @@
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
-using CodingTracker.View.Forms.Services.SharedFormServices;
 
 namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories
 {
@@ -36,19 +35,22 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         private Color PanelBackColor = Color.FromArgb(45, 46, 60);
 
-        private Color UnderOneHourFillColor1 = Color.FromArgb(225, 40, 120, 200);
-        private Color UnderOneHourFillColor2 = Color.FromArgb(225, 30, 100, 160);
+        private Color Under30MinsFillColour1 = Color.FromArgb(78, 205, 196);
+        private Color Under30MinsfillColour2 = Color.FromArgb(68, 160, 141);
 
-        private Color OneToTwoHoursFillColor1 = Color.FromArgb(230, 140, 80, 220);
-        private Color OneToTwoHoursFillColor2 = Color.FromArgb(230, 100, 60, 180);
+        // Purple/Blue gradient (medium sessions) 
+        private Color HalfHourToOneHourFillColour1 = Color.FromArgb(102, 126, 234);
+        private Color HalfHourToOneHourFillColour2 = Color.FromArgb(118, 75, 162);
 
-        private Color TwoToFourHoursFillColor1 = Color.FromArgb(235, 240, 90, 190);
-        private Color TwoToFourHoursFillColor2 = Color.FromArgb(235, 210, 70, 160);
+        // Pink/Red gradient (long sessions)
+        private Color OneHourTo90MinsFillColour1 = Color.FromArgb(240, 147, 251);
+        private Color OneHourTo90MinsFillColour2 = Color.FromArgb(245, 87, 108);
 
-        private Color FourHoursPlusFillColor1 = Color.FromArgb(235, 255, 180, 90);
-        private Color FourHoursPlusFillColor2 = Color.FromArgb(235, 255, 130, 80);
+        // Blue/Cyan gradient (extra long sessions)
+        private Color TwoHoursPlusFillColor1 = Color.FromArgb(79, 172, 254);
+        private Color TwoHoursPlusFillColor2 = Color.FromArgb(0, 242, 254);
 
-        
+
 
         private readonly IDurationPanelHelper _durationPanelHelper;
         private readonly IApplicationLogger _appLogger;
@@ -113,7 +115,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         private Size SetDurationPanelSize(int durationSeconds)
         {
-            int durationMins = durationSeconds / 60;
+            int durationMins = (durationSeconds / 60) * 2;
 
             int panelWidth = Math.Max(minimumPanelWidth, durationMins);
 
@@ -125,25 +127,25 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         private void SetDurationPanelColours(DurationPanel durationPanel, int durationSeconds)
         {
 
-            if (durationSeconds > 0 && durationSeconds < 3600)
+            if (durationSeconds > 0 && durationSeconds < 1800)
             {
-                durationPanel.FillColor = UnderOneHourFillColor1;
-                durationPanel.FillColor2 = UnderOneHourFillColor2;
+                durationPanel.FillColor = Under30MinsFillColour1;
+                durationPanel.FillColor2 = Under30MinsfillColour2;
             }
-            else if (durationSeconds >= 3600 && durationSeconds < 7200)
+            else if (durationSeconds >= 1800 && durationSeconds < 3600)
             {
-                durationPanel.FillColor = OneToTwoHoursFillColor1;
-                durationPanel.FillColor2 = OneToTwoHoursFillColor2;
+                durationPanel.FillColor = HalfHourToOneHourFillColour1;
+                durationPanel.FillColor2 = HalfHourToOneHourFillColour2;
             }
-            else if (durationSeconds >= 7200 && durationSeconds < 14400)
+            else if (durationSeconds >= 3600 && durationSeconds < 5400)
             {
-                durationPanel.FillColor = TwoToFourHoursFillColor1;
-                durationPanel.FillColor2 = TwoToFourHoursFillColor2;
+                durationPanel.FillColor = OneHourTo90MinsFillColour1;
+                durationPanel.FillColor2 = OneHourTo90MinsFillColour2;
             }
-            else if (durationSeconds >= 14400)
+            else if (durationSeconds >= 5400)
             {
-                durationPanel.FillColor = FourHoursPlusFillColor1;
-                durationPanel.FillColor2 = FourHoursPlusFillColor2;
+                durationPanel.FillColor = TwoHoursPlusFillColor1;
+                durationPanel.FillColor2 = TwoHoursPlusFillColor2;
             }
         }
 

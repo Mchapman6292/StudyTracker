@@ -12,7 +12,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
     {
         Task CreateAllVisualPanelsAsync(Guna2GradientPanel displayPanel);
         void UpdateAllDurationLabels(Guna2GradientPanel displayPanel);
-        Task<List<DurationParentPanel>> CreateDurationParentPanelsWithDataAsync();
+        Task<List<DurationParentPanel>> CreateDurationParentPanelsWithDataAsync(Guna2GradientPanel activityParentPanel);
         void LogDurationParentPanel(DurationParentPanel durationParentPanel);
     }
 
@@ -23,9 +23,10 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
         private readonly ISessionContainerPanelFactory _sessionContainerPanelFactory;
         private readonly IDurationPanelFactory _durationPanelFactory;
         private readonly IApplicationLogger _appLogger;
-        private readonly IDurationPanelPositionManager _durationPanelPositionManager;
+        private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
+        private readonly ISessionDurationScaler _sessionDurationScaler;
 
-        public SessionVisualizationController(ICodingSessionRepository codingSessionRepository, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, IDurationPanelFactory durationPanelFactory, IApplicationLogger appLogger, IDurationPanelPositionManager durationPanelPositionManager)
+        public SessionVisualizationController(ICodingSessionRepository codingSessionRepository, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, IDurationPanelFactory durationPanelFactory, IApplicationLogger appLogger, IDurationParentPanelPositionManager durationPanelPositionManager, ISessionDurationScaler sessionDurationScaler)
         {
             _codingSessionRepository = codingSessionRepository;
             _durationParentPanelFactory = durationParentPanelFactory;
@@ -33,6 +34,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
             _durationPanelFactory = durationPanelFactory;
             _appLogger = appLogger;
             _durationPanelPositionManager = durationPanelPositionManager;
+            _sessionDurationScaler = sessionDurationScaler;
         }
 
  
@@ -43,10 +45,10 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
 
         }
 
-        public async Task<List<DurationParentPanel>> CreateDurationParentPanelsWithDataAsync()
+        public async Task<List<DurationParentPanel>> CreateDurationParentPanelsWithDataAsync(Guna2GradientPanel activityParentPanel)
         {
             // Create empty durationParentPanel
-            List<DurationParentPanel> newDurationParentPanelsWithoutData = _durationParentPanelFactory.CreateEmptyDurationParentPanels();
+            List<DurationParentPanel> newDurationParentPanelsWithoutData = _durationParentPanelFactory.CreateEmptyDurationParentPanels(activityParentPanel);
 
             _durationPanelPositionManager.SetInitialPosition(newDurationParentPanelsWithoutData);
 
@@ -68,6 +70,8 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
                     durationParentPanel.SessionContainerPanel.AddToCodingSessionsForOneDay(matchingSessions);
                     List<DurationPanel> durationPanelsForDate = _durationPanelFactory.CreateMultipleDurationPanelsForOneDaySortedByStartTime(matchingSessions);
                     sessionContainerPanel.AddListOfDurationPanels(durationPanelsForDate);
+
+                    _sessionDurationScaler.CalculateAndStoreScalingValues(sessionContainerPanel);
                 }
                 else
                 {

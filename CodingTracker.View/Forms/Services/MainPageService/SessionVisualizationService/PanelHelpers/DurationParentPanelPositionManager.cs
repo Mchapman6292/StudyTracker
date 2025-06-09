@@ -3,7 +3,7 @@ using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers
 {
-    public interface IDurationPanelPositionManager
+    public interface IDurationParentPanelPositionManager
     {
         void SetInitialPosition(List<DurationParentPanel> panels);
         Point GetNextPosition(Size panelSize);
@@ -17,7 +17,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
 
     }
 
-    public class DurationPanelPositionManager : IDurationPanelPositionManager
+    public class DurationParentPanelPositionManager : IDurationParentPanelPositionManager
     {
         private int currentYPosition = 0;
         private int panelSpacing = 2;

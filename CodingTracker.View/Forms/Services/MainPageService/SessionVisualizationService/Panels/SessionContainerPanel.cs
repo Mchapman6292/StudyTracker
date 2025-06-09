@@ -11,14 +11,21 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         public int TotalSessionCount { get; set; }
         public int TotalDurationSeconds { get; set; }
 
-        List<CodingSessionEntity> dayCodingSessions { get; set; }
+        List<CodingSessionEntity> DayCodingSessions { get; set; }
 
-        List<DurationPanel> durationPanelsForOneDay = new List<DurationPanel>();
+        List<DurationPanel> DurationPanelsForOneDay = new List<DurationPanel>();
 
         public DateOnly SessionDateLocal { get; set; }
         public bool NoSessions { get; set; }
 
         public bool IsInDurationParentPanelControls = false;
+
+        public float TotalLogRatioUnits { get; set; }
+        public int AvailableWidthForPanels { get; set; }
+        public float ScaleFactor { get; set; }
+        public bool HasCalculatedScaling { get; set; } = false;
+
+
 
         public SessionContainerPanel()
         {
@@ -30,7 +37,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         public void AddToCodingSessionsForOneDay(List<CodingSessionEntity> codingSessionsForOneDay)
         {
-            dayCodingSessions = codingSessionsForOneDay;
+            DayCodingSessions = codingSessionsForOneDay;
         }
 
         public void AddListOfDurationPanels(List<DurationPanel> sortedDurationPanels)
@@ -44,7 +51,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         public void AddDurationPanelToControlsAndList(DurationPanel durationPanel)
         {
-            durationPanelsForOneDay.Add(durationPanel);
+            DurationPanelsForOneDay.Add(durationPanel);
             this.Controls.Add(durationPanel);
             TotalSessionCount++;
             TotalDurationSeconds += durationPanel.DurationSeconds;
@@ -55,6 +62,10 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         }
 
+        public List<DurationPanel> ReturnDurationPanelsForOneDay()
+        {
+            return DurationPanelsForOneDay;
+        }
 
 
         public void ClearDurationPanels()
@@ -75,6 +86,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             return this.Parent is DurationParentPanel;
         }
 
+        
 
 
     }
