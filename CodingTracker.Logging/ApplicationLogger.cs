@@ -129,6 +129,9 @@ namespace CodingTracker.Logging.ApplicationLoggers
         }
 
 
+    
+
+
         // Method overloading, allows multiple methods with same name but different parameter lists. 
         public void Info(string message) => _logger.Information(message); // General information regarding app operations, e.g user login.
         public void Info(string message, params object[] propertyValues) => _logger.Information(message, propertyValues);

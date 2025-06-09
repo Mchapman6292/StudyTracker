@@ -17,6 +17,8 @@ using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Forms;
+using FontAwesome.Sharp;
+
 
 namespace CodingTracker.View
 {
@@ -169,7 +171,7 @@ namespace CodingTracker.View
                 string todayText = results.TodayTotal;
                 string weekText = results.WeekTotal;
                 string averageText = results.AverageSession;
-                _labelAssignment.UpdateAllLabelDisplayMessages(TodayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
+                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
                 _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
                 _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
                 _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);

@@ -1,14 +1,13 @@
-﻿using CodingTracker.Common.Entities.CodingSessionEntities;
-using CodingTracker.Common.Utilities;
+﻿using CodingTracker.Common.Utilities;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using Guna.UI2.WinForms;
-using System.Xml.Linq;
 
 namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories
 {
     public interface IDurationParentPanelFactory
     {
+        List<DurationParentPanel> CreateEmptyDurationParentPanels();
         DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal);
     }
 
@@ -20,15 +19,18 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         private readonly IDurationPanelHelper _durationPanelHelper;
         private readonly IUtilityService _utilityService;
         private readonly ISessionContainerPanelFactory _sessionContainerPanelFactory;
+        private readonly IDurationPanelPositionManager _durationPanelPositionManager;
 
-        public DurationParentPanelFactory(IDurationPanelHelper durationPanelHelper, IUtilityService utilityService, ISessionContainerPanelFactory sessionContainerPanelFactory)
+
+        public DurationParentPanelFactory(IDurationPanelHelper durationPanelHelper, IUtilityService utilityService, ISessionContainerPanelFactory sessionContainerPanelFactory, IDurationPanelPositionManager durationPanelPositionManager)
         {
             _durationPanelHelper = durationPanelHelper;
             _utilityService = utilityService;
             _sessionContainerPanelFactory = sessionContainerPanelFactory;
+            _durationPanelPositionManager = durationPanelPositionManager;
         }
 
-        public DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal )
+        public DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal)
         {
             
 
@@ -39,7 +41,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
                 FillColor = Color.Transparent,
                 ForeColor = SystemColors.ControlText,
                 Padding = new Padding(15, 8, 15, 8),
-                SessionContainerPanel = _sessionContainerPanelFactory.CreateSessionContainerPanel(panelDateLocal)
+                PanelDateLocal = panelDateLocal
 
             };
 
@@ -50,11 +52,42 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             int totalDurationPanelSeconds = durationParentPanel.SumDurationPanelSeconds();
             CreateDurationLabel(durationParentPanel, totalDurationPanelSeconds);
 
+            SessionContainerPanel sessionContainerPanel = _sessionContainerPanelFactory.CreateSessionContainerPanel(panelDateLocal);
+
+            durationParentPanel.AddSessionContainerPanel(sessionContainerPanel); 
+
             return durationParentPanel;
 
         }
 
-  
+
+
+        public List<DurationParentPanel> CreateEmptyDurationParentPanels()
+        {
+            List<DurationParentPanel> newDurationParentPanelsWithoutData = new List<DurationParentPanel>();
+
+      
+            List<DateOnly> sevenPreviousDays = GetDatesForPreviousSevenDaysDescending();
+
+            foreach (DateOnly localDate in sevenPreviousDays)
+            {
+                DurationParentPanel durationParentPanel = CreateDurationParentPanelWithSessionContainerPanel(localDate);
+                newDurationParentPanelsWithoutData.Add(durationParentPanel);
+            }
+
+            return newDurationParentPanelsWithoutData;
+        }
+
+
+        private List<DateOnly> GetDatesForPreviousSevenDaysDescending()
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today).AddDays(-1);
+            return Enumerable.Range(1, 7)
+                             .Select(i => today.AddDays(-i))
+                             .OrderByDescending(d => d)
+                             .ToList();
+        }
+
 
         public void CreateDateLabel(DurationParentPanel durationParentPanel, DateOnly panelDateLocal)
         {
@@ -82,6 +115,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
                 Font = new Font("Segoe UI", 8F),
                 Size = new Size(50, 19),
                 ForeColor = Color.FromArgb(136, 136, 136),
+          
                 TextAlignment = ContentAlignment.MiddleRight
             };
             durationParentPanel.DurationTotalLabel = label;

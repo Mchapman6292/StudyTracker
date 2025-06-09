@@ -13,14 +13,19 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         List<CodingSessionEntity> dayCodingSessions { get; set; }
 
-        DateOnly SessionDateLocal { get; set; }
-        bool NoSessions { get; set; }   
+        List<DurationPanel> durationPanelsForOneDay = new List<DurationPanel>();
+
+        public DateOnly SessionDateLocal { get; set; }
+        public bool NoSessions { get; set; }
+
+        public bool IsInDurationParentPanelControls = false;
 
         public SessionContainerPanel()
         {
             this.BackColor = Color.Transparent;
             this.FillColor = Color.Transparent;
             this.Padding = new Padding(0, 4, 0, 4);
+
         }
 
         public void AddToCodingSessionsForOneDay(List<CodingSessionEntity> codingSessionsForOneDay)
@@ -32,18 +37,23 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         {
             foreach (DurationPanel durationPanel in sortedDurationPanels)
             {
-                AddDurationPanel(durationPanel);
+                AddDurationPanelToControlsAndList(durationPanel);
             }
-
         }
 
-        public void AddDurationPanel(DurationPanel durationPanel)
+
+        public void AddDurationPanelToControlsAndList(DurationPanel durationPanel)
         {
+            durationPanelsForOneDay.Add(durationPanel);
             this.Controls.Add(durationPanel);
             TotalSessionCount++;
             TotalDurationSeconds += durationPanel.DurationSeconds;
         }
 
+        public void AddDurationPanel()
+        {
+
+        }
 
 
 
@@ -59,6 +69,11 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             return this.Controls.OfType<DurationPanel>().ToList();
         }
 
+
+        public bool ReturnIsInDurationParentPanelControls()
+        {
+            return this.Parent is DurationParentPanel;
+        }
 
 
 

@@ -10,7 +10,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         public DateTime EndTimeLocal { get; set; }
         public string StudyProject { get; set; }
 
-
+        public bool isInSessionContainerPanelControls = false;
 
         public DurationPanel()
         {
@@ -42,5 +42,12 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             
             MessageBox.Show($"Duration: {DurationHHMM}s\nNotes: {StudyProject}");
         }
+
+        public bool ReturnisInSessionContainerPanelControls()
+        {
+            return this.Parent is SessionContainerPanel;
+        }
+
+
     }
 }

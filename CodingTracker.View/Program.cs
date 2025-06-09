@@ -47,6 +47,7 @@ namespace CodingTracker.View.Program
 
     //https://github.com/am-523?tab=repositories
     //https://github.com/am-523/Animation-Slide-Panel-2/blob/main/tab.Designer.cs
+    //https://dribbble.com/tags/dark-theme-dashboard
 
     internal static class Program
     {
@@ -114,6 +115,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
                     .AddSingleton<IDurationPanelHelper, DurationPanelHelper>()
                     .AddSingleton<ISessionVisualizationController, SessionVisualizationController>()
+                    .AddSingleton<IDurationPanelPositionManager, DurationPanelPositionManager>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()

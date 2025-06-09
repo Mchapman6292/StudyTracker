@@ -48,6 +48,7 @@
 	<ItemGroup>
     <PackageReference Include="DevExpress.DotNet.Web.ProjectTemplates" Version="23.2.5" />
     <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
     <PackageReference Include="Guna.Charts.WinForms" Version="1.1.0" />
     <PackageReference Include="Guna.UI2.WinForms" Version="2.0.4.7" />
     <PackageReference Include="LibVLCSharp" Version="3.9.1" />
