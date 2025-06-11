@@ -1,23 +1,21 @@
 ﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
-using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.WaveVisualizer;
 using Guna.Charts.WinForms;
-using Guna.UI2.AnimatorNS;
 using Guna.UI2.WinForms;
-using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Forms;
-using FontAwesome.Sharp;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 
 namespace CodingTracker.View
@@ -40,9 +38,11 @@ namespace CodingTracker.View
         private IWaveColorManager _colorManager;
         private readonly IPanelColourAssigner _panelColorAssigner;
         private readonly ILast28DayPanelSettings _last28DayPanelSettings;
+        private readonly ISessionVisualizationController _sessionVisualizationController;
+        private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
 
 
-
+        // Side panel visibility = false, change
 
         private WaveVisualizationHost waveVisualizationHost;
 
@@ -73,7 +73,11 @@ namespace CodingTracker.View
             IWaveColorManager colorManager,
             IPanelColourAssigner panelColourAssigner,
             ILast28DayPanelSettings last28DayPanelSettings,
-            IApplicationLogger appLogger
+            IApplicationLogger appLogger,
+            ISessionVisualizationController sessionVisualizationController,
+            IDurationParentPanelPositionManager durationPanelPositionManager
+
+
         )
         {
             InitializeComponent();
@@ -92,6 +96,8 @@ namespace CodingTracker.View
             _panelColorAssigner = panelColourAssigner;
             _last28DayPanelSettings = last28DayPanelSettings;
             _appLogger = appLogger;
+            _sessionVisualizationController = sessionVisualizationController;
+            _durationPanelPositionManager = durationPanelPositionManager;
 
             waveVisualizationHost = new WaveVisualizationHost(_waveRenderer, _barStateManager, _colorManager, _stopWatchTimerService);
 
@@ -99,6 +105,9 @@ namespace CodingTracker.View
             this.Load += MainPage_Load;
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
+
+            startSessionButtonNew.MouseEnter += StartSessionButtonNew_MouseEnter;
+            startSessionButtonNew.MouseLeave += StartSessionButtonNew_MouseLeave;
 
 
             waveStopWatch.Start();
@@ -109,9 +118,53 @@ namespace CodingTracker.View
 
             SetAnimationWindow();
             InitializeAnimator();
+            _sessionVisualizationController = sessionVisualizationController;
         }
 
 
+        private async Task InitializeActivityDurationPanel()
+        {
+            List<DurationParentPanel> dppList = await _sessionVisualizationController.CreateDurationParentPanelsWithDataAsync(activityParentPanel);
+
+            if (dppList.Count > 0)
+            {
+                foreach (var dpp in dppList)
+                {
+                    _sessionVisualizationController.LogDurationParentPanel(dpp);
+                    activityParentPanel.Controls.Add(dpp);
+
+
+                }
+            }
+            _durationPanelPositionManager.SetPanelPositionsAfterContainerAdd(dppList);
+
+
+        }
+
+
+
+        private void EditMossGifRegion()    
+        {
+            int trimTop = 15;
+            int trimWBottom = 15;
+
+            Bitmap mossGifBitmap = Properties.Resources.The_IT_Crowd_Intro_BitMap;
+
+            var clipRegion = new Region(new Rectangle(0, trimTop, mossPictureBox.Width, mossPictureBox.Height - trimTop - trimWBottom));
+
+
+            mossPictureBox.Region = clipRegion;
+
+        }
+
+
+        private Image ByteArrayToImage(byte[] byteArray)
+        {
+            using (var ms = new MemoryStream(byteArray))
+            {
+                return Image.FromStream(ms);
+            }
+        }
 
 
 
@@ -178,11 +231,12 @@ namespace CodingTracker.View
                 _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
 
                 SetWaveHostSize();
-;
+                ;
                 await PopulateDoughnutDataSet();
-   
+
 
                 Last28DaysPanel.BringToFront();
+                EditMossGifRegion();
             }
 
             finally
@@ -192,9 +246,9 @@ namespace CodingTracker.View
         }
 
 
-        private void MainPage_Shown(object sender, EventArgs e)
+        private async void MainPage_Shown(object sender, EventArgs e)
         {
-            
+            await InitializeActivityDurationPanel();
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
@@ -432,7 +486,17 @@ namespace CodingTracker.View
             }
         }
 
-     
+
+        private void StartSessionButtonNew_MouseEnter(object sender, EventArgs e)
+        {
+            mossPictureBox.Visible = true;
+        }
+
+        private void StartSessionButtonNew_MouseLeave(object sender, EventArgs e)
+        {
+            mossPictureBox.Visible = false;
+        }
+
     }
 }
 

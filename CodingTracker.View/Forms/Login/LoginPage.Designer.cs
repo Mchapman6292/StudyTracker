@@ -92,7 +92,7 @@ namespace CodingTracker.View
             // rememberMeTextBox
             // 
             guna2Transition1.SetDecoration(rememberMeTextBox, Guna.UI2.AnimatorNS.DecorationType.None);
-            rememberMeTextBox.ForeColor = Color.HotPink;
+            rememberMeTextBox.ForeColor = Color.FromArgb(168, 228, 255);
             rememberMeTextBox.Location = new Point(99, 294);
             rememberMeTextBox.Name = "rememberMeTextBox";
             rememberMeTextBox.Size = new Size(100, 23);
@@ -129,7 +129,7 @@ namespace CodingTracker.View
             loginPageUsernameTextbox.ForeColor = Color.White;
             loginPageUsernameTextbox.Location = new Point(44, 149);
             loginPageUsernameTextbox.Name = "loginPageUsernameTextbox";
-            loginPageUsernameTextbox.PlaceholderForeColor = Color.Azure;
+            loginPageUsernameTextbox.PlaceholderForeColor = Color.FromArgb(168, 228, 255);
             loginPageUsernameTextbox.PlaceholderText = "Username";
             loginPageUsernameTextbox.SelectedText = "";
             loginPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges2;
@@ -288,10 +288,10 @@ namespace CodingTracker.View
             loginButton.CustomizableEdges = customizableEdges21;
             guna2Transition1.SetDecoration(loginButton, Guna.UI2.AnimatorNS.DecorationType.None);
             loginButton.EnableHoverRipple = true;
-            loginButton.FillColor = Color.FromArgb(255, 81, 195);
-            loginButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            loginButton.FillColor = Color.FromArgb(153, 218, 255);
+            loginButton.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             loginButton.Font = new Font("Segoe UI", 9F);
-            loginButton.ForeColor = Color.White;
+            loginButton.ForeColor = Color.FromArgb(168, 228, 255);
             loginButton.Location = new Point(44, 352);
             loginButton.Name = "loginButton";
             loginButton.ShadowDecoration.CustomizableEdges = customizableEdges22;
@@ -312,9 +312,9 @@ namespace CodingTracker.View
             guna2Transition1.SetDecoration(forgotPasswordButton, Guna.UI2.AnimatorNS.DecorationType.None);
             forgotPasswordButton.EnableHoverRipple = true;
             forgotPasswordButton.FillColor = Color.FromArgb(255, 81, 195);
-            forgotPasswordButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            forgotPasswordButton.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             forgotPasswordButton.Font = new Font("Segoe UI", 9F);
-            forgotPasswordButton.ForeColor = Color.White;
+            forgotPasswordButton.ForeColor = Color.FromArgb(168, 228, 255);
             forgotPasswordButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             forgotPasswordButton.Location = new Point(187, 352);
             forgotPasswordButton.Name = "forgotPasswordButton";
@@ -341,7 +341,7 @@ namespace CodingTracker.View
             createAccountButton.FillColor = Color.FromArgb(35, 34, 50);
             createAccountButton.FillColor2 = Color.FromArgb(35, 34, 50);
             createAccountButton.Font = new Font("Segoe UI", 9F);
-            createAccountButton.ForeColor = Color.HotPink;
+            createAccountButton.ForeColor = Color.FromArgb(168, 228, 255);
             createAccountButton.Location = new Point(196, 291);
             createAccountButton.Name = "createAccountButton";
             createAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges20;

@@ -1,14 +1,15 @@
 ﻿using CodingTracker.Common.Utilities;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using Guna.UI2.WinForms;
 
 namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories
 {
     public interface IDurationParentPanelFactory
     {
-        List<DurationParentPanel> CreateEmptyDurationParentPanels();
-        DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal);
+        List<DurationParentPanel> CreateEmptyDurationParentPanels(Guna2GradientPanel activityParentPanel);
+        DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal, Guna2GradientPanel activityParentPanel);
     }
 
     public class DurationParentPanelFactory : IDurationParentPanelFactory
@@ -19,10 +20,10 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
         private readonly IDurationPanelHelper _durationPanelHelper;
         private readonly IUtilityService _utilityService;
         private readonly ISessionContainerPanelFactory _sessionContainerPanelFactory;
-        private readonly IDurationPanelPositionManager _durationPanelPositionManager;
+        private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
 
 
-        public DurationParentPanelFactory(IDurationPanelHelper durationPanelHelper, IUtilityService utilityService, ISessionContainerPanelFactory sessionContainerPanelFactory, IDurationPanelPositionManager durationPanelPositionManager)
+        public DurationParentPanelFactory(IDurationPanelHelper durationPanelHelper, IUtilityService utilityService, ISessionContainerPanelFactory sessionContainerPanelFactory, IDurationParentPanelPositionManager durationPanelPositionManager)
         {
             _durationPanelHelper = durationPanelHelper;
             _utilityService = utilityService;
@@ -30,13 +31,13 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             _durationPanelPositionManager = durationPanelPositionManager;
         }
 
-        public DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal)
+        public DurationParentPanel CreateDurationParentPanelWithSessionContainerPanel(DateOnly panelDateLocal, Guna2GradientPanel activityParentPanel)
         {
-            
+
 
             DurationParentPanel durationParentPanel = new DurationParentPanel()
             {
-                Size = ParentPanelSize,
+                Size = new Size(activityParentPanel.Width, 35),
                 BackColor = Color.Transparent,
                 FillColor = Color.Transparent,
                 ForeColor = SystemColors.ControlText,
@@ -62,7 +63,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
 
 
-        public List<DurationParentPanel> CreateEmptyDurationParentPanels()
+        public List<DurationParentPanel> CreateEmptyDurationParentPanels(Guna2GradientPanel activityParentPanel)
         {
             List<DurationParentPanel> newDurationParentPanelsWithoutData = new List<DurationParentPanel>();
 
@@ -71,7 +72,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
             foreach (DateOnly localDate in sevenPreviousDays)
             {
-                DurationParentPanel durationParentPanel = CreateDurationParentPanelWithSessionContainerPanel(localDate);
+                DurationParentPanel durationParentPanel = CreateDurationParentPanelWithSessionContainerPanel(localDate, activityParentPanel);
                 newDurationParentPanelsWithoutData.Add(durationParentPanel);
             }
 

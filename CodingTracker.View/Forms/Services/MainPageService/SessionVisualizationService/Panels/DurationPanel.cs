@@ -12,6 +12,12 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
 
         public bool isInSessionContainerPanelControls = false;
 
+
+
+        public float LogRatio { get; set; }
+        public int CalculatedScaledWidth { get; set; }
+        public int FinalAppliedWidth { get; set; }
+
         public DurationPanel()
         {
             this.BorderRadius = 2;

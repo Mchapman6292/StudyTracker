@@ -22,20 +22,19 @@ using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
+using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.Session;
+using CodingTracker.View.Forms.WaveVisualizer;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
 using CodingTracker.View.TimerDisplayService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodingTracker.View.Forms.WaveVisualizer;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
-using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
-using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 
 
 // Add good session indicator? / mouse up /down?
@@ -115,7 +114,8 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ILast28DayPanelSettings, Last28Panelsettings>()
                     .AddSingleton<IDurationPanelHelper, DurationPanelHelper>()
                     .AddSingleton<ISessionVisualizationController, SessionVisualizationController>()
-                    .AddSingleton<IDurationPanelPositionManager, DurationPanelPositionManager>()
+                    .AddSingleton<IDurationParentPanelPositionManager, DurationParentPanelPositionManager>()
+                    .AddSingleton<ISessionDurationScaler, SessionDurationScaler>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()

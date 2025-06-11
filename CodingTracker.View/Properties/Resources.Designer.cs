@@ -22,7 +22,7 @@ namespace CodingTracker.View.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace CodingTracker.View.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CodingTracker.View.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace CodingTracker.View.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] CodingTrackerLoginPagePlaceHolderMp4 {
+        public static byte[] CodingTrackerLoginPagePlaceHolderMp4 {
             get {
                 object obj = ResourceManager.GetObject("CodingTrackerLoginPagePlaceHolderMp4", resourceCulture);
                 return ((byte[])(obj));
@@ -73,7 +73,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap EditSessionIcon {
+        public static System.Drawing.Bitmap EditSessionIcon {
             get {
                 object obj = ResourceManager.GetObject("EditSessionIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap HomeButtonIcon {
+        public static System.Drawing.Bitmap HomeButtonIcon {
             get {
                 object obj = ResourceManager.GetObject("HomeButtonIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] LoginScreenMedia {
+        public static byte[] LoginScreenMedia {
             get {
                 object obj = ResourceManager.GetObject("LoginScreenMedia", resourceCulture);
                 return ((byte[])(obj));
@@ -101,9 +101,19 @@ namespace CodingTracker.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] mossGifNew {
+            get {
+                object obj = ResourceManager.GetObject("mossGifNew", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pause {
+        public static System.Drawing.Bitmap pause {
             get {
                 object obj = ResourceManager.GetObject("pause", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +123,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pause_button {
+        public static System.Drawing.Bitmap pause_button {
             get {
                 object obj = ResourceManager.GetObject("pause-button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +133,7 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap playButton {
+        public static System.Drawing.Bitmap playButton {
             get {
                 object obj = ResourceManager.GetObject("playButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,9 +143,19 @@ namespace CodingTracker.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap replay {
+        public static System.Drawing.Bitmap replay {
             get {
                 object obj = ResourceManager.GetObject("replay", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap The_IT_Crowd_Intro_BitMap {
+            get {
+                object obj = ResourceManager.GetObject("The_IT_Crowd_Intro_BitMap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

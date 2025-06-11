@@ -27,7 +27,7 @@ namespace CodingTracker.View.Forms
         private readonly IPanelColourAssigner _panelColorAssigner;
         private readonly ILast28DayPanelSettings _last28DayPanelSettings;
         private readonly ILabelAssignment _labelAssignment;
-        private readonly IDurationPanelPositionManager _durationPanelPositionManager;
+        private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
 
 
 
@@ -35,7 +35,7 @@ namespace CodingTracker.View.Forms
 
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController, ILabelAssignment labelAssignment, IDurationPanelPositionManager durationPanelPositionManager)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager)
         {
             InitializeComponent();
             _buttonHighligherService = buttonHighlighterService;
@@ -71,7 +71,7 @@ namespace CodingTracker.View.Forms
 
         private async Task InitializeTestPanelAsync()
         {
-            List<DurationParentPanel> dppList = await _sessionVisualizationController.CreateDurationParentPanelsWithDataAsync();
+            List<DurationParentPanel> dppList = await _sessionVisualizationController.CreateDurationParentPanelsWithDataAsync(testAcitivtyControllerPanel);
 
             if (dppList.Count > 0)
             {

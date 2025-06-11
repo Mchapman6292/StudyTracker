@@ -187,20 +187,6 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 
         public void UpdateDateLabelsWithHTML(Panel parentPanel)
         {
-
-
-            List<DateTime> last28Days = _panelColourAssigner.GetDatesPrevious28days();
-            var gunaDateLabels = parentPanel.Controls.OfType<Guna2HtmlLabel>().ToList();
-
-            _appLogger.Info($"Number of labels for {nameof(UpdateDateLabelsWithHTML)}: {gunaDateLabels.Count}.");
-
-
-            for (int i = 0; i < last28Days.Count && i < gunaDateLabels.Count; i++)
-            {
-                DateTime labelDate = last28Days[i];
-                Guna2HtmlLabel currentLabel = gunaDateLabels[i];
-                FormatDateLabel(currentLabel, labelDate);
-            }
         }
 
 
