@@ -10,7 +10,7 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
-using CodingTracker.View.Forms.WaveVisualizer;
+using CodingTracker.View.Forms.WaveVisualizer;  
 using Guna.Charts.WinForms;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
@@ -170,6 +170,7 @@ namespace CodingTracker.View
 
         private void SetWaveHostSize()
         {
+            /*
             WaveVisualizationPanel.Controls.Add(waveVisualizationHost);
 
             waveVisualizationHost.Size = new Size(362, 70);
@@ -180,6 +181,7 @@ namespace CodingTracker.View
             waveVisualizationHost.Start();
 
             waveVisualizationHost.UpdateIntensity(1.0f);
+            */
         }
 
 
@@ -220,20 +222,24 @@ namespace CodingTracker.View
             this.Enabled = false;
             try
             {
+                /*
                 var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
                 string todayText = results.TodayTotal;
                 string weekText = results.WeekTotal;
                 string averageText = results.AverageSession;
                 _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
                 _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
+
+                */
                 _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
                 _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
                 _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
 
                 SetWaveHostSize();
-                ;
+                
+                /*
                 await PopulateDoughnutDataSet();
-
+                */
 
                 Last28DaysPanel.BringToFront();
                 EditMossGifRegion();
@@ -248,7 +254,9 @@ namespace CodingTracker.View
 
         private async void MainPage_Shown(object sender, EventArgs e)
         {
+            /*
             await InitializeActivityDurationPanel();
+            */
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)

@@ -48,7 +48,7 @@ namespace CodingTracker.View
             InitializeVLCPlayer();
 
             // Set up text box events
-            loginPageUsernameTextbox.Enter += LoginPagePasswordTextbox_Enter;
+     
             loginPageUsernameTextbox.Leave += LoginPageUsernameTextbox_Leave;
             LoginPagePasswordTextbox.Enter += LoginPagePasswordTextbox_Enter;
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
@@ -174,9 +174,9 @@ namespace CodingTracker.View
             }
         }
 
-        private void UsernameTextBox_Enter(object sender, EventArgs e)
+        private void LoginPageUsernameTextbox_Enter(object sender, EventArgs e)
         {
-
+            
         }
 
         private void LoginPageUsernameTextbox_Leave(object sender, EventArgs e)
@@ -184,7 +184,7 @@ namespace CodingTracker.View
             if (string.IsNullOrWhiteSpace(loginPageUsernameTextbox.Text))
             {
                 loginPageUsernameTextbox.Text = "Username";
-                loginPageUsernameTextbox.ForeColor = Color.White;
+                loginPageUsernameTextbox.PlaceholderForeColor = Color.FromArgb(102, 255, 255, 255);
             }
         }
 
@@ -304,7 +304,7 @@ namespace CodingTracker.View
         {
             if (rememberMeToggle.Checked)
             {
-                rememberMeTextBox.ForeColor = Color.FromArgb(168, 228, 255);
+                rememberMeTextBox.ForeColor = SystemColors.ControlLightLight;
             }
             else
             {
@@ -334,7 +334,6 @@ namespace CodingTracker.View
 
         private void LoginPageDisplaySuccessMessage(string message)
         {
-            LoginPageCreationSuccessTextBox.Text = message;
         }
 
         #endregion
