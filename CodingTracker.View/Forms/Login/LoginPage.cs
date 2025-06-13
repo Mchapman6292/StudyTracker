@@ -1,18 +1,13 @@
-﻿using CodingTracker.Common.BusinessInterfaces;
+﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using Guna.UI2.WinForms;
-using LibVLCSharp.Shared;
-using LibVLCSharp.WinForms;
-using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.Common.BusinessInterfaces.Authentication;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
-using System;
-using System.Linq.Expressions;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
 using Npgsql;
-using CodingTracker.View.Forms;
 
 namespace CodingTracker.View
 {
