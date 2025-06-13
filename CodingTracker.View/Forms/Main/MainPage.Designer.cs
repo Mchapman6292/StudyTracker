@@ -354,10 +354,10 @@ namespace CodingTracker.View
             bottomHalfParentPanel.Controls.Add(starRatingPanel);
             bottomHalfParentPanel.Controls.Add(Last28DaysPanel);
             bottomHalfParentPanel.CustomizableEdges = customizableEdges37;
-            bottomHalfParentPanel.Location = new Point(41, 208);
+            bottomHalfParentPanel.Location = new Point(77, 208);
             bottomHalfParentPanel.Name = "bottomHalfParentPanel";
             bottomHalfParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges38;
-            bottomHalfParentPanel.Size = new Size(1257, 443);
+            bottomHalfParentPanel.Size = new Size(1221, 443);
             bottomHalfParentPanel.TabIndex = 29;
             // 
             // starRatingPanel
@@ -674,7 +674,7 @@ namespace CodingTracker.View
             Last28DaysPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             Last28DaysPanel.ForeColor = SystemColors.ControlText;
             Last28DaysPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            Last28DaysPanel.Location = new Point(4, 31);
+            Last28DaysPanel.Location = new Point(18, 31);
             Last28DaysPanel.Name = "Last28DaysPanel";
             Last28DaysPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
             Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges36;
@@ -871,7 +871,7 @@ namespace CodingTracker.View
             guna2HtmlLabel6.BackColor = Color.Transparent;
             guna2HtmlLabel6.Font = new Font("Century Gothic", 20F, FontStyle.Bold);
             guna2HtmlLabel6.ForeColor = Color.FromArgb(204, 84, 144);
-            guna2HtmlLabel6.Location = new Point(61, 1);
+            guna2HtmlLabel6.Location = new Point(118, 0);
             guna2HtmlLabel6.Name = "guna2HtmlLabel6";
             guna2HtmlLabel6.Size = new Size(203, 34);
             guna2HtmlLabel6.TabIndex = 33;
@@ -912,7 +912,7 @@ namespace CodingTracker.View
             readyToBeginLabel.BackColor = Color.Transparent;
             readyToBeginLabel.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             readyToBeginLabel.ForeColor = Color.HotPink;
-            readyToBeginLabel.Location = new Point(167, 3);
+            readyToBeginLabel.Location = new Point(131, 3);
             readyToBeginLabel.Name = "readyToBeginLabel";
             readyToBeginLabel.Size = new Size(135, 25);
             readyToBeginLabel.TabIndex = 36;
@@ -934,10 +934,10 @@ namespace CodingTracker.View
             guna2GradientPanel5.FillColor = Color.FromArgb(153, 30, 30, 50);
             guna2GradientPanel5.FillColor2 = Color.FromArgb(153, 30, 30, 50);
             guna2GradientPanel5.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            guna2GradientPanel5.Location = new Point(0, 670);
+            guna2GradientPanel5.Location = new Point(72, 670);
             guna2GradientPanel5.Name = "guna2GradientPanel5";
             guna2GradientPanel5.ShadowDecoration.CustomizableEdges = customizableEdges46;
-            guna2GradientPanel5.Size = new Size(1300, 111);
+            guna2GradientPanel5.Size = new Size(1228, 111);
             guna2GradientPanel5.TabIndex = 37;
             // 
             // guna2HtmlLabel13
@@ -947,7 +947,7 @@ namespace CodingTracker.View
             guna2HtmlLabel13.Enabled = false;
             guna2HtmlLabel13.Font = new Font("Segoe UI", 10F);
             guna2HtmlLabel13.ForeColor = SystemColors.ControlLight;
-            guna2HtmlLabel13.Location = new Point(845, 34);
+            guna2HtmlLabel13.Location = new Point(809, 34);
             guna2HtmlLabel13.Name = "guna2HtmlLabel13";
             guna2HtmlLabel13.Size = new Size(159, 19);
             guna2HtmlLabel13.TabIndex = 39;
@@ -960,7 +960,7 @@ namespace CodingTracker.View
             guna2HtmlLabel12.BackColor = Color.Transparent;
             guna2HtmlLabel12.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             guna2HtmlLabel12.ForeColor = Color.HotPink;
-            guna2HtmlLabel12.Location = new Point(845, 3);
+            guna2HtmlLabel12.Location = new Point(809, 3);
             guna2HtmlLabel12.Name = "guna2HtmlLabel12";
             guna2HtmlLabel12.Size = new Size(140, 25);
             guna2HtmlLabel12.TabIndex = 38;
@@ -974,7 +974,7 @@ namespace CodingTracker.View
             guna2HtmlLabel2.Enabled = false;
             guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
             guna2HtmlLabel2.ForeColor = SystemColors.ControlLight;
-            guna2HtmlLabel2.Location = new Point(167, 34);
+            guna2HtmlLabel2.Location = new Point(131, 34);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
             guna2HtmlLabel2.Size = new Size(149, 19);
             guna2HtmlLabel2.TabIndex = 37;
@@ -1013,7 +1013,7 @@ namespace CodingTracker.View
             githubPictureBox.IconColor = Color.FromArgb(255, 160, 210);
             githubPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             githubPictureBox.IconSize = 34;
-            githubPictureBox.Location = new Point(12, 1);
+            githubPictureBox.Location = new Point(72, 0);
             githubPictureBox.Margin = new Padding(3, 2, 3, 2);
             githubPictureBox.Name = "githubPictureBox";
             githubPictureBox.Size = new Size(35, 34);
