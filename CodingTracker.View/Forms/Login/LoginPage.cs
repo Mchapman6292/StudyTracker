@@ -49,8 +49,8 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
             // Set up button events
-            forgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            forgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+            newCreateAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
+            newCreateAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
 
 
@@ -71,10 +71,10 @@ namespace CodingTracker.View
         private void LoginPage_Load(object sender, EventArgs e)
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
-            _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
-            _buttonHighlighterService.SetButtonHoverColors(forgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(newForgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(newCreateAccountButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
-            _buttonHighlighterService.SetButtonBackColorAndBorderColor(forgotPasswordButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(newCreateAccountButton);
         }
 
 
@@ -281,13 +281,13 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
-            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.TestForm);
+            _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
+            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)

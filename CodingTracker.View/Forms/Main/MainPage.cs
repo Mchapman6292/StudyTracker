@@ -109,8 +109,8 @@ namespace CodingTracker.View
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
 
-            startSessionButtonNew.MouseEnter += StartSessionButtonNew_MouseEnter;
-            startSessionButtonNew.MouseLeave += StartSessionButtonNew_MouseLeave;
+            startSessionButton.MouseEnter += StartSessionButtonNew_MouseEnter;
+            startSessionButton.MouseLeave += StartSessionButtonNew_MouseLeave;
 
 
             waveStopWatch.Start();
@@ -208,24 +208,23 @@ namespace CodingTracker.View
             this.Enabled = false;
             try
             {
-                
+
                 var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
                 string todayText = results.TodayTotal;
                 string weekText = results.WeekTotal;
                 string averageText = results.AverageSession;
-                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
+                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
                 _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
 
-                
-                _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
-                _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
-                _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
+                _buttonHighlighterService.SetButtonHoverColors(startSessionButton);
+                _buttonHighlighterService.SetButtonHoverColors(viewSessionButton);
 
                 SetWaveHostSize();
-                
-                
+
+
                 await PopulateDoughnutDataSet();
-                
+
 
                 Last28DaysPanel.BringToFront();
                 EditMossGifRegion();
@@ -240,14 +239,14 @@ namespace CodingTracker.View
 
         private async void MainPage_Shown(object sender, EventArgs e)
         {
-            /*
+
             await InitializeActivityDurationPanel();
-            */
+
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
-            Size buttonSize = CodingSessionButton.CalculateButtonEdges();
+            Size buttonSize = startSessionButton.CalculateButtonEdges();
 
             int height = buttonSize.Height;
             int width = buttonSize.Width;
@@ -491,7 +490,7 @@ namespace CodingTracker.View
 
         private void StartSessionButtonNew_MouseLeave(object sender, EventArgs e)
         {
-            
+
         }
 
         private void DisableMossGifAfterOneLoop()
@@ -526,6 +525,10 @@ namespace CodingTracker.View
 
         }
 
+        private void viewSessionButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.EditSessionForm);
+        }
     }
 }
 

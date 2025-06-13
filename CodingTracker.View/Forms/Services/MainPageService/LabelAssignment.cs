@@ -11,7 +11,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService
 {
     public interface ILabelAssignment
     {
-        void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, Guna2HtmlLabel streakLabel, string todayText, string weekText, string averageText);    
+        void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, string todayText, string weekText, string averageText);    
         Task<(string TodayTotal, string WeekTotal, string AverageSession)> GetAllLabelDisplayMessagesAsync();
         void FormatTodayLabelText(Guna2HtmlLabel label, string formattedTime);
         void FormatWeekTotalLabel(Guna2HtmlLabel label, string formattedTime);
@@ -61,7 +61,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService
             return (todayText, weekText, averageText);
         }
 
-        public void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, Guna2HtmlLabel  streakLabel, string todayText, string weekText, string averageText)
+        public void UpdateAllLabelDisplayMessages(Guna2HtmlLabel todayLabel, Guna2HtmlLabel weekLabel, Guna2HtmlLabel averageLabel, string todayText, string weekText, string averageText)
         {
             FormatTodayLabelText(todayLabel, todayText);
             FormatWeekTotalLabel(weekLabel, weekText);

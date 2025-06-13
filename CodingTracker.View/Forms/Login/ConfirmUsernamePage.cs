@@ -42,20 +42,15 @@ namespace CodingTracker.View.LoginPageService
         private async void ConfirmUsernameButton_Click(object sender, EventArgs e)
         {
             string textBoxUsername = UsernameTextBox.Text;
-            string message = string.Empty;
 
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {
-                message = "Username cannot be blank.";
-                _notificationManager.ShowNotificationDialog(this, message);
-                return;
+                _notificationManager.ShowNotificationDialog(this, "Username cannot be blank.");
             }
 
             if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
             {
-                message = "No username located";
-                _notificationManager.ShowNotificationDialog(this, message);
-                return;
+                _notificationManager.ShowNotificationDialog(this,"Username does not exist");
             }
 
             _formNavigator.SwitchToForm(FormPageEnum.ResetPasswordForm);

@@ -50,16 +50,6 @@ namespace CodingTracker.View
             CustomizableEdges customizableEdges8 = new CustomizableEdges();
             CustomizableEdges customizableEdges9 = new CustomizableEdges();
             CustomizableEdges customizableEdges10 = new CustomizableEdges();
-            CustomizableEdges customizableEdges11 = new CustomizableEdges();
-            CustomizableEdges customizableEdges12 = new CustomizableEdges();
-            CustomizableEdges customizableEdges13 = new CustomizableEdges();
-            CustomizableEdges customizableEdges14 = new CustomizableEdges();
-            CustomizableEdges customizableEdges15 = new CustomizableEdges();
-            CustomizableEdges customizableEdges16 = new CustomizableEdges();
-            CustomizableEdges customizableEdges17 = new CustomizableEdges();
-            CustomizableEdges customizableEdges18 = new CustomizableEdges();
-            CustomizableEdges customizableEdges19 = new CustomizableEdges();
-            CustomizableEdges customizableEdges20 = new CustomizableEdges();
             ChartFont chartFont1 = new ChartFont();
             ChartFont chartFont2 = new ChartFont();
             ChartFont chartFont3 = new ChartFont();
@@ -75,61 +65,44 @@ namespace CodingTracker.View
             ChartFont chartFont7 = new ChartFont();
             Tick tick3 = new Tick();
             ChartFont chartFont8 = new ChartFont();
-            CustomizableEdges customizableEdges53 = new CustomizableEdges();
-            CustomizableEdges customizableEdges54 = new CustomizableEdges();
-            CustomizableEdges customizableEdges33 = new CustomizableEdges();
-            CustomizableEdges customizableEdges34 = new CustomizableEdges();
-            CustomizableEdges customizableEdges31 = new CustomizableEdges();
-            CustomizableEdges customizableEdges32 = new CustomizableEdges();
-            CustomizableEdges customizableEdges21 = new CustomizableEdges();
-            CustomizableEdges customizableEdges22 = new CustomizableEdges();
+            CustomizableEdges customizableEdges37 = new CustomizableEdges();
+            CustomizableEdges customizableEdges38 = new CustomizableEdges();
             CustomizableEdges customizableEdges23 = new CustomizableEdges();
             CustomizableEdges customizableEdges24 = new CustomizableEdges();
+            CustomizableEdges customizableEdges21 = new CustomizableEdges();
+            CustomizableEdges customizableEdges22 = new CustomizableEdges();
+            CustomizableEdges customizableEdges11 = new CustomizableEdges();
+            CustomizableEdges customizableEdges12 = new CustomizableEdges();
+            CustomizableEdges customizableEdges13 = new CustomizableEdges();
+            CustomizableEdges customizableEdges14 = new CustomizableEdges();
+            CustomizableEdges customizableEdges15 = new CustomizableEdges();
+            CustomizableEdges customizableEdges16 = new CustomizableEdges();
+            CustomizableEdges customizableEdges17 = new CustomizableEdges();
+            CustomizableEdges customizableEdges18 = new CustomizableEdges();
+            CustomizableEdges customizableEdges19 = new CustomizableEdges();
+            CustomizableEdges customizableEdges20 = new CustomizableEdges();
+            CustomizableEdges customizableEdges35 = new CustomizableEdges();
+            CustomizableEdges customizableEdges36 = new CustomizableEdges();
             CustomizableEdges customizableEdges25 = new CustomizableEdges();
             CustomizableEdges customizableEdges26 = new CustomizableEdges();
             CustomizableEdges customizableEdges27 = new CustomizableEdges();
             CustomizableEdges customizableEdges28 = new CustomizableEdges();
             CustomizableEdges customizableEdges29 = new CustomizableEdges();
             CustomizableEdges customizableEdges30 = new CustomizableEdges();
-            CustomizableEdges customizableEdges51 = new CustomizableEdges();
-            CustomizableEdges customizableEdges52 = new CustomizableEdges();
-            CustomizableEdges customizableEdges35 = new CustomizableEdges();
-            CustomizableEdges customizableEdges36 = new CustomizableEdges();
-            CustomizableEdges customizableEdges37 = new CustomizableEdges();
-            CustomizableEdges customizableEdges38 = new CustomizableEdges();
+            CustomizableEdges customizableEdges31 = new CustomizableEdges();
+            CustomizableEdges customizableEdges32 = new CustomizableEdges();
+            CustomizableEdges customizableEdges33 = new CustomizableEdges();
+            CustomizableEdges customizableEdges34 = new CustomizableEdges();
             CustomizableEdges customizableEdges39 = new CustomizableEdges();
             CustomizableEdges customizableEdges40 = new CustomizableEdges();
-            CustomizableEdges customizableEdges41 = new CustomizableEdges();
-            CustomizableEdges customizableEdges42 = new CustomizableEdges();
             CustomizableEdges customizableEdges43 = new CustomizableEdges();
             CustomizableEdges customizableEdges44 = new CustomizableEdges();
             CustomizableEdges customizableEdges45 = new CustomizableEdges();
             CustomizableEdges customizableEdges46 = new CustomizableEdges();
-            CustomizableEdges customizableEdges47 = new CustomizableEdges();
-            CustomizableEdges customizableEdges48 = new CustomizableEdges();
-            CustomizableEdges customizableEdges49 = new CustomizableEdges();
-            CustomizableEdges customizableEdges50 = new CustomizableEdges();
-            CustomizableEdges customizableEdges55 = new CustomizableEdges();
-            CustomizableEdges customizableEdges56 = new CustomizableEdges();
-            CustomizableEdges customizableEdges63 = new CustomizableEdges();
-            CustomizableEdges customizableEdges64 = new CustomizableEdges();
-            CustomizableEdges customizableEdges65 = new CustomizableEdges();
-            CustomizableEdges customizableEdges66 = new CustomizableEdges();
-            CustomizableEdges customizableEdges61 = new CustomizableEdges();
-            CustomizableEdges customizableEdges62 = new CustomizableEdges();
-            CustomizableEdges customizableEdges59 = new CustomizableEdges();
-            CustomizableEdges customizableEdges60 = new CustomizableEdges();
-            CustomizableEdges customizableEdges57 = new CustomizableEdges();
-            CustomizableEdges customizableEdges58 = new CustomizableEdges();
+            CustomizableEdges customizableEdges41 = new CustomizableEdges();
+            CustomizableEdges customizableEdges42 = new CustomizableEdges();
             closeButton = new Guna2ControlBox();
             minimizeButton = new Guna2ControlBox();
-            leftSideButtonPanel = new Panel();
-            WaveVisualizationPanel = new Guna2GradientPanel();
-            StartSessionButton = new CustomGradientButton();
-            guna2Panel3 = new Guna2Panel();
-            ViewSessionsButton = new CustomGradientButton();
-            CodingSessionButton = new CustomGradientButton();
-            mainPageWelcomeLabel = new Guna2HtmlLabel();
             TodayTotalPanel = new Guna2GradientPanel();
             todayTotalLabel = new Guna2HtmlLabel();
             guna2GradientPanel3 = new Guna2GradientPanel();
@@ -141,7 +114,6 @@ namespace CodingTracker.View
             doughnutDataset = new GunaDoughnutDataset();
             bottomHalfParentPanel = new Guna2Panel();
             starRatingPanel = new Guna2GradientPanel();
-            streakLabel = new Guna2HtmlLabel();
             guna2HtmlLabel8 = new Guna2HtmlLabel();
             guna2HtmlLabel7 = new Guna2HtmlLabel();
             starRatingsTitleLabel = new Guna2HtmlLabel();
@@ -169,36 +141,26 @@ namespace CodingTracker.View
             activityParentPanel = new Guna2GradientPanel();
             guna2GradientPanel4 = new Guna2GradientPanel();
             guna2HtmlLabel5 = new Guna2HtmlLabel();
-            zeroPanel = new Guna2GradientPanel();
             guna2HtmlLabel4 = new Guna2HtmlLabel();
-            zeroLabel = new Guna2HtmlLabel();
             guna2GradientPanel2 = new Guna2GradientPanel();
-            twoToFourLabel = new Guna2HtmlLabel();
-            underOnePanel = new Guna2GradientPanel();
             guna2HtmlLabel3 = new Guna2HtmlLabel();
             twoToFourPanel = new Guna2GradientPanel();
             guna2HtmlLabel1 = new Guna2HtmlLabel();
-            underOneLabel = new Guna2HtmlLabel();
             guna2GradientPanel1 = new Guna2GradientPanel();
-            oneToTwoLabel = new Guna2HtmlLabel();
-            oneToTwoPanel = new Guna2GradientPanel();
-            testViewSessions = new CustomGradientButton();
+            viewSessionButton = new CustomGradientButton();
             gunaAnimationWindow = new Guna2AnimateWindow(components);
             guna2HtmlLabel6 = new Guna2HtmlLabel();
-            startSessionButtonNew = new CustomGradientButton();
+            startSessionButton = new CustomGradientButton();
             readyToBeginLabel = new Guna2HtmlLabel();
             guna2GradientPanel5 = new Guna2GradientPanel();
             guna2HtmlLabel13 = new Guna2HtmlLabel();
             guna2HtmlLabel12 = new Guna2HtmlLabel();
             guna2HtmlLabel2 = new Guna2HtmlLabel();
             mossPictureBoxGif = new Guna2PictureBox();
-            guna2GradientPanel6 = new Guna2GradientPanel();
-            guna2HtmlLabel10 = new Guna2HtmlLabel();
-            guna2GradientPanel7 = new Guna2GradientPanel();
-            guna2HtmlLabel11 = new Guna2HtmlLabel();
             guna2Separator1 = new Guna2Separator();
-            iconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
-            leftSideButtonPanel.SuspendLayout();
+            githubPictureBox = new FontAwesome.Sharp.IconPictureBox();
+            mainPageDragControl = new Guna2DragControl(components);
+            guna2Separator2 = new Guna2Separator();
             TodayTotalPanel.SuspendLayout();
             guna2GradientPanel3.SuspendLayout();
             averageSessionPanel.SuspendLayout();
@@ -208,9 +170,7 @@ namespace CodingTracker.View
             Last28DaysPanel.SuspendLayout();
             guna2GradientPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mossPictureBoxGif).BeginInit();
-            guna2GradientPanel6.SuspendLayout();
-            guna2GradientPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)githubPictureBox).BeginInit();
             SuspendLayout();
             // 
             // closeButton
@@ -245,138 +205,6 @@ namespace CodingTracker.View
             minimizeButton.Size = new Size(45, 34);
             minimizeButton.TabIndex = 26;
             // 
-            // leftSideButtonPanel
-            // 
-            leftSideButtonPanel.BackColor = Color.FromArgb(28, 27, 42);
-            leftSideButtonPanel.BorderStyle = BorderStyle.FixedSingle;
-            leftSideButtonPanel.Controls.Add(WaveVisualizationPanel);
-            leftSideButtonPanel.Controls.Add(StartSessionButton);
-            leftSideButtonPanel.Controls.Add(guna2Panel3);
-            leftSideButtonPanel.Controls.Add(ViewSessionsButton);
-            leftSideButtonPanel.Controls.Add(CodingSessionButton);
-            leftSideButtonPanel.Controls.Add(mainPageWelcomeLabel);
-            leftSideButtonPanel.Dock = DockStyle.Left;
-            leftSideButtonPanel.Location = new Point(0, 0);
-            leftSideButtonPanel.Name = "leftSideButtonPanel";
-            leftSideButtonPanel.Padding = new Padding(12, 16, 8, 16);
-            leftSideButtonPanel.Size = new Size(16, 781);
-            leftSideButtonPanel.TabIndex = 27;
-            leftSideButtonPanel.Visible = false;
-            // 
-            // WaveVisualizationPanel
-            // 
-            WaveVisualizationPanel.CustomizableEdges = customizableEdges5;
-            WaveVisualizationPanel.Enabled = false;
-            WaveVisualizationPanel.Location = new Point(0, 575);
-            WaveVisualizationPanel.Name = "WaveVisualizationPanel";
-            WaveVisualizationPanel.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            WaveVisualizationPanel.Size = new Size(21, 10);
-            WaveVisualizationPanel.TabIndex = 8;
-            // 
-            // StartSessionButton
-            // 
-            StartSessionButton.Animated = true;
-            StartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
-            StartSessionButton.BorderRadius = 21;
-            StartSessionButton.Cursor = Cursors.Hand;
-            StartSessionButton.CustomizableEdges = customizableEdges7;
-            StartSessionButton.DisabledState.BorderColor = Color.DarkGray;
-            StartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            StartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            StartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            StartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            StartSessionButton.EnableHoverRipple = true;
-            StartSessionButton.FillColor = Color.Empty;
-            StartSessionButton.FillColor2 = Color.Empty;
-            StartSessionButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            StartSessionButton.ForeColor = Color.FromArgb(168, 228, 255);
-            StartSessionButton.Location = new Point(0, 163);
-            StartSessionButton.Name = "StartSessionButton";
-            StartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            StartSessionButton.Size = new Size(159, 45);
-            StartSessionButton.TabIndex = 26;
-            StartSessionButton.Text = "Start Session";
-            StartSessionButton.Click += MainPageStartSessionButton_Click;
-            // 
-            // guna2Panel3
-            // 
-            guna2Panel3.CustomizableEdges = customizableEdges9;
-            guna2Panel3.Location = new Point(3, 601);
-            guna2Panel3.Name = "guna2Panel3";
-            guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            guna2Panel3.Size = new Size(156, 116);
-            guna2Panel3.TabIndex = 25;
-            // 
-            // ViewSessionsButton
-            // 
-            ViewSessionsButton.Animated = true;
-            ViewSessionsButton.AutoRoundedCorners = true;
-            ViewSessionsButton.BorderColor = Color.FromArgb(35, 34, 50);
-            ViewSessionsButton.BorderRadius = 21;
-            ViewSessionsButton.Cursor = Cursors.Hand;
-            ViewSessionsButton.CustomizableEdges = customizableEdges11;
-            ViewSessionsButton.DisabledState.BorderColor = Color.DarkGray;
-            ViewSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            ViewSessionsButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            ViewSessionsButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            ViewSessionsButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            ViewSessionsButton.EnableHoverRipple = true;
-            ViewSessionsButton.FillColor = Color.Empty;
-            ViewSessionsButton.FillColor2 = Color.Empty;
-            ViewSessionsButton.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ViewSessionsButton.ForeColor = Color.FromArgb(168, 228, 255);
-            ViewSessionsButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
-            ViewSessionsButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
-            ViewSessionsButton.Location = new Point(0, 119);
-            ViewSessionsButton.Name = "ViewSessionsButton";
-            ViewSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            ViewSessionsButton.Size = new Size(159, 45);
-            ViewSessionsButton.TabIndex = 8;
-            ViewSessionsButton.Text = "View Sessions";
-            ViewSessionsButton.Click += MainPageEditSessionsButton_Click;
-            // 
-            // CodingSessionButton
-            // 
-            CodingSessionButton.Animated = true;
-            CodingSessionButton.AutoRoundedCorners = true;
-            CodingSessionButton.BackColor = Color.Transparent;
-            CodingSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
-            CodingSessionButton.BorderRadius = 21;
-            CodingSessionButton.Cursor = Cursors.Hand;
-            CodingSessionButton.CustomizableEdges = customizableEdges13;
-            CodingSessionButton.DisabledState.BorderColor = Color.DarkGray;
-            CodingSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            CodingSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            CodingSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            CodingSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            CodingSessionButton.EnableHoverRipple = true;
-            CodingSessionButton.FillColor = Color.Empty;
-            CodingSessionButton.FillColor2 = Color.Empty;
-            CodingSessionButton.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold);
-            CodingSessionButton.ForeColor = Color.FromArgb(168, 228, 255);
-            CodingSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
-            CodingSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
-            CodingSessionButton.Location = new Point(0, 68);
-            CodingSessionButton.Name = "CodingSessionButton";
-            CodingSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            CodingSessionButton.Size = new Size(159, 45);
-            CodingSessionButton.TabIndex = 7;
-            CodingSessionButton.Text = "Coding Session";
-            CodingSessionButton.Click += MainPageCodingSessionButton_Click;
-            // 
-            // mainPageWelcomeLabel
-            // 
-            mainPageWelcomeLabel.AutoSize = false;
-            mainPageWelcomeLabel.BackColor = Color.FromArgb(28, 27, 42);
-            mainPageWelcomeLabel.Font = new Font("Century Gothic", 12F, FontStyle.Bold);
-            mainPageWelcomeLabel.ForeColor = Color.FromArgb(168, 228, 255);
-            mainPageWelcomeLabel.Location = new Point(3, 0);
-            mainPageWelcomeLabel.Name = "mainPageWelcomeLabel";
-            mainPageWelcomeLabel.Size = new Size(156, 68);
-            mainPageWelcomeLabel.TabIndex = 6;
-            mainPageWelcomeLabel.Text = "Coding Tracker";
-            mainPageWelcomeLabel.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
             // TodayTotalPanel
             // 
             TodayTotalPanel.Anchor = AnchorStyles.None;
@@ -386,13 +214,13 @@ namespace CodingTracker.View
             TodayTotalPanel.BorderThickness = 2;
             TodayTotalPanel.Controls.Add(todayTotalLabel);
             TodayTotalPanel.CustomBorderColor = Color.FromArgb(25, 255, 255, 255);
-            TodayTotalPanel.CustomizableEdges = customizableEdges15;
+            TodayTotalPanel.CustomizableEdges = customizableEdges5;
             TodayTotalPanel.FillColor = Color.FromArgb(100, 90, 210);
             TodayTotalPanel.FillColor2 = Color.FromArgb(110, 213, 228);
             TodayTotalPanel.ForeColor = Color.Transparent;
-            TodayTotalPanel.Location = new Point(127, 49);
+            TodayTotalPanel.Location = new Point(77, 49);
             TodayTotalPanel.Name = "TodayTotalPanel";
-            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges6;
             TodayTotalPanel.Size = new Size(270, 145);
             TodayTotalPanel.TabIndex = 28;
             // 
@@ -414,14 +242,14 @@ namespace CodingTracker.View
             guna2GradientPanel3.BorderRadius = 30;
             guna2GradientPanel3.Controls.Add(WeekTotalLabel);
             guna2GradientPanel3.CustomBorderColor = Color.Transparent;
-            guna2GradientPanel3.CustomizableEdges = customizableEdges17;
+            guna2GradientPanel3.CustomizableEdges = customizableEdges7;
             guna2GradientPanel3.FillColor = Color.FromArgb(170, 116, 243);
             guna2GradientPanel3.FillColor2 = Color.FromArgb(252, 124, 180);
             guna2GradientPanel3.ForeColor = Color.Transparent;
-            guna2GradientPanel3.Location = new Point(23, 6);
+            guna2GradientPanel3.Location = new Point(476, 49);
             guna2GradientPanel3.Name = "guna2GradientPanel3";
-            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            guna2GradientPanel3.Size = new Size(234, 129);
+            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            guna2GradientPanel3.Size = new Size(270, 129);
             guna2GradientPanel3.TabIndex = 29;
             // 
             // WeekTotalLabel
@@ -429,7 +257,7 @@ namespace CodingTracker.View
             WeekTotalLabel.AutoSize = false;
             WeekTotalLabel.BackColor = Color.Transparent;
             WeekTotalLabel.IsContextMenuEnabled = false;
-            WeekTotalLabel.Location = new Point(32, 8);
+            WeekTotalLabel.Location = new Point(36, 28);
             WeekTotalLabel.Name = "WeekTotalLabel";
             WeekTotalLabel.Size = new Size(186, 88);
             WeekTotalLabel.TabIndex = 1;
@@ -442,14 +270,14 @@ namespace CodingTracker.View
             averageSessionPanel.BorderRadius = 30;
             averageSessionPanel.Controls.Add(guna2HtmlLabel9);
             averageSessionPanel.Controls.Add(AverageSessionLabel);
-            averageSessionPanel.CustomizableEdges = customizableEdges19;
+            averageSessionPanel.CustomizableEdges = customizableEdges9;
             averageSessionPanel.FillColor = Color.Turquoise;
             averageSessionPanel.FillColor2 = Color.FromArgb(242, 130, 220);
             averageSessionPanel.ForeColor = Color.Transparent;
-            averageSessionPanel.Location = new Point(22, 21);
+            averageSessionPanel.Location = new Point(902, 49);
             averageSessionPanel.Name = "averageSessionPanel";
-            averageSessionPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            averageSessionPanel.Size = new Size(240, 114);
+            averageSessionPanel.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            averageSessionPanel.Size = new Size(270, 129);
             averageSessionPanel.TabIndex = 30;
             // 
             // guna2HtmlLabel9
@@ -468,7 +296,7 @@ namespace CodingTracker.View
             AverageSessionLabel.AutoSize = false;
             AverageSessionLabel.BackColor = Color.Transparent;
             AverageSessionLabel.IsContextMenuEnabled = false;
-            AverageSessionLabel.Location = new Point(24, 18);
+            AverageSessionLabel.Location = new Point(45, 13);
             AverageSessionLabel.Name = "AverageSessionLabel";
             AverageSessionLabel.Size = new Size(186, 88);
             AverageSessionLabel.TabIndex = 3;
@@ -525,18 +353,17 @@ namespace CodingTracker.View
             bottomHalfParentPanel.BackColor = Color.Transparent;
             bottomHalfParentPanel.Controls.Add(starRatingPanel);
             bottomHalfParentPanel.Controls.Add(Last28DaysPanel);
-            bottomHalfParentPanel.CustomizableEdges = customizableEdges53;
+            bottomHalfParentPanel.CustomizableEdges = customizableEdges37;
             bottomHalfParentPanel.Location = new Point(41, 208);
             bottomHalfParentPanel.Name = "bottomHalfParentPanel";
-            bottomHalfParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
-            bottomHalfParentPanel.Size = new Size(1257, 456);
+            bottomHalfParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges38;
+            bottomHalfParentPanel.Size = new Size(1257, 443);
             bottomHalfParentPanel.TabIndex = 29;
             // 
             // starRatingPanel
             // 
             starRatingPanel.BackColor = Color.Transparent;
             starRatingPanel.BorderRadius = 25;
-            starRatingPanel.Controls.Add(streakLabel);
             starRatingPanel.Controls.Add(guna2HtmlLabel8);
             starRatingPanel.Controls.Add(guna2HtmlLabel7);
             starRatingPanel.Controls.Add(starRatingsTitleLabel);
@@ -544,33 +371,19 @@ namespace CodingTracker.View
             starRatingPanel.Controls.Add(starRatingAverageLabel);
             starRatingPanel.Controls.Add(starRatingTotalLabel);
             starRatingPanel.Controls.Add(starBreakdownPanel);
-            starRatingPanel.CustomizableEdges = customizableEdges33;
+            starRatingPanel.CustomizableEdges = customizableEdges23;
             starRatingPanel.FillColor = Color.FromArgb(52, 90, 160, 220);
             starRatingPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             starRatingPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            starRatingPanel.Location = new Point(652, 22);
+            starRatingPanel.Location = new Point(645, 31);
             starRatingPanel.Name = "starRatingPanel";
             starRatingPanel.ShadowDecoration.BorderRadius = 12;
             starRatingPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges34;
+            starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges24;
             starRatingPanel.ShadowDecoration.Enabled = true;
             starRatingPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             starRatingPanel.Size = new Size(571, 369);
             starRatingPanel.TabIndex = 7;
-            // 
-            // streakLabel
-            // 
-            streakLabel.Anchor = AnchorStyles.Bottom;
-            streakLabel.BackColor = Color.Transparent;
-            streakLabel.Enabled = false;
-            streakLabel.Font = new Font("Segoe UI", 10F);
-            streakLabel.ForeColor = SystemColors.ControlLight;
-            streakLabel.Location = new Point(280, 9);
-            streakLabel.Name = "streakLabel";
-            streakLabel.Size = new Size(71, 19);
-            streakLabel.TabIndex = 11;
-            streakLabel.Text = "Streak label";
-            streakLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // guna2HtmlLabel8
             // 
@@ -604,7 +417,7 @@ namespace CodingTracker.View
             starRatingsTitleLabel.BackColor = Color.Transparent;
             starRatingsTitleLabel.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             starRatingsTitleLabel.ForeColor = Color.HotPink;
-            starRatingsTitleLabel.Location = new Point(52, 0);
+            starRatingsTitleLabel.Location = new Point(19, 9);
             starRatingsTitleLabel.Name = "starRatingsTitleLabel";
             starRatingsTitleLabel.Size = new Size(101, 25);
             starRatingsTitleLabel.TabIndex = 1;
@@ -655,11 +468,11 @@ namespace CodingTracker.View
             starBreakdownPanel.Controls.Add(star1IndicatorPanel);
             starBreakdownPanel.Controls.Add(star1Label);
             starBreakdownPanel.Controls.Add(star1CountLabel);
-            starBreakdownPanel.CustomizableEdges = customizableEdges31;
+            starBreakdownPanel.CustomizableEdges = customizableEdges21;
             starBreakdownPanel.FillColor = Color.Transparent;
             starBreakdownPanel.Location = new Point(321, 104);
             starBreakdownPanel.Name = "starBreakdownPanel";
-            starBreakdownPanel.ShadowDecoration.CustomizableEdges = customizableEdges32;
+            starBreakdownPanel.ShadowDecoration.CustomizableEdges = customizableEdges22;
             starBreakdownPanel.Size = new Size(205, 119);
             starBreakdownPanel.TabIndex = 4;
             // 
@@ -667,11 +480,11 @@ namespace CodingTracker.View
             // 
             star5IndicatorPanel.BackColor = Color.Transparent;
             star5IndicatorPanel.BorderRadius = 2;
-            star5IndicatorPanel.CustomizableEdges = customizableEdges21;
+            star5IndicatorPanel.CustomizableEdges = customizableEdges11;
             star5IndicatorPanel.FillColor = Color.FromArgb(255, 80, 140);
             star5IndicatorPanel.Location = new Point(5, 5);
             star5IndicatorPanel.Name = "star5IndicatorPanel";
-            star5IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            star5IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
             star5IndicatorPanel.Size = new Size(12, 12);
             star5IndicatorPanel.TabIndex = 0;
             // 
@@ -702,11 +515,11 @@ namespace CodingTracker.View
             // 
             star4IndicatorPanel.BackColor = Color.Transparent;
             star4IndicatorPanel.BorderRadius = 2;
-            star4IndicatorPanel.CustomizableEdges = customizableEdges23;
+            star4IndicatorPanel.CustomizableEdges = customizableEdges13;
             star4IndicatorPanel.FillColor = Color.FromArgb(255, 120, 180);
             star4IndicatorPanel.Location = new Point(5, 25);
             star4IndicatorPanel.Name = "star4IndicatorPanel";
-            star4IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            star4IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges14;
             star4IndicatorPanel.Size = new Size(12, 12);
             star4IndicatorPanel.TabIndex = 3;
             // 
@@ -737,11 +550,11 @@ namespace CodingTracker.View
             // 
             star3IndicatorPanel.BackColor = Color.Transparent;
             star3IndicatorPanel.BorderRadius = 2;
-            star3IndicatorPanel.CustomizableEdges = customizableEdges25;
+            star3IndicatorPanel.CustomizableEdges = customizableEdges15;
             star3IndicatorPanel.FillColor = Color.FromArgb(180, 100, 200);
             star3IndicatorPanel.Location = new Point(5, 45);
             star3IndicatorPanel.Name = "star3IndicatorPanel";
-            star3IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            star3IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
             star3IndicatorPanel.Size = new Size(12, 12);
             star3IndicatorPanel.TabIndex = 6;
             // 
@@ -772,11 +585,11 @@ namespace CodingTracker.View
             // 
             star2IndicatorPanel.BackColor = Color.Transparent;
             star2IndicatorPanel.BorderRadius = 2;
-            star2IndicatorPanel.CustomizableEdges = customizableEdges27;
+            star2IndicatorPanel.CustomizableEdges = customizableEdges17;
             star2IndicatorPanel.FillColor = Color.FromArgb(140, 120, 220);
             star2IndicatorPanel.Location = new Point(5, 65);
             star2IndicatorPanel.Name = "star2IndicatorPanel";
-            star2IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            star2IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
             star2IndicatorPanel.Size = new Size(12, 12);
             star2IndicatorPanel.TabIndex = 9;
             // 
@@ -807,11 +620,11 @@ namespace CodingTracker.View
             // 
             star1IndicatorPanel.BackColor = Color.Transparent;
             star1IndicatorPanel.BorderRadius = 2;
-            star1IndicatorPanel.CustomizableEdges = customizableEdges29;
+            star1IndicatorPanel.CustomizableEdges = customizableEdges19;
             star1IndicatorPanel.FillColor = Color.FromArgb(80, 200, 220);
             star1IndicatorPanel.Location = new Point(5, 85);
             star1IndicatorPanel.Name = "star1IndicatorPanel";
-            star1IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges30;
+            star1IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
             star1IndicatorPanel.Size = new Size(12, 12);
             star1IndicatorPanel.TabIndex = 12;
             // 
@@ -850,28 +663,21 @@ namespace CodingTracker.View
             Last28DaysPanel.Controls.Add(activityParentPanel);
             Last28DaysPanel.Controls.Add(guna2GradientPanel4);
             Last28DaysPanel.Controls.Add(guna2HtmlLabel5);
-            Last28DaysPanel.Controls.Add(zeroPanel);
             Last28DaysPanel.Controls.Add(guna2HtmlLabel4);
-            Last28DaysPanel.Controls.Add(zeroLabel);
             Last28DaysPanel.Controls.Add(guna2GradientPanel2);
-            Last28DaysPanel.Controls.Add(twoToFourLabel);
-            Last28DaysPanel.Controls.Add(underOnePanel);
             Last28DaysPanel.Controls.Add(guna2HtmlLabel3);
             Last28DaysPanel.Controls.Add(twoToFourPanel);
             Last28DaysPanel.Controls.Add(guna2HtmlLabel1);
-            Last28DaysPanel.Controls.Add(underOneLabel);
             Last28DaysPanel.Controls.Add(guna2GradientPanel1);
-            Last28DaysPanel.Controls.Add(oneToTwoLabel);
-            Last28DaysPanel.Controls.Add(oneToTwoPanel);
-            Last28DaysPanel.CustomizableEdges = customizableEdges51;
+            Last28DaysPanel.CustomizableEdges = customizableEdges35;
             Last28DaysPanel.FillColor = Color.FromArgb(52, 90, 160, 220);
             Last28DaysPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             Last28DaysPanel.ForeColor = SystemColors.ControlText;
-            Last28DaysPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            Last28DaysPanel.Location = new Point(20, 22);
+            Last28DaysPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            Last28DaysPanel.Location = new Point(4, 31);
             Last28DaysPanel.Name = "Last28DaysPanel";
             Last28DaysPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
+            Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges36;
             Last28DaysPanel.ShadowDecoration.Depth = 50;
             Last28DaysPanel.ShadowDecoration.Enabled = true;
             Last28DaysPanel.Size = new Size(575, 372);
@@ -910,11 +716,11 @@ namespace CodingTracker.View
             activityParentPanel.BorderColor = Color.FromArgb(70, 71, 117);
             activityParentPanel.BorderRadius = 8;
             activityParentPanel.BorderThickness = 1;
-            activityParentPanel.CustomizableEdges = customizableEdges35;
+            activityParentPanel.CustomizableEdges = customizableEdges25;
             activityParentPanel.FillColor = Color.FromArgb(45, 46, 60);
-            activityParentPanel.Location = new Point(22, 63);
+            activityParentPanel.Location = new Point(27, 51);
             activityParentPanel.Name = "activityParentPanel";
-            activityParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges36;
+            activityParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges26;
             activityParentPanel.Size = new Size(513, 250);
             activityParentPanel.TabIndex = 0;
             // 
@@ -922,12 +728,12 @@ namespace CodingTracker.View
             // 
             guna2GradientPanel4.BackColor = Color.Transparent;
             guna2GradientPanel4.BorderRadius = 4;
-            guna2GradientPanel4.CustomizableEdges = customizableEdges37;
+            guna2GradientPanel4.CustomizableEdges = customizableEdges27;
             guna2GradientPanel4.FillColor = Color.FromArgb(20, 60, 80);
             guna2GradientPanel4.FillColor2 = Color.FromArgb(40, 100, 120);
             guna2GradientPanel4.Location = new Point(88, 332);
             guna2GradientPanel4.Name = "guna2GradientPanel4";
-            guna2GradientPanel4.ShadowDecoration.CustomizableEdges = customizableEdges38;
+            guna2GradientPanel4.ShadowDecoration.CustomizableEdges = customizableEdges28;
             guna2GradientPanel4.Size = new Size(23, 15);
             guna2GradientPanel4.TabIndex = 1;
             // 
@@ -942,19 +748,6 @@ namespace CodingTracker.View
             guna2HtmlLabel5.TabIndex = 2;
             guna2HtmlLabel5.Text = "0 min";
             // 
-            // zeroPanel
-            // 
-            zeroPanel.BackColor = Color.Transparent;
-            zeroPanel.BorderRadius = 4;
-            zeroPanel.CustomizableEdges = customizableEdges39;
-            zeroPanel.FillColor = Color.FromArgb(20, 60, 80);
-            zeroPanel.FillColor2 = Color.FromArgb(40, 100, 120);
-            zeroPanel.Location = new Point(102, 285);
-            zeroPanel.Name = "zeroPanel";
-            zeroPanel.ShadowDecoration.CustomizableEdges = customizableEdges40;
-            zeroPanel.Size = new Size(23, 15);
-            zeroPanel.TabIndex = 1;
-            // 
             // guna2HtmlLabel4
             // 
             guna2HtmlLabel4.BackColor = Color.Transparent;
@@ -966,53 +759,18 @@ namespace CodingTracker.View
             guna2HtmlLabel4.TabIndex = 8;
             guna2HtmlLabel4.Text = "2-4hr";
             // 
-            // zeroLabel
-            // 
-            zeroLabel.BackColor = Color.Transparent;
-            zeroLabel.Font = new Font("Segoe UI", 9F);
-            zeroLabel.ForeColor = Color.Silver;
-            zeroLabel.Location = new Point(130, 283);
-            zeroLabel.Name = "zeroLabel";
-            zeroLabel.Size = new Size(33, 17);
-            zeroLabel.TabIndex = 2;
-            zeroLabel.Text = "0 min";
-            // 
             // guna2GradientPanel2
             // 
             guna2GradientPanel2.BackColor = Color.Transparent;
             guna2GradientPanel2.BorderRadius = 4;
-            guna2GradientPanel2.CustomizableEdges = customizableEdges41;
+            guna2GradientPanel2.CustomizableEdges = customizableEdges29;
             guna2GradientPanel2.FillColor = Color.FromArgb(40, 140, 160);
             guna2GradientPanel2.FillColor2 = Color.FromArgb(80, 200, 220);
             guna2GradientPanel2.Location = new Point(168, 330);
             guna2GradientPanel2.Name = "guna2GradientPanel2";
-            guna2GradientPanel2.ShadowDecoration.CustomizableEdges = customizableEdges42;
+            guna2GradientPanel2.ShadowDecoration.CustomizableEdges = customizableEdges30;
             guna2GradientPanel2.Size = new Size(23, 15);
             guna2GradientPanel2.TabIndex = 3;
-            // 
-            // twoToFourLabel
-            // 
-            twoToFourLabel.BackColor = Color.Transparent;
-            twoToFourLabel.Font = new Font("Segoe UI", 9F);
-            twoToFourLabel.ForeColor = Color.Silver;
-            twoToFourLabel.Location = new Point(370, 283);
-            twoToFourLabel.Name = "twoToFourLabel";
-            twoToFourLabel.Size = new Size(31, 17);
-            twoToFourLabel.TabIndex = 8;
-            twoToFourLabel.Text = "2-4hr";
-            // 
-            // underOnePanel
-            // 
-            underOnePanel.BackColor = Color.Transparent;
-            underOnePanel.BorderRadius = 4;
-            underOnePanel.CustomizableEdges = customizableEdges43;
-            underOnePanel.FillColor = Color.FromArgb(40, 140, 160);
-            underOnePanel.FillColor2 = Color.FromArgb(80, 200, 220);
-            underOnePanel.Location = new Point(182, 285);
-            underOnePanel.Name = "underOnePanel";
-            underOnePanel.ShadowDecoration.CustomizableEdges = customizableEdges44;
-            underOnePanel.Size = new Size(23, 15);
-            underOnePanel.TabIndex = 3;
             // 
             // guna2HtmlLabel3
             // 
@@ -1031,13 +789,13 @@ namespace CodingTracker.View
             twoToFourPanel.BorderColor = Color.FromArgb(255, 140, 200);
             twoToFourPanel.BorderRadius = 4;
             twoToFourPanel.BorderThickness = 1;
-            twoToFourPanel.CustomizableEdges = customizableEdges45;
+            twoToFourPanel.CustomizableEdges = customizableEdges31;
             twoToFourPanel.FillColor = Color.FromArgb(180, 100, 200);
             twoToFourPanel.FillColor2 = Color.FromArgb(255, 120, 180);
             twoToFourPanel.Location = new Point(331, 330);
             twoToFourPanel.Name = "twoToFourPanel";
             twoToFourPanel.ShadowDecoration.Color = Color.FromArgb(255, 120, 200);
-            twoToFourPanel.ShadowDecoration.CustomizableEdges = customizableEdges46;
+            twoToFourPanel.ShadowDecoration.CustomizableEdges = customizableEdges32;
             twoToFourPanel.ShadowDecoration.Enabled = true;
             twoToFourPanel.ShadowDecoration.Shadow = new Padding(2);
             twoToFourPanel.Size = new Size(23, 15);
@@ -1054,89 +812,52 @@ namespace CodingTracker.View
             guna2HtmlLabel1.TabIndex = 6;
             guna2HtmlLabel1.Text = "1-2hr";
             // 
-            // underOneLabel
-            // 
-            underOneLabel.BackColor = Color.Transparent;
-            underOneLabel.Font = new Font("Segoe UI", 9F);
-            underOneLabel.ForeColor = Color.Silver;
-            underOneLabel.Location = new Point(210, 283);
-            underOneLabel.Name = "underOneLabel";
-            underOneLabel.Size = new Size(20, 17);
-            underOneLabel.TabIndex = 4;
-            underOneLabel.Text = "< 1hr";
-            // 
             // guna2GradientPanel1
             // 
             guna2GradientPanel1.BackColor = Color.Transparent;
             guna2GradientPanel1.BorderRadius = 4;
-            guna2GradientPanel1.CustomizableEdges = customizableEdges47;
+            guna2GradientPanel1.CustomizableEdges = customizableEdges33;
             guna2GradientPanel1.FillColor = Color.FromArgb(80, 160, 200);
             guna2GradientPanel1.FillColor2 = Color.FromArgb(140, 120, 220);
             guna2GradientPanel1.ImeMode = ImeMode.NoControl;
             guna2GradientPanel1.Location = new Point(248, 330);
             guna2GradientPanel1.Name = "guna2GradientPanel1";
             guna2GradientPanel1.ShadowDecoration.Color = Color.FromArgb(140, 140, 255);
-            guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges34;
             guna2GradientPanel1.ShadowDecoration.Enabled = true;
             guna2GradientPanel1.ShadowDecoration.Shadow = new Padding(1);
             guna2GradientPanel1.Size = new Size(23, 15);
             guna2GradientPanel1.TabIndex = 5;
             // 
-            // oneToTwoLabel
+            // viewSessionButton
             // 
-            oneToTwoLabel.BackColor = Color.Transparent;
-            oneToTwoLabel.Font = new Font("Segoe UI", 9F);
-            oneToTwoLabel.ForeColor = Color.Silver;
-            oneToTwoLabel.Location = new Point(290, 283);
-            oneToTwoLabel.Name = "oneToTwoLabel";
-            oneToTwoLabel.Size = new Size(31, 17);
-            oneToTwoLabel.TabIndex = 6;
-            oneToTwoLabel.Text = "1-2hr";
-            // 
-            // oneToTwoPanel
-            // 
-            oneToTwoPanel.BackColor = Color.Transparent;
-            oneToTwoPanel.BorderRadius = 4;
-            oneToTwoPanel.CustomizableEdges = customizableEdges49;
-            oneToTwoPanel.FillColor = Color.FromArgb(80, 160, 200);
-            oneToTwoPanel.FillColor2 = Color.FromArgb(140, 120, 220);
-            oneToTwoPanel.Location = new Point(262, 285);
-            oneToTwoPanel.Name = "oneToTwoPanel";
-            oneToTwoPanel.ShadowDecoration.Color = Color.FromArgb(140, 140, 255);
-            oneToTwoPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
-            oneToTwoPanel.ShadowDecoration.Enabled = true;
-            oneToTwoPanel.ShadowDecoration.Shadow = new Padding(1);
-            oneToTwoPanel.Size = new Size(23, 15);
-            oneToTwoPanel.TabIndex = 5;
-            // 
-            // testViewSessions
-            // 
-            testViewSessions.Animated = true;
-            testViewSessions.AnimatedGIF = true;
-            testViewSessions.BackColor = Color.Transparent;
-            testViewSessions.BorderColor = Color.FromArgb(35, 34, 50);
-            testViewSessions.BorderRadius = 15;
-            testViewSessions.Cursor = Cursors.Hand;
-            testViewSessions.CustomizableEdges = customizableEdges55;
-            testViewSessions.DisabledState.BorderColor = Color.DarkGray;
-            testViewSessions.DisabledState.CustomBorderColor = Color.DarkGray;
-            testViewSessions.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            testViewSessions.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            testViewSessions.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            testViewSessions.EnableHoverRipple = true;
-            testViewSessions.FillColor = Color.FromArgb(255, 81, 195);
-            testViewSessions.FillColor2 = Color.FromArgb(168, 228, 255);
-            testViewSessions.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            testViewSessions.ForeColor = Color.FloralWhite;
-            testViewSessions.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            testViewSessions.HoverState.FillColor = Color.FromArgb(255, 81, 195);
-            testViewSessions.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
-            testViewSessions.Location = new Point(845, 67);
-            testViewSessions.Name = "testViewSessions";
-            testViewSessions.ShadowDecoration.CustomizableEdges = customizableEdges56;
-            testViewSessions.Size = new Size(180, 44);
-            testViewSessions.TabIndex = 35;
-            testViewSessions.Text = "View Sessions";
+            viewSessionButton.Animated = true;
+            viewSessionButton.AnimatedGIF = true;
+            viewSessionButton.BackColor = Color.Transparent;
+            viewSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            viewSessionButton.BorderRadius = 15;
+            viewSessionButton.Cursor = Cursors.Hand;
+            viewSessionButton.CustomizableEdges = customizableEdges39;
+            viewSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            viewSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            viewSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            viewSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            viewSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            viewSessionButton.EnableHoverRipple = true;
+            viewSessionButton.FillColor = Color.FromArgb(255, 81, 195);
+            viewSessionButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            viewSessionButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            viewSessionButton.ForeColor = Color.FloralWhite;
+            viewSessionButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            viewSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
+            viewSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
+            viewSessionButton.Location = new Point(835, 67);
+            viewSessionButton.Name = "viewSessionButton";
+            viewSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges40;
+            viewSessionButton.Size = new Size(180, 44);
+            viewSessionButton.TabIndex = 35;
+            viewSessionButton.Text = "View Sessions";
+            viewSessionButton.Click += viewSessionButton_Click;
             // 
             // gunaAnimationWindow
             // 
@@ -1157,33 +878,33 @@ namespace CodingTracker.View
             guna2HtmlLabel6.Text = "CodingTracker";
             guna2HtmlLabel6.TextAlignment = ContentAlignment.TopCenter;
             // 
-            // startSessionButtonNew
+            // startSessionButton
             // 
-            startSessionButtonNew.Animated = true;
-            startSessionButtonNew.BackColor = Color.Transparent;
-            startSessionButtonNew.BorderColor = Color.FromArgb(35, 34, 50);
-            startSessionButtonNew.BorderRadius = 15;
-            startSessionButtonNew.Cursor = Cursors.Hand;
-            startSessionButtonNew.CustomizableEdges = customizableEdges63;
-            startSessionButtonNew.DisabledState.BorderColor = Color.DarkGray;
-            startSessionButtonNew.DisabledState.CustomBorderColor = Color.DarkGray;
-            startSessionButtonNew.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            startSessionButtonNew.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            startSessionButtonNew.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            startSessionButtonNew.EnableHoverRipple = true;
-            startSessionButtonNew.FillColor = Color.FromArgb(255, 81, 195);
-            startSessionButtonNew.FillColor2 = Color.FromArgb(168, 228, 255);
-            startSessionButtonNew.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            startSessionButtonNew.ForeColor = Color.FloralWhite;
-            startSessionButtonNew.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            startSessionButtonNew.HoverState.FillColor = Color.FromArgb(255, 81, 195);
-            startSessionButtonNew.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
-            startSessionButtonNew.Location = new Point(167, 67);
-            startSessionButtonNew.Name = "startSessionButtonNew";
-            startSessionButtonNew.ShadowDecoration.CustomizableEdges = customizableEdges64;
-            startSessionButtonNew.Size = new Size(180, 44);
-            startSessionButtonNew.TabIndex = 34;
-            startSessionButtonNew.Text = " Start Session";
+            startSessionButton.Animated = true;
+            startSessionButton.BackColor = Color.Transparent;
+            startSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            startSessionButton.BorderRadius = 15;
+            startSessionButton.Cursor = Cursors.Hand;
+            startSessionButton.CustomizableEdges = customizableEdges43;
+            startSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            startSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            startSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            startSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            startSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            startSessionButton.EnableHoverRipple = true;
+            startSessionButton.FillColor = Color.FromArgb(255, 81, 195);
+            startSessionButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            startSessionButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            startSessionButton.ForeColor = Color.FloralWhite;
+            startSessionButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            startSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
+            startSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
+            startSessionButton.Location = new Point(151, 67);
+            startSessionButton.Name = "startSessionButton";
+            startSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges44;
+            startSessionButton.Size = new Size(180, 44);
+            startSessionButton.TabIndex = 34;
+            startSessionButton.Text = " Start Session";
             // 
             // readyToBeginLabel
             // 
@@ -1191,7 +912,7 @@ namespace CodingTracker.View
             readyToBeginLabel.BackColor = Color.Transparent;
             readyToBeginLabel.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             readyToBeginLabel.ForeColor = Color.HotPink;
-            readyToBeginLabel.Location = new Point(191, 3);
+            readyToBeginLabel.Location = new Point(167, 3);
             readyToBeginLabel.Name = "readyToBeginLabel";
             readyToBeginLabel.Size = new Size(135, 25);
             readyToBeginLabel.TabIndex = 36;
@@ -1200,25 +921,23 @@ namespace CodingTracker.View
             // 
             // guna2GradientPanel5
             // 
-            guna2GradientPanel5.BorderColor = Color.FromArgb(25, 255, 255, 255);
-            guna2GradientPanel5.BorderRadius = 25;
-            guna2GradientPanel5.BorderStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            guna2GradientPanel5.BorderColor = Color.Transparent;
             guna2GradientPanel5.BorderThickness = 2;
             guna2GradientPanel5.Controls.Add(guna2HtmlLabel13);
             guna2GradientPanel5.Controls.Add(guna2HtmlLabel12);
             guna2GradientPanel5.Controls.Add(guna2HtmlLabel2);
             guna2GradientPanel5.Controls.Add(readyToBeginLabel);
             guna2GradientPanel5.Controls.Add(mossPictureBoxGif);
-            guna2GradientPanel5.Controls.Add(testViewSessions);
-            guna2GradientPanel5.Controls.Add(startSessionButtonNew);
-            guna2GradientPanel5.CustomizableEdges = customizableEdges65;
+            guna2GradientPanel5.Controls.Add(viewSessionButton);
+            guna2GradientPanel5.Controls.Add(startSessionButton);
+            guna2GradientPanel5.CustomizableEdges = customizableEdges45;
             guna2GradientPanel5.FillColor = Color.FromArgb(153, 30, 30, 50);
             guna2GradientPanel5.FillColor2 = Color.FromArgb(153, 30, 30, 50);
             guna2GradientPanel5.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            guna2GradientPanel5.Location = new Point(42, 670);
+            guna2GradientPanel5.Location = new Point(0, 670);
             guna2GradientPanel5.Name = "guna2GradientPanel5";
-            guna2GradientPanel5.ShadowDecoration.CustomizableEdges = customizableEdges66;
-            guna2GradientPanel5.Size = new Size(1257, 111);
+            guna2GradientPanel5.ShadowDecoration.CustomizableEdges = customizableEdges46;
+            guna2GradientPanel5.Size = new Size(1300, 111);
             guna2GradientPanel5.TabIndex = 37;
             // 
             // guna2HtmlLabel13
@@ -1228,7 +947,7 @@ namespace CodingTracker.View
             guna2HtmlLabel13.Enabled = false;
             guna2HtmlLabel13.Font = new Font("Segoe UI", 10F);
             guna2HtmlLabel13.ForeColor = SystemColors.ControlLight;
-            guna2HtmlLabel13.Location = new Point(855, 34);
+            guna2HtmlLabel13.Location = new Point(845, 34);
             guna2HtmlLabel13.Name = "guna2HtmlLabel13";
             guna2HtmlLabel13.Size = new Size(159, 19);
             guna2HtmlLabel13.TabIndex = 39;
@@ -1241,7 +960,7 @@ namespace CodingTracker.View
             guna2HtmlLabel12.BackColor = Color.Transparent;
             guna2HtmlLabel12.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             guna2HtmlLabel12.ForeColor = Color.HotPink;
-            guna2HtmlLabel12.Location = new Point(855, 3);
+            guna2HtmlLabel12.Location = new Point(845, 3);
             guna2HtmlLabel12.Name = "guna2HtmlLabel12";
             guna2HtmlLabel12.Size = new Size(140, 25);
             guna2HtmlLabel12.TabIndex = 38;
@@ -1255,7 +974,7 @@ namespace CodingTracker.View
             guna2HtmlLabel2.Enabled = false;
             guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
             guna2HtmlLabel2.ForeColor = SystemColors.ControlLight;
-            guna2HtmlLabel2.Location = new Point(191, 34);
+            guna2HtmlLabel2.Location = new Point(167, 34);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
             guna2HtmlLabel2.Size = new Size(149, 19);
             guna2HtmlLabel2.TabIndex = 37;
@@ -1264,101 +983,58 @@ namespace CodingTracker.View
             // 
             // mossPictureBoxGif
             // 
-            mossPictureBoxGif.CustomizableEdges = customizableEdges61;
+            mossPictureBoxGif.CustomizableEdges = customizableEdges41;
             mossPictureBoxGif.Image = Resources.The_IT_Crowd_Intro_BitMap;
             mossPictureBoxGif.ImageRotate = 0F;
             mossPictureBoxGif.Location = new Point(432, 3);
             mossPictureBoxGif.Name = "mossPictureBoxGif";
-            mossPictureBoxGif.ShadowDecoration.CustomizableEdges = customizableEdges62;
+            mossPictureBoxGif.ShadowDecoration.CustomizableEdges = customizableEdges42;
             mossPictureBoxGif.Size = new Size(188, 116);
             mossPictureBoxGif.SizeMode = PictureBoxSizeMode.Zoom;
             mossPictureBoxGif.TabIndex = 9;
             mossPictureBoxGif.TabStop = false;
             mossPictureBoxGif.Visible = false;
             // 
-            // guna2GradientPanel6
-            // 
-            guna2GradientPanel6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            guna2GradientPanel6.BackColor = Color.FromArgb(35, 34, 50);
-            guna2GradientPanel6.BorderRadius = 20;
-            guna2GradientPanel6.Controls.Add(guna2GradientPanel3);
-            guna2GradientPanel6.Controls.Add(guna2HtmlLabel10);
-            guna2GradientPanel6.CustomizableEdges = customizableEdges59;
-            guna2GradientPanel6.FillColor = Color.FromArgb(52, 90, 160, 220);
-            guna2GradientPanel6.FillColor2 = Color.FromArgb(52, 255, 81, 195);
-            guna2GradientPanel6.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            guna2GradientPanel6.Location = new Point(512, 35);
-            guna2GradientPanel6.Name = "guna2GradientPanel6";
-            guna2GradientPanel6.ShadowDecoration.CustomizableEdges = customizableEdges60;
-            guna2GradientPanel6.Size = new Size(288, 152);
-            guna2GradientPanel6.TabIndex = 38;
-            // 
-            // guna2HtmlLabel10
-            // 
-            guna2HtmlLabel10.AutoSize = false;
-            guna2HtmlLabel10.BackColor = Color.Transparent;
-            guna2HtmlLabel10.Font = new Font("Segoe UI", 12F);
-            guna2HtmlLabel10.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel10.IsContextMenuEnabled = false;
-            guna2HtmlLabel10.Location = new Point(597, 212);
-            guna2HtmlLabel10.Name = "guna2HtmlLabel10";
-            guna2HtmlLabel10.Size = new Size(96, 29);
-            guna2HtmlLabel10.TabIndex = 32;
-            guna2HtmlLabel10.Text = "6 Day Streak!";
-            // 
-            // guna2GradientPanel7
-            // 
-            guna2GradientPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            guna2GradientPanel7.BackColor = Color.FromArgb(35, 34, 50);
-            guna2GradientPanel7.BorderRadius = 20;
-            guna2GradientPanel7.Controls.Add(guna2HtmlLabel11);
-            guna2GradientPanel7.Controls.Add(averageSessionPanel);
-            guna2GradientPanel7.CustomizableEdges = customizableEdges57;
-            guna2GradientPanel7.FillColor = Color.FromArgb(52, 90, 160, 220);
-            guna2GradientPanel7.FillColor2 = Color.FromArgb(52, 255, 81, 195);
-            guna2GradientPanel7.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            guna2GradientPanel7.Location = new Point(940, 42);
-            guna2GradientPanel7.Name = "guna2GradientPanel7";
-            guna2GradientPanel7.ShadowDecoration.CustomizableEdges = customizableEdges58;
-            guna2GradientPanel7.Size = new Size(288, 152);
-            guna2GradientPanel7.TabIndex = 39;
-            // 
-            // guna2HtmlLabel11
-            // 
-            guna2HtmlLabel11.AutoSize = false;
-            guna2HtmlLabel11.BackColor = Color.Transparent;
-            guna2HtmlLabel11.Font = new Font("Segoe UI", 12F);
-            guna2HtmlLabel11.ForeColor = Color.Gainsboro;
-            guna2HtmlLabel11.IsContextMenuEnabled = false;
-            guna2HtmlLabel11.Location = new Point(597, 212);
-            guna2HtmlLabel11.Name = "guna2HtmlLabel11";
-            guna2HtmlLabel11.Size = new Size(96, 29);
-            guna2HtmlLabel11.TabIndex = 32;
-            guna2HtmlLabel11.Text = "6 Day Streak!";
-            // 
             // guna2Separator1
             // 
             guna2Separator1.FillColor = Color.FromArgb(25, 255, 255, 255);
-            guna2Separator1.Location = new Point(16, 34);
+            guna2Separator1.FillStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            guna2Separator1.Location = new Point(0, 34);
             guna2Separator1.Margin = new Padding(3, 2, 3, 2);
             guna2Separator1.Name = "guna2Separator1";
-            guna2Separator1.Size = new Size(1283, 2);
+            guna2Separator1.Size = new Size(1300, 10);
             guna2Separator1.TabIndex = 40;
             // 
-            // iconPictureBox1
+            // githubPictureBox
             // 
-            iconPictureBox1.BackColor = Color.FromArgb(35, 34, 50);
-            iconPictureBox1.ForeColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.CodePullRequest;
-            iconPictureBox1.IconColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            iconPictureBox1.IconSize = 34;
-            iconPictureBox1.Location = new Point(21, 0);
-            iconPictureBox1.Margin = new Padding(3, 2, 3, 2);
-            iconPictureBox1.Name = "iconPictureBox1";
-            iconPictureBox1.Size = new Size(35, 34);
-            iconPictureBox1.TabIndex = 41;
-            iconPictureBox1.TabStop = false;
+            githubPictureBox.BackColor = Color.FromArgb(35, 34, 50);
+            githubPictureBox.ForeColor = Color.FromArgb(255, 160, 210);
+            githubPictureBox.IconChar = FontAwesome.Sharp.IconChar.CodePullRequest;
+            githubPictureBox.IconColor = Color.FromArgb(255, 160, 210);
+            githubPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            githubPictureBox.IconSize = 34;
+            githubPictureBox.Location = new Point(12, 1);
+            githubPictureBox.Margin = new Padding(3, 2, 3, 2);
+            githubPictureBox.Name = "githubPictureBox";
+            githubPictureBox.Size = new Size(35, 34);
+            githubPictureBox.TabIndex = 41;
+            githubPictureBox.TabStop = false;
+            // 
+            // mainPageDragControl
+            // 
+            mainPageDragControl.DockIndicatorTransparencyValue = 0.6D;
+            mainPageDragControl.TargetControl = this;
+            mainPageDragControl.UseTransparentDrag = true;
+            // 
+            // guna2Separator2
+            // 
+            guna2Separator2.FillColor = Color.FromArgb(25, 255, 255, 255);
+            guna2Separator2.FillStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            guna2Separator2.Location = new Point(-1, 658);
+            guna2Separator2.Margin = new Padding(3, 2, 3, 2);
+            guna2Separator2.Name = "guna2Separator2";
+            guna2Separator2.Size = new Size(1300, 10);
+            guna2Separator2.TabIndex = 42;
             // 
             // MainPage
             // 
@@ -1366,21 +1042,20 @@ namespace CodingTracker.View
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1300, 781);
+            Controls.Add(guna2GradientPanel3);
+            Controls.Add(averageSessionPanel);
+            Controls.Add(guna2Separator2);
             Controls.Add(TodayTotalPanel);
-            Controls.Add(iconPictureBox1);
+            Controls.Add(githubPictureBox);
             Controls.Add(guna2Separator1);
-            Controls.Add(guna2GradientPanel7);
-            Controls.Add(guna2GradientPanel6);
             Controls.Add(guna2GradientPanel5);
             Controls.Add(guna2HtmlLabel6);
             Controls.Add(bottomHalfParentPanel);
-            Controls.Add(leftSideButtonPanel);
             Controls.Add(minimizeButton);
             Controls.Add(closeButton);
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Name = "MainPage";
-            leftSideButtonPanel.ResumeLayout(false);
             TodayTotalPanel.ResumeLayout(false);
             guna2GradientPanel3.ResumeLayout(false);
             averageSessionPanel.ResumeLayout(false);
@@ -1394,9 +1069,7 @@ namespace CodingTracker.View
             guna2GradientPanel5.ResumeLayout(false);
             guna2GradientPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)mossPictureBoxGif).EndInit();
-            guna2GradientPanel6.ResumeLayout(false);
-            guna2GradientPanel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)githubPictureBox).EndInit();
             ResumeLayout(false);
         }
 
@@ -1405,18 +1078,12 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox closeButton;
         private Guna.UI2.WinForms.Guna2ControlBox minimizeButton;
         private Panel panel2;
-        private Guna.UI2.WinForms.Guna2HtmlLabel mainPageWelcomeLabel;
         private Guna.UI2.WinForms.Guna2GradientPanel TodayTotalPanel;
         private Guna.UI2.WinForms.Guna2GradientPanel guna2GradientPanel3;
         private Guna.UI2.WinForms.Guna2Panel bottomHalfParentPanel;
-        private CustomGradientButton CodingSessionButton;
-        private CustomGradientButton ViewSessionsButton;
         private Guna.UI2.WinForms.Guna2AnimateWindow gunaAnimationWindow;
         private Guna.UI2.WinForms.Guna2HtmlLabel WeekTotalLabel;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
-        private CustomGradientButton StartSessionButton;
         private GunaDoughnutDataset doughnutDataset;
-        private Panel leftSideButtonPanel;
         private Guna2GradientPanel starRatingPanel;
         private GunaChart starChart;
         private Guna2GradientPanel zeroPanel;
@@ -1432,7 +1099,6 @@ namespace CodingTracker.View
         private Guna2GradientPanel Last28DaysPanel;
         private Guna2HtmlLabel todayTotalLabel;
         private Guna2HtmlLabel starRatingsTitleLabel;
-        private Guna2GradientPanel WaveVisualizationPanel;
 
 
         private Guna2HtmlLabel starRatingAverageLabel;
@@ -1466,21 +1132,18 @@ namespace CodingTracker.View
         private Guna2HtmlLabel last7DaysLabel;
         private Guna2HtmlLabel guna2HtmlLabel8;
         private Guna2HtmlLabel guna2HtmlLabel7;
-        private CustomGradientButton testViewSessions;
-        private CustomGradientButton startSessionButtonNew;
+        private CustomGradientButton viewSessionButton;
+        private CustomGradientButton startSessionButton;
         private Guna2HtmlLabel readyToBeginLabel;
         private Guna2HtmlLabel guna2HtmlLabel9;
         private Guna2GradientPanel guna2GradientPanel5;
-        private Guna2GradientPanel guna2GradientPanel7;
-        private Guna2HtmlLabel guna2HtmlLabel11;
-        private Guna2GradientPanel guna2GradientPanel6;
-        private Guna2HtmlLabel guna2HtmlLabel10;
         private Guna2HtmlLabel guna2HtmlLabel2;
         private Guna2PictureBox mossPictureBoxGif;
         private Guna2Separator guna2Separator1;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
-        private Guna2HtmlLabel streakLabel;
+        private FontAwesome.Sharp.IconPictureBox githubPictureBox;
         private Guna2HtmlLabel guna2HtmlLabel12;
         private Guna2HtmlLabel guna2HtmlLabel13;
+        private Guna2DragControl mainPageDragControl;
+        private Guna2Separator guna2Separator2;
     }
 }
