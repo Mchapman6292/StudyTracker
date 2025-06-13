@@ -13,7 +13,7 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientBut
     /// _isRealClick flag differentiates between mouseEnter hover events and actual user button presses,preventing hover animations from triggering unintended click actions.
     /// GetInnerRectangle() confines ripple to a safe rectangular area that avoids rounded corners
     /// Other approaches caused the CustomEdges to highlight or the ripple effect to  extend beyond the button's visual boundaries, creating unwanted effects.
-    ///
+    ///...
 
     public class CustomGradientButton : Guna2GradientButton
     {
