@@ -10,12 +10,14 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
-using CodingTracker.View.Forms.WaveVisualizer;
+using CodingTracker.View.Forms.WaveVisualizer;  
 using Guna.Charts.WinForms;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 
 namespace CodingTracker.View
@@ -45,6 +47,7 @@ namespace CodingTracker.View
         // Side panel visibility = false, change
 
         private WaveVisualizationHost waveVisualizationHost;
+        private ImageAnimator imageAnimator;
 
         private Guna2Transition chartAnimator;
         private Guna2Panel hoverInfoPanel;
@@ -106,8 +109,8 @@ namespace CodingTracker.View
             this.Shown += MainPage_Shown;
             closeButton.Click += CloseButton_Click;
 
-            startSessionButtonNew.MouseEnter += StartSessionButtonNew_MouseEnter;
-            startSessionButtonNew.MouseLeave += StartSessionButtonNew_MouseLeave;
+            startSessionButton.MouseEnter += StartSessionButtonNew_MouseEnter;
+            startSessionButton.MouseLeave += StartSessionButtonNew_MouseLeave;
 
 
             waveStopWatch.Start();
@@ -143,33 +146,17 @@ namespace CodingTracker.View
 
 
 
-        private void EditMossGifRegion()    
+
+
+
+        private void EnableMossGifAfterMouseEnter()
         {
-            int trimTop = 15;
-            int trimWBottom = 15;
-
-            Bitmap mossGifBitmap = Properties.Resources.The_IT_Crowd_Intro_BitMap;
-
-            var clipRegion = new Region(new Rectangle(0, trimTop, mossPictureBox.Width, mossPictureBox.Height - trimTop - trimWBottom));
-
-
-            mossPictureBox.Region = clipRegion;
 
         }
-
-
-        private Image ByteArrayToImage(byte[] byteArray)
-        {
-            using (var ms = new MemoryStream(byteArray))
-            {
-                return Image.FromStream(ms);
-            }
-        }
-
-
 
         private void SetWaveHostSize()
         {
+            /*
             WaveVisualizationPanel.Controls.Add(waveVisualizationHost);
 
             waveVisualizationHost.Size = new Size(362, 70);
@@ -180,6 +167,7 @@ namespace CodingTracker.View
             waveVisualizationHost.Start();
 
             waveVisualizationHost.UpdateIntensity(1.0f);
+            */
         }
 
 
@@ -220,18 +208,21 @@ namespace CodingTracker.View
             this.Enabled = false;
             try
             {
+
                 var results = await _labelAssignment.GetAllLabelDisplayMessagesAsync();
                 string todayText = results.TodayTotal;
                 string weekText = results.WeekTotal;
                 string averageText = results.AverageSession;
-                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, streakLabel, todayText, weekText, averageText);
+                _labelAssignment.UpdateAllLabelDisplayMessages(todayTotalLabel, WeekTotalLabel, AverageSessionLabel, todayText, weekText, averageText);
                 _labelAssignment.UpdateDateLabelsWithHTML(Last28DaysPanel);
-                _buttonHighlighterService.SetButtonHoverColors(StartSessionButton);
-                _buttonHighlighterService.SetButtonHoverColors(ViewSessionsButton);
-                _buttonHighlighterService.SetButtonHoverColors(CodingSessionButton);
+
+
+                _buttonHighlighterService.SetButtonHoverColors(startSessionButton);
+                _buttonHighlighterService.SetButtonHoverColors(viewSessionButton);
 
                 SetWaveHostSize();
-                ;
+
+
                 await PopulateDoughnutDataSet();
 
 
@@ -248,12 +239,14 @@ namespace CodingTracker.View
 
         private async void MainPage_Shown(object sender, EventArgs e)
         {
+
             await InitializeActivityDurationPanel();
+
         }
 
         private void MainPageCodingSessionButton_Click(object sender, EventArgs e)
         {
-            Size buttonSize = CodingSessionButton.CalculateButtonEdges();
+            Size buttonSize = startSessionButton.CalculateButtonEdges();
 
             int height = buttonSize.Height;
             int width = buttonSize.Width;
@@ -489,14 +482,53 @@ namespace CodingTracker.View
 
         private void StartSessionButtonNew_MouseEnter(object sender, EventArgs e)
         {
-            mossPictureBox.Visible = true;
+            mossPictureBoxGif.Visible = true;
+            mossPictureBoxGif.Refresh();
+            DisableMossGifAfterOneLoop();
+
         }
 
         private void StartSessionButtonNew_MouseLeave(object sender, EventArgs e)
         {
-            mossPictureBox.Visible = false;
+
         }
 
+        private void DisableMossGifAfterOneLoop()
+        {
+            var mossGifTimer = new System.Windows.Forms.Timer();
+            mossGifTimer.Interval = 850;
+
+            mossGifTimer.Tick += (sender, e) =>
+            {
+
+                mossGifTimer.Stop();
+                mossGifTimer.Dispose();
+
+                mossPictureBoxGif.Visible = false;
+            };
+
+            mossGifTimer.Start();
+        }
+
+
+        private void EditMossGifRegion()
+        {
+            int trimTop = 15;
+            int trimWBottom = 15;
+
+            Bitmap mossGifBitmap = Properties.Resources.The_IT_Crowd_Intro_BitMap;
+
+            var clipRegion = new Region(new Rectangle(0, trimTop, mossPictureBoxGif.Width, mossPictureBoxGif.Height - trimTop - trimWBottom));
+
+
+            mossPictureBoxGif.Region = clipRegion;
+
+        }
+
+        private void viewSessionButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.EditSessionForm);
+        }
     }
 }
 

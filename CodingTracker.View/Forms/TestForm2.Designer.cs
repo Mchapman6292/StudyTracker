@@ -48,6 +48,10 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges37 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges35 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges36 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.Charts.WinForms.ChartFont chartFont1 = new Guna.Charts.WinForms.ChartFont();
@@ -89,10 +93,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges50 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges47 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges48 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Last28DaysPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             last7DaysLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -113,7 +113,11 @@
             oneToTwoLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             oneToTwoPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             bottomHalfParentPanel = new Guna.UI2.WinForms.Guna2Panel();
+            guna2GradientPanel5 = new Guna.UI2.WinForms.Guna2GradientPanel();
+            readyToBeginLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            testStartSessionButton = new CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons.CustomGradientButton();
             starRatingPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
+            guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2HtmlLabel8 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             starRatingsTitleLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -136,7 +140,6 @@
             star1IndicatorPanel = new Guna.UI2.WinForms.Guna2Panel();
             star1Label = new Guna.UI2.WinForms.Guna2HtmlLabel();
             star1CountLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2GradientPanel7 = new Guna.UI2.WinForms.Guna2GradientPanel();
             guna2HtmlLabel11 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             averageSessionPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
@@ -151,11 +154,9 @@
             todayTotalLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             streakLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             mainPageWelcomeLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2GradientPanel5 = new Guna.UI2.WinForms.Guna2GradientPanel();
-            readyToBeginLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            testStartSessionButton = new CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons.CustomGradientButton();
             Last28DaysPanel.SuspendLayout();
             bottomHalfParentPanel.SuspendLayout();
+            guna2GradientPanel5.SuspendLayout();
             starRatingPanel.SuspendLayout();
             starBreakdownPanel.SuspendLayout();
             guna2GradientPanel7.SuspendLayout();
@@ -164,7 +165,6 @@
             guna2GradientPanel3.SuspendLayout();
             statisticsPanel.SuspendLayout();
             TodayTotalPanel.SuspendLayout();
-            guna2GradientPanel5.SuspendLayout();
             SuspendLayout();
             // 
             // Last28DaysPanel
@@ -197,7 +197,7 @@
             Last28DaysPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             Last28DaysPanel.ForeColor = SystemColors.ControlText;
             Last28DaysPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            Last28DaysPanel.Location = new Point(3, 26);
+            Last28DaysPanel.Location = new Point(71, 25);
             Last28DaysPanel.Name = "Last28DaysPanel";
             Last28DaysPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
             Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
@@ -221,14 +221,14 @@
             last7DaysLabel.Text = "Last 7 days";
             last7DaysLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
-            // recentActivityLabel
+            // guna2HtmlLabel2
             // 
             guna2HtmlLabel2.Anchor = AnchorStyles.None;
             guna2HtmlLabel2.BackColor = Color.Transparent;
             guna2HtmlLabel2.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
             guna2HtmlLabel2.ForeColor = Color.HotPink;
             guna2HtmlLabel2.Location = new Point(21, 3);
-            guna2HtmlLabel2.Name = "recentActivityLabel";
+            guna2HtmlLabel2.Name = "guna2HtmlLabel2";
             guna2HtmlLabel2.Size = new Size(124, 25);
             guna2HtmlLabel2.TabIndex = 9;
             guna2HtmlLabel2.Text = "Recent Activity";
@@ -452,6 +452,64 @@
             bottomHalfParentPanel.Size = new Size(1300, 545);
             bottomHalfParentPanel.TabIndex = 30;
             // 
+            // guna2GradientPanel5
+            // 
+            guna2GradientPanel5.BorderColor = Color.FromArgb(25, 255, 255, 255);
+            guna2GradientPanel5.BorderRadius = 25;
+            guna2GradientPanel5.BorderThickness = 1;
+            guna2GradientPanel5.Controls.Add(readyToBeginLabel);
+            guna2GradientPanel5.Controls.Add(testStartSessionButton);
+            guna2GradientPanel5.CustomizableEdges = customizableEdges21;
+            guna2GradientPanel5.FillColor = Color.FromArgb(28, 27, 42);
+            guna2GradientPanel5.FillColor2 = Color.FromArgb(28, 27, 42);
+            guna2GradientPanel5.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            guna2GradientPanel5.Location = new Point(102, 441);
+            guna2GradientPanel5.Name = "guna2GradientPanel5";
+            guna2GradientPanel5.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            guna2GradientPanel5.Size = new Size(288, 97);
+            guna2GradientPanel5.TabIndex = 44;
+            // 
+            // readyToBeginLabel
+            // 
+            readyToBeginLabel.Anchor = AnchorStyles.None;
+            readyToBeginLabel.BackColor = Color.Transparent;
+            readyToBeginLabel.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            readyToBeginLabel.ForeColor = Color.HotPink;
+            readyToBeginLabel.Location = new Point(71, 3);
+            readyToBeginLabel.Name = "readyToBeginLabel";
+            readyToBeginLabel.Size = new Size(135, 25);
+            readyToBeginLabel.TabIndex = 36;
+            readyToBeginLabel.Text = "Ready To Begin?";
+            readyToBeginLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
+            // testStartSessionButton
+            // 
+            testStartSessionButton.Animated = true;
+            testStartSessionButton.BackColor = Color.Transparent;
+            testStartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
+            testStartSessionButton.BorderRadius = 15;
+            testStartSessionButton.Cursor = Cursors.Hand;
+            testStartSessionButton.CustomizableEdges = customizableEdges19;
+            testStartSessionButton.DisabledState.BorderColor = Color.DarkGray;
+            testStartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            testStartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            testStartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            testStartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            testStartSessionButton.EnableHoverRipple = true;
+            testStartSessionButton.FillColor = Color.FromArgb(255, 81, 195);
+            testStartSessionButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            testStartSessionButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            testStartSessionButton.ForeColor = Color.FloralWhite;
+            testStartSessionButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            testStartSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
+            testStartSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
+            testStartSessionButton.Location = new Point(32, 31);
+            testStartSessionButton.Name = "testStartSessionButton";
+            testStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            testStartSessionButton.Size = new Size(214, 54);
+            testStartSessionButton.TabIndex = 34;
+            testStartSessionButton.Text = " Start Session";
+            // 
             // starRatingPanel
             // 
             starRatingPanel.BackColor = Color.Transparent;
@@ -469,7 +527,7 @@
             starRatingPanel.FillColor = Color.FromArgb(52, 90, 160, 220);
             starRatingPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
             starRatingPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            starRatingPanel.Location = new Point(726, 34);
+            starRatingPanel.Location = new Point(722, 28);
             starRatingPanel.Name = "starRatingPanel";
             starRatingPanel.ShadowDecoration.BorderRadius = 12;
             starRatingPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
@@ -478,6 +536,20 @@
             starRatingPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             starRatingPanel.Size = new Size(504, 354);
             starRatingPanel.TabIndex = 7;
+            // 
+            // guna2HtmlLabel6
+            // 
+            guna2HtmlLabel6.Anchor = AnchorStyles.None;
+            guna2HtmlLabel6.BackColor = Color.Transparent;
+            guna2HtmlLabel6.Enabled = false;
+            guna2HtmlLabel6.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel6.ForeColor = SystemColors.ControlLight;
+            guna2HtmlLabel6.Location = new Point(302, 49);
+            guna2HtmlLabel6.Name = "guna2HtmlLabel6";
+            guna2HtmlLabel6.Size = new Size(79, 19);
+            guna2HtmlLabel6.TabIndex = 11;
+            guna2HtmlLabel6.Text = "Total Ratings";
+            guna2HtmlLabel6.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // guna2HtmlLabel8
             // 
@@ -784,20 +856,6 @@
             star1CountLabel.Text = "11 (7%)";
             star1CountLabel.TextAlignment = ContentAlignment.MiddleRight;
             // 
-            // guna2HtmlLabel6
-            // 
-            guna2HtmlLabel6.Anchor = AnchorStyles.None;
-            guna2HtmlLabel6.BackColor = Color.Transparent;
-            guna2HtmlLabel6.Enabled = false;
-            guna2HtmlLabel6.Font = new Font("Segoe UI", 10F);
-            guna2HtmlLabel6.ForeColor = SystemColors.ControlLight;
-            guna2HtmlLabel6.Location = new Point(302, 49);
-            guna2HtmlLabel6.Name = "guna2HtmlLabel6";
-            guna2HtmlLabel6.Size = new Size(79, 19);
-            guna2HtmlLabel6.TabIndex = 11;
-            guna2HtmlLabel6.Text = "Total Ratings";
-            guna2HtmlLabel6.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
             // guna2GradientPanel7
             // 
             guna2GradientPanel7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -994,64 +1052,6 @@
             mainPageWelcomeLabel.Text = "Coding Tracker";
             mainPageWelcomeLabel.TextAlignment = ContentAlignment.TopCenter;
             // 
-            // guna2GradientPanel5
-            // 
-            guna2GradientPanel5.BorderColor = Color.FromArgb(25, 255, 255, 255);
-            guna2GradientPanel5.BorderRadius = 25;
-            guna2GradientPanel5.BorderThickness = 1;
-            guna2GradientPanel5.Controls.Add(readyToBeginLabel);
-            guna2GradientPanel5.Controls.Add(testStartSessionButton);
-            guna2GradientPanel5.CustomizableEdges = customizableEdges21;
-            guna2GradientPanel5.FillColor = Color.FromArgb(28, 27, 42);
-            guna2GradientPanel5.FillColor2 = Color.FromArgb(28, 27, 42);
-            guna2GradientPanel5.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            guna2GradientPanel5.Location = new Point(102, 441);
-            guna2GradientPanel5.Name = "guna2GradientPanel5";
-            guna2GradientPanel5.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            guna2GradientPanel5.Size = new Size(288, 97);
-            guna2GradientPanel5.TabIndex = 44;
-            // 
-            // readyToBeginLabel
-            // 
-            readyToBeginLabel.Anchor = AnchorStyles.None;
-            readyToBeginLabel.BackColor = Color.Transparent;
-            readyToBeginLabel.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            readyToBeginLabel.ForeColor = Color.HotPink;
-            readyToBeginLabel.Location = new Point(71, 3);
-            readyToBeginLabel.Name = "readyToBeginLabel";
-            readyToBeginLabel.Size = new Size(135, 25);
-            readyToBeginLabel.TabIndex = 36;
-            readyToBeginLabel.Text = "Ready To Begin?";
-            readyToBeginLabel.TextAlignment = ContentAlignment.MiddleCenter;
-            // 
-            // testStartSessionButton
-            // 
-            testStartSessionButton.Animated = true;
-            testStartSessionButton.BackColor = Color.Transparent;
-            testStartSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
-            testStartSessionButton.BorderRadius = 15;
-            testStartSessionButton.Cursor = Cursors.Hand;
-            testStartSessionButton.CustomizableEdges = customizableEdges19;
-            testStartSessionButton.DisabledState.BorderColor = Color.DarkGray;
-            testStartSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            testStartSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            testStartSessionButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            testStartSessionButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            testStartSessionButton.EnableHoverRipple = true;
-            testStartSessionButton.FillColor = Color.FromArgb(255, 81, 195);
-            testStartSessionButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            testStartSessionButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            testStartSessionButton.ForeColor = Color.FloralWhite;
-            testStartSessionButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            testStartSessionButton.HoverState.FillColor = Color.FromArgb(255, 81, 195);
-            testStartSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
-            testStartSessionButton.Location = new Point(32, 31);
-            testStartSessionButton.Name = "testStartSessionButton";
-            testStartSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            testStartSessionButton.Size = new Size(214, 54);
-            testStartSessionButton.TabIndex = 34;
-            testStartSessionButton.Text = " Start Session";
-            // 
             // TestForm2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1069,6 +1069,8 @@
             Last28DaysPanel.ResumeLayout(false);
             Last28DaysPanel.PerformLayout();
             bottomHalfParentPanel.ResumeLayout(false);
+            guna2GradientPanel5.ResumeLayout(false);
+            guna2GradientPanel5.PerformLayout();
             starRatingPanel.ResumeLayout(false);
             starRatingPanel.PerformLayout();
             starBreakdownPanel.ResumeLayout(false);
@@ -1079,8 +1081,6 @@
             guna2GradientPanel3.ResumeLayout(false);
             statisticsPanel.ResumeLayout(false);
             TodayTotalPanel.ResumeLayout(false);
-            guna2GradientPanel5.ResumeLayout(false);
-            guna2GradientPanel5.PerformLayout();
             ResumeLayout(false);
         }
 

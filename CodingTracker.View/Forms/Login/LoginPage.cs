@@ -1,18 +1,13 @@
-﻿using CodingTracker.Common.BusinessInterfaces;
+﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
-using Guna.UI2.WinForms;
-using LibVLCSharp.Shared;
-using LibVLCSharp.WinForms;
-using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.Common.BusinessInterfaces.Authentication;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
-using System;
-using System.Linq.Expressions;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
 using Npgsql;
-using CodingTracker.View.Forms;
 
 namespace CodingTracker.View
 {
@@ -48,14 +43,14 @@ namespace CodingTracker.View
             InitializeVLCPlayer();
 
             // Set up text box events
-            loginPageUsernameTextbox.Enter += LoginPagePasswordTextbox_Enter;
+     
             loginPageUsernameTextbox.Leave += LoginPageUsernameTextbox_Leave;
             LoginPagePasswordTextbox.Enter += LoginPagePasswordTextbox_Enter;
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
             // Set up button events
-            forgotPasswordButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            forgotPasswordButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+            newCreateAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
+            newCreateAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
 
 
@@ -76,10 +71,10 @@ namespace CodingTracker.View
         private void LoginPage_Load(object sender, EventArgs e)
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
-            _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
-            _buttonHighlighterService.SetButtonHoverColors(forgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(newForgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(newCreateAccountButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
-            _buttonHighlighterService.SetButtonBackColorAndBorderColor(forgotPasswordButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(newCreateAccountButton);
         }
 
 
@@ -174,9 +169,9 @@ namespace CodingTracker.View
             }
         }
 
-        private void UsernameTextBox_Enter(object sender, EventArgs e)
+        private void LoginPageUsernameTextbox_Enter(object sender, EventArgs e)
         {
-
+            
         }
 
         private void LoginPageUsernameTextbox_Leave(object sender, EventArgs e)
@@ -184,7 +179,7 @@ namespace CodingTracker.View
             if (string.IsNullOrWhiteSpace(loginPageUsernameTextbox.Text))
             {
                 loginPageUsernameTextbox.Text = "Username";
-                loginPageUsernameTextbox.ForeColor = Color.White;
+                loginPageUsernameTextbox.PlaceholderForeColor = Color.FromArgb(102, 255, 255, 255);
             }
         }
 
@@ -286,13 +281,13 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
-            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.TestForm);
+            _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
+            _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         }
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
@@ -304,7 +299,7 @@ namespace CodingTracker.View
         {
             if (rememberMeToggle.Checked)
             {
-                rememberMeTextBox.ForeColor = Color.FromArgb(168, 228, 255);
+                rememberMeTextBox.ForeColor = SystemColors.ControlLightLight;
             }
             else
             {
@@ -334,7 +329,6 @@ namespace CodingTracker.View
 
         private void LoginPageDisplaySuccessMessage(string message)
         {
-            LoginPageCreationSuccessTextBox.Text = message;
         }
 
         #endregion
