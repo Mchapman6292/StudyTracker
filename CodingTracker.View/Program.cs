@@ -22,6 +22,7 @@ using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
+using CodingTracker.View.Forms.Services.MainPageService.DonutChartManagers;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
@@ -116,6 +117,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ISessionVisualizationController, SessionVisualizationController>()
                     .AddSingleton<IDurationParentPanelPositionManager, DurationParentPanelPositionManager>()
                     .AddSingleton<ISessionDurationScaler, SessionDurationScaler>()
+                    .AddSingleton<IMainPagePieChartManager, MainPagePieChartManager>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
