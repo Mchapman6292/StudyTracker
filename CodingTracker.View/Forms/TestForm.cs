@@ -11,6 +11,8 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Measure;
 using SkiaSharp;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using SkiaSharp.Views.Desktop;
 
 
 namespace CodingTracker.View.Forms
@@ -28,6 +30,7 @@ namespace CodingTracker.View.Forms
         private readonly ILast28DayPanelSettings _last28DayPanelSettings;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
+        private readonly IAnimatedTimerRenderer _animatedTimerRenderer;
 
 
 
@@ -35,7 +38,7 @@ namespace CodingTracker.View.Forms
 
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer)
         {
             InitializeComponent();
             _buttonHighligherService = buttonHighlighterService;
@@ -47,11 +50,13 @@ namespace CodingTracker.View.Forms
             _sessionVisualizationController = sessionVisualizationController;
             _labelAssignment = labelAssignment;
             _durationPanelPositionManager = durationPanelPositionManager;
+            _animatedTimerRenderer = animatedTimerRenderer;
 
 
 
             this.Load += TestForm_Load;
             this.Shown += TestForm_Shwon;
+            skControlTest.PaintSurface += _animatedTimerRenderer.DrawAnimatedTimerColumn
             _labelAssignment = labelAssignment;
         }
 
@@ -270,143 +275,15 @@ namespace CodingTracker.View.Forms
 
         }
 
-        private async Task TestPopulatestarRatingDoughnutChart()
+
+
+        private void PaintRectangle(object sender, SKPaintGLSurfaceEventArgs e)
         {
-            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
+            var canvas = e.Surface.Canvas;
+            var width = e.Info.Width;
+            var height = e.Info.Height;
 
-            var pinkColour = new SKColor(255, 81, 195);
-            var blueColour = new SKColor(168, 228, 255);
-
-            List<ISeries> pieSeriesList = new List<ISeries>();
-            for (int starRating = 1; starRating <= 5; starRating++)
-            {
-                int count = sessionStarRatings.GetValueOrDefault(starRating, 0);
-                var pieSeries = new PieSeries<double>
-                {
-                    Values = new List<double> { count },
-                    Name = $"{starRating} ★",
-                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                    DataLabelsSize = 16,
-                    DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                    InnerRadius = 25,
-
-                    // Linear gradient with backward diagonal (like your Guna2GradientPanel)
-                    Fill = new LinearGradientPaint(pinkColour, blueColour,
-             
-                        new SKPoint(0f, 1f),    // Start: bottom-left
-                        new SKPoint(1f, 0f)  // End: top-right (backward diagonal)
-                    ),
-
-                     
-
-                    
-                };
-                pieSeriesList.Add(pieSeries);
-            }
-            starRatingsPieChart.Series = pieSeriesList;
-        }
-
-
-
-        private async Task NewTestPopulatestarRatingDoughnutChart()
-        {
-            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
-            var pinkColour = new SKColor(255, 81, 195);
-            var blueColour = new SKColor(168, 228, 255);
-            List<ISeries> pieSeriesList = new List<ISeries>();
-            for (int starRating = 1; starRating <= 5; starRating++)
-            {
-                int count = sessionStarRatings.GetValueOrDefault(starRating, 0);
-                var pieSeries = new PieSeries<double>
-                {
-                    Values = new List<double> { count },
-                    Name = $"{starRating} ★",
-                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                    DataLabelsSize = 16,
-                    DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                    InnerRadius = 25,
-                    Fill = new LinearGradientPaint(
-                        pinkColour,
-                        blueColour,
-                        new SKPoint(1, 0),
-                        new SKPoint(0, 1)
-                    ),
-                };
-                pieSeriesList.Add(pieSeries);
-            }
-            starRatingsPieChart.Series = pieSeriesList;
-        }
-
-
-
-        private void LoadMockStarRatingDoughnutChart()
-        {
-            var pieSeries1 = new PieSeries<double>
-            {
-                Values = new List<double> { 8 },
-                Name = "1 ★",
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                DataLabelsSize = 16,
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                InnerRadius = 50,
-                Fill = new RadialGradientPaint(new SKColor(255, 0, 102), new SKColor(153, 0, 76))
-            };
-
-            var pieSeries2 = new PieSeries<double>
-            {
-                Values = new List<double> { 14 },
-                Name = "2 ★",
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                DataLabelsSize = 16,
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                InnerRadius = 50,
-                Fill = new RadialGradientPaint(new SKColor(0, 255, 204), new SKColor(0, 153, 122))
-            };
-
-            var pieSeries3 = new PieSeries<double>
-            {
-                Values = new List<double> { 22 },
-                Name = "3 ★",
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                DataLabelsSize = 16,
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                InnerRadius = 50,
-                Fill = new RadialGradientPaint(new SKColor(102, 0, 255), new SKColor(76, 0, 153))
-            };
-
-            var pieSeries4 = new PieSeries<double>
-            {
-                Values = new List<double> { 11 },
-                Name = "4 ★",
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                DataLabelsSize = 16,
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                InnerRadius = 50,
-                Fill = new RadialGradientPaint(new SKColor(255, 204, 0), new SKColor(153, 122, 0))
-            };
-
-            var pieSeries5 = new PieSeries<double>
-            {
-                Values = new List<double> { 5 },
-                Name = "5 ★",
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                DataLabelsSize = 16,
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                InnerRadius = 50,
-                Fill = new RadialGradientPaint(new SKColor(0, 204, 255), new SKColor(0, 122, 153))
-            };
-
-            var pieSeriesList = new List<ISeries>
-    {
-        pieSeries1,
-        pieSeries2,
-        pieSeries3,
-        pieSeries4,
-        pieSeries5
-    };
-
-            starRatingsPieChart.Series = pieSeriesList;
-            starRatingsPieChart.LegendPosition = LiveChartsCore.Measure.LegendPosition.Right;
+            _animatedTimerRenderer.DrawAnimatedTimerColumn(canvas, _timerColumn, width, height);
         }
 
 

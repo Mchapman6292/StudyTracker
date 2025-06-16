@@ -318,7 +318,7 @@ namespace CodingTracker.View
             starRatingPanel.FillColor = Color.FromArgb(44, 45, 65);
             starRatingPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             starRatingPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            starRatingPanel.Location = new Point(697, 25);
+            starRatingPanel.Location = new Point(707, 28);
             starRatingPanel.Name = "starRatingPanel";
             starRatingPanel.ShadowDecoration.BorderRadius = 12;
             starRatingPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
@@ -405,11 +405,6 @@ namespace CodingTracker.View
             starRatingsPieChart.Name = "starRatingsPieChart";
             starRatingsPieChart.Size = new Size(177, 175);
             starRatingsPieChart.TabIndex = 6;
-            starRatingsPieChart.LegendTextPaint = new SolidColorPaint(SKColors.White)
-            {
-                SKTypeface = SKTypeface.FromFamilyName("Segoe UI Symbol"),
-                FontFamily = "Segoe UI Symbol"
-            };
             // 
             // Last28DaysPanel
             // 

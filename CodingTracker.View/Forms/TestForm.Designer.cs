@@ -3,6 +3,8 @@ using Guna.UI2.WinForms;
 using Guna.UI2.WinForms.Suite;
 using LiveCharts;
 using LiveCharts.Defaults;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp.Views.Desktop;
 
 namespace CodingTracker.View.Forms
 {
@@ -35,8 +37,8 @@ namespace CodingTracker.View.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges65 = new CustomizableEdges();
-            CustomizableEdges customizableEdges66 = new CustomizableEdges();
+            CustomizableEdges customizableEdges53 = new CustomizableEdges();
+            CustomizableEdges customizableEdges54 = new CustomizableEdges();
             CustomizableEdges customizableEdges45 = new CustomizableEdges();
             CustomizableEdges customizableEdges46 = new CustomizableEdges();
             CustomizableEdges customizableEdges13 = new CustomizableEdges();
@@ -83,24 +85,12 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges38 = new CustomizableEdges();
             CustomizableEdges customizableEdges39 = new CustomizableEdges();
             CustomizableEdges customizableEdges40 = new CustomizableEdges();
-            CustomizableEdges customizableEdges63 = new CustomizableEdges();
-            CustomizableEdges customizableEdges64 = new CustomizableEdges();
-            CustomizableEdges customizableEdges57 = new CustomizableEdges();
-            CustomizableEdges customizableEdges58 = new CustomizableEdges();
+            CustomizableEdges customizableEdges51 = new CustomizableEdges();
+            CustomizableEdges customizableEdges52 = new CustomizableEdges();
             CustomizableEdges customizableEdges47 = new CustomizableEdges();
             CustomizableEdges customizableEdges48 = new CustomizableEdges();
             CustomizableEdges customizableEdges49 = new CustomizableEdges();
             CustomizableEdges customizableEdges50 = new CustomizableEdges();
-            CustomizableEdges customizableEdges51 = new CustomizableEdges();
-            CustomizableEdges customizableEdges52 = new CustomizableEdges();
-            CustomizableEdges customizableEdges53 = new CustomizableEdges();
-            CustomizableEdges customizableEdges54 = new CustomizableEdges();
-            CustomizableEdges customizableEdges55 = new CustomizableEdges();
-            CustomizableEdges customizableEdges56 = new CustomizableEdges();
-            CustomizableEdges customizableEdges59 = new CustomizableEdges();
-            CustomizableEdges customizableEdges60 = new CustomizableEdges();
-            CustomizableEdges customizableEdges61 = new CustomizableEdges();
-            CustomizableEdges customizableEdges62 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
             guna2Panel2 = new Guna2Panel();
@@ -136,25 +126,10 @@ namespace CodingTracker.View.Forms
             guna2Panel25 = new Guna2Panel();
             guna2HtmlLabel14 = new Guna2HtmlLabel();
             floatingContainerPanel = new Guna2Panel();
-            starBreakdownPanel = new Guna2Panel();
-            star5IndicatorPanel = new Guna2Panel();
-            star5Label = new Guna2HtmlLabel();
-            star5CountLabel = new Guna2HtmlLabel();
-            star4IndicatorPanel = new Guna2Panel();
-            star4Label = new Guna2HtmlLabel();
-            star4CountLabel = new Guna2HtmlLabel();
-            star3IndicatorPanel = new Guna2Panel();
-            star3Label = new Guna2HtmlLabel();
-            star3CountLabel = new Guna2HtmlLabel();
-            star2IndicatorPanel = new Guna2Panel();
-            star2Label = new Guna2HtmlLabel();
-            star2CountLabel = new Guna2HtmlLabel();
-            star1IndicatorPanel = new Guna2Panel();
-            star1Label = new Guna2HtmlLabel();
-            star1CountLabel = new Guna2HtmlLabel();
-            starRatingPanel = new Guna2GradientPanel();
             starRatingsPieChart = new LiveChartsCore.SkiaSharpView.WinForms.PieChart();
+            guna2GradientPanel1 = new Guna2GradientPanel();
             testAcitivtyControllerPanel = new Guna2GradientPanel();
+            skControlTest = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             mainPanel.SuspendLayout();
             guna2Panel2.SuspendLayout();
@@ -167,7 +142,6 @@ namespace CodingTracker.View.Forms
             guna2Panel20.SuspendLayout();
             guna2Panel21.SuspendLayout();
             floatingContainerPanel.SuspendLayout();
-            starBreakdownPanel.SuspendLayout();
             SuspendLayout();
             // 
             // borderlessForm
@@ -185,12 +159,13 @@ namespace CodingTracker.View.Forms
             mainPanel.BorderRadius = 12;
             mainPanel.Controls.Add(guna2Panel2);
             mainPanel.Controls.Add(floatingContainerPanel);
-            mainPanel.CustomizableEdges = customizableEdges65;
+            mainPanel.Controls.Add(skControlTest);
+            mainPanel.CustomizableEdges = customizableEdges53;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(80, 0, 0, 0);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges66;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
@@ -664,265 +639,60 @@ namespace CodingTracker.View.Forms
             // 
             floatingContainerPanel.BackColor = Color.Transparent;
             floatingContainerPanel.BorderRadius = 20;
-            floatingContainerPanel.Controls.Add(starBreakdownPanel);
-            floatingContainerPanel.Controls.Add(starRatingPanel);
             floatingContainerPanel.Controls.Add(starRatingsPieChart);
+            floatingContainerPanel.Controls.Add(guna2GradientPanel1);
             floatingContainerPanel.Controls.Add(testAcitivtyControllerPanel);
             floatingContainerPanel.CustomBorderColor = Color.FromArgb(35, 34, 50);
-            floatingContainerPanel.CustomizableEdges = customizableEdges63;
+            floatingContainerPanel.CustomizableEdges = customizableEdges51;
             floatingContainerPanel.FillColor = Color.FromArgb(35, 34, 50);
             floatingContainerPanel.ForeColor = SystemColors.ControlText;
             floatingContainerPanel.Location = new Point(50, 50);
             floatingContainerPanel.Name = "floatingContainerPanel";
             floatingContainerPanel.ShadowDecoration.BorderRadius = 20;
             floatingContainerPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            floatingContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges64;
+            floatingContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
             floatingContainerPanel.ShadowDecoration.Depth = 40;
             floatingContainerPanel.ShadowDecoration.Enabled = true;
             floatingContainerPanel.ShadowDecoration.Shadow = new Padding(8);
             floatingContainerPanel.Size = new Size(1200, 620);
             floatingContainerPanel.TabIndex = 5;
             // 
-            // starBreakdownPanel
-            // 
-            starBreakdownPanel.BackColor = Color.Transparent;
-            starBreakdownPanel.Controls.Add(star5IndicatorPanel);
-            starBreakdownPanel.Controls.Add(star5Label);
-            starBreakdownPanel.Controls.Add(star5CountLabel);
-            starBreakdownPanel.Controls.Add(star4IndicatorPanel);
-            starBreakdownPanel.Controls.Add(star4Label);
-            starBreakdownPanel.Controls.Add(star4CountLabel);
-            starBreakdownPanel.Controls.Add(star3IndicatorPanel);
-            starBreakdownPanel.Controls.Add(star3Label);
-            starBreakdownPanel.Controls.Add(star3CountLabel);
-            starBreakdownPanel.Controls.Add(star2IndicatorPanel);
-            starBreakdownPanel.Controls.Add(star2Label);
-            starBreakdownPanel.Controls.Add(star2CountLabel);
-            starBreakdownPanel.Controls.Add(star1IndicatorPanel);
-            starBreakdownPanel.Controls.Add(star1Label);
-            starBreakdownPanel.Controls.Add(star1CountLabel);
-            starBreakdownPanel.CustomizableEdges = customizableEdges57;
-            starBreakdownPanel.FillColor = Color.Transparent;
-            starBreakdownPanel.Location = new Point(626, 334);
-            starBreakdownPanel.Name = "starBreakdownPanel";
-            starBreakdownPanel.ShadowDecoration.CustomizableEdges = customizableEdges58;
-            starBreakdownPanel.Size = new Size(158, 119);
-            starBreakdownPanel.TabIndex = 9;
-            // 
-            // star5IndicatorPanel
-            // 
-            star5IndicatorPanel.BackColor = Color.Transparent;
-            star5IndicatorPanel.BorderRadius = 2;
-            star5IndicatorPanel.CustomizableEdges = customizableEdges47;
-            star5IndicatorPanel.FillColor = Color.FromArgb(255, 80, 140);
-            star5IndicatorPanel.Location = new Point(5, 7);
-            star5IndicatorPanel.Name = "star5IndicatorPanel";
-            star5IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges48;
-            star5IndicatorPanel.Size = new Size(12, 12);
-            star5IndicatorPanel.TabIndex = 0;
-            // 
-            // star5Label
-            // 
-            star5Label.BackColor = Color.Transparent;
-            star5Label.Font = new Font("Segoe UI", 10F);
-            star5Label.ForeColor = Color.FromArgb(224, 224, 224);
-            star5Label.Location = new Point(25, 3);
-            star5Label.Name = "star5Label";
-            star5Label.Size = new Size(58, 19);
-            star5Label.TabIndex = 1;
-            star5Label.Text = "★★★★★";
-            // 
-            // star5CountLabel
-            // 
-            star5CountLabel.BackColor = Color.Transparent;
-            star5CountLabel.Font = new Font("Segoe UI", 9F);
-            star5CountLabel.ForeColor = Color.FromArgb(160, 160, 160);
-            star5CountLabel.Location = new Point(101, 5);
-            star5CountLabel.Name = "star5CountLabel";
-            star5CountLabel.Size = new Size(48, 17);
-            star5CountLabel.TabIndex = 2;
-            star5CountLabel.Text = "45 (31%)";
-            star5CountLabel.TextAlignment = ContentAlignment.MiddleRight;
-            // 
-            // star4IndicatorPanel
-            // 
-            star4IndicatorPanel.BackColor = Color.Transparent;
-            star4IndicatorPanel.BorderRadius = 2;
-            star4IndicatorPanel.CustomizableEdges = customizableEdges49;
-            star4IndicatorPanel.FillColor = Color.FromArgb(255, 120, 180);
-            star4IndicatorPanel.Location = new Point(5, 25);
-            star4IndicatorPanel.Name = "star4IndicatorPanel";
-            star4IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
-            star4IndicatorPanel.Size = new Size(12, 12);
-            star4IndicatorPanel.TabIndex = 3;
-            // 
-            // star4Label
-            // 
-            star4Label.BackColor = Color.Transparent;
-            star4Label.Font = new Font("Segoe UI", 10F);
-            star4Label.ForeColor = Color.FromArgb(224, 224, 224);
-            star4Label.Location = new Point(25, 23);
-            star4Label.Name = "star4Label";
-            star4Label.Size = new Size(58, 19);
-            star4Label.TabIndex = 4;
-            star4Label.Text = "★★★★☆";
-            // 
-            // star4CountLabel
-            // 
-            star4CountLabel.BackColor = Color.Transparent;
-            star4CountLabel.Font = new Font("Segoe UI", 9F);
-            star4CountLabel.ForeColor = Color.FromArgb(160, 160, 160);
-            star4CountLabel.Location = new Point(101, 23);
-            star4CountLabel.Name = "star4CountLabel";
-            star4CountLabel.Size = new Size(48, 17);
-            star4CountLabel.TabIndex = 5;
-            star4CountLabel.Text = "38 (26%)";
-            star4CountLabel.TextAlignment = ContentAlignment.MiddleRight;
-            // 
-            // star3IndicatorPanel
-            // 
-            star3IndicatorPanel.BackColor = Color.Transparent;
-            star3IndicatorPanel.BorderRadius = 2;
-            star3IndicatorPanel.CustomizableEdges = customizableEdges51;
-            star3IndicatorPanel.FillColor = Color.FromArgb(180, 100, 200);
-            star3IndicatorPanel.Location = new Point(5, 45);
-            star3IndicatorPanel.Name = "star3IndicatorPanel";
-            star3IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
-            star3IndicatorPanel.Size = new Size(12, 12);
-            star3IndicatorPanel.TabIndex = 6;
-            // 
-            // star3Label
-            // 
-            star3Label.BackColor = Color.Transparent;
-            star3Label.Font = new Font("Segoe UI", 10F);
-            star3Label.ForeColor = Color.FromArgb(224, 224, 224);
-            star3Label.Location = new Point(25, 43);
-            star3Label.Name = "star3Label";
-            star3Label.Size = new Size(58, 19);
-            star3Label.TabIndex = 7;
-            star3Label.Text = "★★★☆☆";
-            // 
-            // star3CountLabel
-            // 
-            star3CountLabel.BackColor = Color.Transparent;
-            star3CountLabel.Font = new Font("Segoe UI", 9F);
-            star3CountLabel.ForeColor = Color.FromArgb(160, 160, 160);
-            star3CountLabel.Location = new Point(101, 43);
-            star3CountLabel.Name = "star3CountLabel";
-            star3CountLabel.Size = new Size(48, 17);
-            star3CountLabel.TabIndex = 8;
-            star3CountLabel.Text = "32 (22%)";
-            star3CountLabel.TextAlignment = ContentAlignment.MiddleRight;
-            // 
-            // star2IndicatorPanel
-            // 
-            star2IndicatorPanel.BackColor = Color.Transparent;
-            star2IndicatorPanel.BorderRadius = 2;
-            star2IndicatorPanel.CustomizableEdges = customizableEdges53;
-            star2IndicatorPanel.FillColor = Color.FromArgb(140, 120, 220);
-            star2IndicatorPanel.Location = new Point(5, 65);
-            star2IndicatorPanel.Name = "star2IndicatorPanel";
-            star2IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
-            star2IndicatorPanel.Size = new Size(12, 12);
-            star2IndicatorPanel.TabIndex = 9;
-            // 
-            // star2Label
-            // 
-            star2Label.BackColor = Color.Transparent;
-            star2Label.Font = new Font("Segoe UI", 10F);
-            star2Label.ForeColor = Color.FromArgb(224, 224, 224);
-            star2Label.Location = new Point(25, 63);
-            star2Label.Name = "star2Label";
-            star2Label.Size = new Size(58, 19);
-            star2Label.TabIndex = 10;
-            star2Label.Text = "★★☆☆☆";
-            // 
-            // star2CountLabel
-            // 
-            star2CountLabel.BackColor = Color.Transparent;
-            star2CountLabel.Font = new Font("Segoe UI", 9F);
-            star2CountLabel.ForeColor = Color.FromArgb(160, 160, 160);
-            star2CountLabel.Location = new Point(101, 63);
-            star2CountLabel.Name = "star2CountLabel";
-            star2CountLabel.Size = new Size(48, 17);
-            star2CountLabel.TabIndex = 11;
-            star2CountLabel.Text = "21 (14%)";
-            star2CountLabel.TextAlignment = ContentAlignment.MiddleRight;
-            // 
-            // star1IndicatorPanel
-            // 
-            star1IndicatorPanel.BackColor = Color.Transparent;
-            star1IndicatorPanel.BorderRadius = 2;
-            star1IndicatorPanel.CustomizableEdges = customizableEdges55;
-            star1IndicatorPanel.FillColor = Color.FromArgb(80, 200, 220);
-            star1IndicatorPanel.Location = new Point(5, 85);
-            star1IndicatorPanel.Name = "star1IndicatorPanel";
-            star1IndicatorPanel.ShadowDecoration.CustomizableEdges = customizableEdges56;
-            star1IndicatorPanel.Size = new Size(12, 12);
-            star1IndicatorPanel.TabIndex = 12;
-            // 
-            // star1Label
-            // 
-            star1Label.BackColor = Color.Transparent;
-            star1Label.Font = new Font("Segoe UI", 10F);
-            star1Label.ForeColor = Color.FromArgb(224, 224, 224);
-            star1Label.Location = new Point(25, 83);
-            star1Label.Name = "star1Label";
-            star1Label.Size = new Size(58, 19);
-            star1Label.TabIndex = 13;
-            star1Label.Text = "★☆☆☆☆";
-            // 
-            // star1CountLabel
-            // 
-            star1CountLabel.BackColor = Color.Transparent;
-            star1CountLabel.Font = new Font("Segoe UI", 9F);
-            star1CountLabel.ForeColor = Color.FromArgb(160, 160, 160);
-            star1CountLabel.Location = new Point(101, 83);
-            star1CountLabel.Name = "star1CountLabel";
-            star1CountLabel.Size = new Size(42, 17);
-            star1CountLabel.TabIndex = 14;
-            star1CountLabel.Text = "11 (7%)";
-            star1CountLabel.TextAlignment = ContentAlignment.MiddleRight;
-            // 
-            // starRatingPanel
-            // 
-            starRatingPanel.BackColor = Color.Transparent;
-            starRatingPanel.BorderRadius = 25;
-            starRatingPanel.CustomizableEdges = customizableEdges59;
-            starRatingPanel.FillColor = Color.FromArgb(44, 45, 65);
-            starRatingPanel.FillColor2 = Color.FromArgb(44, 45, 65);
-            starRatingPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            starRatingPanel.Location = new Point(760, 84);
-            starRatingPanel.Name = "starRatingPanel";
-            starRatingPanel.ShadowDecoration.BorderRadius = 12;
-            starRatingPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges60;
-            starRatingPanel.ShadowDecoration.Enabled = true;
-            starRatingPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            starRatingPanel.Size = new Size(332, 198);
-            starRatingPanel.TabIndex = 8;
-            // 
             // starRatingsPieChart
             // 
-            starRatingsPieChart.BackColor = Color.FromArgb(35, 34, 50);
             starRatingsPieChart.InitialRotation = 0D;
             starRatingsPieChart.IsClockwise = true;
-            starRatingsPieChart.Location = new Point(703, 187);
+            starRatingsPieChart.Location = new Point(426, 467);
             starRatingsPieChart.MaxAngle = 360D;
             starRatingsPieChart.MaxValue = double.NaN;
             starRatingsPieChart.MinValue = 0D;
             starRatingsPieChart.Name = "starRatingsPieChart";
             starRatingsPieChart.Size = new Size(150, 150);
-            starRatingsPieChart.TabIndex = 5;
+            starRatingsPieChart.TabIndex = 6;
+            // 
+            // guna2GradientPanel1
+            // 
+            guna2GradientPanel1.CustomizableEdges = customizableEdges47;
+            guna2GradientPanel1.Location = new Point(575, 84);
+            guna2GradientPanel1.Name = "guna2GradientPanel1";
+            guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            guna2GradientPanel1.Size = new Size(54, 307);
+            guna2GradientPanel1.TabIndex = 5;
             // 
             // testAcitivtyControllerPanel
             // 
-            testAcitivtyControllerPanel.CustomizableEdges = customizableEdges61;
+            testAcitivtyControllerPanel.CustomizableEdges = customizableEdges49;
             testAcitivtyControllerPanel.Location = new Point(19, 351);
             testAcitivtyControllerPanel.Name = "testAcitivtyControllerPanel";
-            testAcitivtyControllerPanel.ShadowDecoration.CustomizableEdges = customizableEdges62;
+            testAcitivtyControllerPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
             testAcitivtyControllerPanel.Size = new Size(401, 266);
             testAcitivtyControllerPanel.TabIndex = 4;
+            // 
+            // skControlTest
+            // 
+            skControlTest.Location = new Point(575, 84);
+            skControlTest.Name = "skControlTest";
+            skControlTest.Size = new Size(0, 0);
+            skControlTest.TabIndex = 0;
             // 
             // TestForm
             // 
@@ -951,8 +721,6 @@ namespace CodingTracker.View.Forms
             guna2Panel20.PerformLayout();
             guna2Panel21.ResumeLayout(false);
             floatingContainerPanel.ResumeLayout(false);
-            starBreakdownPanel.ResumeLayout(false);
-            starBreakdownPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -996,23 +764,10 @@ namespace CodingTracker.View.Forms
 
         private Guna2Panel floatingContainerPanel;
         private Services.MainPageService.RecentActivityService.Panels.DurationPanel durationPanel1;
+        private Guna2GradientPanel guna2GradientPanel1;
+
+
+        private SKControl skControlTest;
         private LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart;
-        private Guna2GradientPanel starRatingPanel;
-        private Guna2Panel starBreakdownPanel;
-        private Guna2Panel star5IndicatorPanel;
-        private Guna2HtmlLabel star5Label;
-        private Guna2HtmlLabel star5CountLabel;
-        private Guna2Panel star4IndicatorPanel;
-        private Guna2HtmlLabel star4Label;
-        private Guna2HtmlLabel star4CountLabel;
-        private Guna2Panel star3IndicatorPanel;
-        private Guna2HtmlLabel star3Label;
-        private Guna2HtmlLabel star3CountLabel;
-        private Guna2Panel star2IndicatorPanel;
-        private Guna2HtmlLabel star2Label;
-        private Guna2HtmlLabel star2CountLabel;
-        private Guna2Panel star1IndicatorPanel;
-        private Guna2HtmlLabel star1Label;
-        private Guna2HtmlLabel star1CountLabel;
     }
 }
