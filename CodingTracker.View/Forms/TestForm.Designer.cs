@@ -37,8 +37,8 @@ namespace CodingTracker.View.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges53 = new CustomizableEdges();
-            CustomizableEdges customizableEdges54 = new CustomizableEdges();
+            CustomizableEdges customizableEdges55 = new CustomizableEdges();
+            CustomizableEdges customizableEdges56 = new CustomizableEdges();
             CustomizableEdges customizableEdges45 = new CustomizableEdges();
             CustomizableEdges customizableEdges46 = new CustomizableEdges();
             CustomizableEdges customizableEdges13 = new CustomizableEdges();
@@ -85,12 +85,14 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges38 = new CustomizableEdges();
             CustomizableEdges customizableEdges39 = new CustomizableEdges();
             CustomizableEdges customizableEdges40 = new CustomizableEdges();
-            CustomizableEdges customizableEdges51 = new CustomizableEdges();
-            CustomizableEdges customizableEdges52 = new CustomizableEdges();
+            CustomizableEdges customizableEdges53 = new CustomizableEdges();
+            CustomizableEdges customizableEdges54 = new CustomizableEdges();
             CustomizableEdges customizableEdges47 = new CustomizableEdges();
             CustomizableEdges customizableEdges48 = new CustomizableEdges();
             CustomizableEdges customizableEdges49 = new CustomizableEdges();
             CustomizableEdges customizableEdges50 = new CustomizableEdges();
+            CustomizableEdges customizableEdges51 = new CustomizableEdges();
+            CustomizableEdges customizableEdges52 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
             guna2Panel2 = new Guna2Panel();
@@ -126,6 +128,7 @@ namespace CodingTracker.View.Forms
             guna2Panel25 = new Guna2Panel();
             guna2HtmlLabel14 = new Guna2HtmlLabel();
             floatingContainerPanel = new Guna2Panel();
+            newTestButton = new Guna2GradientButton();
             starRatingsPieChart = new LiveChartsCore.SkiaSharpView.WinForms.PieChart();
             guna2GradientPanel1 = new Guna2GradientPanel();
             testAcitivtyControllerPanel = new Guna2GradientPanel();
@@ -160,12 +163,12 @@ namespace CodingTracker.View.Forms
             mainPanel.Controls.Add(guna2Panel2);
             mainPanel.Controls.Add(floatingContainerPanel);
             mainPanel.Controls.Add(skControlTest);
-            mainPanel.CustomizableEdges = customizableEdges53;
+            mainPanel.CustomizableEdges = customizableEdges55;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(80, 0, 0, 0);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges56;
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
@@ -639,23 +642,42 @@ namespace CodingTracker.View.Forms
             // 
             floatingContainerPanel.BackColor = Color.Transparent;
             floatingContainerPanel.BorderRadius = 20;
+            floatingContainerPanel.Controls.Add(newTestButton);
             floatingContainerPanel.Controls.Add(starRatingsPieChart);
             floatingContainerPanel.Controls.Add(guna2GradientPanel1);
             floatingContainerPanel.Controls.Add(testAcitivtyControllerPanel);
             floatingContainerPanel.CustomBorderColor = Color.FromArgb(35, 34, 50);
-            floatingContainerPanel.CustomizableEdges = customizableEdges51;
+            floatingContainerPanel.CustomizableEdges = customizableEdges53;
             floatingContainerPanel.FillColor = Color.FromArgb(35, 34, 50);
             floatingContainerPanel.ForeColor = SystemColors.ControlText;
             floatingContainerPanel.Location = new Point(50, 50);
             floatingContainerPanel.Name = "floatingContainerPanel";
             floatingContainerPanel.ShadowDecoration.BorderRadius = 20;
             floatingContainerPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            floatingContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
+            floatingContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
             floatingContainerPanel.ShadowDecoration.Depth = 40;
             floatingContainerPanel.ShadowDecoration.Enabled = true;
             floatingContainerPanel.ShadowDecoration.Shadow = new Padding(8);
             floatingContainerPanel.Size = new Size(1200, 620);
             floatingContainerPanel.TabIndex = 5;
+            // 
+            // newTestButton
+            // 
+            newTestButton.CustomizableEdges = customizableEdges47;
+            newTestButton.DisabledState.BorderColor = Color.DarkGray;
+            newTestButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            newTestButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            newTestButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            newTestButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            newTestButton.Font = new Font("Segoe UI", 9F);
+            newTestButton.ForeColor = Color.White;
+            newTestButton.Location = new Point(584, 4);
+            newTestButton.Name = "newTestButton";
+            newTestButton.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            newTestButton.Size = new Size(180, 45);
+            newTestButton.TabIndex = 7;
+            newTestButton.Text = "Test Button";
+            newTestButton.Click += newTestButton_Click;
             // 
             // starRatingsPieChart
             // 
@@ -671,19 +693,19 @@ namespace CodingTracker.View.Forms
             // 
             // guna2GradientPanel1
             // 
-            guna2GradientPanel1.CustomizableEdges = customizableEdges47;
-            guna2GradientPanel1.Location = new Point(575, 84);
+            guna2GradientPanel1.CustomizableEdges = customizableEdges49;
+            guna2GradientPanel1.Location = new Point(584, 84);
             guna2GradientPanel1.Name = "guna2GradientPanel1";
-            guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            guna2GradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges50;
             guna2GradientPanel1.Size = new Size(54, 307);
             guna2GradientPanel1.TabIndex = 5;
             // 
             // testAcitivtyControllerPanel
             // 
-            testAcitivtyControllerPanel.CustomizableEdges = customizableEdges49;
+            testAcitivtyControllerPanel.CustomizableEdges = customizableEdges51;
             testAcitivtyControllerPanel.Location = new Point(19, 351);
             testAcitivtyControllerPanel.Name = "testAcitivtyControllerPanel";
-            testAcitivtyControllerPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
+            testAcitivtyControllerPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
             testAcitivtyControllerPanel.Size = new Size(401, 266);
             testAcitivtyControllerPanel.TabIndex = 4;
             // 
@@ -691,7 +713,7 @@ namespace CodingTracker.View.Forms
             // 
             skControlTest.Location = new Point(575, 84);
             skControlTest.Name = "skControlTest";
-            skControlTest.Size = new Size(0, 0);
+            skControlTest.Size = new Size(200, 300);
             skControlTest.TabIndex = 0;
             // 
             // TestForm
@@ -769,5 +791,6 @@ namespace CodingTracker.View.Forms
 
         private SKControl skControlTest;
         private LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart;
+        private Guna2GradientButton newTestButton;
     }
 }

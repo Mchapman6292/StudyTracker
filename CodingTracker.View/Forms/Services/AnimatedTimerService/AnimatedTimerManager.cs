@@ -3,7 +3,12 @@ using SkiaSharp.Views.Desktop;
 
 namespace CodingTracker.View.Forms.Services.AanimatedTimerService
 {
-    public class AnimatedTimerManager
+    public interface IAniamtedTimerManager
+    {
+
+    }
+
+    public class AnimatedTimerManager : IAniamtedTimerManager
     {
         public SKControl SkTimerControl;
 

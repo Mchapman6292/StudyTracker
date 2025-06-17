@@ -1,4 +1,6 @@
-﻿using SkiaSharp;
+﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using SkiaSharp;
+using System.Drawing;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 {
@@ -10,30 +12,38 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         private Color GradientColorTwo = Color.Turquoise;
 
+        public List<AnimatedTimerSegment> timerSegments;
+        public int SegmentCount => timerSegments.Count;
 
-        public int width = 10;
+        public float width = TimerMeasurements.ColumnWidth;
+        public float ColumnHeight => SegmentCount * TimerMeasurements.SegmentHeight;
 
-        public int segmentHeight;
 
-        public List<int> displayDigits;
 
-        private int SegmentCount;
 
-        Point position;
+        public SKPoint TimerLocation;
         public bool IsVisible { get; set; } = true;
         public bool IsEnabled { get; set; } = true;
 
 
 
 
-        public AnimatedTimerColumn(int width, List<int> displayDigits, Point position)
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint timerLocation)
         {
-            this.width = width;
-            segmentHeight = width;
-            SegmentCount = displayDigits.Count;
-            this.position = position;
+            this.timerSegments = timerSegments;
+            this.TimerLocation = timerLocation;
         }
 
+
+        public static AnimatedTimerColumn CreateTimerColumn(List<int> numbers, SKPoint location)
+        {
+            var segments = new List<AnimatedTimerSegment>();
+            foreach (int number in numbers)
+            {
+                segments.Add(new AnimatedTimerSegment(number));
+            }
+            return new AnimatedTimerColumn(segments, location);
+        }
 
 
 

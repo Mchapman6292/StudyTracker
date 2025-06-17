@@ -19,6 +19,8 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
+using CodingTracker.View.Forms.Services.AanimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -118,6 +120,8 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IDurationParentPanelPositionManager, DurationParentPanelPositionManager>()
                     .AddSingleton<ISessionDurationScaler, SessionDurationScaler>()
                     .AddSingleton<IMainPagePieChartManager, MainPagePieChartManager>()
+                    .AddSingleton<IAnimatedTimerRenderer, AnimatedTimerRenderer>()
+                    .AddSingleton<IAniamtedTimerManager, AnimatedTimerManager>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()

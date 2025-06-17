@@ -1,5 +1,8 @@
 ﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
@@ -7,11 +10,10 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using LiveChartsCore;
+using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.Measure;
 using SkiaSharp;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using SkiaSharp.Views.Desktop;
 
 
@@ -38,28 +40,7 @@ namespace CodingTracker.View.Forms
 
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationParentPanelFactory durationParentPanelFactory, IDurationPanelFactory durationPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionContainerPanelFactory sessionContainerPanelFactory, ISessionVisualizationController sessionVisualizationController, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer)
-        {
-            InitializeComponent();
-            _buttonHighligherService = buttonHighlighterService;
-            _notificationManager = notificationManager;
-            _durationParentPanelFactory = durationParentPanelFactory;
-            _durationPanelFactory = durationPanelFactory;
-            _codingSessionRepository = codingSessionRepository;
-            _sessionContainerPanelFactory = sessionContainerPanelFactory;
-            _sessionVisualizationController = sessionVisualizationController;
-            _labelAssignment = labelAssignment;
-            _durationPanelPositionManager = durationPanelPositionManager;
-            _animatedTimerRenderer = animatedTimerRenderer;
-
-
-
-            this.Load += TestForm_Load;
-            this.Shown += TestForm_Shwon;
-            skControlTest.PaintSurface += _animatedTimerRenderer.DrawAnimatedTimerColumn
-            _labelAssignment = labelAssignment;
-        }
-
+   
         private async void TestForm_Load(object sender, EventArgs e)
         {
             await PopulatestarRatingDoughnutChart();
@@ -68,7 +49,7 @@ namespace CodingTracker.View.Forms
 
         private async void TestForm_Shwon(object sender, EventArgs e)
         {
-  
+
 
 
 
@@ -173,7 +154,7 @@ namespace CodingTracker.View.Forms
 
             SKColor fourStarColor = new SKColor(180, 100, 200);
             SKColor fourStarColor2 = new SKColor(255, 120, 180);
-            SKColor[] colorsFourStar =  [fourStarColor, fourStarColor2];
+            SKColor[] colorsFourStar = [fourStarColor, fourStarColor2];
 
             SKColor fiveStarColor = new SKColor(120, 220, 160);
             SKColor fiveStarColor2 = new SKColor(100, 180, 255);
@@ -207,8 +188,8 @@ namespace CodingTracker.View.Forms
                 InnerRadius = radiusInner,
                 Fill = new RadialGradientPaint(colorsOneStar, null, 1f),
                 Pushout = pushOutValue
-                
-                    
+
+
 
             };
 
@@ -223,7 +204,7 @@ namespace CodingTracker.View.Forms
                 /*
                 Fill = new RadialGradientPaint(colorsTwoStar, null, 1f),
                 */
-                Fill = new LinearGradientPaint(colorsTwoStar,start,end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
+                Fill = new LinearGradientPaint(colorsTwoStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
                 Pushout = pushOutValue,
                 Stroke = strokeTwoStar
 
@@ -231,13 +212,13 @@ namespace CodingTracker.View.Forms
 
             var threeStarSeries = new PieSeries<double>
             {
-                Values = new List<double> { threeStarCount},
+                Values = new List<double> { threeStarCount },
                 Name = "★★★",
                 DataLabelsPaint = new SolidColorPaint(SKColors.White),
                 DataLabelsSize = 16,
                 DataLabelsPosition = PolarLabelsPosition.Middle,
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(coloursThreeStar,start,end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
+                Fill = new LinearGradientPaint(coloursThreeStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
                 Pushout = pushOutValue,
                 Stroke = strokeThreeStar
 
@@ -258,36 +239,43 @@ namespace CodingTracker.View.Forms
 
             var fiveStarSeries = new PieSeries<double>
             {
-                Values = new List<double>{ fiveStarCount },
+                Values = new List<double> { fiveStarCount },
                 Name = "★★★★★",
                 DataLabelsPaint = new SolidColorPaint(SKColors.White),
                 DataLabelsSize = 16,
                 DataLabelsPosition = PolarLabelsPosition.Middle,
-                InnerRadius = radiusInner, 
+                InnerRadius = radiusInner,
                 Fill = new LinearGradientPaint(colorsFiveStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
                 Pushout = pushOutValue
             };
-            
-                pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries});
-            
 
-            starRatingsPieChart.Series = pieSeriesList; 
+            pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries });
+
+
+            starRatingsPieChart.Series = pieSeriesList;
 
         }
 
 
 
-        private void PaintRectangle(object sender, SKPaintGLSurfaceEventArgs e)
+        private void PaintRectangle(object sender, SKPaintSurfaceEventArgs e)
         {
             var canvas = e.Surface.Canvas;
-            var width = e.Info.Width;
-            var height = e.Info.Height;
+            canvas.Clear(SKColors.Black);
 
-            _animatedTimerRenderer.DrawAnimatedTimerColumn(canvas, _timerColumn, width, height);
+            var segments = new List<AnimatedTimerSegment>();
+            for (int i = 0; i <= 9; i++)
+            {
+                segments.Add(new AnimatedTimerSegment(i));
+            }
+
+            var column = new AnimatedTimerColumn(segments, new SKPoint(50, 50));
+            _animatedTimerRenderer.DrawAllSegments(column, canvas);
         }
-
-
-
+        private void newTestButton_Click(object sender, EventArgs e)
+        {
+                
+        }
     }
- 
+
 }
