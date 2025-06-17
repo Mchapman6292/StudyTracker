@@ -3,6 +3,7 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
@@ -36,11 +37,12 @@ namespace CodingTracker.View.Forms
         private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
         private readonly IAnimatedTimerRenderer _animatedTimerRenderer;
         private readonly IApplicationLogger _appLogger;
+        private readonly IAnimatedTimerColumnFactory _animatedTimerColumnFactory;
 
         public AnimatedTimerColumn column;
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -56,6 +58,7 @@ namespace CodingTracker.View.Forms
             _durationPanelPositionManager = durationPanelPositionManager;
             _animatedTimerRenderer = animatedTimerRenderer;
             _appLogger = appLogger;
+            _animatedTimerColumnFactory = animatedTimerColumnFactory;
 
             InitializeComponent();
 
@@ -295,27 +298,28 @@ namespace CodingTracker.View.Forms
             var canvas = e.Surface.Canvas;
             canvas.Clear(new SKColor(35, 34, 50));
 
+            var standardDigits = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var hoursFirstDigit = new List<int> { 0, 1, 2 };
+            var minutesFirstDigit = new List<int> { 0, 1, 2, 3, 4, 5 };
 
+            var hoursTens = _animatedTimerColumnFactory.CreateColumn(hoursFirstDigit, new SKPoint(50, 50));
+            var hoursOnes = _animatedTimerColumnFactory.CreateColumn(standardDigits, new SKPoint(150, 50));
 
-            var segments = new List<AnimatedTimerSegment>();
-            for (int i = 0; i <= 9; i++)
-            {
-                segments.Add(new AnimatedTimerSegment(i));
-            }
+            var minutesTens = _animatedTimerColumnFactory.CreateColumn(minutesFirstDigit, new SKPoint(300, 50));
+            var minutesOnes = _animatedTimerColumnFactory.CreateColumn(standardDigits, new SKPoint(400, 50));
 
-            column = new AnimatedTimerColumn(segments, new SKPoint(50, 50));
+            var secondsTens = _animatedTimerColumnFactory.CreateColumn(minutesFirstDigit, new SKPoint(550, 50));
+            var secondsOnes = _animatedTimerColumnFactory.CreateColumn(standardDigits, new SKPoint(650, 50));
 
-      
-
-            _animatedTimerRenderer.DrawAllSegments(column, canvas);
-
-
-            string logMsg = $"AnimatedTimerColumn -- Location: {column.TimerLocation.ToString()} SegmentCount: {segments.Count}.";
-
-   
-
-            _appLogger.Debug(logMsg);
+            _animatedTimerRenderer.DrawAllSegments(hoursTens, canvas);
+            _animatedTimerRenderer.DrawAllSegments(hoursOnes, canvas);
+            _animatedTimerRenderer.DrawAllSegments(minutesTens, canvas);
+            _animatedTimerRenderer.DrawAllSegments(minutesOnes, canvas);
+            _animatedTimerRenderer.DrawAllSegments(secondsTens, canvas);
+            _animatedTimerRenderer.DrawAllSegments(secondsOnes, canvas);
         }
+
+
 
 
         private void newTestButton_Click(object sender, EventArgs e)
