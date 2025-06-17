@@ -241,7 +241,7 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
         }
 
         //Used for DonutChart on main page, add default values of zero so the pie chart shows a small section to indicate 0 counts of that rating.
-        public async Task<Dictionary<int, int>> GetStarRatingsWithZeroValueDefault()
+        public async Task<Dictionary<int , int>> GetStarRatingAndCount()
         {
             // Remove OrderBy from the database query - we'll handle ordering in memory
             Dictionary<int, int> starRatings = await _dbContext.CodingSessions

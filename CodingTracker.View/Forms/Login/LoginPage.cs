@@ -281,7 +281,7 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.TestForm);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)

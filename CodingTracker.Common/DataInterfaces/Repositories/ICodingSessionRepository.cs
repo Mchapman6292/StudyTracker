@@ -31,7 +31,7 @@ namespace CodingTracker.Common.DataInterfaces.Repositories
         Task<double> GetWeekTotalDurationAsync();
         Task<(double todayTotal, double weekTotal, double average)> GetLabelDurationsAsync();
 
-        Task<Dictionary<int, int>> GetStarRatingsWithZeroValueDefault();
+        Task<Dictionary<int, int>> GetStarRatingAndCount();
         Task<List<int>> GetLast28DayDurationSecondsWithDefaultZeroValues();
 
         Task<Dictionary<DateOnly, List<CodingSessionEntity>>> GetSessionsGroupedByDateLastSevenDays();
