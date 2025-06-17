@@ -10,9 +10,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
     {
         public static float ColumnWidth = 5f;
 
-        public static float SegmentWidth = 5f;
+        public static float SegmentWidth = 30f;
 
-        public static float SegmentHeight = 5f;
+        public static float SegmentHeight = 30f;
 
 
     }

@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.DataInterfaces.Repositories;
+using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
@@ -10,6 +11,7 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using LiveChartsCore;
+using LiveChartsCore.Drawing.Segments;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -33,16 +35,46 @@ namespace CodingTracker.View.Forms
         private readonly ILabelAssignment _labelAssignment;
         private readonly IDurationParentPanelPositionManager _durationPanelPositionManager;
         private readonly IAnimatedTimerRenderer _animatedTimerRenderer;
+        private readonly IApplicationLogger _appLogger;
+
+        public AnimatedTimerColumn column;
 
 
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger)
+        {
 
+            _buttonHighligherService = buttonHighlighterService;
+            _notificationManager = notificationManager;
+            _durationPanelFactory = durationPanelFactory;
+            _durationParentPanelFactory = durationParentPanelFactory;
+            _sessionContainerPanelFactory = sessionContainerPanelFactory;
+            _codingSessionRepository = codingSessionRepository;
+            _sessionVisualizationController = sessionVisualizationController;
+            _panelColorAssigner = panelColorAssigner;
+            _last28DayPanelSettings = last28DayPanelSettings;
+            _labelAssignment = labelAssignment;
+            _durationPanelPositionManager = durationPanelPositionManager;
+            _animatedTimerRenderer = animatedTimerRenderer;
+            _appLogger = appLogger;
 
-
-
+            InitializeComponent();
 
    
+
+            skControlTest.PaintSurface += PaintRectangle;
+
+        }
+
+
+
+
+
+
         private async void TestForm_Load(object sender, EventArgs e)
         {
+
+            skControlTest.Invalidate();
+
             await PopulatestarRatingDoughnutChart();
 
         }
@@ -261,7 +293,9 @@ namespace CodingTracker.View.Forms
         private void PaintRectangle(object sender, SKPaintSurfaceEventArgs e)
         {
             var canvas = e.Surface.Canvas;
-            canvas.Clear(SKColors.Black);
+            canvas.Clear(new SKColor(35, 34, 50));
+
+
 
             var segments = new List<AnimatedTimerSegment>();
             for (int i = 0; i <= 9; i++)
@@ -269,12 +303,28 @@ namespace CodingTracker.View.Forms
                 segments.Add(new AnimatedTimerSegment(i));
             }
 
-            var column = new AnimatedTimerColumn(segments, new SKPoint(50, 50));
+            column = new AnimatedTimerColumn(segments, new SKPoint(50, 50));
+
+      
+
             _animatedTimerRenderer.DrawAllSegments(column, canvas);
+
+
+            string logMsg = $"AnimatedTimerColumn -- Location: {column.TimerLocation.ToString()} SegmentCount: {segments.Count}.";
+
+   
+
+            _appLogger.Debug(logMsg);
         }
+
+
         private void newTestButton_Click(object sender, EventArgs e)
         {
-                
+            string logMsg = $"AnimatedTimerColumn -- Location: {column.TimerLocation.ToString()} SegmentCount: {column.SegmentCount}.";
+            _appLogger.Debug(logMsg);
+
+            _notificationManager.ShowNotificationDialog(this, logMsg);
+
         }
     }
 
