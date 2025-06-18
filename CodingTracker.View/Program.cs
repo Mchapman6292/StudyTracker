@@ -21,6 +21,7 @@ using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.AanimatedTimerService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -122,6 +123,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IMainPagePieChartManager, MainPagePieChartManager>()
                     .AddSingleton<IAnimatedTimerRenderer, AnimatedTimerRenderer>()
                     .AddSingleton<IAniamtedTimerManager, AnimatedTimerManager>()
+                    .AddSingleton<IAnimatedTimerColumnFactory, AnimatedTimerColumnFactory>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
