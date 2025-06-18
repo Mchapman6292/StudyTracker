@@ -1,9 +1,8 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
-using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
 
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
@@ -12,16 +11,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y);
         void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas);
+
+        void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
     }
 
     public class AnimatedTimerRenderer : IAnimatedTimerRenderer
     {
         private readonly IApplicationLogger _appLogger;
+        private readonly IAnimationPhaseCalculator _phaseCalculator;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator)
         {
             _appLogger = appLogger;
+            _phaseCalculator = phaseCalculator;
         }
+
+  
 
         public void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y)
         {
@@ -38,7 +43,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 float centerX = x + (timerSegment.SegmentWidth / 2f);
                 float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
 
-                canvas.DrawText(timerSegment.SegmentNumber.ToString(), centerX, centerY, font, paint);
+                canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
             }
         }
 
@@ -61,18 +66,91 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        public void DrawHighlight(SKCanvas canvas, float x, float y, float width, float height)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(SKColors.Black);
+
+            foreach (var column in columns)
+            {
+                var phase = _phaseCalculator.GetPhaseForColumn(elapsed, column.ColumnType);
+                var currentValue = _phaseCalculator.GetCurrentValue(elapsed, column.ColumnType);
+                var scrollOffset = CalculateScrollOffset(phase, currentValue, column);
+
+                column.ScrollOffset = scrollOffset;
+                column.CurrentValue = currentValue;
+
+                DrawColumn(canvas, column);
+            }
+
+        }
+
+
+
+        private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
         {
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
+                paint.TextSize = column.TextSize;
+                paint.Color = SKColors.White;
+                paint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold);
 
-                var colors = new SKColor[] {new SKColor(100, 100, 255, 80),  new SKColor(50, 50, 200, 100)};
-                paint.Shader = SKShader.CreateLinearGradient(new SKPoint(x, y),new SKPoint(x, y + height),colors,null, SKShaderTileMode.Clamp);
+                var textBounds = new SKRect();
+                paint.MeasureText("0", ref textBounds);
 
-                var rect = new SKRoundRect(new SKRect(x - 5, y - 5, x + width + 5, y + height + 5), 10, 10);
-                canvas.DrawRoundRect(rect, paint);
+                float digitHeight = AnimatedColumnSettings.SegmentHeight;
+                float startY = column.TimerLocation.Y - column.ScrollOffset;
+
+                for (int i = 0; i < column.SegmentCount; i++)
+                {
+                    var segment = column.timerSegments[i];
+                    float y = startY + (i * digitHeight) + textBounds.Height;
+
+                    canvas.DrawText(segment.Value.ToString(), column.TimerLocation.X, y, paint);
+                }
             }
         }
+
+        private float CalculateScrollOffset(float phase, int currentValue, AnimatedTimerColumn column)
+        {
+            float baseOffset = currentValue * AnimatedColumnSettings.SegmentHeight;
+
+            if (phase < 0.25f)
+            {
+                float animationProgress = phase / 0.25f;
+                float easedProgress = EaseInOutCubic(animationProgress);
+                return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+            }
+
+            return baseOffset;
+        }
+
+        private float EaseInOutCubic(float t)
+        {
+            return t < 0.5f
+                ? 4f * t * t * t
+                : 1f - MathF.Pow(-2f * t + 2f, 3f) / 2f;
+        }
+
+
     }
 }
