@@ -17,20 +17,26 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
     public class AnimatedTimerManager : IAnimatedTimerManager
     {
         public SKControl SkTimerControl { get; private set; }
-        private IStopWatchTimerService _stopWatchService;
-        private AnimatedTimerRenderer _renderer;
-        private HighlightManager _highlightManager;
+        private readonly IStopWatchTimerService _stopWatchService;
+        private readonly IAnimatedTimerRenderer _animatedRenderer;
+        private readonly IHighlightManager _highlightManager;
         private List<AnimatedTimerColumn> _columns;
+
+
+        public AnimatedTimerManager(SKControl skTimerControl, IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IHighlightManager highlightManager, List<AnimatedTimerColumn> columns)
+        {
+            SkTimerControl = skTimerControl;
+            _stopWatchService = stopWatchService;
+            _animatedRenderer = animatedRenderer;
+            _highlightManager = highlightManager;
+            _columns = columns;
+        }
 
         public void Initialize(SKControl control, IStopWatchTimerService stopWatchService)
         {
             SkTimerControl = control;
-            _stopWatchService = stopWatchService;
 
             _columns = CreateTimerColumns();
-            _highlightManager = new HighlightManager();
-            _renderer = new AnimatedTimerRenderer(_columns, _highlightManager);
-
             SkTimerControl.PaintSurface += OnPaintSurface;
         }
 
@@ -50,7 +56,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _renderer.Draw(canvas, bounds, elapsed);
+            _animatedRenderer.Draw(canvas, bounds, elapsed);
         }
 
         private List<AnimatedTimerColumn> CreateTimerColumns()

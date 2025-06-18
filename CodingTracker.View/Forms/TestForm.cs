@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Services.AnimatedTimerService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
@@ -38,6 +39,7 @@ namespace CodingTracker.View.Forms
         private readonly IAnimatedTimerRenderer _animatedTimerRenderer;
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedTimerColumnFactory _animatedTimerColumnFactory;
+        private readonly IAnimatedTimerManager _animatedTimerManager;
 
         public AnimatedTimerColumn column;
 
@@ -51,7 +53,7 @@ namespace CodingTracker.View.Forms
         private DateTime lastTime;
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -68,6 +70,7 @@ namespace CodingTracker.View.Forms
             _animatedTimerRenderer = animatedTimerRenderer;
             _appLogger = appLogger;
             _animatedTimerColumnFactory = animatedTimerColumnFactory;
+            _animatedTimerManager = animatedTimerManager;
 
             InitializeComponent();
 
@@ -145,55 +148,7 @@ namespace CodingTracker.View.Forms
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            var currentTime = DateTime.Now;
-
-            if (currentTime.Second != lastTime.Second)
-            {
-                int newSecondsOnes = currentTime.Second % 10;
-                int newSecondsTens = currentTime.Second / 10;
-
-                secondsOnes.StartScrollToValue(newSecondsOnes);
-                secondsTens.StartScrollToValue(newSecondsTens);
-                  
-                if (currentTime.Minute != lastTime.Minute)
-                {
-                    int newMinutesOnes = currentTime.Minute % 10;
-                    int newMinutesTens = currentTime.Minute / 10;
-
-                    minutesOnes.StartScrollToValue(newMinutesOnes);
-                    minutesTens.StartScrollToValue(newMinutesTens);
-
-                    if (currentTime.Hour != lastTime.Hour)
-                    {
-                        int newHoursOnes = currentTime.Hour % 10;
-                        int newHoursTens = currentTime.Hour / 10;
-
-                        hoursOnes.StartScrollToValue(newHoursOnes);
-                        hoursTens.StartScrollToValue(newHoursTens);
-                    }
-                }
-
-                lastTime = currentTime;
-            }
-            string secondsBefore = $"Seconds - ScrollOffset: {secondsOnes.ScrollOffset}, Current: {secondsOnes.CurrentValue}, Target: {secondsOnes.TargetValue}";
-            string tensBefore = $"hourTens position: {hoursTens.TimerLocation.ToString()}";
-
-            hoursTens.UpdateAnimation();
-            hoursOnes.UpdateAnimation();
-            minutesTens.UpdateAnimation();
-            minutesOnes.UpdateAnimation();
-            secondsTens.UpdateAnimation();
-            secondsOnes.UpdateAnimation();
-
-            skControlTest.Invalidate();
-
-            string tensAfter = $"hoursTens Position After: {hoursTens.TimerLocation.ToString()}"; ;
-            string secondsAfter = $"Seconds - ScrollOffset: {secondsOnes.ScrollOffset}, Current: {secondsOnes.CurrentValue}, Target: {secondsOnes.TargetValue}";
-
-
-            _appLogger.Debug(secondsBefore);
-            _appLogger.Debug(secondsAfter);
-
+            _animatedTimerManager.UpdateAndRender();
 
         }
 

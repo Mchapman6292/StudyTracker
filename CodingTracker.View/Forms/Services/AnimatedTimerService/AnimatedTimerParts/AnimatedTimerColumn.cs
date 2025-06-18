@@ -23,84 +23,88 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public bool IsEnabled { get; set; } = true;
 
 
-
-        public bool IsAnimating { get; private set; }
-        public float AnimationSpeed { get; } = AnimatedColumnSettings.AnimationSpeed;
         public float ScrollOffset { get; set; }
         public int CurrentValue { get; private set; }
-        public int TargetValue { get; private set; }
 
         public const int CircleYPosition = 300;
 
+        public TimeUnit ColumnType { get; set; }
+        public bool EnableHighlight { get; set; } = true;
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint timerLocation)
+
+
+
+
+        public AnimatedTimerColumn()
         {
-            this.timerSegments = timerSegments;
-            this.TimerLocation = timerLocation;
+            InitializeSegments();
         }
 
 
-        public void SetTargetValue(int newTarget)
+        private void InitializeSegments()
         {
-            TargetValue = newTarget;
-        }
+            timerSegments = new List<AnimatedTimerSegment>();
 
+            int maxValue = GetMaxValueForColumnType();
 
-        public void UpdateCurrentValue()
-        {
-            CurrentValue = TargetValue;
-        }
-
-        public void StartScrollToValue(int newValue)
-        {
-            if (newValue != CurrentValue && !IsAnimating)
+            for (int i = 0; i <= maxValue; i++)
             {
-                TargetValue = newValue;
-                IsAnimating = true;
+                timerSegments.Add(new AnimatedTimerSegment { Value = i });
+            }
+
+            for (int i = 0; i <= maxValue; i++)
+            {
+                timerSegments.Add(new AnimatedTimerSegment { Value = i });
             }
         }
 
-        public void UpdateAnimation()
+        private int GetMaxValueForColumnType()
         {
-            if (!IsAnimating) return;
-
-
-            ScrollOffset += AnimationSpeed;
-
-            if (ScrollOffset >= AnimatedColumnSettings.SegmentHeight)
+            switch (ColumnType)
             {
-                ScrollOffset = 0;
-                CurrentValue = TargetValue;
-                IsAnimating = false;
+                case TimeUnit.SecondsOnes:
+                case TimeUnit.MinutesOnes:
+                case TimeUnit.HoursOnes:
+                    return 9;
+                case TimeUnit.SecondsTens:
+                case TimeUnit.MinutesTens:
+                    return 5;
+                case TimeUnit.HoursTens:
+                    return 2;
+                default:
+                    return 9;
             }
         }
 
-        public float GetAdjustedY()
+        public AnimatedTimerSegment GetSegmentAtPosition(float y)
         {
-            return TimerLocation.Y - ScrollOffset;
+            float relativeY = y - TimerLocation.Y + ScrollOffset;
+            int segmentIndex = (int)(relativeY / AnimatedColumnSettings.SegmentHeight);
+
+            if (segmentIndex >= 0 && segmentIndex < timerSegments.Count)
+            {
+                return timerSegments[segmentIndex];
+            }
+
+            return null;
         }
 
-        public void Reset()
+        public float GetDistanceFromHighlight(float segmentY, float highlightY)
         {
-            ScrollOffset = 0;
-            CurrentValue = 0;
-            TargetValue = 0;
-            IsAnimating = false;
+            return Math.Abs(segmentY - highlightY);
         }
-
 
 
         public int GetCurrentSegmentIndex()
         {
-            return timerSegments.FindIndex(s => s.SegmentNumber == CurrentValue);
+            return timerSegments.FindIndex(s => s.Value == CurrentValue);
         }
 
 
 
 
-xc  
 
 
 

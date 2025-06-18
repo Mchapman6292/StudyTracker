@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Core;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
 {
@@ -15,6 +16,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public const float SegmentHeight = 50f;
 
         public const float AnimationSpeed = 1.5f;
+
+
 
     }
 }
