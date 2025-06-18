@@ -16,6 +16,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+
+
         public AnimatedTimerSegment(int segmentNumber)
         {
             this.SegmentNumber = segmentNumber;

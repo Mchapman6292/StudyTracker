@@ -30,6 +30,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public int CurrentValue { get; private set; }
         public int TargetValue { get; private set; }
 
+        public const int CircleYPosition = 300;
+
 
 
 
@@ -98,18 +100,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-
-
-        public static AnimatedTimerColumn CreateTimerColumn(List<int> numbers, SKPoint location)
-        {
-            var segments = new List<AnimatedTimerSegment>();
-            foreach (int number in numbers)
-            {
-                segments.Add(new AnimatedTimerSegment(number));
-            }
-            return new AnimatedTimerColumn(segments, location);
-        }
-
+xc  
 
 
 

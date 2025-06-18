@@ -2,8 +2,6 @@
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
-using System.Windows.Media;
-using System.Windows.Media.TextFormatting;
 
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
@@ -61,18 +59,5 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        public void DrawHighlight(SKCanvas canvas, float x, float y, float width, float height)
-        {
-            using (var paint = new SKPaint())
-            {
-                paint.IsAntialias = true;
-
-                var colors = new SKColor[] {new SKColor(100, 100, 255, 80),  new SKColor(50, 50, 200, 100)};
-                paint.Shader = SKShader.CreateLinearGradient(new SKPoint(x, y),new SKPoint(x, y + height),colors,null, SKShaderTileMode.Clamp);
-
-                var rect = new SKRoundRect(new SKRect(x - 5, y - 5, x + width + 5, y + height + 5), 10, 10);
-                canvas.DrawRoundRect(rect, paint);
-            }
-        }
     }
 }

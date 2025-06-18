@@ -154,7 +154,7 @@ namespace CodingTracker.View.Forms
 
                 secondsOnes.StartScrollToValue(newSecondsOnes);
                 secondsTens.StartScrollToValue(newSecondsTens);
-
+                  
                 if (currentTime.Minute != lastTime.Minute)
                 {
                     int newMinutesOnes = currentTime.Minute % 10;
