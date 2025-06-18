@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 
@@ -10,18 +11,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y);
         void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas);
+
+        void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
     }
 
     public class AnimatedTimerRenderer : IAnimatedTimerRenderer
     {
         private readonly IApplicationLogger _appLogger;
-        private readonly IHighlightManager _highlightManager;
         private readonly IAnimationPhaseCalculator _phaseCalculator;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IHighlightManager highlightManager, IAnimationPhaseCalculator phaseCalculator)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator)
         {
             _appLogger = appLogger;
-            _highlightManager = highlightManager;
             _phaseCalculator = phaseCalculator;
         }
 
@@ -100,7 +101,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 DrawColumn(canvas, column);
             }
 
-            _highlightManager.DrawHighlights(canvas, columns, bounds.Height);
         }
 
 
@@ -110,7 +110,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                paint.TextSize = AnimatedColumnSettings.TextSize;
+                paint.TextSize = column.TextSize;
                 paint.Color = SKColors.White;
                 paint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold);
 

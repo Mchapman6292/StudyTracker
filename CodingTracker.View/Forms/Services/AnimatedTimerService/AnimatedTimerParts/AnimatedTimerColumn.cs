@@ -24,7 +24,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
         public float ScrollOffset { get; set; }
-        public int CurrentValue { get; private set; }
+        public int CurrentValue { get; set; }
 
         public const int CircleYPosition = 300;
 

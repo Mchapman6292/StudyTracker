@@ -19,16 +19,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public SKControl SkTimerControl { get; private set; }
         private readonly IStopWatchTimerService _stopWatchService;
         private readonly IAnimatedTimerRenderer _animatedRenderer;
-        private readonly IHighlightManager _highlightManager;
         private List<AnimatedTimerColumn> _columns;
 
 
-        public AnimatedTimerManager(SKControl skTimerControl, IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IHighlightManager highlightManager, List<AnimatedTimerColumn> columns)
+        public AnimatedTimerManager(SKControl skTimerControl, IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, List<AnimatedTimerColumn> columns)
         {
             SkTimerControl = skTimerControl;
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
-            _highlightManager = highlightManager;
+
             _columns = columns;
         }
 
@@ -45,10 +44,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             SkTimerControl.Invalidate();
         }
 
-        public void SetHighlight(ITimerHighlight highlight)
-        {
-            _highlightManager?.SetHighlight(highlight);
-        }
+  
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
