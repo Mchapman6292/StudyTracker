@@ -8,19 +8,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
     {
         public interface IAnimatedTimerColumnFactory
         {
-            AnimatedTimerColumn CreateColumn(List<int> numbers, SKPoint location);
+            AnimatedTimerColumn CreateColumn(int[] numbers, SKPoint location);
         }
 
         public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
         {
-            public AnimatedTimerColumn CreateColumn(List<int> numbers, SKPoint location)
+            public AnimatedTimerColumn CreateColumn(int[] segmentNumbers, SKPoint location)
             {
+                int segCount = 0;
+
                 var segments = new List<AnimatedTimerSegment>();
-                foreach (int number in numbers)
+                for(int segmentNumber = 0; segmentNumber < segmentNumbers.Length; segmentNumber++)
                 {
-                    segments.Add(new AnimatedTimerSegment(number));
+                    segments.Add(new AnimatedTimerSegment(segmentNumber));
+                    segCount++;
                 }
-                return new AnimatedTimerColumn(segments, location);
+                return new AnimatedTimerColumn(segments);
             }
         }
     }

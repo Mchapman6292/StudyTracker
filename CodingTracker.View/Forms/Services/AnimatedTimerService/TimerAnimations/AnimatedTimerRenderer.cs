@@ -12,7 +12,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y);
         void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas);
 
-        void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
     }
 
     public class AnimatedTimerRenderer : IAnimatedTimerRenderer
@@ -52,7 +52,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             for (int currentSegmentIndex = 0; currentSegmentIndex < timerColumn.SegmentCount; currentSegmentIndex++)
             {
-                AnimatedTimerSegment targetSegment = timerColumn.timerSegments[currentSegmentIndex];
+                AnimatedTimerSegment targetSegment = timerColumn.TimerSegments[currentSegmentIndex];
 
                 float segmentY = timerColumn.TimerLocation.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight) - timerColumn.ScrollOffset;
 
@@ -122,7 +122,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 for (int i = 0; i < column.SegmentCount; i++)
                 {
-                    var segment = column.timerSegments[i];
+                    var segment = column.TimerSegments[i];
                     float y = startY + (i * digitHeight) + textBounds.Height;
 
                     canvas.DrawText(segment.Value.ToString(), column.TimerLocation.X, y, paint);

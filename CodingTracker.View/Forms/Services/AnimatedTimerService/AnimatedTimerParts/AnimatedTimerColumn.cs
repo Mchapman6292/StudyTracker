@@ -12,8 +12,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         private Color GradientColorTwo = Color.Turquoise;
 
-        public List<AnimatedTimerSegment> timerSegments;
-        public int SegmentCount => timerSegments.Count;
+        public List<AnimatedTimerSegment> TimerSegments;
+        public int SegmentCount;
 
         public float width = AnimatedColumnSettings.ColumnWidth;
         public float ColumnHeight => SegmentCount * AnimatedColumnSettings.SegmentHeight;
@@ -21,6 +21,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public SKPoint TimerLocation;
         public bool IsVisible { get; set; } = true;
         public bool IsEnabled { get; set; } = true;
+
+        public float TextSize = AnimatedColumnSettings.TextSize;
 
 
         public float ScrollOffset { get; set; }
@@ -37,28 +39,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public AnimatedTimerColumn()
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments)
         {
-            InitializeSegments();
+            TimerSegments = timerSegments;
         }
 
 
-        private void InitializeSegments()
-        {
-            timerSegments = new List<AnimatedTimerSegment>();
-
-            int maxValue = GetMaxValueForColumnType();
-
-            for (int i = 0; i <= maxValue; i++)
-            {
-                timerSegments.Add(new AnimatedTimerSegment { Value = i });
-            }
-
-            for (int i = 0; i <= maxValue; i++)
-            {
-                timerSegments.Add(new AnimatedTimerSegment { Value = i });
-            }
-        }
 
         private int GetMaxValueForColumnType()
         {
@@ -83,9 +69,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             float relativeY = y - TimerLocation.Y + ScrollOffset;
             int segmentIndex = (int)(relativeY / AnimatedColumnSettings.SegmentHeight);
 
-            if (segmentIndex >= 0 && segmentIndex < timerSegments.Count)
+            if (segmentIndex >= 0 && segmentIndex < TimerSegments.Count)
             {
-                return timerSegments[segmentIndex];
+                return TimerSegments[segmentIndex];
             }
 
             return null;
@@ -99,10 +85,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int GetCurrentSegmentIndex()
         {
-            return timerSegments.FindIndex(s => s.Value == CurrentValue);
+            return TimerSegments.FindIndex(s => s.Value == CurrentValue);
         }
 
-
+        
 
 
 

@@ -74,13 +74,15 @@ namespace CodingTracker.View.Forms
 
             InitializeComponent();
 
+            _animatedTimerManager.InitializeColumns();
    
 
-            skControlTest.PaintSurface += PaintRectangle;
+            skControlTest.PaintSurface += _animatedTimerManager.OnPaintSurface;
 
 
-            InitializeTimerColumns();
             InitializeAnimationTimer();
+
+
 
         }
 
@@ -124,6 +126,7 @@ namespace CodingTracker.View.Forms
 
         private void InitializeTimerColumns()
         {
+            /*
             var standardDigits = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var hoursFirstDigit = new List<int> { 0, 1, 2 };
             var minutesFirstDigit = new List<int> { 0, 1, 2, 3, 4, 5 };
@@ -136,6 +139,7 @@ namespace CodingTracker.View.Forms
             secondsOnes = _animatedTimerColumnFactory.CreateColumn(standardDigits, new SKPoint(650, 50));
 
             lastTime = DateTime.Now;
+            */
         }
 
         private void InitializeAnimationTimer()
@@ -148,7 +152,7 @@ namespace CodingTracker.View.Forms
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-            _animatedTimerManager.UpdateAndRender();
+            _animatedTimerManager.UpdateAndRender(skControlTest);
 
         }
 

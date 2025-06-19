@@ -15,6 +15,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public bool IsCurrent { get; set; }
 
 
+        public AnimatedTimerSegment(int value)
+        {
+            Value = value;
+        }
 
 
 
