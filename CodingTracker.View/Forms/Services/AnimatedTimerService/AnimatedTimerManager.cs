@@ -50,6 +50,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         public void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+
+
+
             var canvas = e.Surface.Canvas;
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
@@ -57,26 +60,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _animatedRenderer.Draw(canvas, bounds, elapsed, _columns);
         }
 
+
+        public void LogColumnPosition(AnimatedTimerColumn column)
+        {
+            _appLogger.Debug($"{column.ColumnType.ToString()} location: X = {column.Location.X.ToString()}, Y = {column.Location.Y.ToString()}");
+        }
+
+        public void LogXPosition(float spacing)
+        {
+            _appLogger.Debug($"Spacing: {spacing}");    
+        }
+
         public void InitializeColumns()
         {
             float xPosition = 50;
-            float spacing = 80;
+            float spacing = 150;
 
             List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
 
-            var secondsSingleDigits = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)));
+            var secondsSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.SecondsSingleDigits);
             xPosition += spacing;
-            var secondsLeadingDigit = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)));
+            LogXPosition(xPosition);
+
+            LogColumnPosition(secondsSingleDigits);
+
+            var secondsLeadingDigit = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.SecondsLeadingDigit);
+            xPosition += spacing;
+      
+
+            var minutesSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.MinutesSingleDigits);
             xPosition += spacing;
 
-            var minutesSingleDigits = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)));
-            xPosition -= spacing;
-            var minutesLeadingDigits = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)));
-            xPosition -= spacing;
+            var minutesLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.MinutesLeadingDigits);
+            xPosition += spacing;
 
-            var hoursSinlgeDigits = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)));
-            xPosition -= spacing;
-            var hoursLeadingDigits = _animatedColumnFactory.CreateColumn(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)));
+            var hoursSinlgeDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.HoursSinglesDigits);
+            xPosition += spacing;
+            var hoursLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.HoursLeadingDigits);
 
             _columns.Add(secondsSingleDigits);
             _columns.Add(secondsLeadingDigit);
@@ -87,9 +107,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
             _appLogger.Debug($"InitializeColumns complete number of columns in _columns: {_columns.Count}");
 
-       
+            var segmentValuess = secondsSingleDigits.TimerSegments.Select(x => x.Value).ToList();
+
+            _appLogger.Debug($"Values for secondsColumn: {string.Join("", segmentValuess)} ");
 
             
+
+
+
+
+
+
+
+            // Remmove after tests!!!!!!!!!
+            _stopWatchService.StartTimer();
 
 
 
@@ -106,43 +137,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.HoursTens
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.HoursLeadingDigits
             });
             xPosition += spacing;
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.HoursOnes
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.HoursSinglesDigits
             });
             xPosition += spacing + 20;
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.MinutesTens
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.MinutesLeadingDigits
             });
             xPosition += spacing;
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.MinutesOnes
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.MinutesSingleDigits
             });
             xPosition += spacing + 20;
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.SecondsTens
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.SecondsLeadingDigit
             });
             xPosition += spacing;
 
             columns.Add(new AnimatedTimerColumn
             {
-                TimerLocation = new SKPoint(xPosition, 100),
-                ColumnType = TimeUnit.SecondsOnes
+                Location = new SKPoint(xPosition, 100),
+                ColumnType = ColumnType.SecondsSingleDigits
             });
 
             return columns;
@@ -157,13 +188,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
  
 
-    public enum TimeUnit
+    public enum ColumnUnitType
     {
-        HoursTens,
-        HoursOnes,
-        MinutesTens,
-        MinutesOnes,
-        SecondsTens,
-        SecondsOnes
+        HoursLeadingDigits,
+        HoursSinglesDigits,
+        MinutesLeadingDigits,
+        MinutesSingleDigits,
+        SecondsLeadingDigit,
+        SecondsSingleDigits
     }
 }

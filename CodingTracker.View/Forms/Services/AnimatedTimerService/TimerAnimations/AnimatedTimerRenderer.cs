@@ -54,9 +54,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
                 AnimatedTimerSegment targetSegment = timerColumn.TimerSegments[currentSegmentIndex];
 
-                float segmentY = timerColumn.TimerLocation.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight) - timerColumn.ScrollOffset;
+                float segmentY = timerColumn.Location.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight) - timerColumn.ScrollOffset;
 
-                DrawNumber(canvas, targetSegment, timerColumn.TimerLocation.X, segmentY);
+                DrawNumber(canvas, targetSegment, timerColumn.Location.X, segmentY);
             }
         }
 
@@ -104,29 +104,51 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-
-        private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
+        /*
+           private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
         {
+            float digitHeight = AnimatedColumnSettings.SegmentHeight;
+            float startY = column.Location.Y - column.ScrollOffset;
+
             using (var paint = new SKPaint())
+            using (var font = new SKFont())
             {
                 paint.IsAntialias = true;
-                paint.TextSize = column.TextSize;
                 paint.Color = SKColors.White;
-                paint.Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold);
+                
 
                 var textBounds = new SKRect();
-                paint.MeasureText("0", ref textBounds);
+    
 
-                float digitHeight = AnimatedColumnSettings.SegmentHeight;
-                float startY = column.TimerLocation.Y - column.ScrollOffset;
+        
 
                 for (int i = 0; i < column.SegmentCount; i++)
                 {
                     var segment = column.TimerSegments[i];
                     float y = startY + (i * digitHeight) + textBounds.Height;
 
-                    canvas.DrawText(segment.Value.ToString(), column.TimerLocation.X, y, paint);
+                    DrawNumber(canvas, segment, column.Location.X, y);
                 }
+            }
+        }
+        */
+
+
+
+        private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            float digitHeight = AnimatedColumnSettings.SegmentHeight;
+            float startY = column.Location.Y - column.ScrollOffset;
+
+
+
+
+            for (int i = 0; i < column.SegmentCount; i++)
+            {
+                var segment = column.TimerSegments[i];
+                float y = startY + (i * digitHeight);
+
+                DrawNumber(canvas, segment, column.Location.X, y);
             }
         }
 

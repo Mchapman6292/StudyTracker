@@ -67,13 +67,14 @@ namespace CodingTracker.View.Forms
             mainPanel.CustomizableEdges = customizableEdges3;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
+            mainPanel.Margin = new Padding(3, 4, 3, 4);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(80, 0, 0, 0);
             mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
-            mainPanel.Size = new Size(1300, 720);
+            mainPanel.Size = new Size(1486, 960);
             mainPanel.TabIndex = 0;
             // 
             // newTestButton
@@ -86,10 +87,11 @@ namespace CodingTracker.View.Forms
             newTestButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             newTestButton.Font = new Font("Segoe UI", 9F);
             newTestButton.ForeColor = Color.White;
-            newTestButton.Location = new Point(0, 3);
+            newTestButton.Location = new Point(0, 4);
+            newTestButton.Margin = new Padding(3, 4, 3, 4);
             newTestButton.Name = "newTestButton";
             newTestButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            newTestButton.Size = new Size(72, 45);
+            newTestButton.Size = new Size(82, 60);
             newTestButton.TabIndex = 7;
             newTestButton.Text = "Test Button";
             newTestButton.Click += newTestButton_Click;
@@ -98,19 +100,21 @@ namespace CodingTracker.View.Forms
             // 
             skControlTest.BackColor = Color.FromArgb(35, 34, 50);
             skControlTest.ForeColor = Color.FromArgb(35, 34, 50);
-            skControlTest.Location = new Point(-19, 96);
+            skControlTest.Location = new Point(58, 123);
+            skControlTest.Margin = new Padding(3, 4, 3, 4);
             skControlTest.Name = "skControlTest";
-            skControlTest.Size = new Size(1307, 590);
+            skControlTest.Size = new Size(1195, 787);
             skControlTest.TabIndex = 0;
             // 
             // TestForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1300, 720);
+            ClientSize = new Size(1486, 960);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "TestForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Modern Timer Test";

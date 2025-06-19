@@ -13,12 +13,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         private Color GradientColorTwo = Color.Turquoise;
 
         public List<AnimatedTimerSegment> TimerSegments;
+
         public int SegmentCount;
 
         public float width = AnimatedColumnSettings.ColumnWidth;
         public float ColumnHeight => SegmentCount * AnimatedColumnSettings.SegmentHeight;
 
-        public SKPoint TimerLocation;
+        public SKPoint Location;
         public bool IsVisible { get; set; } = true;
         public bool IsEnabled { get; set; } = true;
 
@@ -30,7 +31,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public const int CircleYPosition = 300;
 
-        public TimeUnit ColumnType { get; set; }
+        public ColumnUnitType ColumnType { get; set; }
         public bool EnableHighlight { get; set; } = true;
 
 
@@ -39,9 +40,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments)
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, ColumnUnitType timeUnit, SKPoint location)
         {
             TimerSegments = timerSegments;
+            ColumnType = timeUnit;
+            Location = location;
+            SegmentCount = timerSegments.Count;
+            
         }
 
 
@@ -50,14 +55,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         {
             switch (ColumnType)
             {
-                case TimeUnit.SecondsOnes:
-                case TimeUnit.MinutesOnes:
-                case TimeUnit.HoursOnes:
+                case ColumnUnitType.SecondsSingleDigits:
+                case ColumnUnitType.MinutesSingleDigits:
+                case ColumnUnitType.HoursSinglesDigits:
                     return 9;
-                case TimeUnit.SecondsTens:
-                case TimeUnit.MinutesTens:
+                case ColumnUnitType.SecondsLeadingDigit:
+                case ColumnUnitType.MinutesLeadingDigits:
                     return 5;
-                case TimeUnit.HoursTens:
+                case ColumnUnitType.HoursLeadingDigits:
                     return 2;
                 default:
                     return 9;
@@ -66,7 +71,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public AnimatedTimerSegment GetSegmentAtPosition(float y)
         {
-            float relativeY = y - TimerLocation.Y + ScrollOffset;
+            float relativeY = y - Location.Y + ScrollOffset;
             int segmentIndex = (int)(relativeY / AnimatedColumnSettings.SegmentHeight);
 
             if (segmentIndex >= 0 && segmentIndex < TimerSegments.Count)
@@ -87,8 +92,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         {
             return TimerSegments.FindIndex(s => s.Value == CurrentValue);
         }
-
-        
 
 
 

@@ -2,34 +2,34 @@
 {
     public interface IAnimationPhaseCalculator
     {
-        float GetPhaseForColumn(TimeSpan elapsed, TimeUnit columnType);
-        int GetCurrentValue(TimeSpan elapsed, TimeUnit columnType);
+        float GetPhaseForColumn(TimeSpan elapsed, ColumnUnitType columnType);
+        int GetCurrentValue(TimeSpan elapsed, ColumnUnitType columnType);
     }
 
     public class AnimationPhaseCalculator : IAnimationPhaseCalculator
     {
-        public float GetPhaseForColumn(TimeSpan elapsed, TimeUnit columnType)
+        public float GetPhaseForColumn(TimeSpan elapsed, ColumnUnitType columnType)
         {
             switch (columnType)
             {
-                case TimeUnit.SecondsOnes:
+                case ColumnUnitType.SecondsSingleDigits:
                     return (float)(elapsed.TotalSeconds % 1.0);
-                case TimeUnit.SecondsTens:
+                case ColumnUnitType.SecondsLeadingDigit:
                     return (float)((elapsed.TotalSeconds % 10.0) / 10.0);
-                case TimeUnit.MinutesOnes:
+                case ColumnUnitType.MinutesSingleDigits:
                     return (float)((elapsed.TotalSeconds % 60.0) / 60.0);
-                case TimeUnit.MinutesTens:
+                case ColumnUnitType.MinutesLeadingDigits:
                     return (float)((elapsed.TotalSeconds % 600.0) / 600.0);
-                case TimeUnit.HoursOnes:
+                case ColumnUnitType.HoursSinglesDigits:
                     return (float)((elapsed.TotalSeconds % 3600.0) / 3600.0);
-                case TimeUnit.HoursTens:
+                case ColumnUnitType.HoursLeadingDigits:
                     return (float)((elapsed.TotalSeconds % 36000.0) / 36000.0);
                 default:
                     return 0f;
             }
         }
 
-        public int GetCurrentValue(TimeSpan elapsed, TimeUnit columnType)
+        public int GetCurrentValue(TimeSpan elapsed, ColumnUnitType columnType)
         {
             int totalSeconds = (int)elapsed.TotalSeconds;
             int minutes = totalSeconds / 60;
@@ -37,17 +37,17 @@
 
             switch (columnType)
             {
-                case TimeUnit.SecondsOnes:
+                case ColumnUnitType.SecondsSingleDigits:
                     return totalSeconds % 10;
-                case TimeUnit.SecondsTens:
+                case ColumnUnitType.SecondsLeadingDigit:
                     return (totalSeconds / 10) % 6;
-                case TimeUnit.MinutesOnes:
+                case ColumnUnitType.MinutesSingleDigits:
                     return minutes % 10;
-                case TimeUnit.MinutesTens:
+                case ColumnUnitType.MinutesLeadingDigits:
                     return (minutes / 10) % 6;
-                case TimeUnit.HoursOnes:
+                case ColumnUnitType.HoursSinglesDigits:
                     return hours % 10;
-                case TimeUnit.HoursTens:
+                case ColumnUnitType.HoursLeadingDigits:
                     return (hours / 10) % 10;
                 default:
                     return 0;

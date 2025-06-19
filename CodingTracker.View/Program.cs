@@ -68,6 +68,7 @@ namespace CodingTracker.View.Program
 
             var formFactory = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IFormFactory>(serviceProvider);
             var loginPage = formFactory.GetOrCreateLoginPage();
+           
 
             Application.Run(loginPage);
         }
@@ -80,7 +81,7 @@ namespace CodingTracker.View.Program
 
             IConfiguration configuration = configurationBuilder.Build();
 
-            var connectionString = configuration.GetSection("DatabaseConfig:ConnectionString").Value;
+            var remoteConnectionString = configuration.GetSection("DatabaseConfig:RemoteConnectionString").Value;
             var syncFusionKey = configuration.GetSection("SyncFusion:LicenseKey").Value;
 
 
@@ -147,12 +148,14 @@ namespace CodingTracker.View.Program
 
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
-                    options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
+                    options.UseNpgsql(remoteConnectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
 
 
 
             var startConfiguration = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IStartConfiguration>(services.BuildServiceProvider());
             startConfiguration.LoadConfiguration();
+            startConfiguration.TestDatabaseConnection();
+            startConfiguration.LogCodingSessionsTableColumns();
         }
     }
 }
