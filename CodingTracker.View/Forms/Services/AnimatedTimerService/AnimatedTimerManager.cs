@@ -8,6 +8,9 @@ using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System.Drawing.Text;
 
+// TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
+
+
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 {
     public interface IAnimatedTimerManager
@@ -127,58 +130,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         }
 
 
-        private void CreateTimerColumns()
-        {
-            /*
-            var columns = new List<AnimatedTimerColumn>();
-
-            float xPosition = 50;
-            float spacing = 80;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.HoursLeadingDigits
-            });
-            xPosition += spacing;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.HoursSinglesDigits
-            });
-            xPosition += spacing + 20;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.MinutesLeadingDigits
-            });
-            xPosition += spacing;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.MinutesSingleDigits
-            });
-            xPosition += spacing + 20;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.SecondsLeadingDigit
-            });
-            xPosition += spacing;
-
-            columns.Add(new AnimatedTimerColumn
-            {
-                Location = new SKPoint(xPosition, 100),
-                ColumnType = ColumnType.SecondsSingleDigits
-            });
-
-            return columns;
-            */
-        }
+     
 
         public List<AnimatedTimerColumn> ReturnTimerColumns()
         {

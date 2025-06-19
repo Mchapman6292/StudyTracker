@@ -28,19 +28,24 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public float ScrollOffset { get; set; }
         public int CurrentValue { get; set; }
+        
+
+        // Needed?
+        public int PreviousValue { get; set; } = -1;
 
         public const int CircleYPosition = 300;
 
         public ColumnUnitType ColumnType { get; set; }
         public bool EnableHighlight { get; set; } = true;
 
+  
 
 
 
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, ColumnUnitType timeUnit, SKPoint location)
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, ColumnUnitType timeUnit, SKPoint location )
         {
             TimerSegments = timerSegments;
             ColumnType = timeUnit;

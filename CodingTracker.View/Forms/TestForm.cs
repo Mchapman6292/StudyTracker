@@ -130,23 +130,7 @@ namespace CodingTracker.View.Forms
 
 
 
-        private void InitializeTimerColumns()
-        {
-            /*
-            var standardDigits = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            var hoursFirstDigit = new List<int> { 0, 1, 2 };
-            var minutesFirstDigit = new List<int> { 0, 1, 2, 3, 4, 5 };
-
-            hoursTens = _animatedTimerColumnFactory.CreateColumnWithSegments(hoursFirstDigit, new SKPoint(50, 50));
-            hoursOnes = _animatedTimerColumnFactory.CreateColumnWithSegments(standardDigits, new SKPoint(150, 50));
-            minutesTens = _animatedTimerColumnFactory.CreateColumnWithSegments(minutesFirstDigit, new SKPoint(300, 50));
-            minutesOnes = _animatedTimerColumnFactory.CreateColumnWithSegments(standardDigits, new SKPoint(400, 50));
-            secondsTens = _animatedTimerColumnFactory.CreateColumnWithSegments(minutesFirstDigit, new SKPoint(550, 50));
-            secondsOnes = _animatedTimerColumnFactory.CreateColumnWithSegments(standardDigits, new SKPoint(650, 50));
-
-            lastTime = DateTime.Now;
-            */
-        }
+  
 
         private void InitializeAnimationTimer()
         {

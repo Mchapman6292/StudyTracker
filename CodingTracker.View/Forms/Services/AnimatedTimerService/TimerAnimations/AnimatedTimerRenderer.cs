@@ -155,18 +155,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private float CalculateScrollOffset(float phase, int currentValue, AnimatedTimerColumn column)
         {
             float baseOffset = currentValue * AnimatedColumnSettings.SegmentHeight;
-
-            if (phase < 0.25f)
-            {
-                float animationProgress = phase / 0.25f;
-                float easedProgress = EaseInOutCubic(animationProgress);
-                return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
-            }
-
-            return baseOffset;
+            float easedProgress = CalculateEasingValue(phase);
+            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 
-        private float EaseInOutCubic(float t)
+        private float CalculateEasingValue(float t)
         {
             return t < 0.5f
                 ? 4f * t * t * t
