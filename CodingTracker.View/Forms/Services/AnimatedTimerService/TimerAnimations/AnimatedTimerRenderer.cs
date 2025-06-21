@@ -100,7 +100,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 DrawColumn(canvas, column);
             }
-
         }
 
 

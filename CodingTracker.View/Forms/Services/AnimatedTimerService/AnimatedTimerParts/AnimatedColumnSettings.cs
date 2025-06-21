@@ -10,11 +10,15 @@
 
         public const float TextSize = 40f;
 
+        //TODO review if needed.
         public const float AnimationSpeed = 1.5f;
 
         public static readonly int[] OneToNineDigit = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         public static readonly int[] OneToSixDigit = { 1, 2, 3, 4, 5, 6 };
+
+
+        public static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(300);
 
 
 

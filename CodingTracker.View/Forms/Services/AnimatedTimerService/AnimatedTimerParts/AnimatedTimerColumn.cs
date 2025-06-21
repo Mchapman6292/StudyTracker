@@ -25,13 +25,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public float TextSize = AnimatedColumnSettings.TextSize;
 
-
-        public float ScrollOffset { get; set; }
-        public int CurrentValue { get; set; }
         
+        //TODO review if needed here or in calculation class. 
+        public float ScrollOffset { get; set; }
 
-        // Needed?
+        public int CurrentValue { get; set; }
         public int PreviousValue { get; set; } = -1;
+        public TimeSpan AnimationInterval { get; set; }
+        public TimeSpan LastAnimationStartTime {  get; set; }
+        public bool ShouldAnimate { get; set; }
+
+
 
         public const int CircleYPosition = 300;
 
@@ -98,6 +102,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return TimerSegments.FindIndex(s => s.Value == CurrentValue);
         }
 
+        public bool IsAnimating(TimeSpan currentTime)
+        {
+            if(currentTime - LastAnimationStartTime >= AnimationInterval)
+            {
+                LastAnimationStartTime = currentTime;
+                return true;
+            }
+            // Check if we are still within the animation window.
+            return currentTime - LastAnimationStartTime < AnimatedColumnSettings.AnimationDuration;
+        }
+
+
+        public bool GetAnimationProgress(TimeSpan currentTime)
+        {
+            return currentTime - LastAnimationStartTime < AnimatedColumnSettings.AnimationDuration;
+        }
 
 
 
