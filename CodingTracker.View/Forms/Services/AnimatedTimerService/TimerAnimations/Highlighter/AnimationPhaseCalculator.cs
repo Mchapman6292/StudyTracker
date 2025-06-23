@@ -2,12 +2,16 @@
 {
     public interface IAnimationPhaseCalculator
     {
+        /*
+
         float GetPhaseForColumn(TimeSpan elapsed, ColumnUnitType columnType);
         int GetCurrentValue(TimeSpan elapsed, ColumnUnitType columnType);
+        */
     }
 
     public class AnimationPhaseCalculator : IAnimationPhaseCalculator
     {
+        /*
         public float GetPhaseForColumn(TimeSpan elapsed, ColumnUnitType columnType)
         {
             switch (columnType)
@@ -53,5 +57,30 @@
                     return 0;
             }
         }
+
+
+        
+
+
+        public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(SKColors.Black);
+
+            foreach (var column in columns)
+            {
+                var phase = _phaseCalculator.GetPhaseForColumn(elapsed, column.ColumnType);
+                var currentValue = _phaseCalculator.GetCurrentValue(elapsed, column.ColumnType);
+                var scrollOffset = CalculateScrollOffset(phase, currentValue, column);
+
+                column.ScrollOffset = scrollOffset;
+                column.CurrentValue = currentValue;
+
+                DrawColumn(canvas, column);
+            }
+        }
+
+
+
+        */
     }
 }

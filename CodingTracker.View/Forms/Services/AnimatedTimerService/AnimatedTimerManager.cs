@@ -15,7 +15,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 {
     public interface IAnimatedTimerManager
     {
-        void InitializeColumns();
+        void InitializeColumns(Form targetForm);
         void UpdateAndRender(SKControl skControl);
         void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e);
 
@@ -54,8 +54,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
 
-
-
             var canvas = e.Surface.Canvas;
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
@@ -66,7 +64,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         public void LogColumnPosition(AnimatedTimerColumn column)
         {
-            _appLogger.Debug($"{column.ColumnType.ToString()} location: X = {column.Location.X.ToString()}, Y = {column.Location.Y.ToString()}");
+            _appLogger.Debug($"{column.ColumnType.ToString()} location: X = {column.Location.X.ToString()}, Y = {column.Location.Y.ToString()} \n AnimationInterval: {column.AnimationInterval.ToString()}");
         }
 
         public void LogXPosition(float spacing)
@@ -74,32 +72,40 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _appLogger.Debug($"Spacing: {spacing}");    
         }
 
-        public void InitializeColumns()
+        public void InitializeColumns(Form targetForm)
         {
             float xPosition = 50;
-            float spacing = 150;
+            float spacing = 100;
+
+            int pageHalfwayPoint = targetForm.Location.Y + 150;
+
 
             List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
 
-            var secondsSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.SecondsSingleDigits);
+            var secondsSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.SecondsSingleDigits);
             xPosition += spacing;
             LogXPosition(xPosition);
 
             LogColumnPosition(secondsSingleDigits);
 
-            var secondsLeadingDigit = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.SecondsLeadingDigit);
+            var secondsLeadingDigit = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.SecondsLeadingDigit);
             xPosition += spacing;
       
 
-            var minutesSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, 100)), ColumnUnitType.MinutesSingleDigits);
+            var minutesSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesSingleDigits);
             xPosition += spacing;
 
-            var minutesLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.MinutesLeadingDigits);
+            var minutesLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesLeadingDigits);
             xPosition += spacing;
 
-            var hoursSinlgeDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.HoursSinglesDigits);
+ 
+
+
+            var hoursSinlgeDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursSinglesDigits);
             xPosition += spacing;
-            var hoursLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, spacing)), ColumnUnitType.HoursLeadingDigits);
+            var hoursLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursLeadingDigits);
+
+            LogColumnPosition(hoursLeadingDigits);
 
             _columns.Add(secondsSingleDigits);
             _columns.Add(secondsLeadingDigit);

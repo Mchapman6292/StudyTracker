@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
@@ -19,11 +20,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimationPhaseCalculator _phaseCalculator;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
+            _stopWatchTimerService = stopwWatchTimerService;
         }
 
   
@@ -84,23 +87,50 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
         public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
-            canvas.Clear(SKColors.Black);
+            SKColor formBackgroundColor = new SKColor(35, 34, 50);
+
+            canvas.Clear(formBackgroundColor);
 
             foreach (var column in columns)
             {
-                var phase = _phaseCalculator.GetPhaseForColumn(elapsed, column.ColumnType);
-                var currentValue = _phaseCalculator.GetCurrentValue(elapsed, column.ColumnType);
-                var scrollOffset = CalculateScrollOffset(phase, currentValue, column);
+                // 1. Update current value
+                int newValue = CalculateColumnValue(elapsed, column.ColumnType);
+                column.CurrentValue = newValue;
 
-                column.ScrollOffset = scrollOffset;
-                column.CurrentValue = currentValue;
+                // 2. Determine if this column should animate right now
+                column.IsAnimating = ShouldColumnAnimate(elapsed, column);
+
+                // 3. Calculate scroll offset
+                if (column.IsAnimating)
+                {
+
+                    float phase = (float)(elapsed.TotalSeconds % 1.0);  
+                    column.ScrollOffset = CalculateScrollOffset(column, phase);
+                }
+                else
+                {
+           
+                    column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                }
 
                 DrawColumn(canvas, column);
             }
         }
+
+
+
+
+        private bool ShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
+        {
+            // Check if we're within 1 second of when this column changes
+            double secondsUntilChange = column.AnimationInterval.TotalSeconds -
+                                       (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
+
+            return secondsUntilChange <= 1.0;  // Animate during last second before change
+        }
+
 
 
         /*
@@ -133,27 +163,54 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         */
 
 
+        private int CalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType)
+        {
+            int totalSeconds = (int)elapsed.TotalSeconds;
+            int minutes = totalSeconds / 60;
+            int hours = totalSeconds / 3600;
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    return totalSeconds % 10;
+                case ColumnUnitType.SecondsLeadingDigit:
+                    return (totalSeconds / 10) % 6;
+                case ColumnUnitType.MinutesSingleDigits:
+                    return minutes % 10;
+                case ColumnUnitType.MinutesLeadingDigits:
+                    return (minutes / 10) % 6;
+                case ColumnUnitType.HoursSinglesDigits:
+                    return hours % 10;
+                case ColumnUnitType.HoursLeadingDigits:
+                    return (hours / 10) % 10;
+                default:
+                    return 0;
+            }
+        }
+
+
+
 
         private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
         {
             float digitHeight = AnimatedColumnSettings.SegmentHeight;
             float startY = column.Location.Y - column.ScrollOffset;
 
-
-
-
+            _appLogger.Debug($"DrawColumn - ColumnType: {column.ColumnType}, X: {column.Location.X}, Y: {column.Location.Y}, ScrollOffset: {column.ScrollOffset}, SegmentCount: {column.SegmentCount}");
             for (int i = 0; i < column.SegmentCount; i++)
             {
                 var segment = column.TimerSegments[i];
                 float y = startY + (i * digitHeight);
 
+                _appLogger.Debug($"DrawColumn - Segment {i}: Draw at X: {column.Location.X}, Y: {y}");
                 DrawNumber(canvas, segment, column.Location.X, y);
             }
         }
 
-        private float CalculateScrollOffset(float phase, int currentValue, AnimatedTimerColumn column)
+        // Value to determine the progress between one Segment and the next. 
+        private float CalculateScrollOffset(AnimatedTimerColumn column,float phase)
         {
-            float baseOffset = currentValue * AnimatedColumnSettings.SegmentHeight;
+            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
             float easedProgress = CalculateEasingValue(phase);
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
@@ -163,6 +220,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             return t < 0.5f
                 ? 4f * t * t * t
                 : 1f - MathF.Pow(-2f * t + 2f, 3f) / 2f;
+        }
+
+        private float CaclulatePhaseValue(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
         }
 
 

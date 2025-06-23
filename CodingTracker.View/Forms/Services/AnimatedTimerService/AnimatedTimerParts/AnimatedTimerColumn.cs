@@ -19,7 +19,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float width = AnimatedColumnSettings.ColumnWidth;
         public float ColumnHeight => SegmentCount * AnimatedColumnSettings.SegmentHeight;
 
-        public SKPoint Location;
+        public SKPoint Location { get; set; }
         public bool IsVisible { get; set; } = true;
         public bool IsEnabled { get; set; } = true;
 
@@ -33,7 +33,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public int PreviousValue { get; set; } = -1;
         public TimeSpan AnimationInterval { get; set; }
         public TimeSpan LastAnimationStartTime {  get; set; }
-        public bool ShouldAnimate { get; set; }
+        public bool IsAnimating { get; set; }
 
 
 
@@ -49,12 +49,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, ColumnUnitType timeUnit, SKPoint location )
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint location, ColumnUnitType columnType)
         {
             TimerSegments = timerSegments;
-            ColumnType = timeUnit;
+            ColumnType = columnType;
             Location = location;
             SegmentCount = timerSegments.Count;
+            AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
             
         }
 
@@ -102,16 +103,30 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return TimerSegments.FindIndex(s => s.Value == CurrentValue);
         }
 
-        public bool IsAnimating(TimeSpan currentTime)
+
+
+        public void StartAnimation(TimeSpan currentTime)
         {
-            if(currentTime - LastAnimationStartTime >= AnimationInterval)
-            {
-                LastAnimationStartTime = currentTime;
-                return true;
-            }
-            // Check if we are still within the animation window.
-            return currentTime - LastAnimationStartTime < AnimatedColumnSettings.AnimationDuration;
+            LastAnimationStartTime = currentTime;
+            IsAnimating = true;
+            PreviousValue = CurrentValue;
         }
+
+        public void UpdateIsAnimating(TimeSpan currentTime)
+        {
+            if (IsAnimating)
+            {
+                var elapsed = currentTime - LastAnimationStartTime;
+                if (elapsed >= AnimatedColumnSettings.AnimationDuration)
+                {
+                    IsAnimating = false;
+                }
+            }
+        }
+
+
+
+
 
 
         public bool GetAnimationProgress(TimeSpan currentTime)

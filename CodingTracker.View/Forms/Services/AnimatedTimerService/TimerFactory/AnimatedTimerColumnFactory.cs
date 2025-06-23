@@ -13,7 +13,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 
         public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
         {
-            public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType timeUnit)
+            public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType columnType)
             {
                 int segCount = 0;
 
@@ -23,7 +23,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
                     segments.Add(new AnimatedTimerSegment(segmentNumbers[i]));
                     segCount++;
                 }
-                AnimatedTimerColumn newColumn = new AnimatedTimerColumn(segments, timeUnit, location);
+                AnimatedTimerColumn newColumn = new AnimatedTimerColumn(segments, location, columnType);
                 newColumn.TimerSegments = segments;
                 return newColumn;
             }

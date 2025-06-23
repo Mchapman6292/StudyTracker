@@ -77,7 +77,7 @@ namespace CodingTracker.View.Forms
 
             InitializeComponent();
 
-            _animatedTimerManager.InitializeColumns();
+            _animatedTimerManager.InitializeColumns(this);
 
 
             skControlTest.PaintSurface += _animatedTimerManager.OnPaintSurface;
