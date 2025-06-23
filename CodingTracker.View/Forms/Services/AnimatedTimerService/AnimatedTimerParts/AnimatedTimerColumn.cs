@@ -8,9 +8,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
     {
         private SKRect _rectDrawing;
 
-        private SKColor GradientColorOne;
+        private SKColor GradientColorOne = AnimatedColumnSettings.ColumnColor;
 
-        private SKColor GradientColorTwo;
+
 
         public List<AnimatedTimerSegment> TimerSegments;
 
@@ -42,6 +42,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public ColumnUnitType ColumnType { get; set; }
         public bool EnableHighlight { get; set; } = true;
 
+
+        public float SegmentAnimationProgress { get; private set; }
+
   
 
 
@@ -56,7 +59,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             Location = location;
             SegmentCount = timerSegments.Count;
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
-            GradientColorOne = AnimatedColumnSettings.ColumnColor;
            
             
         }
@@ -109,6 +111,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         {
 
         }
+
+        public void UpdateSegmentAnimationProgress(float animationProgress)
+        {
+            SegmentAnimationProgress = animationProgress;
+        }
+
+
 
         /*
 
