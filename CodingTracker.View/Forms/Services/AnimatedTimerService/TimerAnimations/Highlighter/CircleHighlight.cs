@@ -1,27 +1,61 @@
-﻿using SkiaSharp;
+﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
 {
-    public class CircleHighlight : ITimerHighlight
+    public interface ICircleHighLight
+    {
+        void Draw(SKCanvas canvas, AnimatedTimerColumn column);
+    }
+
+    public class CircleHighlight : ITimerHighlight, ICircleHighLight
     {
         public bool IsEnabled { get; set; }
 
+        private readonly IApplicationLogger _appLogger;
 
-        public void Draw(SKCanvas canvas, HighlightContext highlightContext)
+
+        public CircleHighlight(IApplicationLogger appLogger)
         {
-            using (var paint = new SKPaint())
-            {
-                paint.IsAntialias = true;
-
-                var colors = new SKColor[] { new SKColor(100, 100, 255, 80), new SKColor(50, 50, 200, 100) };
-                paint.Shader = SKShader.CreateLinearGradient(new SKPoint(highlightContext.X, highlightContext.Y), new SKPoint(highlightContext.X, highlightContext.Y + highlightContext.Height), colors, null, SKShaderTileMode.Clamp);
-
-                var rect = new SKRoundRect(new SKRect(highlightContext.X - 5, highlightContext.Y - 5, highlightContext.X + highlightContext.Width + 5, highlightContext.Y + highlightContext.Height + 5), 10, 10);
-                canvas.DrawRoundRect(rect, paint);
-            }
+            _appLogger = appLogger;
         }
 
 
+
+
+        public void Draw(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            int currentValue = column.CurrentValue;
+            SKPaint circlePaint = DefineCirclePaint();
+
+            // Find the index of the current value in the segments.
+            int segmentIndex = column.TimerSegments.FindIndex(s => s.Value == currentValue);
+            if (segmentIndex == -1) return;
+
+            // Calculate the screen position where segment is drawn.
+            float startY = column.Location.Y - column.ScrollOffset;
+            float segmentY = startY + (segmentIndex * AnimatedColumnSettings.SegmentHeight);
+
+            // Calculate center position.
+            float centerX = column.Location.X + (AnimatedColumnSettings.SegmentWidth / 2f);
+            float centerY = segmentY + (AnimatedColumnSettings.SegmentHeight / 2f);
+
+            canvas.DrawCircle(centerX, centerY, 20, circlePaint);
+
+        }
+
+
+        public SKPaint DefineCirclePaint()
+        {
+            return new SKPaint()
+            {
+                Color = SKColors.Blue,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 3f
+            };
+        }
 
     }
 }

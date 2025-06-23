@@ -8,11 +8,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
     {
         private SKRect _rectDrawing;
 
-        private Color GradientColorOne = Color.FromArgb(255, 81, 195);
+        private SKColor GradientColorOne;
 
-        private Color GradientColorTwo = Color.Turquoise;
+        private SKColor GradientColorTwo;
 
         public List<AnimatedTimerSegment> TimerSegments;
+
+        public int FocusedSegmentIndex = 0; // Set focus Segment to first Segment(0);
 
         public int SegmentCount;
 
@@ -37,8 +39,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public const int CircleYPosition = 300;
-
         public ColumnUnitType ColumnType { get; set; }
         public bool EnableHighlight { get; set; } = true;
 
@@ -56,6 +56,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             Location = location;
             SegmentCount = timerSegments.Count;
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
+            GradientColorOne = AnimatedColumnSettings.ColumnColor;
+           
             
         }
 
@@ -103,7 +105,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return TimerSegments.FindIndex(s => s.Value == CurrentValue);
         }
 
+        public void UpdateFocusedSegment()
+        {
 
+        }
+
+        /*
 
         public void StartAnimation(TimeSpan currentTime)
         {
@@ -135,7 +142,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
-
+        */
 
     }
 }

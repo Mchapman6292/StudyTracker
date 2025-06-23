@@ -127,7 +127,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedTimerManager, AnimatedTimerManager>()
                     .AddSingleton<IAnimatedTimerColumnFactory, AnimatedTimerColumnFactory>()
                     .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
-   
+                    .AddSingleton<ICircleHighLight, CircleHighlight>()
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()

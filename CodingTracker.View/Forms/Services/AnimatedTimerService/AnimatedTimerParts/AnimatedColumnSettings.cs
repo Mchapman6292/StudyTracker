@@ -1,4 +1,6 @@
-﻿namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
+﻿using SkiaSharp;
+
+namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
 {
     public static class AnimatedColumnSettings
     {
@@ -19,6 +21,9 @@
 
 
         public static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(300);
+
+        public static SKColor ColumnColor = new SKColor(44, 45, 65);
+        public static SKColor SegmentColor = SKColors.White;
 
 
 

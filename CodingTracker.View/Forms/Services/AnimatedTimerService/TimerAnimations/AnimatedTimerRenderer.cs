@@ -21,34 +21,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimationPhaseCalculator _phaseCalculator;
         private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly ICircleHighLight _circleHighlight;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
             _stopWatchTimerService = stopwWatchTimerService;
+            _circleHighlight = circleHighlight;
         }
 
   
 
-        public void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y)
-        {
-            using (var paint = new SKPaint())
-            using (var font = new SKFont())
-            {
-                paint.Color = timerSegment.SegmentColor;
-                paint.IsAntialias = true;
-                paint.TextAlign = SKTextAlign.Center;
 
-                font.Size = timerSegment.TextSize;
-
-                // Calculate center positions
-                float centerX = x + (timerSegment.SegmentWidth / 2f);
-                float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
-
-                canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
-            }
-        }
 
 
         public void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas)
@@ -62,13 +47,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 DrawNumber(canvas, targetSegment, timerColumn.Location.X, segmentY);
             }
         }
-
-        public void DrawAnimatedTimerSegment(SKCanvas timerCanvas, AnimatedTimerColumn timerColumn, int segmentIndex)
-        {
-
-        }
-
-
 
 
 
@@ -95,14 +73,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             foreach (var column in columns)
             {
-                // 1. Update current value
+                // 1. Update current value.
                 int newValue = CalculateColumnValue(elapsed, column.ColumnType);
                 column.CurrentValue = newValue;
 
-                // 2. Determine if this column should animate right now
+                // 2. Determine if this column should animate right now.
                 column.IsAnimating = ShouldColumnAnimate(elapsed, column);
 
-                // 3. Calculate scroll offset
+                // 3. Calculate scroll offset.
                 if (column.IsAnimating)
                 {
 
@@ -114,53 +92,27 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
            
                     column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
                 }
-
                 DrawColumn(canvas, column);
+
+                _circleHighlight.Draw(canvas, column);
             }
         }
+
 
 
 
 
         private bool ShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            // Check if we're within 1 second of when this column changes
+            // Check if we're within 1 second of when this column changes.
             double secondsUntilChange = column.AnimationInterval.TotalSeconds -
                                        (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
 
-            return secondsUntilChange <= 1.0;  // Animate during last second before change
+            return secondsUntilChange <= 1.0;  // Animate during last second before change.
         }
 
 
 
-        /*
-           private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
-        {
-            float digitHeight = AnimatedColumnSettings.SegmentHeight;
-            float startY = column.Location.Y - column.ScrollOffset;
-
-            using (var paint = new SKPaint())
-            using (var font = new SKFont())
-            {
-                paint.IsAntialias = true;
-                paint.Color = SKColors.White;
-                
-
-                var textBounds = new SKRect();
-    
-
-        
-
-                for (int i = 0; i < column.SegmentCount; i++)
-                {
-                    var segment = column.TimerSegments[i];
-                    float y = startY + (i * digitHeight) + textBounds.Height;
-
-                    DrawNumber(canvas, segment, column.Location.X, y);
-                }
-            }
-        }
-        */
 
 
         private int CalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType)
@@ -196,14 +148,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             float digitHeight = AnimatedColumnSettings.SegmentHeight;
             float startY = column.Location.Y - column.ScrollOffset;
 
-            _appLogger.Debug($"DrawColumn - ColumnType: {column.ColumnType}, X: {column.Location.X}, Y: {column.Location.Y}, ScrollOffset: {column.ScrollOffset}, SegmentCount: {column.SegmentCount}");
+
             for (int i = 0; i < column.SegmentCount; i++)
             {
-                var segment = column.TimerSegments[i];
-                float y = startY + (i * digitHeight);
 
-                _appLogger.Debug($"DrawColumn - Segment {i}: Draw at X: {column.Location.X}, Y: {y}");
-                DrawNumber(canvas, segment, column.Location.X, y);
+
+                var segment = column.TimerSegments[i];
+                float YNew = startY + (i * digitHeight);
+
+                segment.UpdatePosition(column.Location.X, YNew);
+
+                DrawNumber(canvas, segment, column.Location.X, YNew);
             }
         }
 
@@ -215,11 +170,33 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 
+        public void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y)
+        {
+            using (var paint = new SKPaint())
+            using (var font = new SKFont())
+            {
+                paint.Color = timerSegment.SegmentColor;
+                paint.IsAntialias = true;
+                paint.TextAlign = SKTextAlign.Center;
+
+                font.Size = timerSegment.TextSize;
+
+                // Calculate center positions.
+                float centerX = x + (timerSegment.SegmentWidth / 2f);
+                float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
+
+                canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
+            }
+        }
+
+
         private float CalculateEasingValue(float t)
         {
             return t < 0.5f
                 ? 4f * t * t * t
                 : 1f - MathF.Pow(-2f * t + 2f, 3f) / 2f;
+
+            
         }
 
         private float CaclulatePhaseValue(TimeSpan elapsed)
@@ -227,6 +204,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             return (float)(elapsed.TotalSeconds % 1.0);
         }
 
+
+
+
+
+
+
+
+
+
+
+   
 
     }
 }
