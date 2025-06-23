@@ -149,11 +149,10 @@
             guna2GradientPanel3 = new Guna.UI2.WinForms.Guna2GradientPanel();
             WeekTotalLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            statisticsPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
+            mainPageWelcomeLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            todayTotalParentPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             TodayTotalPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             todayTotalLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            streakLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            mainPageWelcomeLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             Last28DaysPanel.SuspendLayout();
             bottomHalfParentPanel.SuspendLayout();
             guna2GradientPanel5.SuspendLayout();
@@ -163,7 +162,7 @@
             averageSessionPanel.SuspendLayout();
             guna2GradientPanel6.SuspendLayout();
             guna2GradientPanel3.SuspendLayout();
-            statisticsPanel.SuspendLayout();
+            todayTotalParentPanel.SuspendLayout();
             TodayTotalPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -983,62 +982,6 @@
             guna2HtmlLabel10.TabIndex = 32;
             guna2HtmlLabel10.Text = "6 Day Streak!";
             // 
-            // statisticsPanel
-            // 
-            statisticsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            statisticsPanel.BackColor = Color.FromArgb(35, 34, 50);
-            statisticsPanel.BorderRadius = 20;
-            statisticsPanel.Controls.Add(TodayTotalPanel);
-            statisticsPanel.Controls.Add(streakLabel);
-            statisticsPanel.CustomizableEdges = customizableEdges49;
-            statisticsPanel.FillColor = Color.FromArgb(52, 90, 160, 220);
-            statisticsPanel.FillColor2 = Color.FromArgb(52, 255, 81, 195);
-            statisticsPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            statisticsPanel.Location = new Point(35, 48);
-            statisticsPanel.Name = "statisticsPanel";
-            statisticsPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
-            statisticsPanel.Size = new Size(288, 123);
-            statisticsPanel.TabIndex = 40;
-            // 
-            // TodayTotalPanel
-            // 
-            TodayTotalPanel.Anchor = AnchorStyles.None;
-            TodayTotalPanel.BackColor = Color.Transparent;
-            TodayTotalPanel.BorderRadius = 30;
-            TodayTotalPanel.Controls.Add(todayTotalLabel);
-            TodayTotalPanel.CustomizableEdges = customizableEdges47;
-            TodayTotalPanel.FillColor = Color.FromArgb(100, 90, 210);
-            TodayTotalPanel.FillColor2 = Color.FromArgb(110, 213, 228);
-            TodayTotalPanel.Location = new Point(20, 3);
-            TodayTotalPanel.Name = "TodayTotalPanel";
-            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges48;
-            TodayTotalPanel.Size = new Size(240, 114);
-            TodayTotalPanel.TabIndex = 28;
-            // 
-            // todayTotalLabel
-            // 
-            todayTotalLabel.AutoSize = false;
-            todayTotalLabel.BackColor = Color.Transparent;
-            todayTotalLabel.IsContextMenuEnabled = false;
-            todayTotalLabel.Location = new Point(25, 8);
-            todayTotalLabel.Name = "todayTotalLabel";
-            todayTotalLabel.Size = new Size(186, 88);
-            todayTotalLabel.TabIndex = 2;
-            todayTotalLabel.Text = null;
-            // 
-            // streakLabel
-            // 
-            streakLabel.AutoSize = false;
-            streakLabel.BackColor = Color.Transparent;
-            streakLabel.Font = new Font("Segoe UI", 12F);
-            streakLabel.ForeColor = Color.Gainsboro;
-            streakLabel.IsContextMenuEnabled = false;
-            streakLabel.Location = new Point(597, 212);
-            streakLabel.Name = "streakLabel";
-            streakLabel.Size = new Size(96, 29);
-            streakLabel.TabIndex = 32;
-            streakLabel.Text = "6 Day Streak!";
-            // 
             // mainPageWelcomeLabel
             // 
             mainPageWelcomeLabel.AutoSize = false;
@@ -1052,16 +995,69 @@
             mainPageWelcomeLabel.Text = "Coding Tracker";
             mainPageWelcomeLabel.TextAlignment = ContentAlignment.TopCenter;
             // 
+            // todayTotalParentPanel
+            // 
+            todayTotalParentPanel.BackColor = Color.Transparent;
+            todayTotalParentPanel.BorderColor = Color.FromArgb(44, 45, 65);
+            todayTotalParentPanel.BorderRadius = 25;
+            todayTotalParentPanel.Controls.Add(TodayTotalPanel);
+            todayTotalParentPanel.CustomizableEdges = customizableEdges49;
+            todayTotalParentPanel.FillColor = Color.FromArgb(44, 45, 65);
+            todayTotalParentPanel.FillColor2 = Color.FromArgb(44, 45, 65);
+            todayTotalParentPanel.ForeColor = Color.FromArgb(44, 45, 65);
+            todayTotalParentPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            todayTotalParentPanel.Location = new Point(140, 24);
+            todayTotalParentPanel.Name = "todayTotalParentPanel";
+            todayTotalParentPanel.ShadowDecoration.BorderRadius = 30;
+            todayTotalParentPanel.ShadowDecoration.Color = Color.Black;
+            todayTotalParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges50;
+            todayTotalParentPanel.ShadowDecoration.Enabled = true;
+            todayTotalParentPanel.Size = new Size(270, 144);
+            todayTotalParentPanel.TabIndex = 44;
+            // 
+            // TodayTotalPanel
+            // 
+            TodayTotalPanel.Anchor = AnchorStyles.None;
+            TodayTotalPanel.BackColor = Color.FromArgb(44, 45, 65);
+            TodayTotalPanel.BorderColor = Color.FromArgb(25, 255, 255, 255);
+            TodayTotalPanel.BorderRadius = 30;
+            TodayTotalPanel.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            TodayTotalPanel.Controls.Add(todayTotalLabel);
+            TodayTotalPanel.CustomBorderColor = Color.FromArgb(35, 34, 50);
+            TodayTotalPanel.CustomizableEdges = customizableEdges47;
+            TodayTotalPanel.FillColor = Color.FromArgb(100, 90, 210);
+            TodayTotalPanel.FillColor2 = Color.FromArgb(110, 213, 228);
+            TodayTotalPanel.ForeColor = Color.FromArgb(44, 45, 65);
+            TodayTotalPanel.Location = new Point(17, 13);
+            TodayTotalPanel.Name = "TodayTotalPanel";
+            TodayTotalPanel.ShadowDecoration.BorderRadius = 33;
+            TodayTotalPanel.ShadowDecoration.Color = Color.FromArgb(25, 255, 255, 255);
+            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            TodayTotalPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            TodayTotalPanel.Size = new Size(232, 116);
+            TodayTotalPanel.TabIndex = 28;
+            // 
+            // todayTotalLabel
+            // 
+            todayTotalLabel.AutoSize = false;
+            todayTotalLabel.BackColor = Color.Transparent;
+            todayTotalLabel.IsContextMenuEnabled = false;
+            todayTotalLabel.Location = new Point(16, 15);
+            todayTotalLabel.Name = "todayTotalLabel";
+            todayTotalLabel.Size = new Size(186, 88);
+            todayTotalLabel.TabIndex = 2;
+            todayTotalLabel.Text = null;
+            // 
             // TestForm2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1300, 720);
+            Controls.Add(todayTotalParentPanel);
             Controls.Add(mainPageWelcomeLabel);
             Controls.Add(guna2GradientPanel7);
             Controls.Add(guna2GradientPanel6);
-            Controls.Add(statisticsPanel);
             Controls.Add(bottomHalfParentPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "TestForm2";
@@ -1079,7 +1075,7 @@
             averageSessionPanel.ResumeLayout(false);
             guna2GradientPanel6.ResumeLayout(false);
             guna2GradientPanel3.ResumeLayout(false);
-            statisticsPanel.ResumeLayout(false);
+            todayTotalParentPanel.ResumeLayout(false);
             TodayTotalPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -1139,13 +1135,12 @@
         private Guna.UI2.WinForms.Guna2GradientPanel guna2GradientPanel3;
         private Guna.UI2.WinForms.Guna2HtmlLabel WeekTotalLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel10;
-        private Guna.UI2.WinForms.Guna2GradientPanel statisticsPanel;
-        private Guna.UI2.WinForms.Guna2GradientPanel TodayTotalPanel;
-        private Guna.UI2.WinForms.Guna2HtmlLabel todayTotalLabel;
-        private Guna.UI2.WinForms.Guna2HtmlLabel streakLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel mainPageWelcomeLabel;
         private Guna.UI2.WinForms.Guna2GradientPanel guna2GradientPanel5;
         private Guna.UI2.WinForms.Guna2HtmlLabel readyToBeginLabel;
         private Services.SharedFormServices.CustomGradientButtons.CustomGradientButton testStartSessionButton;
+        private Guna.UI2.WinForms.Guna2GradientPanel todayTotalParentPanel;
+        private Guna.UI2.WinForms.Guna2GradientPanel TodayTotalPanel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel todayTotalLabel;
     }
 }

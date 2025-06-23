@@ -129,6 +129,12 @@ namespace CodingTracker.Logging.ApplicationLoggers
         }
 
 
+        public void LogAnimatedTimerColumn()
+        {
+
+        }
+
+
     
 
 

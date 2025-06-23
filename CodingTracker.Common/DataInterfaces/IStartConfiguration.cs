@@ -5,5 +5,7 @@
         public string ConnectionString { get; }
 
         void LoadConfiguration();
+        void TestDatabaseConnection();
+        void LogCodingSessionsTableColumns();
     }
 }

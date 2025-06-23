@@ -19,8 +19,9 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
-using CodingTracker.View.Forms.Services.AanimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
@@ -67,6 +68,7 @@ namespace CodingTracker.View.Program
 
             var formFactory = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IFormFactory>(serviceProvider);
             var loginPage = formFactory.GetOrCreateLoginPage();
+           
 
             Application.Run(loginPage);
         }
@@ -79,7 +81,7 @@ namespace CodingTracker.View.Program
 
             IConfiguration configuration = configurationBuilder.Build();
 
-            var connectionString = configuration.GetSection("DatabaseConfig:ConnectionString").Value;
+            var remoteConnectionString = configuration.GetSection("DatabaseConfig:RemoteConnectionString").Value;
             var syncFusionKey = configuration.GetSection("SyncFusion:LicenseKey").Value;
 
 
@@ -122,8 +124,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ISessionDurationScaler, SessionDurationScaler>()
                     .AddSingleton<IMainPagePieChartManager, MainPagePieChartManager>()
                     .AddSingleton<IAnimatedTimerRenderer, AnimatedTimerRenderer>()
-                    .AddSingleton<IAniamtedTimerManager, AnimatedTimerManager>()
+                    .AddSingleton<IAnimatedTimerManager, AnimatedTimerManager>()
                     .AddSingleton<IAnimatedTimerColumnFactory, AnimatedTimerColumnFactory>()
+                    .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
+   
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
@@ -144,12 +148,14 @@ namespace CodingTracker.View.Program
 
 
                     .AddDbContext<CodingTrackerDbContext>(options =>
-                    options.UseNpgsql(connectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
+                    options.UseNpgsql(remoteConnectionString), ServiceLifetime.Scoped).AddTransient<ICodingTrackerDbContext, CodingTrackerDbContext>();
 
 
 
             var startConfiguration = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<IStartConfiguration>(services.BuildServiceProvider());
             startConfiguration.LoadConfiguration();
+            startConfiguration.TestDatabaseConnection();
+            startConfiguration.LogCodingSessionsTableColumns();
         }
     }
 }
