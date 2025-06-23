@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
 {
-    public class HighlightContext
+    public class SegmentOverlayContext
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
-        public float ScrollOffset { get; set; }
         public AnimatedTimerColumn Column { get; set; }
+
+        public TimeSpan AnimationDuration;
+
+        public float CurrentOpacity;
+
+        public float CurrentScale;
+
+        public float AnimationProgress;
+
     }
 
 }

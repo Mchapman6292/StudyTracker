@@ -5,7 +5,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
     public  interface ITimerHighlight
     {
-        void Draw(SKCanvas canvas, HighlightContext context);
+        public void Draw(SKCanvas canvas, AnimatedTimerColumn column);
         bool IsEnabled { get; set; }
     }
 
