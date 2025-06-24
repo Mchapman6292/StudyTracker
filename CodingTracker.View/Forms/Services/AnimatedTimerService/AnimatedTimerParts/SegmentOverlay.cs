@@ -14,6 +14,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public float CurrentOpacity { get; private set; }
         public float CurrentRadius { get; private set; }
         public float AnimationProgress { get; private set; }
+        public float NormalizedAnimationProgress { get; private set; }
 
         // Animation state
         public bool IsActive { get; private set; }

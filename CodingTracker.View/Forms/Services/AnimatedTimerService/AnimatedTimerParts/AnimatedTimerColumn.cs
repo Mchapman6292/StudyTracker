@@ -1,6 +1,7 @@
 ﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using SkiaSharp;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 {
@@ -33,7 +34,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int CurrentValue { get; set; }
         public int PreviousValue { get; set; } = -1;
-        public TimeSpan AnimationInterval { get; set; }
+        public TimeSpan AnimationInterval { get; }
         public TimeSpan LastAnimationStartTime {  get; set; }
         public bool IsAnimating { get; set; }
 
@@ -43,12 +44,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public bool EnableHighlight { get; set; } = true;
 
 
-        public float SegmentAnimationProgress { get; private set; }
 
-  
-
+         
 
 
+        public float OverlayOpacity { get; private set; } = 1f;
+        public float OverlayRadius { get; private set; }
+
+        public float AnimationProgress { get; private set; }
+
+        public float NormalizedProgress { get; private set; }
 
 
 
@@ -59,99 +64,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             Location = location;
             SegmentCount = timerSegments.Count;
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
+
+            OverlayRadius = (AnimatedColumnSettings.ColumnWidth / 2) + 5;
            
             
         }
 
 
 
-        private int GetMaxValueForColumnType()
+
+        public void UpdateAnimationState(float animationProgress, float normalizedProgress)
         {
-            switch (ColumnType)
-            {
-                case ColumnUnitType.SecondsSingleDigits:
-                case ColumnUnitType.MinutesSingleDigits:
-                case ColumnUnitType.HoursSinglesDigits:
-                    return 9;
-                case ColumnUnitType.SecondsLeadingDigit:
-                case ColumnUnitType.MinutesLeadingDigits:
-                    return 5;
-                case ColumnUnitType.HoursLeadingDigits:
-                    return 2;
-                default:
-                    return 9;
-            }
+            AnimationProgress = animationProgress;
+            NormalizedProgress = normalizedProgress;
         }
 
-        public AnimatedTimerSegment GetSegmentAtPosition(float y)
-        {
-            float relativeY = y - Location.Y + ScrollOffset;
-            int segmentIndex = (int)(relativeY / AnimatedColumnSettings.SegmentHeight);
-
-            if (segmentIndex >= 0 && segmentIndex < TimerSegments.Count)
-            {
-                return TimerSegments[segmentIndex];
-            }
-
-            return null;
-        }
-
-        public float GetDistanceFromHighlight(float segmentY, float highlightY)
-        {
-            return Math.Abs(segmentY - highlightY);
-        }
-
-
-        public int GetCurrentSegmentIndex()
-        {
-            return TimerSegments.FindIndex(s => s.Value == CurrentValue);
-        }
-
-        public void UpdateFocusedSegment()
-        {
-
-        }
-
-        public void UpdateSegmentAnimationProgress(float animationProgress)
-        {
-            SegmentAnimationProgress = animationProgress;
-        }
-
-
-
-        /*
-
-        public void StartAnimation(TimeSpan currentTime)
-        {
-            LastAnimationStartTime = currentTime;
-            IsAnimating = true;
-            PreviousValue = CurrentValue;
-        }
-
-        public void UpdateIsAnimating(TimeSpan currentTime)
-        {
-            if (IsAnimating)
-            {
-                var elapsed = currentTime - LastAnimationStartTime;
-                if (elapsed >= AnimatedColumnSettings.AnimationDuration)
-                {
-                    IsAnimating = false;
-                }
-            }
-        }
-
-
-
-
-
-
-        public bool GetAnimationProgress(TimeSpan currentTime)
-        {
-            return currentTime - LastAnimationStartTime < AnimatedColumnSettings.AnimationDuration;
-        }
-
-
-        */
 
     }
 }

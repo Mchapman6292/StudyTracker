@@ -2,6 +2,8 @@
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
@@ -29,15 +31,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IAnimatedTimerRenderer _animatedRenderer;
         private readonly IAnimatedTimerColumnFactory _animatedColumnFactory;
         private readonly IApplicationLogger _appLogger;
+        private readonly ICircleHighLight _circleHighlight;
+        private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
         private List<AnimatedTimerColumn> _columns;
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger)
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, ICircleHighLight circleHighLight,ISegmentOverlayCalculator segmentOverlayCalculator)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
             _animatedColumnFactory = animatedTimerColumnFactory;
             _appLogger = appLogger;
+            _circleHighlight = circleHighLight;
             _columns = new List<AnimatedTimerColumn>(); 
   
         }
@@ -124,10 +129,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-
-
-
-
             // Remmove after tests!!!!!!!!!
             _stopWatchService.StartTimer();
 
@@ -142,6 +143,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         {
             return _columns;
         }
+
+
+
+
+
+
+        public void DrawCircleSegmentHighlight()
+        {
+
+        }
+
+
+
+
+
+
     }
 
  

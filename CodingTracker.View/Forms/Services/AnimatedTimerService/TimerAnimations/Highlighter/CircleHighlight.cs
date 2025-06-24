@@ -1,6 +1,9 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using OpenTK;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
@@ -8,6 +11,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     public interface ICircleHighLight
     {
         void Draw(SKCanvas canvas, AnimatedTimerColumn column);
+    
     }
 
     public class CircleHighlight : ITimerHighlight, ICircleHighLight
@@ -15,11 +19,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         public bool IsEnabled { get; set; }
 
         private readonly IApplicationLogger _appLogger;
+        private readonly ISegmentOverlayCalculator _segmwentOverlayCalculator;
 
 
-        public CircleHighlight(IApplicationLogger appLogger)
+        public CircleHighlight(IApplicationLogger appLogger, ISegmentOverlayCalculator segmentOverlayCalculator)
         {
-            _appLogger = appLogger;
+            _appLogger = _appLogger;
+            _segmwentOverlayCalculator = segmentOverlayCalculator;
         }
 
 
@@ -28,7 +34,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         public void Draw(SKCanvas canvas, AnimatedTimerColumn column)
         {
             int currentValue = column.CurrentValue;
-            SKPaint circlePaint = DefineCirclePaint();
+            var animationProgress = column.AnimationProgress;
+
+
+            SKPaint circlePaint = DefineCirclePaint(column);
 
             // Find the index of the current value in the segments.
             int segmentIndex = column.TimerSegments.FindIndex(s => s.Value == currentValue);
@@ -47,11 +56,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        public SKPaint DefineCirclePaint()
+
+
+        public SKPaint DefineCirclePaint(AnimatedTimerColumn column)
         {
+
+            byte alpha = (byte)(column.NormalizedProgress * 255);
+
             return new SKPaint()
             {
-                Color = SKColors.Blue,
+
+                Color = SKColors.Blue.WithAlpha(alpha),
                 Style = SKPaintStyle.Stroke,
                 StrokeWidth = 3f
             };
