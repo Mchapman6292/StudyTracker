@@ -4,6 +4,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 {
     public static class AnimatedColumnSettings
     {
+        // TODO Change/review why two different values
         public const float ColumnWidth = 5f;
 
         public const float SegmentWidth = 20f;
@@ -24,6 +25,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public static SKColor ColumnColor = new SKColor(44, 45, 65);
         public static SKColor SegmentColor = SKColors.White;
+
+
+        public const float minRadiusScale = 0.5f;
+        public const float baseRadius = 20f;
 
 
 
