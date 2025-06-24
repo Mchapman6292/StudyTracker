@@ -39,6 +39,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             SKPaint circlePaint = DefineCirclePaint(column);
 
+            float normalizedRadius = _segmwentOverlayCalculator.CalculateNormalizedRadius(column);
+
             // Find the index of the current value in the segments.
             int segmentIndex = column.TimerSegments.FindIndex(s => s.Value == currentValue);
             if (segmentIndex == -1) return;
@@ -51,7 +53,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             float centerX = column.Location.X + (AnimatedColumnSettings.SegmentWidth / 2f);
             float centerY = segmentY + (AnimatedColumnSettings.SegmentHeight / 2f);
 
-            canvas.DrawCircle(centerX, centerY, 20, circlePaint);
+            canvas.DrawCircle(centerX, centerY, normalizedRadius, circlePaint);
 
         }
 

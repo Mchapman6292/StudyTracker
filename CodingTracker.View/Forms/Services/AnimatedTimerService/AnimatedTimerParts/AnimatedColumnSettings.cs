@@ -27,8 +27,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public static SKColor SegmentColor = SKColors.White;
 
 
+
+
+        private const float _circlePaddingMultiplier = 1.1f;
         public const float minRadiusScale = 0.5f;
-        public const float baseRadius = 20f;
+
+        public static float BaseRadius
+        {
+            get
+            {
+                float halfWidth = SegmentWidth / 2f;
+                float halfHeight = SegmentHeight / 2f;
+                float diagonal = (float)Math.Sqrt((halfWidth * halfWidth) + (halfHeight * halfHeight));
+                return diagonal * _circlePaddingMultiplier;
+            }
+        }
+
+
 
 
 
@@ -55,7 +70,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             {ColumnUnitType.HoursLeadingDigits, TimeSpan.FromSeconds(25) }
 
         };
-
+       
 
 
     }

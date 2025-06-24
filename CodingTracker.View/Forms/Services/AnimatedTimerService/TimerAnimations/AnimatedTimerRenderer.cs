@@ -2,8 +2,10 @@
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
+using static Guna.UI2.Material.Animation.AnimationManager;
 
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
@@ -22,20 +24,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IAnimationPhaseCalculator _phaseCalculator;
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly ICircleHighLight _circleHighlight;
+        private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight, ISegmentOverlayCalculator segmentOverlayCalculator)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
             _stopWatchTimerService = stopwWatchTimerService;
             _circleHighlight = circleHighlight;
+            _segmentOverlayCalculator = segmentOverlayCalculator;
         }
 
   
 
 
-
-
+        // Old method, remove once working.
+   
         public void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas)
         {
             for (int currentSegmentIndex = 0; currentSegmentIndex < timerColumn.SegmentCount; currentSegmentIndex++)
@@ -48,7 +52,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             }
         }
 
-
+        
 
 
 
@@ -73,7 +77,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             foreach (var column in columns)
             {
-                // 1. Update current value.
+               
                 int newValue = CalculateColumnValue(elapsed, column.ColumnType);
                 column.CurrentValue = newValue;
 
@@ -83,9 +87,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 // 3. Calculate scroll offset.
                 if (column.IsAnimating)
                 {
+                    float animationProgress = _segmentOverlayCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _segmentOverlayCalculator.CalculateNormalizedProgress(column.AnimationProgress);
 
-                    float phase = (float)(elapsed.TotalSeconds % 1.0);  
-                    column.ScrollOffset = CalculateScrollOffset(column, phase);
+                    column.UpdateAnimationState(animationProgress, normalizedProgress);
+
+                    column.ScrollOffset = CalculateScrollOffset(column, animationProgress);
                 }
                 else
                 {
@@ -163,10 +170,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
         // Value to determine the progress between one Segment and the next. 
-        private float CalculateScrollOffset(AnimatedTimerColumn column,float phase)
+        private float CalculateScrollOffset(AnimatedTimerColumn column,float animationProgress)
         {
             float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = CalculateEasingValue(phase);
+            float easedProgress = CalculateEasingValue(animationProgress);
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 

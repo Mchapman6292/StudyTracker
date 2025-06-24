@@ -6,6 +6,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
     public interface ISegmentOverlayCalculator
     {
+        float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateNormalizedProgress(float animationProgress);
         float CalculateNormalizedRadius(AnimatedTimerColumn column);
 
@@ -17,6 +18,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private const float _minRadiusScale = 0.5f;
 
 
+        public float CalculateAnimationProgress(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
+        }
 
         public float CalculateNormalizedProgress(float animationProgress)
         {
