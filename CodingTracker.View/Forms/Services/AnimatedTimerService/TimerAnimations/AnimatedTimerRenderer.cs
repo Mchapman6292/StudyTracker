@@ -193,6 +193,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
 
                 canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
+
+
+
+   
+
             }
         }
 

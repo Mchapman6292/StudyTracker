@@ -1,4 +1,5 @@
-﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+﻿using CodingTracker.Common.Utilities;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using System.Security.Policy;
 
@@ -16,6 +17,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         private const float _baseRadius = 20f;
         private const float _minRadiusScale = 0.5f;
+        
+
 
 
         public float CalculateAnimationProgress(TimeSpan elapsed)
@@ -41,7 +44,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             float radiusMultiplier = CalculateRadiusMultiplier(column.NormalizedProgress);
 
-            return column.OverlayRadius * radiusMultiplier;
+            float initial = column.OverlayRadius * radiusMultiplier;
+
+            float updatedInitial = (initial / 2) + initial;
+
+            return updatedInitial;
+
+
         }
 
 

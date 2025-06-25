@@ -1,9 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.Common.Utilities;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using OpenTK;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
@@ -24,7 +22,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public CircleHighlight(IApplicationLogger appLogger, ISegmentOverlayCalculator segmentOverlayCalculator)
         {
-            _appLogger = _appLogger;
+            _appLogger = appLogger;
             _segmwentOverlayCalculator = segmentOverlayCalculator;
         }
 
@@ -37,9 +35,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             var animationProgress = column.AnimationProgress;
 
 
-            SKPaint circlePaint = DefineCirclePaint(column);
+            SKPaint outerCirclePaint = CreateOuterCirclePaint(column);
+            SKPaint innerCirclePaint = CreateInnerCirclePaint(column);
 
             float normalizedRadius = _segmwentOverlayCalculator.CalculateNormalizedRadius(column);
+
+            _appLogger.Debug($"NormalizedRadius: {normalizedRadius}.");
 
             // Find the index of the current value in the segments.
             int segmentIndex = column.TimerSegments.FindIndex(s => s.Value == currentValue);
@@ -53,14 +54,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             float centerX = column.Location.X + (AnimatedColumnSettings.SegmentWidth / 2f);
             float centerY = segmentY + (AnimatedColumnSettings.SegmentHeight / 2f);
 
-            canvas.DrawCircle(centerX, centerY, normalizedRadius, circlePaint);
+            using (var outerPaint = CreateOuterCirclePaint(column))
+            {
+                canvas.DrawCircle(centerX, centerY, normalizedRadius, outerPaint);
+            }
 
+            using (var innterPaint = CreateInnerCirclePaint(column))
+            {
+                canvas.DrawCircle()
+            }
         }
 
 
 
 
-        public SKPaint DefineCirclePaint(AnimatedTimerColumn column)
+        private SKPaint CreateOuterCirclePaint(AnimatedTimerColumn column)
         {
 
             byte alpha = (byte)(column.NormalizedProgress * 255);
@@ -69,10 +77,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
 
                 Color = SKColors.Blue.WithAlpha(alpha),
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 3f
+                Style = SKPaintStyle.StrokeAndFill,
+                StrokeWidth = 4f,
+                
+     
+
             };
         }
+
+        private SKPaint CreateInnerCirclePaint(AnimatedTimerColumn column)
+        {
+            byte alpha = (byte)(column.NormalizedProgress * 255);
+            return new SKPaint()
+            {
+                Color = SKColors.LightBlue.WithAlpha(alpha), // Inside color
+                Style = SKPaintStyle.Fill,
+                IsAntialias = true
+            };
+        }
+
 
     }
 }
