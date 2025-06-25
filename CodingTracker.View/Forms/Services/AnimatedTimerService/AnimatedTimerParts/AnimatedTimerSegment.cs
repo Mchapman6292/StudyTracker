@@ -9,9 +9,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public float SegmentWidth { get; } = AnimatedColumnSettings.SegmentWidth;
         public float SegmentHeight { get; } = AnimatedColumnSettings.SegmentHeight;
 
-        public SKColor SegmentColor { get; } = AnimatedColumnSettings.SegmentColor;
-        public float TextSize  => SegmentHeight * 0.8f;
+        public SKColor BackgroundColour { get; } = AnimatedColumnSettings.SegmentColor;
 
+        public SKColor TextColour { get; set; }
+
+        public float TextSize = AnimatedColumnSettings.TextSize;
         public bool IsCurrent { get; set; }
 
         public SKPoint SegmentLocation { get; private set; }

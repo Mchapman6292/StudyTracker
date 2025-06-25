@@ -59,10 +59,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 canvas.DrawCircle(centerX, centerY, normalizedRadius, outerPaint);
             }
 
-            using (var innterPaint = CreateInnerCirclePaint(column))
-            {
-                canvas.DrawCircle()
-            }
+     
         }
 
 
@@ -79,10 +76,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 Color = SKColors.Blue.WithAlpha(alpha),
                 Style = SKPaintStyle.StrokeAndFill,
                 StrokeWidth = 4f,
-                
-     
-
             };
+
         }
 
         private SKPaint CreateInnerCirclePaint(AnimatedTimerColumn column)
@@ -90,7 +85,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             byte alpha = (byte)(column.NormalizedProgress * 255);
             return new SKPaint()
             {
-                Color = SKColors.LightBlue.WithAlpha(alpha), // Inside color
+                Color = SKColors.LightBlue.WithAlpha(alpha),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };

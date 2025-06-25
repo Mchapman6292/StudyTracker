@@ -268,7 +268,7 @@ namespace CodingTracker.View
             int height = buttonSize.Height;
             int width = buttonSize.Width;
 
-            string message = $"height = {height}, width = {width}.";
+            string message = $"height = {height}, Width = {width}.";
 
             _notificationManager.ShowNotificationDialog(this, message);
         }

@@ -75,7 +75,7 @@
                 column.ScrollOffset = scrollOffset;
                 column.CurrentValue = currentValue;
 
-                DrawColumn(canvas, column);
+                DrawSegments(canvas, column);
             }
         }
 

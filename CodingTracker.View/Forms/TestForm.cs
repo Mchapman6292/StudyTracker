@@ -152,7 +152,7 @@ namespace CodingTracker.View.Forms
 
         private void newTestButton_Click(object sender, EventArgs e)
         {
-            string logMsg = $"AnimatedTimerColumn -- Location: {column.Location.ToString()} SegmentCount: {column.SegmentCount}.";
+            string logMsg = $"AnimatedTimerColumn -- Location: {column.Location.ToString()} TotalSegmentCount: {column.TotalSegmentCount}.";
             _appLogger.Debug(logMsg);
 
             _notificationManager.ShowNotificationDialog(this, logMsg);

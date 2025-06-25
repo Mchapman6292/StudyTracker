@@ -17,10 +17,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int FocusedSegmentIndex = 0; // Set focus Segment to first Segment(0);
 
-        public int SegmentCount;
+        public int TotalSegmentCount;
 
-        public float width = AnimatedColumnSettings.ColumnWidth;
-        public float ColumnHeight => SegmentCount * AnimatedColumnSettings.SegmentHeight;
+        public float Width = AnimatedColumnSettings.ColumnWidth;
+        public float Height => TotalSegmentCount * AnimatedColumnSettings.SegmentHeight;
 
         public SKPoint Location { get; set; }
         public bool IsVisible { get; set; } = true;
@@ -62,7 +62,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             TimerSegments = timerSegments;
             ColumnType = columnType;
             Location = location;
-            SegmentCount = timerSegments.Count;
+            TotalSegmentCount = timerSegments.Count;
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
 
             OverlayRadius = (AnimatedColumnSettings.ColumnWidth / 2) + 5;

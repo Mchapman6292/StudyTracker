@@ -5,6 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Hig
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
+using Uno.UI.Xaml;
 using static Guna.UI2.Material.Animation.AnimationManager;
 
 
@@ -42,7 +43,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
    
         public void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas)
         {
-            for (int currentSegmentIndex = 0; currentSegmentIndex < timerColumn.SegmentCount; currentSegmentIndex++)
+            for (int currentSegmentIndex = 0; currentSegmentIndex < timerColumn.TotalSegmentCount; currentSegmentIndex++)
             {
                 AnimatedTimerSegment targetSegment = timerColumn.TimerSegments[currentSegmentIndex];
 
@@ -99,7 +100,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
            
                     column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
                 }
-                DrawColumn(canvas, column);
+
+                NEWDrawColumn(canvas, column);
+                DrawSegments(canvas, column);
 
                 _circleHighlight.Draw(canvas, column);
             }
@@ -150,18 +153,54 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        private void DrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
+        private void NEWDrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            float newY = column.Location.Y - column.ScrollOffset;
+
+      
+            SKPoint newLocation = new SKPoint(column.Location.X, newY);    
+            SKSize rectangleSize = new SKSize(column.Width, column.Height);
+
+            if (newLocation.X != column.Location.X || newLocation.Y != column.Location.Y)
+            {
+                _appLogger.Fatal($"newLocation and columnLocation not matching  X: {newLocation.X} Y: {newLocation.Y} \n columnLocation X: {column.Location.X}, Y: {column.Location.Y}.");
+            }
+
+            
+
+            SKRect columnRectangle = SKRect.Create(newLocation, rectangleSize);
+
+            _appLogger.Debug($"Drawing column of size {rectangleSize.Width}  {rectangleSize.Height} at X:{newLocation.X}, Y:{newLocation.Y}.");
+
+
+            using (var rectPaint = new SKPaint())
+            {
+                rectPaint.Color = AnimatedColumnSettings.MainPageFadedColor;
+                rectPaint.Style = SKPaintStyle.Fill;
+                rectPaint.IsAntialias = true;
+
+                canvas.DrawRect(columnRectangle, rectPaint);
+            }
+        }
+
+
+
+       
+
+
+        private void DrawSegments(SKCanvas canvas, AnimatedTimerColumn column)
         {
             float digitHeight = AnimatedColumnSettings.SegmentHeight;
             float startY = column.Location.Y - column.ScrollOffset;
 
 
-            for (int i = 0; i < column.SegmentCount; i++)
+            for (int currentSegmentCount = 0; currentSegmentCount < column.TotalSegmentCount; currentSegmentCount++)
             {
 
+                var segment = column.TimerSegments[currentSegmentCount];
 
-                var segment = column.TimerSegments[i];
-                float YNew = startY + (i * digitHeight);
+             
+                float YNew = startY + (currentSegmentCount * digitHeight);
 
                 segment.UpdatePosition(column.Location.X, YNew);
 
@@ -182,10 +221,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             using (var paint = new SKPaint())
             using (var font = new SKFont())
             {
-                paint.Color = timerSegment.SegmentColor;
+                paint.Color = SKColors.White;
                 paint.IsAntialias = true;
                 paint.TextAlign = SKTextAlign.Center;
-
+                
                 font.Size = timerSegment.TextSize;
 
                 // Calculate center positions.
@@ -193,11 +232,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
 
                 canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
-
-
-
-   
-
             }
         }
 
