@@ -2,31 +2,36 @@
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 
+
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 {
-    namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
+    public interface IAnimatedTimerColumnFactory
     {
-        public interface IAnimatedTimerColumnFactory
-        {
-            AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType timeUnit);
-        }
+        AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType timeUnit);
+    }
 
-        public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
+
+
+
+    public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
+    {
+        public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType columnType)
         {
-            public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType columnType)
+     
+            var segments = new List<AnimatedTimerSegment>();
+            for(int newSegment = 0; newSegment < segmentNumbers.Length; newSegment++)
             {
-                int segCount = 0;
+                float yPosition = location.Y + (newSegment * AnimatedColumnSettings.SegmentHeight);
+                SKPoint segmentLocation = new SKPoint(location.X, yPosition);
 
-                var segments = new List<AnimatedTimerSegment>();
-                for(int i = 0; i < segmentNumbers.Length; i++)
-                {
-                    segments.Add(new AnimatedTimerSegment(segmentNumbers[i]));
-                    segCount++;
-                }
-                AnimatedTimerColumn newColumn = new AnimatedTimerColumn(segments, location, columnType);
-                newColumn.TimerSegments = segments;
-                return newColumn;
+                segments.Add(new AnimatedTimerSegment(segmentNumbers[newSegment], segmentLocation));
+
+      
             }
+            AnimatedTimerColumn newColumn = new AnimatedTimerColumn(segments, location, columnType);
+            newColumn.TimerSegments = segments;
+            return newColumn;
         }
     }
 }
+

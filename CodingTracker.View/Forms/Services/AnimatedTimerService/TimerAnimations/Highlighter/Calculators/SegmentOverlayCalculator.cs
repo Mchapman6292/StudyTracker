@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.Utilities;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 using System.Security.Policy;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators
@@ -66,6 +67,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
+
+        public SKPoint CalculateSegmentCentre
 
 
 

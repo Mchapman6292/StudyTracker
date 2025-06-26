@@ -16,27 +16,28 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public float TextSize = AnimatedColumnSettings.TextSize;
         public bool IsCurrent { get; set; }
 
-        public SKPoint SegmentLocation { get; private set; }
+        public SKPoint Location { get; private set; }
 
         public SKPoint LocationCenterPoint { get; private set; }    
 
 
-        public AnimatedTimerSegment(int value)
+        public AnimatedTimerSegment(int value, SKPoint location)
         {
             Value = value;
-            LocationCenterPoint = new SKPoint(SegmentLocation.X + (SegmentWidth / 2), SegmentLocation.Y + (SegmentHeight / 2));
+            Location = location;
+            LocationCenterPoint = new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
         }
 
 
 
         public void UpdatePosition(float x, float y)
         {
-            SegmentLocation = new SKPoint(x, y);
+            Location = new SKPoint(x, y);
         }
 
         public void UpdateLocationCentrePoint()
         {
-            LocationCenterPoint = new SKPoint(SegmentLocation.X + (SegmentWidth / 2), SegmentLocation.Y + (SegmentHeight / 2));
+            LocationCenterPoint = new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
         }
 
 

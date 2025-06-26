@@ -17,6 +17,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int FocusedSegmentIndex = 0; // Set focus Segment to first Segment(0);
 
+        public AnimatedTimerSegment FocusedSegment { get; private set; }
+
         public int TotalSegmentCount;
 
         public float Width = AnimatedColumnSettings.ColumnWidth;
@@ -66,6 +68,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
 
             OverlayRadius = (AnimatedColumnSettings.ColumnWidth / 2) + 5;
+
+            FocusedSegment = timerSegments.First();
            
             
         }
@@ -77,6 +81,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         {
             AnimationProgress = animationProgress;
             NormalizedProgress = normalizedProgress;
+        }
+
+        public void UpdateFocusedSegment(AnimatedTimerSegment segment)
+        {
+            FocusedSegment = segment;
         }
 
 

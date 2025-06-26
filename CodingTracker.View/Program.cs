@@ -20,10 +20,11 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -130,6 +131,9 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
                     .AddSingleton<ICircleHighLight, CircleHighlight>()
                     .AddSingleton<ISegmentOverlayCalculator, SegmentOverlayCalculator>()
+
+                    .AddSingleton<ICirclePathBuilder, CirclePathBuilder>()
+                    .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
 
                     .AddSingleton<MainPage>()
                     .AddTransient<EditSessionPage>()
