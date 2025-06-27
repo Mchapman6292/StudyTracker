@@ -5,6 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using LiveChartsCore.Measure;
 using SkiaSharp;
 using Uno.UI.Xaml;
 using static Guna.UI2.Material.Animation.AnimationManager;
@@ -69,49 +70,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-
-
-
-        public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            SKColor formBackgroundColor = new SKColor(35, 34, 50);
-
-            canvas.Clear(formBackgroundColor);
-
-            foreach (var column in columns)
-            {
-               
-                int newValue = CalculateColumnValue(elapsed, column.ColumnType);
-                column.CurrentValue = newValue;
-
-                // 2. Determine if this column should animate right now.
-                column.IsAnimating = ShouldColumnAnimate(elapsed, column);
-
-                // 3. Calculate scroll offset.
-                if (column.IsAnimating)
-                {
-                    float animationProgress = _segmentOverlayCalculator.CalculateAnimationProgress(elapsed);
-                    float normalizedProgress = _segmentOverlayCalculator.CalculateNormalizedProgress(column.AnimationProgress);
-
-                    column.UpdateAnimationState(animationProgress, normalizedProgress);
-
-                    column.ScrollOffset = CalculateScrollOffset(column, animationProgress);
-                }
-                else
-                {
-           
-                    column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-                }
-
-                NEWDrawColumn(canvas, column);
-                DrawSegments(canvas, column);
-
-
-
-                DrawTimerPaths(canvas, column, formBackgroundColor);
-            }
-        }
 
 
 
@@ -260,14 +218,58 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-
-
-        public void DrawTimerPaths(SKCanvas canvas, AnimatedTimerColumn column, SKColor formBackgroundColor)
+        public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
+            SKColor formBackgroundColor = new SKColor(35, 34, 50);
 
             canvas.Clear(formBackgroundColor);
-            //Start with drawing overlay paths
+
+
+
+            foreach (var column in columns)
+            {
+
+                int newValue = CalculateColumnValue(elapsed, column.ColumnType);
+                column.CurrentValue = newValue;
+
+                // Update focused Segment to match the current value.
+
+                column.SetFocusedSegmentByValue(newValue);
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = ShouldColumnAnimate(elapsed, column);
+
+                // 3. Calculate scroll offset.
+                if (column.IsAnimating)
+                {
+                    float animationProgress = _segmentOverlayCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _segmentOverlayCalculator.CalculateNormalizedProgress(column.AnimationProgress);
+
+                    column.UpdateAnimationState(animationProgress, normalizedProgress);
+
+                    column.ScrollOffset = CalculateScrollOffset(column, animationProgress);
+                }
+                else
+                {
+
+                    column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                }
+
+
+                DrawSegments(canvas, column);
+                DrawTimerPaths(canvas, column);
+
+            }
+        }
+
+
+
+
+
+
+
+        public void DrawTimerPaths(SKCanvas canvas, AnimatedTimerColumn column)
+        {
 
             SKPath innerSegmentPath;
             SKPath outerOverlayPath;
@@ -275,24 +277,50 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _pathBuilder.CreateTimerPaths(column, out outerOverlayPath, out innerSegmentPath);
 
+            _appLogger.Debug($"DrawTimerPaths Inner path innerBounds: {innerSegmentPath.Bounds}");
+            _appLogger.Debug($"DrawTimerPaths Inner path innerBounds: {outerOverlayPath.Bounds}");
+
             using (var outerPaint = new SKPaint())
             using (var innerPaint = new SKPaint())
             {
 
                 innerPaint.Style = SKPaintStyle.Fill;
-                innerPaint.Color = SKColors.White.WithAlpha(80);
+                innerPaint.Color = SKColors.Red;
                 innerPaint.IsAntialias = true;
 
-                outerPaint.Color = SKColors.Cyan.WithAlpha(40);
+                outerPaint.Color = SKColors.Green;
                 outerPaint.Style = SKPaintStyle.Stroke;
                 outerPaint.IsAntialias = true;
                 outerPaint.StrokeWidth = 2f;
 
+                
+                // Apply scroll offset to transform the Y axis of the paths and move them downward.
+                canvas.Save();
+                canvas.Translate(0, +column.ScrollOffset);
+                
+
+                // Draw at transformed position.
                 canvas.DrawPath(innerSegmentPath, innerPaint);
                 canvas.DrawPath(outerOverlayPath, outerPaint);
 
-            }   
+                /*
+                var innerBounds = innerSegmentPath.Bounds;
+                var outerBounds = outerOverlayPath.Bounds;
+                _appLogger.Debug($"Inner path innerBounds: {innerBounds}");
+                _appLogger.Debug($"Inner path innerBounds: {outerBounds}");
+                */
+
+                canvas.Restore();
+
+
+
+            }
         }
+
+
+  
+
+
 
 
 

@@ -26,15 +26,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
         {
             SKPath circlePath = new SKPath();
 
-            float circleLocationX = column.FocusedSegment.Location.X;
-            float circleLocationY = column.FocusedSegment.Location.Y;
+            float centerX = column.FocusedSegment.Location.X + (column.FocusedSegment.SegmentWidth / 2f);
+            float centerY = column.FocusedSegment.Location.Y + (column.FocusedSegment.SegmentHeight / 2f);
 
             float normalizedRadius = _segmentOverlayCalculator.CalculateNormalizedRadius(column);
 
 
-            circlePath.AddCircle(circleLocationX, circleLocationY, normalizedRadius);
+            circlePath.AddCircle(centerX, centerY, normalizedRadius);
 
-            return circlePath;  
+            _appLogger.Debug($"Circle path added for X:{centerX} Y:({centerY} radius: {normalizedRadius})");
+
+            _appLogger.Debug($" CreateCirclePath Inner path innerBounds: {circlePath.Bounds}");
+
+            return circlePath;
             
         }
 
@@ -42,6 +46,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
         private SKRect CreateSKRectangle(AnimatedTimerColumn column)
         {
             float newY = column.Location.Y - column.ScrollOffset;
+
+
             SKPoint newLocation = new SKPoint(column.Location.X, newY);
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
 
@@ -56,6 +62,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
             rectanglePath.AddRect(columnRectangle);
 
+
+            _appLogger.Debug($"Rectangle: W:{columnRectangle.Width} H: ({columnRectangle.Height}, Location: {columnRectangle.Location}).");
+
+            _appLogger.Debug($"CreateRectanglePathInner path innerBounds: {rectanglePath.Bounds}");
+
             return rectanglePath;
 
         }
@@ -64,24 +75,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
         public void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath)
         {
-
             SKPath rectanglePath = CreateRectanglePath(column);
             SKPath circlePath = CreateCirclePath(column);
-            
 
-            // Creates a new path containing only the parts of the circle that dont touch the rectangle.
             outerOverlayPath = new SKPath();
-            outerOverlayPath.Op(circlePath, SKPathOp.Difference, rectanglePath);
-
-
-            // Define the area where the circle and rectangle overlap as a new path.
             innerSegmentPath = new SKPath();
-            innerSegmentPath.Op(circlePath, SKPathOp.Intersect, rectanglePath);
 
+            circlePath.Op(rectanglePath, SKPathOp.Difference, outerOverlayPath);
+            circlePath.Op(rectanglePath, SKPathOp.Intersect, innerSegmentPath);
 
-  
-
-        }   
+            _appLogger.Debug($"CreateTimerPaths Inner path bounds: {innerSegmentPath.Bounds}");
+            _appLogger.Debug($"CreateTimerPaths Outer path bounds: {outerOverlayPath.Bounds}");
+        }
 
 
 
