@@ -68,7 +68,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public SKPoint CalculateSegmentCentre
 
 
 

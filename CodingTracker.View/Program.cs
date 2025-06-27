@@ -132,7 +132,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ICircleHighLight, CircleHighlight>()
                     .AddSingleton<ISegmentOverlayCalculator, SegmentOverlayCalculator>()
 
-                    .AddSingleton<ICirclePathBuilder, CirclePathBuilder>()
+                    .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
 
                     .AddSingleton<MainPage>()

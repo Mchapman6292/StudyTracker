@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
@@ -26,14 +27,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly ICircleHighLight _circleHighlight;
         private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
+        private readonly IPathBuilder _pathBuilder;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight, ISegmentOverlayCalculator segmentOverlayCalculator)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight, ISegmentOverlayCalculator segmentOverlayCalculator, IPathBuilder pathBuilder)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
             _stopWatchTimerService = stopwWatchTimerService;
             _circleHighlight = circleHighlight;
             _segmentOverlayCalculator = segmentOverlayCalculator;
+            _pathBuilder = pathBuilder;
         }
 
   
@@ -104,7 +107,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 NEWDrawColumn(canvas, column);
                 DrawSegments(canvas, column);
 
-                _circleHighlight.Draw(canvas, column);
+
+
+                DrawTimerPaths(canvas, column, formBackgroundColor);
             }
         }
 
@@ -258,9 +263,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        public void DrawTimerPaths(SKCanvas canvas, AnimatedTimerColumn column, SKColor formBackgroundColor)
+        {
+
+            canvas.Clear(formBackgroundColor);
+            //Start with drawing overlay paths
+
+            SKPath innerSegmentPath;
+            SKPath outerOverlayPath;
+  
+
+            _pathBuilder.CreateTimerPaths(column, out outerOverlayPath, out innerSegmentPath);
+
+            using (var outerPaint = new SKPaint())
+            using (var innerPaint = new SKPaint())
+            {
+
+                innerPaint.Style = SKPaintStyle.Fill;
+                innerPaint.Color = SKColors.White.WithAlpha(80);
+                innerPaint.IsAntialias = true;
+
+                outerPaint.Color = SKColors.Cyan.WithAlpha(40);
+                outerPaint.Style = SKPaintStyle.Stroke;
+                outerPaint.IsAntialias = true;
+                outerPaint.StrokeWidth = 2f;
+
+                canvas.DrawPath(innerSegmentPath, innerPaint);
+                canvas.DrawPath(outerOverlayPath, outerPaint);
+
+            }   
+        }
+
+
+
 
 
    
 
     }
 }
+
