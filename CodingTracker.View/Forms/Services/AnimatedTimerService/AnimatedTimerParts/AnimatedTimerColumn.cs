@@ -37,8 +37,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         //TODO review if needed here or in calculation class. 
         public float ScrollOffset { get; set; }
 
-        public int CurrentValue { get; set; }
-        public int PreviousValue { get; set; } = -1;
+
 
 
 
@@ -73,12 +72,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float AnimationProgressBetweenNumbers { get; private set; }
 
 
-        public bool IsAnimating { get; private set; }
+        public bool IsAnimating { get; set; }
 
-        public TimeSpan LastAnimationStartTime { get; set; }
-        public TimeSpan AnimationInterval { get; }
-        public TimeSpan LastTransitionTime { get;  set; }
-        public TimeSpan NextTransitionTime { get;  set; }
+        public TimeSpan LastAnimationStartTime { get; set; }  // When current animation began
+        public TimeSpan NextTransitionTime { get; set; } // When next animation should start
+
+        public TimeSpan AnimationInterval { get; } // How long animation takes (300ms)
+
+
+        public int CurrentValue { get; set; }
+        public int PreviousValue { get; set; } = -1;
 
 
 
@@ -175,12 +178,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
-        private void IsWithinAnimationInterval(TimeSpan elapsed)
-        {
-            double secondsUntilChange = AnimationInterval.TotalSeconds - (elapsed.TotalSeconds / AnimationInterval.TotalSeconds);
-            return secondsUntilChange <= 1.0;
-
-        }
+    
 
 
         private void UpdateNexTransitionTime()
