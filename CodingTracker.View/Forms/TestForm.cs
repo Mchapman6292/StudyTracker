@@ -73,7 +73,7 @@ namespace CodingTracker.View.Forms
             _animatedTimerManager.InitializeColumns(this);
 
 
-            skControlTest.PaintSurface += _animatedTimerManager.OnPaintSurface;
+            skControlTest.PaintSurface += _animatedTimerManager.DrawColumnsOnTick;
 
 
 
@@ -135,7 +135,11 @@ namespace CodingTracker.View.Forms
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
+
+            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
             _animatedTimerManager.UpdateAndRender(skControlTest);
+
+            
 
    
 

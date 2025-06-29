@@ -32,7 +32,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         public void Draw(SKCanvas canvas, AnimatedTimerColumn column)
         {
             int currentValue = column.CurrentValue;
-            var animationProgress = column.AnimationProgress;
+            var animationProgress = column.GetColumnAnimationProgress;
 
 
             SKPaint outerCirclePaint = CreateOuterCirclePaint(column);

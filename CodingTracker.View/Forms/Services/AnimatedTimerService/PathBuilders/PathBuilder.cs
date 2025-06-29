@@ -7,7 +7,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 {
     public interface IPathBuilder
     {
-        void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath);
+        void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath, TimeSpan elapsed);
     }
 
     public class PathBuilder : IPathBuilder
@@ -22,14 +22,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             _segmentOverlayCalculator = segmentOverLayCalculator;
         }
 
-        private SKPath CreateCirclePath(AnimatedTimerColumn column)
+        private SKPath CreateCirclePath(AnimatedTimerColumn column, TimeSpan elapsed)
         {
             SKPath circlePath = new SKPath();
 
             float centerX = column.FocusedSegment.Location.X + (column.FocusedSegment.SegmentWidth / 2f);
             float centerY = column.FocusedSegment.Location.Y + (column.FocusedSegment.SegmentHeight / 2f);
 
-            float normalizedRadius = _segmentOverlayCalculator.CalculateNormalizedRadius(column);
+            float normalizedRadius = _segmentOverlayCalculator.CalculateCircleAnimationRadius(column, elapsed);
 
 
             circlePath.AddCircle(centerX, centerY, normalizedRadius);
@@ -73,10 +73,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
 
 
-        public void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath)
+        public void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath, TimeSpan elapsed)
         {
             SKPath rectanglePath = CreateRectanglePath(column);
-            SKPath circlePath = CreateCirclePath(column);
+            SKPath circlePath = CreateCirclePath(column, elapsed);
 
             outerOverlayPath = new SKPath();
             innerSegmentPath = new SKPath();

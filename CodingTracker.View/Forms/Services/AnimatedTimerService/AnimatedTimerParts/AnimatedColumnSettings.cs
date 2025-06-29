@@ -28,42 +28,61 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public static SKColor SegmentColor = new SKColor(35, 34, 50);
 
         public static SKColor MainPageFadedColor = new SKColor(44, 45, 65);
-            
+
+
 
         private const float _circlePaddingMultiplier = 1.1f;
         public const float minRadiusScale = 0.5f;
 
-        public static float BaseRadius
+
+        public static readonly float MinRadius = CalculateMinRadius();
+
+        public static readonly float MaxRadius = CalculateMaxRadius();
+
+
+        public const float CircleAnimationDurationRatio = 0.7f; // Circle animation should only occur for 70% of the column animation, after that it completes and vanishes.
+
+        public const byte OuterCircleOpacity = 64;
+
+
+
+
+        public static float CalculateMinRadius()
         {
-            get
-            {
-                float halfWidth = SegmentWidth / 2f;
-                float halfHeight = SegmentHeight / 2f;
-                float diagonal = (float)Math.Sqrt((halfWidth * halfWidth) + (halfHeight * halfHeight));
-                return diagonal * _circlePaddingMultiplier;
-            }
+            float halfWidth = SegmentWidth / 2f;
+            float halfHeight = SegmentHeight / 2f;
+            float diagonal = (float)Math.Sqrt((halfWidth * halfWidth) + (halfHeight * halfHeight));
+            return diagonal * minRadiusScale;
         }
 
 
+        public static float CalculateMaxRadius()
+        {
+            float halfWidth = SegmentWidth / 2f;
+            float halfHeight = SegmentHeight / 2f;
+            float diagonal = (float)Math.Sqrt((halfWidth * halfWidth) + (halfHeight * halfHeight));
+            return diagonal * _circlePaddingMultiplier;
+ 
+        }
 
 
 
         public static readonly Dictionary<ColumnUnitType, TimeSpan> UnitTypesToAnimationDurations = new Dictionary<ColumnUnitType, TimeSpan>
         {
-            { ColumnUnitType.SecondsSingleDigits, TimeSpan.FromSeconds(1) },
-            { ColumnUnitType.SecondsLeadingDigit, TimeSpan.FromSeconds(10) },
-            {ColumnUnitType.MinutesSingleDigits, TimeSpan.FromSeconds(60) },
-            { ColumnUnitType.MinutesLeadingDigits, TimeSpan.FromSeconds(600) },
-            {ColumnUnitType.HoursSinglesDigits, TimeSpan.FromSeconds(3600) },
-            {ColumnUnitType.HoursLeadingDigits, TimeSpan.FromSeconds(36000) }
-
+            { ColumnUnitType.SecondsSingleDigits, TimeSpan.FromSeconds(1) - AnimationDuration },
+            { ColumnUnitType.SecondsLeadingDigit, TimeSpan.FromSeconds(10) - AnimationDuration },
+            { ColumnUnitType.MinutesSingleDigits, TimeSpan.FromSeconds(60) - AnimationDuration },
+            { ColumnUnitType.MinutesLeadingDigits, TimeSpan.FromSeconds(600) - AnimationDuration },
+            { ColumnUnitType.HoursSinglesDigits, TimeSpan.FromSeconds(3600) - AnimationDuration },
+            { ColumnUnitType.HoursLeadingDigits, TimeSpan.FromSeconds(36000) - AnimationDuration }
         };
+
 
 
 
         public static readonly Dictionary<ColumnUnitType, TimeSpan> TESTUnitTypesToAnimationDurations = new Dictionary<ColumnUnitType, TimeSpan>
         {
-            { ColumnUnitType.SecondsSingleDigits, TimeSpan.FromSeconds(1) },
+            { ColumnUnitType.SecondsSingleDigits, TimeSpan.FromSeconds(0) },
             { ColumnUnitType.SecondsLeadingDigit, TimeSpan.FromSeconds(5) },
             {ColumnUnitType.MinutesSingleDigits, TimeSpan.FromSeconds(10) },
             { ColumnUnitType.MinutesLeadingDigits, TimeSpan.FromSeconds(15) },

@@ -20,6 +20,7 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
@@ -131,6 +132,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
                     .AddSingleton<ICircleHighLight, CircleHighlight>()
                     .AddSingleton<ISegmentOverlayCalculator, SegmentOverlayCalculator>()
+                    .AddSingleton<IAnimatedColumnStateManager, AnimatedColumnStateManager>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

@@ -11,6 +11,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateNormalizedProgress(float animationProgress);
         float CalculateNormalizedRadius(AnimatedTimerColumn column);
+        float CalculateInvertedNormalizedProgress(float animationProgress);
+
+
+
+
+
+        float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
+        float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed);
 
     }
 
@@ -18,14 +26,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         private const float _baseRadius = 20f;
         private const float _minRadiusScale = 0.5f;
+
+        
         
 
 
-
-        public float CalculateAnimationProgress(TimeSpan elapsed)
-        {
-            return (float)(elapsed.TotalSeconds % 1.0);
-        }
 
         public float CalculateNormalizedProgress(float animationProgress)
         {
@@ -33,6 +38,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 return 0f;
 
             return (animationProgress - 0.5f) / 0.5f;
+        }
+
+
+        public float CalculateInvertedNormalizedProgress(float animationProgress)
+        {
+            if(animationProgress < 0.3f)
+            {
+                return 1f;           
+            }
+            return 1f - ((animationProgress - 0.3f) / 0.3f);
         }
 
 
@@ -51,8 +66,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return updatedInitial;
 
-
         }
+
+
+
+    
 
 
 
@@ -69,6 +87,29 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+
+
+
+
+
+
+        public float CalculateAnimationProgress(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
+        }
+
+
+        public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
+            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, circleAnimationProgress);
+        }
+
+        public float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
+            return Single.Lerp(1.0f, 0.0f, circleAnimationProgress);
+        }
 
 
 
