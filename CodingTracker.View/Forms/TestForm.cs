@@ -3,21 +3,14 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using LiveChartsCore;
-using LiveChartsCore.Drawing.Segments;
-using LiveChartsCore.Measure;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
@@ -80,7 +73,7 @@ namespace CodingTracker.View.Forms
             _animatedTimerManager.InitializeColumns(this);
 
 
-            skControlTest.PaintSurface += _animatedTimerManager.OnPaintSurface;
+            skControlTest.PaintSurface += _animatedTimerManager.DrawColumnsOnTick;
 
 
 
@@ -142,7 +135,11 @@ namespace CodingTracker.View.Forms
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
+
+            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
             _animatedTimerManager.UpdateAndRender(skControlTest);
+
+            
 
    
 
@@ -152,7 +149,7 @@ namespace CodingTracker.View.Forms
 
         private void newTestButton_Click(object sender, EventArgs e)
         {
-            string logMsg = $"AnimatedTimerColumn -- Location: {column.Location.ToString()} SegmentCount: {column.SegmentCount}.";
+            string logMsg = $"AnimatedTimerColumn -- Location: {column.Location.ToString()} TotalSegmentCount: {column.TotalSegmentCount}.";
             _appLogger.Debug(logMsg);
 
             _notificationManager.ShowNotificationDialog(this, logMsg);

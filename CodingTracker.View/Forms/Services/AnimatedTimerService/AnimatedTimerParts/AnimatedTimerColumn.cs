@@ -15,12 +15,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public List<AnimatedTimerSegment> TimerSegments;
 
-        public int FocusedSegmentIndex = 0; // Set focus Segment to first Segment(0);
+        public int FocusedSegmentIndex = 0;
+        
 
-        public int SegmentCount;
+        public AnimatedTimerSegment FocusedSegment { get; private set; }
 
-        public float width = AnimatedColumnSettings.ColumnWidth;
-        public float ColumnHeight => SegmentCount * AnimatedColumnSettings.SegmentHeight;
+
+
+        public int TotalSegmentCount;
+
+        public float Width = AnimatedColumnSettings.ColumnWidth;
+        public float Height => TotalSegmentCount * AnimatedColumnSettings.SegmentHeight;
 
         public SKPoint Location { get; set; }
         public bool IsVisible { get; set; } = true;
@@ -34,15 +39,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int CurrentValue { get; set; }
         public int PreviousValue { get; set; } = -1;
-        public TimeSpan AnimationInterval { get; }
-        public TimeSpan LastAnimationStartTime {  get; set; }
-        public bool IsAnimating { get; set; }
+
+
+
+  
+
+
+
+
+        // True when the columns
+        public bool IsTimeToAnimate { get; set; }
 
 
 
         public ColumnUnitType ColumnType { get; set; }
-        public bool EnableHighlight { get; set; } = true;
 
+
+        public bool EnableHighlight { get; set; } = true;
 
 
          
@@ -51,9 +64,26 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float OverlayOpacity { get; private set; } = 1f;
         public float OverlayRadius { get; private set; }
 
-        public float AnimationProgress { get; private set; }
+
 
         public float NormalizedProgress { get; private set; }
+
+
+
+        public float AnimationProgressBetweenNumbers { get; private set; }
+
+
+        public bool IsAnimating { get; private set; }
+
+        public TimeSpan LastAnimationStartTime { get; set; }
+        public TimeSpan AnimationInterval { get; }
+        public TimeSpan LastTransitionTime { get;  set; }
+        public TimeSpan NextTransitionTime { get;  set; }
+
+
+
+
+
 
 
 
@@ -62,23 +92,103 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             TimerSegments = timerSegments;
             ColumnType = columnType;
             Location = location;
-            SegmentCount = timerSegments.Count;
+            TotalSegmentCount = timerSegments.Count;
+
+
+            // TODO review, this should be set in AnimatedColumnSettings
+            OverlayRadius = (AnimatedColumnSettings.ColumnWidth / 2) + 5;
+
+            FocusedSegment = timerSegments[0];
+
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
 
-            OverlayRadius = (AnimatedColumnSettings.ColumnWidth / 2) + 5;
-           
-            
+            NextTransitionTime = TimeSpan.Zero + AnimationInterval;
         }
 
 
 
-
+        /*
         public void UpdateAnimationState(float animationProgress, float normalizedProgress)
         {
             AnimationProgress = animationProgress;
             NormalizedProgress = normalizedProgress;
         }
+        */
 
+        public void UpdateFocusedSegment(AnimatedTimerSegment segment)
+        {
+            IncrementFocusedSegmentIndex();
+
+            FocusedSegment = TimerSegments[FocusedSegmentIndex];
+        }
+
+        private void IncrementFocusedSegmentIndex()
+        {
+            FocusedSegmentIndex++;
+            if (FocusedSegmentIndex >= TimerSegments.Count)
+            {
+                FocusedSegmentIndex = 0;
+            
+            }
+        }
+
+
+        public void SetFocusedSegmentByValue(int newValue)
+        {
+            var focusedSegment = TimerSegments.FirstOrDefault(s => s.Value == newValue);
+        }
+
+
+
+        public float CalculateNormalizedProgress(float animationProgress)
+        {
+            if (animationProgress < 0.5f)
+                return 0f;
+
+            return (animationProgress - 0.5f) / 0.5f;
+        }
+
+
+
+
+        public float GetColumnAnimationProgress(TimeSpan elapsed)
+        {
+           return (float)(elapsed.TotalSeconds % 1.0); 
+        }
+
+        public float GetCircleHighlightAnimationProgress(TimeSpan elapsed)
+        {
+            float columnProgress = GetColumnAnimationProgress(elapsed);
+
+            if(columnProgress > AnimatedColumnSettings.CircleAnimationDurationRatio)
+            {
+                return 1f;
+            }
+            return columnProgress / AnimatedColumnSettings.CircleAnimationDurationRatio;
+        }
+
+
+        private TimeSpan SetColumnAnimationInterval()
+        {
+        
+            return AnimatedColumnSettings.TESTUnitTypesToAnimationDurations[ColumnType] - TimeSpan.FromSeconds(1);
+        }
+
+
+        private void IsWithinAnimationInterval(TimeSpan elapsed)
+        {
+            double secondsUntilChange = AnimationInterval.TotalSeconds - (elapsed.TotalSeconds / AnimationInterval.TotalSeconds);
+            return secondsUntilChange <= 1.0;
+
+        }
+
+
+        private void UpdateNexTransitionTime()
+        {
+            NextTransitionTime += AnimationInterval;
+        }
+
+   
 
     }
 }

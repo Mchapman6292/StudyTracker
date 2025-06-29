@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
 {
-    public class SegmentOverlay
+    public class AnimatedCircleOverlay
     {
         public AnimatedTimerColumn Column { get; set; }
 

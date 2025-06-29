@@ -4,7 +4,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory.CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
@@ -19,7 +19,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
     {
         void InitializeColumns(Form targetForm);
         void UpdateAndRender(SKControl skControl);
-        void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e);
+        void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
         List<AnimatedTimerColumn> ReturnTimerColumns();
     }
@@ -56,14 +56,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
   
 
-        public void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
+        public void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e)
         {
 
             var canvas = e.Surface.Canvas;
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.Draw(canvas, bounds, elapsed, _columns);
+            _animatedRenderer.NEWDraw(canvas, bounds, elapsed, _columns);
         }
 
 
@@ -89,6 +89,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
             var secondsSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.SecondsSingleDigits);
             xPosition += spacing;
+
+            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {secondsSingleDigits.AnimationInterval} FOR secondsSingleDigits.");
             LogXPosition(xPosition);
 
             LogColumnPosition(secondsSingleDigits);
@@ -100,6 +102,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var minutesSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesSingleDigits);
             xPosition += spacing;
 
+            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {minutesSingleDigits.AnimationInterval} FOR minutesSingleDigits.");
+
             var minutesLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesLeadingDigits);
             xPosition += spacing;
 
@@ -107,6 +111,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
             var hoursSinlgeDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursSinglesDigits);
+
+
+            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {hoursSinlgeDigits.AnimationInterval} FOR hoursSinlgeDigits.");
             xPosition += spacing;
             var hoursLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursLeadingDigits);
 

@@ -1,13 +1,24 @@
-﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+﻿using CodingTracker.Common.Utilities;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 using System.Security.Policy;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators
 {
     public interface ISegmentOverlayCalculator
     {
+        float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateNormalizedProgress(float animationProgress);
         float CalculateNormalizedRadius(AnimatedTimerColumn column);
+        float CalculateInvertedNormalizedProgress(float animationProgress);
+
+
+
+
+
+        float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
+        float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed);
 
     }
 
@@ -15,6 +26,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         private const float _baseRadius = 20f;
         private const float _minRadiusScale = 0.5f;
+
+        
+        
 
 
 
@@ -27,6 +41,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
+        public float CalculateInvertedNormalizedProgress(float animationProgress)
+        {
+            if(animationProgress < 0.3f)
+            {
+                return 1f;           
+            }
+            return 1f - ((animationProgress - 0.3f) / 0.3f);
+        }
+
+
         private float CalculateRadiusMultiplier(float normalizedProgress)
         {
             return AnimatedColumnSettings.minRadiusScale + (normalizedProgress * (1.0f - AnimatedColumnSettings.minRadiusScale));
@@ -36,8 +60,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             float radiusMultiplier = CalculateRadiusMultiplier(column.NormalizedProgress);
 
-            return column.OverlayRadius * radiusMultiplier;
+            float initial = column.OverlayRadius * radiusMultiplier;
+
+            float updatedInitial = (initial / 2) + initial;
+
+            return updatedInitial;
+
         }
+
+
+
+    
 
 
 
@@ -53,6 +86,30 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+
+
+
+
+
+
+
+        public float CalculateAnimationProgress(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
+        }
+
+
+        public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
+            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, circleAnimationProgress);
+        }
+
+        public float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
+            return Single.Lerp(1.0f, 0.0f, circleAnimationProgress);
+        }
 
 
 

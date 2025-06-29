@@ -62,7 +62,7 @@
         
 
 
-        public void Draw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        public void OldDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
             canvas.Clear(SKColors.Black);
 
@@ -75,7 +75,7 @@
                 column.ScrollOffset = scrollOffset;
                 column.CurrentValue = currentValue;
 
-                DrawColumn(canvas, column);
+                DrawSegments(canvas, column);
             }
         }
 
