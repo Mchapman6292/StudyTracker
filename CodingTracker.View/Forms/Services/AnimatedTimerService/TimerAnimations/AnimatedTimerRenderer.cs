@@ -9,7 +9,7 @@ using LiveChartsCore.Measure;
 using SkiaSharp;
 using Uno.UI.Xaml;
 using static Guna.UI2.Material.Animation.AnimationManager;
-
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
@@ -18,7 +18,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y);
         void DrawAllSegments(AnimatedTimerColumn timerColumn, SKCanvas canvas);
 
-        void OldDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
         void NEWDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
     }
@@ -31,8 +30,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly ICircleHighLight _circleHighlight;
         private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
         private readonly IPathBuilder _pathBuilder;
+        private readonly IAnimatedColumnStateManager _columnStateManager;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight, ISegmentOverlayCalculator segmentOverlayCalculator, IPathBuilder pathBuilder)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, ICircleHighLight circleHighlight, ISegmentOverlayCalculator segmentOverlayCalculator, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
@@ -40,6 +40,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _circleHighlight = circleHighlight;
             _segmentOverlayCalculator = segmentOverlayCalculator;
             _pathBuilder = pathBuilder;
+            _columnStateManager = columnStateManager;
         }
 
   
@@ -76,34 +77,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-
-
-
-        private int CalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType)
-        {
-            int totalSeconds = (int)elapsed.TotalSeconds;
-            int minutes = totalSeconds / 60;
-            int hours = totalSeconds / 3600;
-
-            switch (columnType)
-            {
-                case ColumnUnitType.SecondsSingleDigits:
-                    return totalSeconds % 10;
-                case ColumnUnitType.SecondsLeadingDigit:
-                    return (totalSeconds / 10) % 6;
-                case ColumnUnitType.MinutesSingleDigits:
-                    return minutes % 10;
-                case ColumnUnitType.MinutesLeadingDigits:
-                    return (minutes / 10) % 6;
-                case ColumnUnitType.HoursSinglesDigits:
-                    return hours % 10;
-                case ColumnUnitType.HoursLeadingDigits:
-                    return (hours / 10) % 10;
-                default:
-                    return 0;
-            }
-        }
 
 
 
@@ -163,14 +136,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             }
         }
 
-        // Value to determine the progress between one Segment and the next. 
-        private float CalculateScrollOffset(AnimatedTimerColumn column,float animationProgress)
-        {
-            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = CalculateEasingValue(animationProgress);
-            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
-        }
-
         public void DrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y)
         {
             using (var paint = new SKPaint())
@@ -191,26 +156,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateEasingValue(float t)
-        {
-            return t < 0.5f
-                ? 4f * t * t * t
-                : 1f - MathF.Pow(-2f * t + 2f, 3f) / 2f;
-
-            
-        }
-
-        private float CaclulatePhaseValue(TimeSpan elapsed)
-        {
-            return (float)(elapsed.TotalSeconds % 1.0);
-        }
 
 
 
 
-
-
-
+        /*
 
         public void OldDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
@@ -256,7 +206,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-
+        */
 
 
 
@@ -344,7 +294,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             foreach (var column in columns)
             {
 
-                int newValue = CalculateColumnValue(elapsed, column.ColumnType);
+                int newValue = _columnStateManager.CalculateColumnValue(elapsed, column.ColumnType);
                 column.CurrentValue = newValue;
 
                 // Update focused Segment to match the current value.
@@ -352,7 +302,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 column.SetFocusedSegmentByValue(newValue);
 
                 // 2. Determine if this column should animate right now.
-                bool shouldTranisitionBetweenNumbers = IsWithinAnimationInterval(column ,elapsed);
+                bool shouldTranisitionBetweenNumbers = _columnStateManager.IsWithinAnimationInterval(column ,elapsed);
 
                 // 3. Calculate scroll offset.
                 if (shouldTranisitionBetweenNumbers)
@@ -361,7 +311,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     float normalizedProgress = column.GetCircleHighlightAnimationProgress(elapsed);
 
 
-                    column.ScrollOffset = CalculateScrollOffset(column, animationProgress);
+                    column.ScrollOffset = _columnStateManager.CalculateScrollOffset(column, animationProgress);
                 }
                 else
                 {
@@ -375,15 +325,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             }
         }
 
-
-
-
-        private bool IsWithinAnimationInterval(AnimatedTimerColumn column ,TimeSpan elapsed)
-        {
-            double secondsUntilChange = AnimationInterval.TotalSeconds - (elapsed.TotalSeconds / AnimationInterval.TotalSeconds);
-            return secondsUntilChange <= 1.0;
-
-        }
 
 
 
