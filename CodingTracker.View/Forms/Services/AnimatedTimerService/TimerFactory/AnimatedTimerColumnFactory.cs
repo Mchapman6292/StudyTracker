@@ -8,6 +8,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
     public interface IAnimatedTimerColumnFactory
     {
         AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType timeUnit);
+        List<AnimatedTimerColumn> CreateColumnsWithPositions(float xPosition, float yPosition);
     }
 
 
@@ -15,6 +16,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 
     public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
     {
+
+        private const float _columnSpacing = 100;
+
         public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType columnType)
         {
      
@@ -32,6 +36,47 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
             newColumn.TimerSegments = segments;
             return newColumn;
         }
+
+
+
+        public List<AnimatedTimerColumn> CreateColumnsWithPositions(float xPosition, float yPosition)
+        {
+            List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
+
+          
+
+
+            AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursLeadingDigits);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn hoursSinlgeDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursSinglesDigits);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn minutesLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesLeadingDigits);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesSingleDigits);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsSingleDigits);
+            xPosition += _columnSpacing;
+
+
+            columns.Add(hoursLeadingDigits);
+            columns.Add(hoursSinlgeDigits);
+            columns.Add(minutesLeadingDigits);
+            columns.Add(minutesSingleDigits);
+            columns.Add(secondsLeadingDigit);
+            columns.Add(secondsSingleDigits);
+
+            return columns;
+
+
+        }
     }
 }
+
 

@@ -129,4 +129,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Forms\Services\AnimatedTimerService\TimerAnimations\Highlighter\Calculators\" />
+  </ItemGroup>
+
 </Project>

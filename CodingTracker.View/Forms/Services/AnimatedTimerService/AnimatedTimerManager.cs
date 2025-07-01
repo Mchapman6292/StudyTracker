@@ -3,11 +3,11 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.Collections.Generic;
 using System.Drawing.Text;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
@@ -31,12 +31,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IAnimatedTimerRenderer _animatedRenderer;
         private readonly IAnimatedTimerColumnFactory _animatedColumnFactory;
         private readonly IApplicationLogger _appLogger;
-        private readonly ICircleHighLight _circleHighlight;
-        private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
+        private readonly IPaintManager _circleHighlight;
         private List<AnimatedTimerColumn> _columns;
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, ICircleHighLight circleHighLight,ISegmentOverlayCalculator segmentOverlayCalculator)
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
@@ -54,6 +53,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             skControl.Invalidate();
         }
 
+
+
+        public void SortColumnsList()
+        {
+
+        }
   
 
         public void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e)
@@ -63,7 +68,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.NEWDraw(canvas, bounds, elapsed, _columns);
+            _animatedRenderer.UPDATEDNEWDraw(canvas, _columns, elapsed);
         }
 
 
@@ -77,69 +82,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _appLogger.Debug($"Spacing: {spacing}");    
         }
 
+        private void DefineStartingYPosition(Form targetForm)
+        {
+            float startingX = 50;
+
+            int startingY = targetForm.Location.Y + 150;
+        }
+
         public void InitializeColumns(Form targetForm)
         {
-            float xPosition = 50;
-            float spacing = 100;
+            float startingX = 350;
 
-            int pageHalfwayPoint = targetForm.Location.Y + 150;
-
-
-            List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
-
-            var secondsSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.SecondsSingleDigits);
-            xPosition += spacing;
-
-            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {secondsSingleDigits.AnimationInterval} FOR secondsSingleDigits.");
-            LogXPosition(xPosition);
-
-            LogColumnPosition(secondsSingleDigits);
-
-            var secondsLeadingDigit = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.SecondsLeadingDigit);
-            xPosition += spacing;
-      
-
-            var minutesSingleDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesSingleDigits);
-            xPosition += spacing;
-
-            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {minutesSingleDigits.AnimationInterval} FOR minutesSingleDigits.");
-
-            var minutesLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.MinutesLeadingDigits);
-            xPosition += spacing;
-
- 
+            int startingY = targetForm.Location.Y + 150;
 
 
-            var hoursSinlgeDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursSinglesDigits);
 
-
-            _appLogger.Debug($"\n \n ANIMATION INTERVAL SET TO  {hoursSinlgeDigits.AnimationInterval} FOR hoursSinlgeDigits.");
-            xPosition += spacing;
-            var hoursLeadingDigits = _animatedColumnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, pageHalfwayPoint)), ColumnUnitType.HoursLeadingDigits);
-
-            LogColumnPosition(hoursLeadingDigits);
-
-            _columns.Add(secondsSingleDigits);
-            _columns.Add(secondsLeadingDigit);
-            _columns.Add(minutesSingleDigits);
-            _columns.Add(minutesLeadingDigits);
-            _columns.Add(hoursSinlgeDigits);
-            _columns.Add(hoursLeadingDigits);
-
-            _appLogger.Debug($"InitializeColumns complete number of columns in _columns: {_columns.Count}");
-
-            var segmentValuess = secondsSingleDigits.TimerSegments.Select(x => x.Value).ToList();
-
-            _appLogger.Debug($"Values for secondsColumn: {string.Join("", segmentValuess)} ");
-
-            
-
-
+            _columns = _animatedColumnFactory.CreateColumnsWithPositions(startingX, startingY);
 
             // Remmove after tests!!!!!!!!!
             _stopWatchService.StartTimer();
-
-
 
         }
 

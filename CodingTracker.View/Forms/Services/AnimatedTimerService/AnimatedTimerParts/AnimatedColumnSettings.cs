@@ -5,11 +5,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
     public static class AnimatedColumnSettings
     {
         // TODO Change/review why two different values
-        public const float ColumnWidth = 20f;
+        public const float ColumnWidth = 40f;
 
-        public const float SegmentWidth = 20f;
+        public const float SegmentWidth = 40f;
 
-        public const float SegmentHeight = 40f;
+        public const float SegmentHeight = 80f;
 
         public const float TextSize = 15f;
 
@@ -31,7 +31,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        private const float _circlePaddingMultiplier = 1.1f;
+        private const float _circlePaddingMultiplier = 1.0f;
         public const float minRadiusScale = 0.5f;
 
 
@@ -43,6 +43,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public const float CircleAnimationDurationRatio = 0.7f; // Circle animation should only occur for 70% of the column animation, after that it completes and vanishes.
 
         public const byte OuterCircleOpacity = 64;
+
+
+        public static SKColor FormBackgroundColor = new SKColor(35, 34, 50);
 
 
 

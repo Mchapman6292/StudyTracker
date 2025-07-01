@@ -24,7 +24,6 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
@@ -130,9 +129,9 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedTimerManager, AnimatedTimerManager>()
                     .AddSingleton<IAnimatedTimerColumnFactory, AnimatedTimerColumnFactory>()
                     .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
-                    .AddSingleton<ICircleHighLight, CircleHighlight>()
-                    .AddSingleton<ISegmentOverlayCalculator, SegmentOverlayCalculator>()
+                    .AddSingleton<IPaintManager, PaintManager>()
                     .AddSingleton<IAnimatedColumnStateManager, AnimatedColumnStateManager>()
+                    .AddSingleton<IAnimatedSegmentStateManager , AnimatedSegmentStateManager>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

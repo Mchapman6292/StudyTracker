@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 using System.Drawing;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
@@ -16,7 +17,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public float TextSize = AnimatedColumnSettings.TextSize;
         public bool IsCurrent { get; set; }
 
-        public SKPoint Location { get; private set; }
+        public SKPoint Location { get; set; }
 
         public SKPoint LocationCenterPoint { get; private set; }    
 
@@ -25,7 +26,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             Value = value;
             Location = location;
-            LocationCenterPoint = new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
+            LocationCenterPoint = CalculateCenterPoint();
         }
 
 
@@ -33,6 +34,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public void UpdatePosition(float x, float y)
         {
             Location = new SKPoint(x, y);
+            UpdateLocationCentrePoint();
         }
 
         public void UpdateLocationCentrePoint()
@@ -41,6 +43,35 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
+        public SKPoint CalculateCenterPoint()
+        {
+           return new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
+
+
+            /*
+             * 
+             * Old setting delete if working. 
+                           float centerX = x + (timerSegment.SegmentWidth / 2f);
+             float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
+            */
+
+
+            
+        }
+
+
+        public void UpdateSegmentPositions(AnimatedTimerColumn column)
+        {
+            float startY = column.Location.Y - column.ScrollOffset;
+
+            for (int i = 0; i < column.TimerSegments.Count; i++)
+            {
+                var segment = column.TimerSegments[i];
+                float newY = startY + (i * AnimatedColumnSettings.SegmentHeight);
+
+                segment.UpdatePosition(column.Location.X, newY);
+            }
+        }
 
     }
 }
