@@ -1,5 +1,4 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
@@ -17,14 +16,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
     public class PathBuilder : IPathBuilder
     {
         private readonly IApplicationLogger _appLogger;
-        private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
         private readonly IAnimatedColumnStateManager _columnStateManager;
 
 
-        public PathBuilder(IApplicationLogger appLogger, ISegmentOverlayCalculator segmentOverLayCalculator, IAnimatedColumnStateManager columnStateManager)
+        public PathBuilder(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager)
         {
             _appLogger = appLogger;
-            _segmentOverlayCalculator = segmentOverLayCalculator;
             _columnStateManager = columnStateManager;
         }
 

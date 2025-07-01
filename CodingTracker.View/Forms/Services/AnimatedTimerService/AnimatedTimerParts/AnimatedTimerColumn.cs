@@ -7,9 +7,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 {
     public class AnimatedTimerColumn
     {
-        private SKRect _rectDrawing;
 
-        private SKColor GradientColorOne = AnimatedColumnSettings.ColumnColor;
 
 
 
@@ -28,13 +26,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float Height => TotalSegmentCount * AnimatedColumnSettings.SegmentHeight;
 
         public SKPoint Location { get; set; }
-        public bool IsVisible { get; set; } = true;
-        public bool IsEnabled { get; set; } = true;
-
-        public float TextSize = AnimatedColumnSettings.TextSize;
 
         
-        //TODO review if needed here or in calculation class. 
         public float ScrollOffset { get; set; }
 
 
@@ -64,15 +57,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float OverlayRadius { get; private set; }
 
 
-
+        /*
         public float NormalizedProgress { get; private set; }
 
 
 
         public float AnimationProgressBetweenNumbers { get; private set; }
 
+        */
+
 
         public bool IsAnimating { get; set; }
+
+        public float ColumnAnimationProgress;
+        public float CircleAnimationProgress;
 
         public TimeSpan LastAnimationStartTime { get; set; }  // When current animation began
         public TimeSpan NextTransitionTime { get; set; } // When next animation should start
@@ -110,77 +108,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        /*
-        public void UpdateAnimationState(float animationProgress, float normalizedProgress)
-        {
-            AnimationProgress = animationProgress;
-            NormalizedProgress = normalizedProgress;
-        }
-        */
-
-        public void UpdateFocusedSegment(AnimatedTimerSegment segment)
-        {
-            IncrementFocusedSegmentIndex();
-
-            FocusedSegment = TimerSegments[FocusedSegmentIndex];
-        }
-
-        private void IncrementFocusedSegmentIndex()
-        {
-            FocusedSegmentIndex++;
-            if (FocusedSegmentIndex >= TimerSegments.Count)
-            {
-                FocusedSegmentIndex = 0;
-            
-            }
-        }
-
-
-        public void SetFocusedSegmentByValue(int newValue)
-        {
-            var focusedSegment = TimerSegments.FirstOrDefault(s => s.Value == newValue);
-        }
-
-
-
-        public float CalculateNormalizedProgress(float animationProgress)
-        {
-            if (animationProgress < 0.5f)
-                return 0f;
-
-            return (animationProgress - 0.5f) / 0.5f;
-        }
-
-
-
-
-        public float GetColumnAnimationProgress(TimeSpan elapsed)
-        {
-           return (float)(elapsed.TotalSeconds % 1.0); 
-        }
-
-        public float CalculateOverlayAnimationProgress(TimeSpan elapsed)
-        {
-            float columnProgress = GetColumnAnimationProgress(elapsed);
-
-            if(columnProgress > AnimatedColumnSettings.CircleAnimationDurationRatio)
-            {
-                return 1f;
-            }
-            return columnProgress / AnimatedColumnSettings.CircleAnimationDurationRatio;
-        }
-
-
+        
 
 
 
     
-
-
-        private void UpdateNexTransitionTime()
-        {
-            NextTransitionTime += AnimationInterval;
-        }
 
    
 

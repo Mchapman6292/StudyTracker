@@ -1,8 +1,8 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using LiveChartsCore.Painting;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
@@ -11,6 +11,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     {
         SKPaint CreateInnerSegmentPaint();
         SKPaint CreateOuterSegmentPaint(float circleAnimationProgress);
+        SKPaint CreateColumnPaint();
+        SKPaint CreateNumberPaint();
+        SKFont CreateNumberFont();
     }
 
     public class PaintManager : IPaintManager
@@ -18,14 +21,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         public bool IsEnabled { get; set; }
 
         private readonly IApplicationLogger _appLogger;
-        private readonly ISegmentOverlayCalculator _segmwentOverlayCalculator;
         private readonly IAnimatedColumnStateManager _columnStateManager;
 
 
-        public PaintManager(IApplicationLogger appLogger, ISegmentOverlayCalculator segmentOverlayCalculator, IAnimatedColumnStateManager columnStateManager)
+        public PaintManager(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager)
         {
             _appLogger = appLogger;
-            _segmwentOverlayCalculator = segmentOverlayCalculator;
             _columnStateManager = columnStateManager;
         }
 
@@ -58,7 +59,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKPaint()
             {
-                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
+
+                /*
+                                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
+                
+
+                */
+
+                Color = new SKColor(30, 30, 46),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
 
@@ -73,19 +81,51 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-                Color = new SKColor(255, 255, 255, 40),
+                /*
+                Color = new SKColor(49, 50, 68),
+                */
+
+                Color = SKColors.HotPink,
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 IsAntialias = true,
+                BlendMode = SKBlendMode.Xor
 
 
             };
         }
 
-    
+        
 
+        public SKPaint CreateColumnPaint()
+        {
+            return new SKPaint()
+            {
+                Color = new SKColor(49, 50, 68),
+                Style = SKPaintStyle.Fill,
+                IsAntialias = true
+            };
+        }
+
+        public SKPaint CreateNumberPaint()
+        {
+            return new SKPaint()
+            {
+                Color = SKColors.Lavender,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center,
+            };
+        }
+
+        public SKFont CreateNumberFont()
+        {
+            return new SKFont()
+            {
+                Size = AnimatedColumnSettings.TextSize
+            };
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using System.Timers;
+using Windows.Networking.PushNotifications;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers
 {
@@ -16,22 +16,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         float GetColumnAnimationProgress(TimeSpan elapsed);
         float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
         void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newValue);
-        void SetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue);
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
+        void UpdateAnimationPogress(AnimatedTimerColumn column, float animationProgress);
+        void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
     {
         private readonly IApplicationLogger _appLogger;
-        private readonly ISegmentOverlayCalculator _segmentOverlayCalulcator;
 
 
 
 
-        public AnimatedColumnStateManager(IApplicationLogger appLogger, ISegmentOverlayCalculator segmentOverlayCalulcator)
+
+        public AnimatedColumnStateManager(IApplicationLogger appLogger)
         {
             _appLogger = appLogger;
-            _segmentOverlayCalulcator = segmentOverlayCalulcator;
         }
 
 
@@ -60,7 +60,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 column.LastAnimationStartTime = elapsed;
                 column.PreviousValue = column.CurrentValue;
                 column.CurrentValue = CalculateColumnValue(elapsed, column.ColumnType);
-                SetFocusedSegmentByValue(column, column.CurrentValue);
                 UpdateNextTransitionTime(column);
             }
 
@@ -73,6 +72,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 }
             }
         }
+
+
 
 
 
@@ -137,7 +138,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
         {
-            float circleAnimationProgress = column.CalculateOverlayAnimationProgress(elapsed);
+            float circleAnimationProgress = column.CircleAnimationProgress;
             return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, circleAnimationProgress);
         }
 
@@ -166,14 +167,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             column.CurrentValue = newValue;
         }
 
-        public void SetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue)
-        {
-            var focusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
-        }
 
         public void UpdateScrollOffset(AnimatedTimerColumn column ,float scrollOffSet)
         {
             column.ScrollOffset = scrollOffSet;
+        }
+
+        public void UpdateAnimationPogress(AnimatedTimerColumn column, float animationProgress)
+        {
+            column.ColumnAnimationProgress = animationProgress;
+        }
+
+        public void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress)
+        {
+            column.CircleAnimationProgress = circleAnimationProgress;
         }
     }
 }
