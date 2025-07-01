@@ -8,6 +8,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.Collections.Generic;
 using System.Drawing.Text;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
@@ -31,12 +32,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IAnimatedTimerRenderer _animatedRenderer;
         private readonly IAnimatedTimerColumnFactory _animatedColumnFactory;
         private readonly IApplicationLogger _appLogger;
-        private readonly ICircleHighLight _circleHighlight;
+        private readonly IPaintManager _circleHighlight;
         private readonly ISegmentOverlayCalculator _segmentOverlayCalculator;
         private List<AnimatedTimerColumn> _columns;
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, ICircleHighLight circleHighLight,ISegmentOverlayCalculator segmentOverlayCalculator)
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight,ISegmentOverlayCalculator segmentOverlayCalculator)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
@@ -63,7 +64,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.NEWDraw(canvas, bounds, elapsed, _columns);
+            _animatedRenderer.UPDATEDNEWDraw(canvas, _columns, elapsed);
         }
 
 

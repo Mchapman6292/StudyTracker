@@ -9,7 +9,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public const float SegmentWidth = 20f;
 
-        public const float SegmentHeight = 40f;
+        public const float SegmentHeight = 30f;
 
         public const float TextSize = 15f;
 
@@ -31,7 +31,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        private const float _circlePaddingMultiplier = 1.1f;
+        private const float _circlePaddingMultiplier = 1.0f;
         public const float minRadiusScale = 0.5f;
 
 
@@ -44,6 +44,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public const byte OuterCircleOpacity = 64;
 
+
+        public static SKColor FormBackgroundColor = new SKColor(35, 34, 50);
 
 
 

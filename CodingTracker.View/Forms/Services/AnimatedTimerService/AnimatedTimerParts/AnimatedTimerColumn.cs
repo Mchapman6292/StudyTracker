@@ -159,7 +159,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
            return (float)(elapsed.TotalSeconds % 1.0); 
         }
 
-        public float GetCircleHighlightAnimationProgress(TimeSpan elapsed)
+        public float CalculateOverlayAnimationProgress(TimeSpan elapsed)
         {
             float columnProgress = GetColumnAnimationProgress(elapsed);
 
@@ -171,11 +171,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
-        private TimeSpan SetColumnAnimationInterval()
-        {
-        
-            return AnimatedColumnSettings.TESTUnitTypesToAnimationDurations[ColumnType] - TimeSpan.FromSeconds(1);
-        }
+
 
 
     

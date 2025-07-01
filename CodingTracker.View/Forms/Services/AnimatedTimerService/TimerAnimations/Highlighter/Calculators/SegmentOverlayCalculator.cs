@@ -16,10 +16,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-        float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
-        float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed);
-
     }
 
     public class SegmentOverlayCalculator : ISegmentOverlayCalculator
@@ -97,20 +93,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return (float)(elapsed.TotalSeconds % 1.0);
         }
-
-
-        public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
-            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, circleAnimationProgress);
-        }
-
-        public float CalculateCircleAnimationOpacity(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            float circleAnimationProgress = column.GetCircleHighlightAnimationProgress(elapsed);
-            return Single.Lerp(1.0f, 0.0f, circleAnimationProgress);
-        }
-
 
 
 
