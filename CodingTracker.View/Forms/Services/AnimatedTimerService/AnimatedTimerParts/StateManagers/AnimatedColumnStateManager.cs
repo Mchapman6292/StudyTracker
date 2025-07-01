@@ -9,7 +9,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
     {
 
         void UpdateAnimationState(AnimatedTimerColumn column, TimeSpan elapsed);
-        int CalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType);
+        int CalculateColumnValue(TimeSpan elapsed, AnimatedTimerColumn column);
         float CalculateScrollOffset(AnimatedTimerColumn column, float animationProgress);
         bool IsWithinAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
         float CalculateCircleAnimationProgress(TimeSpan elapsed, float animationProgress);
@@ -19,6 +19,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
         void UpdateAnimationPogress(AnimatedTimerColumn column, float animationProgress);
         void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
+
+        float TESTGetColumnAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed);
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -36,6 +38,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+        public void UpdateColumnTimesOnTick()
+        {
+
+        }
 
 
 
@@ -45,22 +51,38 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             // Handle SecondsSingleDigitsColumn which is always highlighting.
 
+            _appLogger.Debug($"=== UpdateAnimationState START for {column.ColumnType} ===");
+            _appLogger.Debug($"Elapsed: {elapsed.TotalSeconds:F3}s, NextTransition: {column.NextTransitionTime.TotalSeconds:F3}s");
+            _appLogger.Debug($"IsAnimating: {column.IsAnimating}, CurrentValue: {column.CurrentValue}, PreviousValue: {column.PreviousValue}");
+
+
             if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
             {
                 column.IsAnimating = true;
                 int totalSeconds = (int)elapsed.TotalSeconds;
                 column.PreviousValue = column.CurrentValue;
-                column.CurrentValue = CalculateColumnValue(elapsed, column.ColumnType);
+                column.CurrentValue = CalculateColumnValue(elapsed, column);
                 return;
             }
 
             if (!column.IsAnimating && elapsed >= column.NextTransitionTime)
             {
+                _appLogger.Debug($"Starting animation - Elapsed ({elapsed.TotalSeconds:F3}s) >= NextTransition ({column.NextTransitionTime.TotalSeconds:F3}s)");
+
                 column.IsAnimating = true;
                 column.LastAnimationStartTime = elapsed;
                 column.PreviousValue = column.CurrentValue;
-                column.CurrentValue = CalculateColumnValue(elapsed, column.ColumnType);
+                column.CurrentValue = CalculateColumnValue(elapsed, column);
                 UpdateNextTransitionTime(column);
+
+                _appLogger.Debug($"Animation started at {column.LastAnimationStartTime.TotalSeconds:F3}s");
+                _appLogger.Debug($"Value changing from {column.PreviousValue} to {column.CurrentValue}");
+
+                TimeSpan oldNextTransition = column.NextTransitionTime;
+                UpdateNextTransitionTime(column);
+
+                _appLogger.Debug($"NextTransitionTime updated from {oldNextTransition.TotalSeconds:F3}s to {column.NextTransitionTime.TotalSeconds:F3}s");
+
             }
 
             // If the column is animating check if the difference between elapsed and lastanimationStartTime is greater than the animated duration.
@@ -71,6 +93,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                     column.IsAnimating = false;
                 }
             }
+            _appLogger.Debug($"=== UpdateAnimationState END - IsAnimating: {column.IsAnimating} ===\n");
         }
 
 
@@ -79,30 +102,33 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public bool IsWithinAnimationInterval(AnimatedTimerColumn column ,TimeSpan elapsed)
         {
-            double secondsUntilChange = column.AnimationInterval.TotalSeconds - (elapsed.TotalSeconds / column.AnimationInterval.TotalSeconds);
-            return secondsUntilChange <= 1.0;
+            return elapsed >= column.NextTransitionTime;
         }
 
-        public int CalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType)
+        public int CalculateColumnValue(TimeSpan elapsed, AnimatedTimerColumn column)
         {
             int totalSeconds = (int)elapsed.TotalSeconds;
             int minutes = totalSeconds / 60;
             int hours = totalSeconds / 3600;
 
-            switch (columnType)
+            int segmentCount = column.TotalSegmentCount;
+
+            switch (column.ColumnType)
             {
                 case ColumnUnitType.SecondsSingleDigits:
-                    return totalSeconds % 10;
+                    return totalSeconds % segmentCount;
                 case ColumnUnitType.SecondsLeadingDigit:
-                    return (totalSeconds / 10) % 6;
+                    var result = (totalSeconds / 10) % segmentCount;
+                    _appLogger.Debug($"ColumnValue calculated: {result}.");
+                    return result;
                 case ColumnUnitType.MinutesSingleDigits:
                     return minutes % 10;
                 case ColumnUnitType.MinutesLeadingDigits:
-                    return (minutes / 10) % 6;
+                    return (minutes / 10) % segmentCount;
                 case ColumnUnitType.HoursSinglesDigits:
                     return hours % 10;
                 case ColumnUnitType.HoursLeadingDigits:
-                    return (hours / 10) % 10;
+                    return (hours / 10) % segmentCount;
                 default:
                     return 0;
             }
@@ -110,7 +136,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         private void UpdateNextTransitionTime(AnimatedTimerColumn column)
         {
-            column.NextTransitionTime = column.NextTransitionTime + column.AnimationInterval;
+            var previous = column.NextTransitionTime;
+            var next = column.NextTransitionTime += column.AnimationInterval;
+
+            column.NextTransitionTime += column.AnimationInterval;
+
+            _appLogger.Debug($"old transition time: {previous}, next/new time:{next}.");
         }
 
 
@@ -145,20 +176,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-
         public float CalculateCircleAnimationProgress(TimeSpan elapsed, float animationProgress)
         {
-            if (animationProgress > AnimatedColumnSettings.CircleAnimationDurationRatio)
+            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationDurationRatio;
+            float result;
+
+            if (animationProgress > circleAnimationRatio)
             {
-                return 1f;
+                result = 1f;
             }
-            return animationProgress / AnimatedColumnSettings.CircleAnimationDurationRatio;
+            else
+            {
+                result = animationProgress / circleAnimationRatio;
+            }
+
+            _appLogger.Debug($"Circle progress: {animationProgress:F3} -> {result:F3}");
+
+            return result;
         }
+
+
+
 
 
         public float GetColumnAnimationProgress(TimeSpan elapsed)
         {
             return (float)(elapsed.TotalSeconds % 1.0);
+        }
+
+        public float TESTGetColumnAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float intervalSeconds = (float)column.AnimationInterval.TotalSeconds;
+            float elapsedSeconds = (float)elapsed.TotalSeconds;
+            float progress = elapsedSeconds % intervalSeconds;
+
+            _appLogger.Debug($"{column.ColumnType} Progress: {progress:F3} (elapsed {elapsedSeconds:F3}s % interval {intervalSeconds:F3}s)");
+
+            return progress;
         }
 
 

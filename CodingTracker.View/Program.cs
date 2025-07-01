@@ -131,7 +131,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
                     .AddSingleton<IPaintManager, PaintManager>()
                     .AddSingleton<IAnimatedColumnStateManager, AnimatedColumnStateManager>()
-                    .AddSingleton<IAnimatedSegmentStateManager , AnimatedSegmentStateManager>()
+                    .AddSingleton<IAnimatedSegmentStateManager, AnimatedSegmentStateManager>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

@@ -91,16 +91,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             SKPoint newLocation = new SKPoint(column.Location.X, newY);
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
 
-            if (newLocation.X != column.Location.X || newLocation.Y != column.Location.Y)
-            {
-                _appLogger.Fatal($"newLocation and columnLocation not matching  X: {newLocation.X} Y: {newLocation.Y} \n columnLocation X: {column.Location.X}, Y: {column.Location.Y}.");
-            }
+
 
 
 
             SKRect columnRectangle = SKRect.Create(newLocation, rectangleSize);
 
-            _appLogger.Debug($"Drawing column of size {rectangleSize.Width}  {rectangleSize.Height} at X:{newLocation.X}, Y:{newLocation.Y}.");
+
 
 
             using (var rectPaint = _paintManager.CreateColumnPaint())
@@ -197,8 +194,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _pathBuilder.CreateTimerPaths(column, out outerOverlayPath, out innerSegmentPath, elapsed, isCircleStatic);
 
-            _appLogger.Debug($"DrawTimerPaths Inner path innerBounds: {innerSegmentPath.Bounds}");
-            _appLogger.Debug($"DrawTimerPaths Inner path innerBounds: {outerOverlayPath.Bounds}");
+
 
             using (var innerPaint = _paintManager.CreateInnerSegmentPaint())
             using (var outerPaint = _paintManager.CreateOuterSegmentPaint(circleAnimationProgress))
@@ -386,37 +382,54 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public void UPDATEDNEWDraw(SKCanvas canvas, List<AnimatedTimerColumn> columns, TimeSpan elapsed)
         {
+            _appLogger.Debug($"\n########## DRAW FRAME START - Elapsed: {elapsed.TotalSeconds:F3}s ##########");
+
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
             foreach (AnimatedTimerColumn column in columns)
             {
+                _appLogger.Debug($"\n--- Processing {column.ColumnType} ---");
+
+                float oldScrollOffset = column.ScrollOffset;
                 _columnStateManager.UpdateAnimationState(column, elapsed);
 
                 // Calculate scroll offset
                 if (column.IsAnimating)
                 {
-                    float animationProgress = _columnStateManager.GetColumnAnimationProgress(elapsed);
+                    float animationProgress = _columnStateManager.TESTGetColumnAnimationProgress(column, elapsed);
+                    _appLogger.Debug($"Animation progress: {animationProgress:F3}");
+
                     column.ScrollOffset = _columnStateManager.CalculateScrollOffset(column, animationProgress);
+                    _appLogger.Debug($"Animated ScrollOffset: {oldScrollOffset:F1} -> {column.ScrollOffset:F1} (diff: {column.ScrollOffset - oldScrollOffset:F1})");
                 }
                 else
                 {
                     column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                    _appLogger.Debug($"Static ScrollOffset: {column.ScrollOffset:F1} (value {column.CurrentValue} * height {AnimatedColumnSettings.SegmentHeight})");
                 }
 
-               _segmentStateManager.UpdateSegmentPositions(column);
+                _segmentStateManager.UpdateSegmentPositions(column);
+                _appLogger.Debug($"Segment positions updated");
             }
+
+            _appLogger.Debug($"\n--- Starting Draw Phase ---");
 
             foreach (AnimatedTimerColumn column in columns)
             {
+                _appLogger.Debug($"Drawing column {column.ColumnType}");
                 NEWDrawColumn(canvas, column);
                 DrawTimerPaths(canvas, column, elapsed, 0.0f, isCircleStatic: true);
-
             }
-            // Have to draw the numbers last to enusre that other paint methods do not draw over them
+
+            // Have to draw the numbers last to ensure that other paint methods do not draw over them
+            _appLogger.Debug($"\n--- Drawing Numbers ---");
             foreach (AnimatedTimerColumn column in columns)
             {
+                _appLogger.Debug($"Drawing numbers for {column.ColumnType}");
                 NEWDrawNumbers(canvas, column);
             }
+
+            _appLogger.Debug($"########## DRAW FRAME END ##########\n");
         }
 
 

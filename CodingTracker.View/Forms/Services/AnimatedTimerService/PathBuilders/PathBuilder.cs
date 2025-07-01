@@ -74,9 +74,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             rectanglePath.AddRect(columnRectangle);
 
 
-            _appLogger.Debug($"Rectangle: W:{columnRectangle.Width} H: ({columnRectangle.Height}, Location: {columnRectangle.Location}).");
-
-            _appLogger.Debug($"CreateRectanglePathInner path innerBounds: {rectanglePath.Bounds}");
 
             return rectanglePath;
 
@@ -96,8 +93,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             circlePath.Op(rectanglePath, SKPathOp.Difference, innerSegmentPath);
             circlePath.Op(rectanglePath, SKPathOp.Intersect, outerOverlayPath);
 
-            _appLogger.Debug($"CreateTimerPaths Inner path bounds: {innerSegmentPath.Bounds}");
-            _appLogger.Debug($"CreateTimerPaths Outer path bounds: {outerOverlayPath.Bounds}");
         }
 
 
