@@ -12,7 +12,8 @@ namespace CodingTracker.Logging.ApplicationLoggers
         public ApplicationLogger()
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string logPath = Path.Combine(desktopPath, "CodingTrackerLogs", "myapp.txt");
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string logPath = Path.Combine(desktopPath, "CodingTrackerLogs", $"myapp_{timestamp}.txt");
 
             Directory.CreateDirectory(Path.GetDirectoryName(logPath));
 
@@ -20,7 +21,7 @@ namespace CodingTracker.Logging.ApplicationLoggers
                 .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+                .WriteTo.File(logPath, rollingInterval: RollingInterval.Infinite, rollOnFileSizeLimit: false, retainedFileCountLimit: 10, shared: true)
                 .CreateLogger();
         }
 

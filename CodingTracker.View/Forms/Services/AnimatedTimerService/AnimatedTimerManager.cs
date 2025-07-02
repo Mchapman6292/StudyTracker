@@ -21,6 +21,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
+        public void LogColumn();
+
         List<AnimatedTimerColumn> ReturnTimerColumns();
     }
 
@@ -45,6 +47,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _columns = new List<AnimatedTimerColumn>(); 
   
         }
+
+
+        public void LogColumn()
+        {
+            var column = _columns.FirstOrDefault();
+
+            _appLogger.Debug($"Transition time set to {column.NextTransitionTime}.");
+
+
+        }
+
+
 
 
 

@@ -11,7 +11,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateAnimationState(AnimatedTimerColumn column, TimeSpan elapsed);
         int CalculateColumnValue(TimeSpan elapsed, AnimatedTimerColumn column);
         float CalculateScrollOffset(AnimatedTimerColumn column, float animationProgress);
-        bool IsWithinAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
+        bool IsTimeToAnimate(AnimatedTimerColumn column, TimeSpan elapsed);
         float CalculateCircleAnimationProgress(TimeSpan elapsed, float animationProgress);
         float GetColumnAnimationProgress(TimeSpan elapsed);
         float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
@@ -21,6 +21,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
 
         float TESTGetColumnAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed);
+
+
+        bool NEWIsStillWithinAnimationWindow(AnimatedTimerColumn column, TimeSpan elapsed);
+        void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating);
+        void NEWUpdateLastAnimationStartTime(AnimatedTimerColumn column, TimeSpan lastAnimationStartTime);
+        void NEWUpdateNextTransitionTime(AnimatedTimerColumn column, TimeSpan elapsed);
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -44,6 +50,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
+        private void LogColumn(List<AnimatedTimerColumn> columns)
+        {
+            var column = columns.FirstOrDefault();
+
+            _appLogger.Debug($"Transition time set to {column.NextTransitionTime}.");
+        }
 
 
 
@@ -51,9 +63,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             // Handle SecondsSingleDigitsColumn which is always highlighting.
 
-            _appLogger.Debug($"=== UpdateAnimationState START for {column.ColumnType} ===");
+            /*
             _appLogger.Debug($"Elapsed: {elapsed.TotalSeconds:F3}s, NextTransition: {column.NextTransitionTime.TotalSeconds:F3}s");
             _appLogger.Debug($"IsAnimating: {column.IsAnimating}, CurrentValue: {column.CurrentValue}, PreviousValue: {column.PreviousValue}");
+            */
 
 
             if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
@@ -70,7 +83,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 _appLogger.Debug($"Starting animation - Elapsed ({elapsed.TotalSeconds:F3}s) >= NextTransition ({column.NextTransitionTime.TotalSeconds:F3}s)");
 
                 column.IsAnimating = true;
-                column.LastAnimationStartTime = elapsed;
+                NEWUpdateLastAnimationStartTime(column, elapsed);
                 column.PreviousValue = column.CurrentValue;
                 column.CurrentValue = CalculateColumnValue(elapsed, column);
                 UpdateNextTransitionTime(column);
@@ -88,8 +101,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             // If the column is animating check if the difference between elapsed and lastanimationStartTime is greater than the animated duration.
             if (column.IsAnimating)
             {
+                var difference = (elapsed - column.LastAnimationStartTime);
                 if ((elapsed - column.LastAnimationStartTime) >= AnimatedColumnSettings.AnimationDuration)
                 {
+                    _appLogger.Debug($"");
                     column.IsAnimating = false;
                 }
             }
@@ -100,7 +115,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public bool IsWithinAnimationInterval(AnimatedTimerColumn column ,TimeSpan elapsed)
+     
+
+        public bool IsTimeToAnimate(AnimatedTimerColumn column ,TimeSpan elapsed)
         {
             return elapsed >= column.NextTransitionTime;
         }
@@ -141,7 +158,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
             column.NextTransitionTime += column.AnimationInterval;
 
-            _appLogger.Debug($"old transition time: {previous}, next/new time:{next}.");
+            _appLogger.Debug($"Transition time updated by {column.NextTransitionTime} + {column.AnimationInterval} = {column.NextTransitionTime}.");
         }
 
 
@@ -235,6 +252,47 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress)
         {
             column.CircleAnimationProgress = circleAnimationProgress;
+        }
+
+        public void NEWUpdateLastAnimationStartTime(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            var old = column.LastAnimationStartTime;
+            column.LastAnimationStartTime = elapsed;
+            _appLogger.Debug($"PREVIOUS LASTANIMATIONSTARTTIME time: {old}, new LASTANIMATIONSTARTTIME time: {column.NextTransitionTime}");
+        }
+
+
+
+        public bool NEWIsStillWithinAnimationWindow(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            var endDurationTime = column.NextTransitionTime + AnimatedColumnSettings.AnimationDuration;
+
+            if (elapsed >= endDurationTime)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating)
+        {
+            column.IsAnimating = isAnimating;
+        }
+
+        public void NEWUpdateNextTransitionTime(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            var old = column.NextTransitionTime;
+
+            column.NextTransitionTime = column.LastAnimationStartTime + column.AnimationInterval;
+
+            _appLogger.Debug($"PREVIOUS NEXT TRANSITION TIME transition time: {old}, next transition time: {column.NextTransitionTime}");
+
+        }
+
+        public void NEWCalculateColumnValue(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            // Get the count of all segments with a value.
+            int count = column.TimerSegments.Count(segment => segment.Value != 0);
         }
     }
 }

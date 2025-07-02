@@ -72,9 +72,10 @@ namespace CodingTracker.View.Forms
 
             _animatedTimerManager.InitializeColumns(this);
 
+            _animatedTimerManager.LogColumn();
+
 
             skControlTest.PaintSurface += _animatedTimerManager.DrawColumnsOnTick;
-
 
 
 
@@ -86,9 +87,8 @@ namespace CodingTracker.View.Forms
         }
 
 
-
-
-
+  
+    
 
         private async void TestForm_Load(object sender, EventArgs e)
         {
@@ -149,10 +149,7 @@ namespace CodingTracker.View.Forms
 
         private void newTestButton_Click(object sender, EventArgs e)
         {
-            string logMsg = $"AnimatedTimerColumn -- Location: {column.Location.ToString()} TotalSegmentCount: {column.TotalSegmentCount}.";
-            _appLogger.Debug(logMsg);
-
-            _notificationManager.ShowNotificationDialog(this, logMsg);
+            
 
         }
     }

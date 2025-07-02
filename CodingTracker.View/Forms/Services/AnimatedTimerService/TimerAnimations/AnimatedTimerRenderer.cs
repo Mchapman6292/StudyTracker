@@ -258,7 +258,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 _columnStateManager.SetFocusedSegmentByValue(column, newValue);
 
                 // 2. Determine if this column should animate right now.
-                bool withinAnimationInterval = _columnStateManager.IsWithinAnimationInterval(column ,elapsed);
+                bool withinAnimationInterval = _columnStateManager.IsTimeToAnimate(column ,elapsed);
 
                 // 3. Calculate scroll offset.
                 if (withinAnimationInterval)
@@ -379,7 +379,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-
+        /*
         public void UPDATEDNEWDraw(SKCanvas canvas, List<AnimatedTimerColumn> columns, TimeSpan elapsed)
         {
             _appLogger.Debug($"\n########## DRAW FRAME START - Elapsed: {elapsed.TotalSeconds:F3}s ##########");
@@ -431,8 +431,39 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _appLogger.Debug($"########## DRAW FRAME END ##########\n");
         }
+        */
 
 
+        public void UPDATEDNEWDraw(SKCanvas canvas, List<AnimatedTimerColumn> columns, TimeSpan elapsed)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+            foreach (AnimatedTimerColumn column in columns)
+            {
+                // Has elapsed passed the next animation interval
+                if(_columnStateManager.IsTimeToAnimate(column,elapsed))
+                {
+                    _appLogger.Debug($"ANIMATION INTERVAL PASSED initial transition time: {column.NextTransitionTime}, elapsed: {elapsed}.");
+
+                    bool withinAnimationWindow = _columnStateManager.NEWIsStillWithinAnimationWindow(column, elapsed);
+                    
+                    // If not within the animation window then start the logic to animate and update the next animation times etc.
+                    if(!withinAnimationWindow)
+                    {
+                        _columnStateManager.NEWUpdateIsAnimating(column, true);
+
+                        // Update the last transition time first as we use this value to calculate the next transition time. 
+                        _columnStateManager.NEWUpdateLastAnimationStartTime(column, elapsed);
+                        _columnStateManager.NEWUpdateNextTransitionTime(column, elapsed);
+             
+                    
+                    }
+
+                    
+                }
+         
+            }
+        }
 
 
 

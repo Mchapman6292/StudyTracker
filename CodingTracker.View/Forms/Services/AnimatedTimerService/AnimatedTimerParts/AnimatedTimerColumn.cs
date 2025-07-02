@@ -104,6 +104,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
 
             NextTransitionTime = TimeSpan.Zero + AnimationInterval;
+
+
         }
 
 
