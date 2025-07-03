@@ -43,9 +43,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
         {
             List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
 
-          
-
-
+ 
             AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursLeadingDigits);
             xPosition += _columnSpacing;
 
@@ -57,20 +55,33 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 
             AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesSingleDigits);
             xPosition += _columnSpacing;
+            
+      
 
             AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
             xPosition += _columnSpacing;
 
+
+   
             AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsSingleDigits);
             xPosition += _columnSpacing;
+            
 
 
             columns.Add(hoursLeadingDigits);
             columns.Add(hoursSinlgeDigits);
             columns.Add(minutesLeadingDigits);
             columns.Add(minutesSingleDigits);
-            columns.Add(secondsLeadingDigit);
+
+
             columns.Add(secondsSingleDigits);
+            
+      
+            columns.Add(secondsLeadingDigit);
+  
+   
+   
+    
 
             return columns;
 
