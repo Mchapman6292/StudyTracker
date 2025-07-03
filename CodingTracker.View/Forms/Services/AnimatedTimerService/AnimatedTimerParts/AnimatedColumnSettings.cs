@@ -5,11 +5,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
     public static class AnimatedColumnSettings
     {
         // TODO Change/review why two different values
-        public const float ColumnWidth = 40f;
+        public const float ColumnWidth = 20f;
 
-        public const float SegmentWidth = 40f;
+        public const float SegmentWidth = 20f;
 
-        public const float SegmentHeight = 80f;
+        public const float SegmentHeight = 40f;
 
         public const float TextSize = 15f;
 

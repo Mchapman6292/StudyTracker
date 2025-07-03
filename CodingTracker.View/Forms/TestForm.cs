@@ -13,6 +13,7 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 
 
 namespace CodingTracker.View.Forms
@@ -35,6 +36,7 @@ namespace CodingTracker.View.Forms
         private readonly IAnimatedTimerColumnFactory _animatedTimerColumnFactory;
         private readonly IAnimatedTimerManager _animatedTimerManager;
         private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IAnimatedColumnStateManager _columnStateManager;
 
         public AnimatedTimerColumn column;
 
@@ -48,7 +50,7 @@ namespace CodingTracker.View.Forms
         private DateTime lastTime;
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager columnStateManager)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -67,6 +69,7 @@ namespace CodingTracker.View.Forms
             _animatedTimerColumnFactory = animatedTimerColumnFactory;
             _animatedTimerManager = animatedTimerManager;
             _stopWatchTimerService = stopWatchTimerService;
+            _columnStateManager = columnStateManager;
 
             InitializeComponent();
 
@@ -149,7 +152,6 @@ namespace CodingTracker.View.Forms
 
         private void newTestButton_Click(object sender, EventArgs e)
         {
-            
 
         }
     }

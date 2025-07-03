@@ -34,44 +34,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public void UpdatePosition(float x, float y)
         {
             Location = new SKPoint(x, y);
-            UpdateLocationCentrePoint();
+            UpdateLocationCenterPoint();
         }
 
-        public void UpdateLocationCentrePoint()
+        public void UpdateLocationCenterPoint()
         {
             LocationCenterPoint = new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
         }
 
 
-        public SKPoint CalculateCenterPoint()
+        public SKPoint CalculateCenterPoint() 
         {
            return new SKPoint(Location.X + (SegmentWidth / 2), Location.Y + (SegmentHeight / 2));
 
-
-            /*
-             * 
-             * Old setting delete if working. 
-                           float centerX = x + (timerSegment.SegmentWidth / 2f);
-             float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
-            */
-
-
-            
         }
 
 
-        public void UpdateSegmentPositions(AnimatedTimerColumn column)
-        {
-            float startY = column.Location.Y - column.ScrollOffset;
-
-            for (int i = 0; i < column.TimerSegments.Count; i++)
-            {
-                var segment = column.TimerSegments[i];
-                float newY = startY + (i * AnimatedColumnSettings.SegmentHeight);
-
-                segment.UpdatePosition(column.Location.X, newY);
-            }
-        }
 
     }
 }
