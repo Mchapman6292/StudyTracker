@@ -19,7 +19,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public ColumnUnitType ColumnType { get; set; }
 
-        public SKPoint Location { get; set; }
+        public SKPoint InitialLocation { get; set; }
+        public SKPoint CurrentLocation { get; set; }
         public float ScrollOffset { get; set; }
         public bool IsAnimating { get; set; }
 
@@ -40,11 +41,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint location, ColumnUnitType columnType)
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint initalLocation, ColumnUnitType columnType)
         {
             TimerSegments = timerSegments;
             ColumnType = columnType;
-            Location = location;
+            InitialLocation = initalLocation;
+            CurrentLocation = initalLocation;
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];

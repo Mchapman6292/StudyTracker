@@ -88,7 +88,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         public void LogColumnPosition(AnimatedTimerColumn column)
         {
-            _appLogger.Debug($"{column.ColumnType.ToString()} location: X = {column.Location.X.ToString()}, Y = {column.Location.Y.ToString()} \n AnimationInterval: {column.AnimationInterval.ToString()}");
+            _appLogger.Debug($"{column.ColumnType.ToString()} location: X = {column.CurrentLocation.X.ToString()}, Y = {column.CurrentLocation.Y.ToString()} \n AnimationInterval: {column.AnimationInterval.ToString()}");
         }
 
         public void LogXPosition(float spacing)

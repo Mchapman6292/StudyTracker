@@ -29,8 +29,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
         private SKRect CreateSKRectangle(AnimatedTimerColumn column)
         {
-            float newY = column.Location.Y - column.ScrollOffset;
-            SKPoint newLocation = new SKPoint(column.Location.X, newY);
+            float newY = column.CurrentLocation.Y - column.ScrollOffset;
+            SKPoint newLocation = new SKPoint(column.CurrentLocation.X, newY);
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
 
             return SKRect.Create(newLocation, rectangleSize);

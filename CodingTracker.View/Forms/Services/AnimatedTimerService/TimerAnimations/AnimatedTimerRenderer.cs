@@ -58,9 +58,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
                 AnimatedTimerSegment targetSegment = timerColumn.TimerSegments[currentSegmentIndex];
 
-                float segmentY = timerColumn.Location.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight) - timerColumn.ScrollOffset;
+                float segmentY = timerColumn.CurrentLocation.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight) - timerColumn.ScrollOffset;
 
-                DrawNumber(canvas, targetSegment, timerColumn.Location.X, segmentY);
+                DrawNumber(canvas, targetSegment, timerColumn.CurrentLocation.X, segmentY);
             }
         }
 
@@ -88,7 +88,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private void NEWDrawColumn(SKCanvas canvas, AnimatedTimerColumn column)
         {
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
-            SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
+
+
+
+            SKRect columnRectangle = SKRect.Create(column.CurrentLocation, rectangleSize);
 
             using (var rectPaint = _paintManager.CreateColumnPaint())
             {
@@ -328,7 +331,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private void DrawSegments(SKCanvas canvas, AnimatedTimerColumn column)
         {
             float digitHeight = AnimatedColumnSettings.SegmentHeight;
-            float startY = column.Location.Y - column.ScrollOffset;
+            float startY = column.CurrentLocation.Y - column.ScrollOffset;
 
 
             for (int currentSegmentCount = 0; currentSegmentCount < column.TotalSegmentCount; currentSegmentCount++)
@@ -339,9 +342,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 float YNew = startY + (currentSegmentCount * digitHeight);
 
-                segment.UpdatePosition(column.Location.X, YNew);
+                segment.UpdatePosition(column.CurrentLocation.X, YNew);
 
-                DrawNumber(canvas, segment, column.Location.X, YNew);
+                DrawNumber(canvas, segment, column.CurrentLocation.X, YNew);
             }
         }
 
@@ -398,6 +401,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _columnStateManager.UpdateColumnCurrentValue(column, timeDigit);
 
                     var newSegment = _columnStateManager.NEWFindNewTimeSegmentByTimeDigit(column, timeDigit);
+
+                    //Needed? When should focus segment update?
                     _columnStateManager.UpdateFocusedSegment(column, newSegment);
 
 
@@ -420,7 +425,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     circleAnimationProgress = _columnStateManager.CalculateCircleAnimationProgress(elapsed, animationProgress);
                     float normalizedColumnAnimationProgress = _columnStateManager.CalculateEasingForVertialOffSet(animationProgress);
 
-                    float scrollOffSet = _columnStateManager.CalculateVerticalOffset(column, column.IsAnimating);
+                    float scrollOffSet = _columnStateManager.TESTCalculateScrollOffset(column, column.ColumnAnimationProgress);
                     _columnStateManager.UpdateScrollOffset(column, scrollOffSet);
 
 
@@ -430,7 +435,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                     SKPoint newLocation = _columnStateManager.CalculateNewColumnLocationDuringAnimation(column);
-                    _columnStateManager.UpdateColumnLocation(column, newLocation);
+                    _columnStateManager.UpdateColumnCurrentLocation(column, newLocation);
 
                     if (elapsed >= column.CurrentAnimationEndTime)
                     {
@@ -453,6 +458,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 else
                 {
                     float scrollOffSet = _columnStateManager.CalculateVerticalOffset(column, column.IsAnimating);
+                    _columnStateManager.UpdateScrollOffset(column, scrollOffSet);
                     NEWDrawColumn(canvas, column);
                     DrawTimerPaths(canvas, column, elapsed, column.CircleAnimationProgress, isCircleStatic: true);
                     NEWDrawNumbers(canvas, column);

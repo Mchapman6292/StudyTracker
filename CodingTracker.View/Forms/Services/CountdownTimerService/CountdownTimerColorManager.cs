@@ -54,7 +54,7 @@ namespace CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimer
             Color pinkColor = Color.FromArgb(255, 81, 195);    // Starting vibrant pink
             Color blueColor = Color.FromArgb(168, 228, 255);   // Light blue transition
             Color purpleColor = Color.FromArgb(108, 99, 180);  // Purple (from 6-9 o'clock in image)
-            Color greenColor = Color.FromArgb(83, 179, 129);   // Green (from image, at start Location)
+            Color greenColor = Color.FromArgb(83, 179, 129);   // Green (from image, at start CurrentLocation)
 
             Color mainColor, secondaryColor;
 

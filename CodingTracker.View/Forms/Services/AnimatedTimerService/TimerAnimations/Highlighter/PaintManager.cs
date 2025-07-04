@@ -104,7 +104,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKPaint()
             {
+                /*
                 Color = new SKColor(49, 50, 68),
+                */
+                Color = SKColors.HotPink,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };

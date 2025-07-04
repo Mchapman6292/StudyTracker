@@ -49,14 +49,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void UpdateSegmentPositions(AnimatedTimerColumn column)
         {
-            float startY = column.Location.Y - column.ScrollOffset;
+            float startY = column.CurrentLocation.Y - column.ScrollOffset;
 
             for (int i = 0; i < column.TimerSegments.Count; i++)
             {
                 var segment = column.TimerSegments[i];
                 float newY = startY + (i * AnimatedColumnSettings.SegmentHeight);
 
-                segment.UpdatePosition(column.Location.X, newY);
+                segment.UpdatePosition(column.CurrentLocation.X, newY);
             }
         }
 

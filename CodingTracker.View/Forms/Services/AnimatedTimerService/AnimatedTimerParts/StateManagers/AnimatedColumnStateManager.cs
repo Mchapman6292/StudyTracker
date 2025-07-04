@@ -44,7 +44,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         float CalculateEasingForVertialOffSet(float animationProgress);
         void UpdateNormalizedColumnAnimationProgress(AnimatedTimerColumn column, float animationProgress);
         SKPoint CalculateNewColumnLocationDuringAnimation(AnimatedTimerColumn column);
-        void UpdateColumnLocation(AnimatedTimerColumn column, SKPoint newLocation);
+        void UpdateColumnCurrentLocation(AnimatedTimerColumn column, SKPoint newLocation);
         SKPoint TESTCalculateNewColumnLocationDuringAnimation(AnimatedTimerColumn column);
 
 
@@ -194,60 +194,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        // Value to determine the progress between one Segment and the next. 
-        public float CalculateVerticalOffset(AnimatedTimerColumn column, bool isAnimating)
-        {
-            if (!isAnimating)
-            {
-                return column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            }
-
-            float startY = column.Location.Y;
-            float endY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight; ;
-
-   
-
-            _appLogger.Debug($"StartOffSet calculated: {startY}, EndOffSet calculated: {endY}");
-
-
-            float easedProgress = CalculateEasingForVertialOffSet(column.ColumnAnimationProgress);
-
-            var result = Single.Lerp(startY, endY, easedProgress);
-
-
-            _appLogger.Debug($"Offset calculated: {result}.");
-
-            return result;
-        }
-
-
-
-
-        public float CalculateEasingForVertialOffSet(float animationProgress)
-        {
-            const float midpoint = 0.5f;
-
-            if (animationProgress < midpoint)
-            {
-                float scaledProgress = animationProgress;
-                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
-                return easeInValue;
-            }
-            else
-            {
-
-                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
-
-                // Cubic ease-out: 1 - ((1-t)^3)
-                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
-                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
-
-                return normalizedAnimationProgress;
-            }
-        }
-
-
-
+  
 
      
 
@@ -407,28 +354,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
-        public void UpdateColumnLocation(AnimatedTimerColumn column, SKPoint newLocation)
+        public void UpdateColumnCurrentLocation(AnimatedTimerColumn column, SKPoint newLocation)
         {
-            column.Location = newLocation;
+            column.CurrentLocation = newLocation;
         }
 
 
         public SKPoint CalculateNewColumnLocationDuringAnimation(AnimatedTimerColumn column)
         {
-            float x = column.Location.X;
-            float newY = column.Location.Y - column.ScrollOffset;
+            var oldY = column.CurrentLocation.Y;
 
-           
+            float x = column.CurrentLocation.X;
+            float newY = column.CurrentLocation.Y - column.ScrollOffset;
 
-            return new SKPoint(x, newY);
+
+            _appLogger.Debug($"NEWY calculated: {column.CurrentLocation.Y}  -  {column.ScrollOffset}  ==   {newY}");
+
+             var result = new SKPoint(x, newY);
+
+
+            _appLogger.Debug($"OLD Y LOCATION : {oldY} NEW Y : {newY}. NEW LOCATION CREATED: X {result.X}, Y {result.Y}.");
+
+            return result;
         }
 
 
         public SKPoint TESTCalculateNewColumnLocationDuringAnimation(AnimatedTimerColumn column)
         {
-            float x = column.Location.X;
+            float x = column.CurrentLocation.X;
             float moveDistance = column.NormalizedColumnAnimationProgress * AnimatedColumnSettings.SegmentHeight;
-            float newY = column.Location.Y - moveDistance;  // Negative to move UP
+            float newY = column.CurrentLocation.Y - moveDistance;  // Negative to move UP
             return new SKPoint(x, newY);
         }
 
@@ -455,10 +410,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public float TESTCalculateScrollOffset(AnimatedTimerColumn column, float animationProgress)
         {
-            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float additionalScroll = animationProgress * AnimatedColumnSettings.SegmentHeight;
+            var startSegment = NEWFindNewTimeSegmentByTimeDigit(column, column.PreviousValue);
+            var endSegment = NEWFindNewTimeSegmentByTimeDigit(column, column.CurrentValue);
 
-            return baseOffset + additionalScroll;
+            float startY = startSegment.Location.Y;
+            float startX = startSegment.Location.X;
+
+            var greatest = Math.Max(startY, startX);
+            var smallest = Math.Min(startY, startX);
+
+            var difference = greatest - smallest;
+
+            var progress = difference * animationProgress;
+
+            _appLogger.Debug($"\n \n TEST PROGRESS CALCULATED: {progress}\n \n");
+
+            return progress;
         }
 
 
@@ -481,18 +448,81 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             TimeSpan totalDuration = column.CurrentAnimationEndTime - column.AnimationStartTime;
 
+            _appLogger.Debug($"Total duration of animation calculated column.AnimationEndTime: {column.CurrentAnimationEndTime} start time: {column.AnimationStartTime}.");
+
             TimeSpan timeSinceStart = elapsed - column.AnimationStartTime;
 
             float progress = (float)(timeSinceStart.TotalMilliseconds / totalDuration.TotalMilliseconds);
 
-            _appLogger.Debug($"Calculating animation progress time since start: {timeSinceStart.TotalMilliseconds}, expected animation end time: {column.CurrentAnimationEndTime}.");
+            _appLogger.Debug($"Calculating animation progress time since start: {timeSinceStart.TotalMilliseconds}, expected animation end time: {totalDuration.TotalMilliseconds}.");
 
             var result = Math.Clamp(progress, 0f, 1f);
 
-            _appLogger.Debug($"AnimationProgress calculated: {result}");
+            _appLogger.Debug($"\n \n ANIMATION PROGRESS CALCULATED: {result}\n \n ");
 
             return result;
         }
+
+
+
+        // Value to determine the progress between one Segment and the next. 
+        public float CalculateVerticalOffset(AnimatedTimerColumn column, bool isAnimating)
+        {
+            if (!isAnimating)
+            {
+                return column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            }
+
+            var startSegment = NEWFindNewTimeSegmentByTimeDigit(column, column.PreviousValue);
+            var endSegment = NEWFindNewTimeSegmentByTimeDigit(column, column.CurrentValue);
+
+
+            float startY = column.PreviousValue * AnimatedColumnSettings.SegmentHeight;
+            float endY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight; ;
+
+
+
+            _appLogger.Debug($"StartOffSet calculated: {startY}, EndOffSet calculated: {endY}, Animation progress passed to CalculateEasingForVertialOffSet: {column.ColumnAnimationProgress}.");
+
+
+            float easedProgress = CalculateEasingForVertialOffSet(column.ColumnAnimationProgress);
+
+            var result = Single.Lerp(startY, endY, column.ColumnAnimationProgress);
+
+
+            _appLogger.Debug($"Offset calculated: {result}.");
+
+            return result;
+        }
+
+
+
+
+        public float CalculateEasingForVertialOffSet(float animationProgress)
+        {
+            const float midpoint = 0.5f;
+
+            if (animationProgress < midpoint)
+            {
+                float scaledProgress = animationProgress;
+                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
+                return easeInValue;
+            }
+            else
+            {
+
+                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
+
+                // Cubic ease-out: 1 - ((1-t)^3)
+                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
+                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
+
+                return normalizedAnimationProgress;
+            }
+        }
+
+
+
 
 
     }
