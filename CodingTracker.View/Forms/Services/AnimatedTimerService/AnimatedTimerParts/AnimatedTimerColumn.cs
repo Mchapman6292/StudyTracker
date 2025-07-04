@@ -16,14 +16,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public float Width = AnimatedColumnSettings.ColumnWidth;
         public float Height => TotalSegmentCount * AnimatedColumnSettings.SegmentHeight;
-        public SKPoint Location { get; set; }
-        public float ScrollOffset { get; set; }
+
         public ColumnUnitType ColumnType { get; set; }
 
+        public SKPoint Location { get; set; }
+        public float ScrollOffset { get; set; }
         public bool IsAnimating { get; set; }
 
-        public float ColumnAnimationProgress;
-        public float CircleAnimationProgress;
+        public float ColumnAnimationProgress { get; set; }
+        public float NormalizedColumnAnimationProgress {  get; set; }
+
+        public float CircleAnimationProgress{  get; set; }
+        public float NormalizedCircleAnimationProgress { get; set; }
 
         public TimeSpan AnimationStartTime { get; set; }  // When current animation began
         public TimeSpan NextTransitionTime { get; set; } // When next animation should start
@@ -43,7 +47,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             Location = location;
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
-            AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationDurations[columnType];
+            AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
             NextTransitionTime = TimeSpan.Zero + AnimationInterval;
         }
 
