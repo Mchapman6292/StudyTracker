@@ -242,7 +242,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 // 3. Calculate scroll offset.
                 if (column.IsAnimating)
                 {
-                    float animationProgress = _segmentOverlayCalculator.CalculateAnimationProgress(elapsed);
+                    float animationProgress = _segmentOverlayCalculator.CalculateAnimationProgress(column, elapsed);
                     float normalizedProgress = _segmentOverlayCalculator.CalculateNormalizedProgress(column.AnimationProgress);
 
                     column.UpdateAnimationState(animationProgress, normalizedProgress);

@@ -11,6 +11,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateNormalizedProgress(float animationProgress);
         float CalculateNormalizedRadius(AnimatedTimerColumn column);
+        float TESTCalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed);
+
+        float CalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed);
 
     }
 
@@ -26,6 +29,47 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return (float)(elapsed.TotalSeconds % 1.0);
         }
+
+
+        public float CalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            ColumnUnitType columnType = column.ColumnType;
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    return (float)(elapsed.TotalSeconds % 1.0);
+                case ColumnUnitType.SecondsLeadingDigit:
+                    return(float)((elapsed.TotalSeconds / 10) % 1);
+                case ColumnUnitType.MinutesSingleDigits:
+                    return(float)((elapsed.Minutes / 60) % 1);
+
+
+                case ColumnUnitType.MinutesLeadingDigits:
+                    return elapsed.Minutes / 10;
+
+                case ColumnUnitType.HoursSinglesDigits:
+                    return elapsed.Hours % 10;
+                case ColumnUnitType.HoursLeadingDigits:
+                    return elapsed.Hours / 10;
+
+
+                default: return 0.0f;
+
+
+            }
+        }
+
+        public float TESTCalculateAnimationProgress(AnimatedTimerColumn column,TimeSpan elapsed)
+        { 
+
+            TimeSpan interval = AnimatedColumnSettings.UnitTypesToAnimationDurations[column.ColumnType];
+
+       
+            double cycleProgress = elapsed.TotalSeconds % interval.TotalSeconds;
+            return (float)(cycleProgress / interval.TotalSeconds);
+        }
+
 
         public float CalculateNormalizedProgress(float animationProgress)
         {
