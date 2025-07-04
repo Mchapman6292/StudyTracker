@@ -70,7 +70,7 @@
             {
                 var phase = _phaseCalculator.GetPhaseForColumn(elapsed, column.ColumnType);
                 var currentValue = _phaseCalculator.GetCurrentValue(elapsed, column.ColumnType);
-                var scrollOffset = CalculateScrollOffset(phase, currentValue, column);
+                var scrollOffset = CalculateVerticalOffset(phase, currentValue, column);
 
                 column.ScrollOffset = scrollOffset;
                 column.CurrentValue = currentValue;

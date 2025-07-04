@@ -70,7 +70,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public static readonly Dictionary<ColumnUnitType, TimeSpan> UnitTypesToAnimationDurations = new Dictionary<ColumnUnitType, TimeSpan>
+        public static readonly Dictionary<ColumnUnitType, TimeSpan> UnitTypesToAnimationTimeSpans = new Dictionary<ColumnUnitType, TimeSpan>
         {
             { ColumnUnitType.SecondsSingleDigits, TimeSpan.FromSeconds(1) - AnimationDuration },
             { ColumnUnitType.SecondsLeadingDigit, TimeSpan.FromSeconds(10) - AnimationDuration },

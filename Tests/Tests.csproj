@@ -22,4 +22,8 @@
 		<ProjectReference Include="..\CodingTracker.View\CodingTracker.View.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ViewTests\AnimatedTimerService\TimerAnimations\" />
+	</ItemGroup>
+
 </Project>
