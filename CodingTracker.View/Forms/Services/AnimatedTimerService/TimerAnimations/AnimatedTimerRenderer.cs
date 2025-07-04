@@ -85,6 +85,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
+        private bool TESTShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
+        {
+            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+
+            switch (column.ColumnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    double secondsCycle = elapsed.TotalSeconds % 1.0;
+                    return secondsCycle >= (1.0 - animationDurationFloat);
+                case ColumnUnitType.SecondsLeadingDigit:
+                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
+                    return tenSecondsCycle >= (10.0 - animationDurationFloat);
+                case ColumnUnitType.MinutesSingleDigits:
+                    double minutesCycle = elapsed.TotalSeconds % 60.0;
+                    return minutesCycle >= (60.0 - animationDurationFloat);
+                case ColumnUnitType.MinutesLeadingDigits:
+                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
+                    return tenMinutesCycle >= (600.0 - animationDurationFloat);
+                case ColumnUnitType.HoursSinglesDigits:
+                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
+                    return hoursCycle >= (3600.0 - animationDurationFloat);
+                case ColumnUnitType.HoursLeadingDigits:
+                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
+                    return tenHoursCycle >= (36000.0 - animationDurationFloat);
+                default:
+                    return false;
+            }
+        }
+
+
 
 
 
@@ -199,13 +229,27 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateEasingValue(float t)
+        public float CalculateEasingValue(float animationProgress)
         {
-            return t < 0.5f
-                ? 4f * t * t * t
-                : 1f - MathF.Pow(-2f * t + 2f, 3f) / 2f;
+            const float midpoint = 0.5f;
 
-            
+            if (animationProgress < midpoint)
+            {
+                float scaledProgress = animationProgress;
+                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
+                return easeInValue;
+            }
+            else
+            {
+
+                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
+
+                // Cubic ease-out: 1 - ((1-t)^3)
+                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
+                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
+
+                return normalizedAnimationProgress;
+            }
         }
 
         private float CaclulatePhaseValue(TimeSpan elapsed)
@@ -237,7 +281,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 column.SetFocusedSegmentByValue(newValue);
 
                 // 2. Determine if this column should animate right now.
-                column.IsAnimating = ShouldColumnAnimate(elapsed, column);
+                column.IsAnimating = TESTShouldColumnAnimate(elapsed, column);
 
                 // 3. Calculate scroll offset.
                 if (column.IsAnimating)

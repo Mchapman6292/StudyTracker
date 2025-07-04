@@ -8,7 +8,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
     public interface ISegmentOverlayCalculator
     {
-        float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateNormalizedProgress(float animationProgress);
         float CalculateNormalizedRadius(AnimatedTimerColumn column);
         float TESTCalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed);
@@ -25,38 +24,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public float CalculateAnimationProgress(TimeSpan elapsed)
-        {
-            return (float)(elapsed.TotalSeconds % 1.0);
-        }
 
 
         public float CalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
         {
             ColumnUnitType columnType = column.ColumnType;
 
+            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+
             switch (columnType)
             {
                 case ColumnUnitType.SecondsSingleDigits:
-                    return (float)(elapsed.TotalSeconds % 1.0);
+                    double secondsCycle = elapsed.TotalSeconds % 1.0;
+                    return secondsCycle >= 0.7 ? (float)((secondsCycle - 0.7) / animationDurationFloat) : 0.0f;
                 case ColumnUnitType.SecondsLeadingDigit:
-                    return(float)((elapsed.TotalSeconds / 10) % 1);
+                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
+                    return tenSecondsCycle >= 9.7 ? (float)((tenSecondsCycle - 9.7) / animationDurationFloat) : 0.0f;
                 case ColumnUnitType.MinutesSingleDigits:
-                    return(float)((elapsed.Minutes / 60) % 1);
-
-
+                    double minutesCycle = elapsed.TotalSeconds % 60.0;
+                    return minutesCycle >= 59.7 ? (float)((minutesCycle - 59.7) / animationDurationFloat) : 0.0f;
                 case ColumnUnitType.MinutesLeadingDigits:
-                    return elapsed.Minutes / 10;
-
+                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
+                    return tenMinutesCycle >= 599.7 ? (float)((tenMinutesCycle - 599.7) / animationDurationFloat) : 0.0f;
                 case ColumnUnitType.HoursSinglesDigits:
-                    return elapsed.Hours % 10;
+                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
+                    return hoursCycle >= 3599.7 ? (float)((hoursCycle - 3599.7) / animationDurationFloat) : 0.0f;
                 case ColumnUnitType.HoursLeadingDigits:
-                    return elapsed.Hours / 10;
-
-
-                default: return 0.0f;
-
-
+                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
+                    return tenHoursCycle >= 35999.7 ? (float)((tenHoursCycle - 35999.7) / animationDurationFloat) : 0.0f;
+                default:
+                    return 0.0f;
             }
         }
 

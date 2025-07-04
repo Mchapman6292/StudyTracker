@@ -23,6 +23,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(300);
 
+        public static readonly float AnimationDurationFloat = 0.3f;
+
         public static SKColor ColumnColor = new SKColor(35, 34, 50);
 
         public static SKColor SegmentColor = new SKColor(35, 34, 50);
