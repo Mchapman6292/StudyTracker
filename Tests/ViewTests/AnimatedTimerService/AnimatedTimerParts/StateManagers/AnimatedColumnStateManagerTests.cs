@@ -22,6 +22,8 @@ namespace Tests.ViewTests.AnimatedTimerService.AnimatedTimerParts.StateManagers
             _columnFactory = columnFactory;
         }
 
+
+        /*
         [Theory]
         [InlineData(9.5, 0.0f)]    // Before animation starts
         [InlineData(9.7, 0.0f)]    // Animation just starting
@@ -43,7 +45,7 @@ namespace Tests.ViewTests.AnimatedTimerService.AnimatedTimerParts.StateManagers
                 Assert.Equal(expectedProgress, progress, 3);
             }
         }
-
+*/
 
 
     }

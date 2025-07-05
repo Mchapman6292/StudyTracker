@@ -40,8 +40,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
                 circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
             }
 
-             float centerX = column.FocusedSegment.Location.X + (column.FocusedSegment.SegmentWidth / 2f);
-            float centerY = column.FocusedSegment.Location.Y + (column.FocusedSegment.SegmentHeight / 2f);
+            float updatedY = column.FocusedSegment.Location.Y - column.ScrollOffset;
+
+            float centerX = column.FocusedSegment.Location.X + (column.FocusedSegment.SegmentWidth / 2f);
+            float centerY = updatedY + (column.FocusedSegment.SegmentHeight / 2f);
 
 
 
