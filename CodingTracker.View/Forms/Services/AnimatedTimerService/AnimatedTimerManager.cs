@@ -82,7 +82,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.UPDATEDNEWDraw(canvas, _columns, elapsed);
+            _animatedRenderer.WORKINGDraw(canvas, elapsed, _columns);
         }
 
 
