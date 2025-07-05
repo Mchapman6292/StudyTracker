@@ -1,15 +1,16 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using CSharpMarkup.WinUI;
 using LiveChartsCore.Measure;
 using SkiaSharp;
 using Uno.UI.Xaml;
 using static Guna.UI2.Material.Animation.AnimationManager;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
-using CSharpMarkup.WinUI;
+using static System.Windows.Forms.AxHost;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
@@ -23,6 +24,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         */
 
         void UPDATEDNEWDraw(SKCanvas canvas, List<AnimatedTimerColumn> columns, TimeSpan elapsed);
+
+        void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
     }
 
@@ -90,10 +93,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
             SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
 
+            canvas.Save();
+            canvas.Translate(0, column.ScrollOffset);
+
+
+
             using (var rectPaint = _paintManager.CreateColumnPaint())
             {
                 canvas.DrawRect(columnRectangle, rectPaint);
             }
+
+            canvas.Restore();
         }
 
 
@@ -194,7 +204,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 // Apply scroll offset to transform the Y axis of the paths and move them downward.
                 canvas.Save();
-                canvas.Translate(0, + column.ScrollOffset);
+                canvas.Translate(0, +column.ScrollOffset);
 
 
                 // OldDraw at transformed position.
@@ -351,6 +361,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public void NEWDrawNumbers(SKCanvas canvas, AnimatedTimerColumn column)
         {
+            float startY = column.Location.Y - column.ScrollOffset;
+
             using (var paint = _paintManager.CreateNumberPaint())
             using (var font = _paintManager.CreateNumberFont())
             {
@@ -358,8 +370,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 {
                     AnimatedTimerSegment currentSegment = column.TimerSegments[currentSegmentIndex];
 
-                    var x = currentSegment.LocationCenterPoint.X;
-                    var y = currentSegment.LocationCenterPoint.Y;
+                    float YNew = startY + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight);
 
 
                     canvas.DrawText(currentSegment.Value.ToString(), x, y, font, paint);
@@ -369,13 +380,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-       
+
 
 
 
 
         public void UPDATEDNEWDraw(SKCanvas canvas, List<AnimatedTimerColumn> columns, TimeSpan elapsed)
         {
+            /*
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
             foreach (AnimatedTimerColumn column in columns)
@@ -385,7 +397,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 int timeDigit = _columnStateManager.ExtractTimeDigitForColumn(column, elapsed);
 
                 ///First block handles when to animate.
-  
+
                 if (timeDigit != column.CurrentValue && !column.IsAnimating)
                 {
                     int newPrevious = column.CurrentValue;
@@ -403,28 +415,28 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     _appLogger.Debug($"Updating column current value to {timeDigit} newPrevious value: {column.PreviousValue}.");
 
-    
+
 
 
                 }
 
                 /// Handles when the calculations for animating between column values & updates IsAnimating when animation is complete. 
 
-                if(column.IsAnimating)
+                if (column.IsAnimating)
                 {
                     // First we use the elapsed time to calculate the animation progress
                     float animationProgress = _columnStateManager.NEWCalculateAnimationProgress(column, elapsed);
                     _columnStateManager.UpdateAnimationPogress(column, animationProgress);
-                    
+
                     //
                     circleAnimationProgress = _columnStateManager.CalculateCircleAnimationProgress(elapsed, animationProgress);
-                    float normalizedColumnAnimationProgress = _columnStateManager.CalculateEasingForVertialOffSet(animationProgress);
+                    float scrollOffSet = _columnStateManager.TESTCalculateScrollOffset(column, column.AnimationProgress);
 
-                    float scrollOffSet = _columnStateManager.CalculateVerticalOffset(column, column.IsAnimating);
+                    float scrollOffSet = _columnStateManager.TESTCalculateScrollOffset(column, column.ColumnAnimationProgress);
                     _columnStateManager.UpdateScrollOffset(column, scrollOffSet);
 
 
-               
+
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
                     _columnStateManager.UpdateNormalizedColumnAnimationProgress(column, normalizedColumnAnimationProgress);
 
@@ -437,13 +449,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         _columnStateManager.NEWUpdateIsAnimating(column, false);
                     }
 
-                    
-           
-         
 
-                   
 
-         
+
+
+
+
+
                     NEWDrawColumn(canvas, column);
                     DrawTimerPaths(canvas, column, elapsed, column.CircleAnimationProgress, isCircleStatic: false);
                     NEWDrawNumbers(canvas, column);
@@ -458,6 +470,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     NEWDrawNumbers(canvas, column);
                 }
             }
+            */
         }
 
 
@@ -479,9 +492,265 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void UpdateAllLocations(AnimatedTimerColumn column, SKPoint location)
-        {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region WorkingMethods
+
+
+
+
+
+        public int WORKINGCalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType)
+        {
+            int totalSeconds = (int)elapsed.TotalSeconds;
+            int minutes = totalSeconds / 60;
+            int hours = totalSeconds / 3600;
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    return totalSeconds % 10;
+                case ColumnUnitType.SecondsLeadingDigit:
+                    return (totalSeconds / 10) % 6;
+                case ColumnUnitType.MinutesSingleDigits:
+                    return minutes % 10;
+                case ColumnUnitType.MinutesLeadingDigits:
+                    return (minutes / 10) % 6;
+                case ColumnUnitType.HoursSinglesDigits:
+                    return hours % 10;
+                case ColumnUnitType.HoursLeadingDigits:
+                    return (hours / 10) % 10;
+                default:
+                    return 0;
+            }
         }
+
+
+
+        private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
+        {
+            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+
+            switch (column.ColumnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    double secondsCycle = elapsed.TotalSeconds % 1.0;
+                    return secondsCycle >= (1.0 - animationDurationFloat);
+                case ColumnUnitType.SecondsLeadingDigit:
+                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
+                    return tenSecondsCycle >= (10.0 - animationDurationFloat);
+                case ColumnUnitType.MinutesSingleDigits:
+                    double minutesCycle = elapsed.TotalSeconds % 60.0;
+                    return minutesCycle >= (60.0 - animationDurationFloat);
+                case ColumnUnitType.MinutesLeadingDigits:
+                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
+                    return tenMinutesCycle >= (600.0 - animationDurationFloat);
+                case ColumnUnitType.HoursSinglesDigits:
+                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
+                    return hoursCycle >= (3600.0 - animationDurationFloat);
+                case ColumnUnitType.HoursLeadingDigits:
+                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
+                    return tenHoursCycle >= (36000.0 - animationDurationFloat);
+                default:
+                    return false;
+            }
+        }
+
+
+
+        public float WORKINGCalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            ColumnUnitType columnType = column.ColumnType;
+
+            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    double secondsCycle = elapsed.TotalSeconds % 1.0;
+                    return secondsCycle >= 0.7 ? (float)((secondsCycle - 0.7) / animationDurationFloat) : 0.0f;
+                case ColumnUnitType.SecondsLeadingDigit:
+                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
+                    return tenSecondsCycle >= 9.7 ? (float)((tenSecondsCycle - 9.7) / animationDurationFloat) : 0.0f;
+                case ColumnUnitType.MinutesSingleDigits:
+                    double minutesCycle = elapsed.TotalSeconds % 60.0;
+                    return minutesCycle >= 59.7 ? (float)((minutesCycle - 59.7) / animationDurationFloat) : 0.0f;
+                case ColumnUnitType.MinutesLeadingDigits:
+                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
+                    return tenMinutesCycle >= 599.7 ? (float)((tenMinutesCycle - 599.7) / animationDurationFloat) : 0.0f;
+                case ColumnUnitType.HoursSinglesDigits:
+                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
+                    return hoursCycle >= 3599.7 ? (float)((hoursCycle - 3599.7) / animationDurationFloat) : 0.0f;
+                case ColumnUnitType.HoursLeadingDigits:
+                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
+                    return tenHoursCycle >= 35999.7 ? (float)((tenHoursCycle - 35999.7) / animationDurationFloat) : 0.0f;
+                default:
+                    return 0.0f;
+            }
+        }
+
+
+
+        public void WORKINGSetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue)
+        {
+            var focusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
+        }
+
+
+
+
+        public float WORKINGCalculateNormalizedProgress(float animationProgress)
+        {
+            if (animationProgress < 0.5f)
+                return 0f;
+
+            return (animationProgress - 0.5f) / 0.5f;
+        }
+
+
+
+        public float WORKINGCalculateEasingValue(float animationProgress)
+        {
+            const float midpoint = 0.5f;
+
+            if (animationProgress < midpoint)
+            {
+                float scaledProgress = animationProgress;
+                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
+                return easeInValue;
+            }
+            else
+            {
+
+                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
+
+                // Cubic ease-out: 1 - ((1-t)^3)
+                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
+                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
+
+                return normalizedAnimationProgress;
+            }
+        }
+
+
+        private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column, float animationProgress)
+        {
+            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float easedProgress = WORKINGCalculateEasingValue(animationProgress);
+            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+        }
+
+
+
+
+        private void WORKINGDrawSegments(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            float digitHeight = AnimatedColumnSettings.SegmentHeight;
+            float startY = column.Location.Y - column.ScrollOffset;
+
+
+            for (int currentSegmentCount = 0; currentSegmentCount < column.TotalSegmentCount; currentSegmentCount++)
+            {
+
+                var segment = column.TimerSegments[currentSegmentCount];
+
+
+                float YNew = startY + (currentSegmentCount * digitHeight);
+
+                segment.UpdatePosition(column.Location.X, YNew);
+
+                WORKINGDrawNumber(canvas, segment, column.Location.X, YNew);
+            }
+        }
+
+
+
+        public void WORKINGDrawNumber(SKCanvas canvas, AnimatedTimerSegment timerSegment, float x, float y)
+        {
+            using (var paint = new SKPaint())
+            using (var font = new SKFont())
+            {
+                paint.Color = SKColors.White;
+                paint.IsAntialias = true;
+                paint.TextAlign = SKTextAlign.Center;
+
+                font.Size = timerSegment.TextSize;
+
+
+               
+
+                // Calculate center positions.
+                float centerX = x + (timerSegment.SegmentWidth / 2f);
+                float centerY = y + (timerSegment.SegmentHeight / 2f) + (timerSegment.TextSize / 3f);
+
+                canvas.DrawText(timerSegment.Value.ToString(), centerX, centerY, font, paint);
+            }
+        }
+
+
+
+
+        public void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+                int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
+                column.CurrentValue = newValue;
+
+                // Update focused Segment to match the current value. Check if needed.
+                WORKINGSetFocusedSegmentByValue(column, newValue);
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(column, elapsed);
+                    float normalizedProgress = WORKINGCalculateNormalizedProgress(animationProgress);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateNormalizedAnimationProgress(column, normalizedProgress);
+
+                    column.ScrollOffset = WORKINGCalculateScrollOffset(column, animationProgress);
+
+
+                }
+                else
+                {
+                    column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                }
+
+                NEWDrawColumn(canvas, column);
+                DrawTimerPaths(canvas, column, elapsed, column.CircleAnimationProgress, isCircleStatic);
+                WORKINGDrawSegments(canvas, column);
+
+            }
+        }
+
+
     }
 }
+#endregion
