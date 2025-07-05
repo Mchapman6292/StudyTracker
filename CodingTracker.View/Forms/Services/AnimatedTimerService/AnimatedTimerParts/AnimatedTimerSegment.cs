@@ -31,7 +31,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public void UpdatePosition(float x, float y)
+        public void UpdatePositionAndCenterPoint(float x, float y)
         {
             Location = new SKPoint(x, y);
             UpdateLocationCenterPoint();

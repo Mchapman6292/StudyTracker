@@ -1,4 +1,8 @@
-﻿namespace CodingTracker.View.FormManagement
+﻿using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
+
+namespace CodingTracker.View.FormManagement
 {
     public enum FormPageEnum
     {
@@ -18,4 +22,15 @@
         SessionRatingForm
     }
 
+
+
+    public enum ColumnAnimationSetting
+    {
+        IsMovingUp,
+        IsMovingDown,
+    }
+
 }
+
+
+

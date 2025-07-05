@@ -38,7 +38,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
    
         void UpdateNormalizedColumnAnimationProgress(AnimatedTimerColumn column, float animationProgress);
-        void UpdateColumnCurrentLocation(AnimatedTimerColumn column, SKPoint newLocation);
 
 
 
@@ -124,16 +123,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        // Value to determine the progress between one Segment and the next. 
-        public float CalculateVerticalOffset(AnimatedTimerColumn column, bool isAnimating)
-        {
-            if (!isAnimating)
-            {
-                return column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            }
-
-            float startY = column.Location.Y;
-            float endY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight; ;
+   
+        
 
    
 
