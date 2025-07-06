@@ -65,9 +65,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public void UpdateAndRender(SKControl skControl)
         {
             skControl.Invalidate();
+            TestLogSegmentPosition();
         }
 
+        public void TestLogSegmentPosition()
+        {
+            var segment = _columns.FirstOrDefault(c => c.ColumnType == ColumnUnitType.SecondsSingleDigits)?.TimerSegments.FirstOrDefault(s => s.Value == 2);
 
+            _appLogger.Debug($"Segment position : X = {segment.Location.X}   Y = {segment.Location.Y}");
+        }
+
+         
 
         public void SortColumnsList()
         {

@@ -31,9 +31,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateOpacityMultiplier(float circleAnimationProgress)
+        private float CalculateOpacityMultiplier(float normalizedAnimationProgress)
         {
-            return 1.0f - circleAnimationProgress;
+            return 1.0f - normalizedAnimationProgress;
         }
 
         private float TESTCalculateOpacityMultiplier(float circleAnimationProgress)
@@ -60,13 +60,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             return new SKPaint()
             {
 
-                /*
-                                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
-                
-
-                */
-
-                Color = new SKColor(30, 30, 46),
+           
+                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
 
@@ -75,7 +70,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKPaint CreateOuterSegmentPaint(float circleAnimationProgress)
         {
-            float opacityMultiplier = CalculateOpacityMultiplier(circleAnimationProgress);
+            float opacityMultiplier = TESTCalculateOpacityMultiplier(circleAnimationProgress);
             
             byte alpha = (byte)(opacityMultiplier * 255);
 
@@ -92,7 +87,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 IsAntialias = true,
-                BlendMode = SKBlendMode.Xor
 
 
             };

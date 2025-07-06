@@ -31,21 +31,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
             float circleRadius;
 
+
+            /*
             if (isCircleStatic)
             {
                 circleRadius = AnimatedColumnSettings.MaxRadius;
             }
-            else
-            {
+            */
+       
                 circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
-            }
-
-            float updatedY = column.FocusedSegment.Location.Y - column.ScrollOffset;
-
-            float centerX = column.FocusedSegment.Location.X + (column.FocusedSegment.SegmentWidth / 2f);
-            float centerY = updatedY + (column.FocusedSegment.SegmentHeight / 2f);
+            
 
 
+            float halfX = AnimatedColumnSettings.ColumnWidth / 2;
+            float halfY = AnimatedColumnSettings.SegmentHeight / 2;
+
+
+            float centerX = column.InitialLocation.X + halfX;
+            float centerY = column.InitialLocation.Y + halfY;
+      
 
             circlePath.AddCircle(centerX, centerY, circleRadius);
 
@@ -92,8 +96,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             innerSegmentPath = new SKPath();
 
 
-            circlePath.Op(rectanglePath, SKPathOp.Difference, innerSegmentPath);
-            circlePath.Op(rectanglePath, SKPathOp.Intersect, outerOverlayPath);
+
+
+            // Inner path: The circular window that reveals the highlighted segment, intersection of circle and column rectangle.
+            circlePath.Op(rectanglePath, SKPathOp.Difference, outerOverlayPath);
+
+            // Outer path: The expanding circle outside the column bounds, circle minus the column rectangle.
+            circlePath.Op(rectanglePath, SKPathOp.Intersect, innerSegmentPath);
 
         }
 

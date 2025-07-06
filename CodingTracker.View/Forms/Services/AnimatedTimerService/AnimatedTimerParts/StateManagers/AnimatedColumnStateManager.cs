@@ -20,13 +20,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newValue);
         void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue);
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
-        void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
 
 
         bool NEWIsStillWithinAnimationWindow(AnimatedTimerColumn column, TimeSpan elapsed);
         void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating);
         void NEWUpdateAnimationStartTime(AnimatedTimerColumn column, TimeSpan lastAnimationStartTime);
-        void NEWUpdateNextTransitionTime(AnimatedTimerColumn column, TimeSpan elapsed);
 
 
         int ExtractTimeDigitForColumn(AnimatedTimerColumn column, TimeSpan elapsed);
@@ -36,8 +34,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateFocusedSegment(AnimatedTimerColumn column, AnimatedTimerSegment segment);
         void NEWUpdateCurrentAnimationEndTime(AnimatedTimerColumn column, TimeSpan elapsed);
 
-   
-        void UpdateNormalizedColumnAnimationProgress(AnimatedTimerColumn column, float animationProgress);
+
 
 
 
@@ -126,35 +123,26 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
    
         
 
-   
-
-        public void UpdateNormalizedColumnAnimationProgress(AnimatedTimerColumn column, float animationProgress)
-        {
-            column.NormalizedAnimationProgress = animationProgress;
-        }
-
-
         public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
         {
-            float circleAnimationProgress = column.CircleAnimationProgress;
-            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, circleAnimationProgress);
+            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, column.CircleAnimationProgress);
         }
 
 
 
 
-        public float CalculateCircleAnimationProgress(TimeSpan elapsed, float animationProgress)
+        public float CalculateCircleAnimationProgress(TimeSpan elapsed, float normalizedAnimationProgress)
         {
             float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationDurationRatio;
             float result;
 
-            if (animationProgress > circleAnimationRatio)
+            if (normalizedAnimationProgress > circleAnimationRatio)
             {
                 result = 1f;
             }
             else
             {
-                result = animationProgress / circleAnimationRatio;
+                result = normalizedAnimationProgress / circleAnimationRatio;
             }
 
 
@@ -185,11 +173,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress)
-        {
-            column.CircleAnimationProgress = circleAnimationProgress;
-        }
-
         public void NEWUpdateAnimationStartTime(AnimatedTimerColumn column, TimeSpan elapsed)
         {
             var old = column.AnimationStartTime;
@@ -218,15 +201,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
  
         }
 
-        public void NEWUpdateNextTransitionTime(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            var old = column.NextTransitionTime;
-
-            column.NextTransitionTime = column.AnimationStartTime + column.AnimationInterval;
-
-            _appLogger.Debug($"Next trasnsitionT time updated to {column.NextTransitionTime}. Previous value : {old}.");
-
-        }
 
         /// Calculates the digit value to display for the specified column based on the elapsed time.
         ///  Uses `% 10` to extract the single (units) digit and `/ 10` to extract the leading (tens) digit
@@ -287,14 +261,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
-
-        public SKPoint TESTCalculateNewColumnLocationDuringAnimation(AnimatedTimerColumn column)
-        {
-            float x = column.Location.X;
-            float moveDistance = column.NormalizedAnimationProgress * AnimatedColumnSettings.SegmentHeight;
-            float newY = column.Location.Y - moveDistance;  // Negative to move UP
-            return new SKPoint(x, newY);
-        }
 
 
 
@@ -436,13 +402,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress)
         {
-            column.AnimationProgress = animationProgress;
+            column.CircleAnimationProgress = animationProgress;
+
+            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                _appLogger.Debug($"ANIMATION progress updated to {column.CircleAnimationProgress}.");
+            }
+
         }
 
 
-        public void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float normalizedProgress)
+        public void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float scolumnScrollProgress)
         {
-            column.NormalizedAnimationProgress = normalizedProgress;
+            column.ColumnScrollProgress = scolumnScrollProgress;
+
+
+            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                _appLogger.Debug($"NORMALIZEDANIMATION progress updated to {column.ColumnScrollProgress}.");
+            }
         }
 
 
