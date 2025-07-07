@@ -116,13 +116,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public float TESTCalculateCircleAnimationProgress(AnimatedTimerColumn column)
         {
-            return column.BaseAnimationProgress / AnimatedColumnSettings.CircleAnimationRatio;
+            return column.BaseAnimationProgress / AnimatedColumnSettings.CircleAnimationDurationRatio;
         }
 
 
         public float CalculateCircleAnimationProgress(AnimatedTimerColumn column)
         {
-            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationRatio;
+            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationDurationRatio;
             float result;
 
             if (column.BaseAnimationProgress > circleAnimationRatio)
@@ -285,7 +285,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (column.ColumnType)
             {
@@ -318,7 +318,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             ColumnUnitType columnType = column.ColumnType;
 
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (columnType)
             {

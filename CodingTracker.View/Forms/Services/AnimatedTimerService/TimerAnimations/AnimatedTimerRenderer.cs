@@ -145,7 +145,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (column.ColumnType)
             {
@@ -173,12 +173,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
+        private bool TESTShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
+        {
+            // Check if we're within 1 second of when this column changes.
+            double secondsUntilChange = column.AnimationInterval.TotalSeconds -
+                                       (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
+
+            return secondsUntilChange <= 1.0;  // Animate during last second before change.
+        }
+
+
+
 
         public float WORKINGCalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
         {
             ColumnUnitType columnType = column.ColumnType;
 
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (columnType)
             {
@@ -235,9 +246,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column)
         {
             float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.ColumnScroll);
+            float easedProgress = CalculateEasingValue(column);
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
+
+
+        private float CalculateEasingValue(AnimatedTimerColumn column)
+        {
+            float baseAnimationProgress = column.BaseAnimationProgress;
+            return baseAnimationProgress < 0.5f
+                ? 4f * baseAnimationProgress * baseAnimationProgress * baseAnimationProgress
+                : 1f - MathF.Pow(-2f * baseAnimationProgress + 2f, 3f) / 2f;
+
+
+        }
+
 
 
 
@@ -290,10 +313,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 
 
                 // 2. Determine if this column should animate right now.
-                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+                column.IsAnimating = TESTShouldColumnAnimate(elapsed, column);
+
+
 
                 if (column.IsAnimating) 
                 {
+
+                    if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit)
+                    {
+                        _appLogger.Debug($"Animation started for SECONDSLEADINGDIGITS elapsed: {elapsed}");
+                    }
+
                     // If the column is animating we need to update the timerpath radius and opacity.
                     // If not/else then keep the same. 
 
