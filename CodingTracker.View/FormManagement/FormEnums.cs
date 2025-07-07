@@ -30,6 +30,13 @@ namespace CodingTracker.View.FormManagement
         IsMovingDown,
     }
 
+
+    public enum TimerAnimationType
+    {
+        CircleAnimation,
+        ColumnScroll
+    }
+
 }
 
 

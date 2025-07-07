@@ -12,9 +12,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 {
     public interface IAnimatedSegmentStateManager
     {
-        void UpdateSegmentPosition(AnimatedTimerSegment segment, SKPoint newLocation);
-        void SetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue);
-
+ 
     }
     public class AnimatedSegmentStateManager : IAnimatedSegmentStateManager
     {
@@ -29,23 +27,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public void UpdateSegmentAnimationState(AnimatedTimerColumn column, AnimatedTimerSegment segment)
-        {
-            SetFocusedSegmentByValue(column, column.CurrentValue);
-        }
 
 
 
-        public void SetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue)
-        {
-            var focusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
-        }
-
-
-        public void UpdateSegmentPosition(AnimatedTimerSegment segment, SKPoint newLocation)
-        {
-            segment.Location = newLocation;
-        }
 
 
 

@@ -109,21 +109,6 @@ namespace CodingTracker.View.Forms
 
 
 
-        private void PaintRectangle(object sender, SKPaintSurfaceEventArgs e)
-        {
-            var canvas = e.Surface.Canvas;
-            canvas.Clear(new SKColor(35, 34, 50));
-
-
-            _animatedTimerRenderer.DrawAllSegments(hoursTens, canvas);
-            _animatedTimerRenderer.DrawAllSegments(hoursOnes, canvas);
-            _animatedTimerRenderer.DrawAllSegments(minutesTens, canvas);
-            _animatedTimerRenderer.DrawAllSegments(minutesOnes, canvas);
-            _animatedTimerRenderer.DrawAllSegments(secondsTens, canvas);
-            _animatedTimerRenderer.DrawAllSegments(secondsOnes, canvas);
-        }
-
-
 
 
   

@@ -18,7 +18,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
     public class PaintManager : IPaintManager
     {
-        public bool IsEnabled { get; set; }
 
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedColumnStateManager _columnStateManager;
@@ -31,9 +30,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateOpacityMultiplier(float circleAnimationProgress)
+        private float CalculateOpacityMultiplier(float normalizedAnimationProgress)
         {
-            return 1.0f - circleAnimationProgress;
+            return 1.0f - normalizedAnimationProgress;
         }
 
         private float TESTCalculateOpacityMultiplier(float circleAnimationProgress)
@@ -60,13 +59,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             return new SKPaint()
             {
 
-                /*
-                                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
-                
-
-                */
-
-                Color = new SKColor(30, 30, 46),
+           
+                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
 
@@ -81,18 +75,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-                /*
-                Color = new SKColor(49, 50, 68),
-                */
-
-                Color = SKColors.HotPink,
+                
+                Color = new SKColor(49, 50, 68).WithAlpha(alpha),
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 IsAntialias = true,
-                BlendMode = SKBlendMode.Xor
 
 
             };
