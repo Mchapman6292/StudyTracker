@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using LiveChartsCore.SkiaSharpView;
 using SkiaSharp;
@@ -14,15 +15,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         int CalculateColumnValue(TimeSpan elapsed, AnimatedTimerColumn column);
 
-        float CalculateCircleAnimationProgress(TimeSpan elapsed, float animationProgress);
+
 
         float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
         void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newValue);
         void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue);
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
 
-
-        bool NEWIsStillWithinAnimationWindow(AnimatedTimerColumn column, TimeSpan elapsed);
         void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating);
         void NEWUpdateAnimationStartTime(AnimatedTimerColumn column, TimeSpan lastAnimationStartTime);
 
@@ -36,18 +35,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+        float TESTCalculateCircleAnimationProgress(AnimatedTimerColumn column);
+
+        //
+        float CalculateCircleAnimationProgress(AnimatedTimerColumn column);
+        void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
+
+        //
 
 
+        void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress);
 
-
-
-
-
-        public void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress);
-
-        public void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float normalizedProgress);
+        void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float normalizedProgress);
 
         int WORKINGCalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType);
+        float WORKINGCalculateEasingValue(AnimatedTimerColumn column, TimerAnimationType animationType);
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -130,22 +132,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-
-        public float CalculateCircleAnimationProgress(TimeSpan elapsed, float normalizedAnimationProgress)
+        public float TESTCalculateCircleAnimationProgress(AnimatedTimerColumn column)
         {
-            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationDurationRatio;
+            return column.BaseAnimationProgress / AnimatedColumnSettings.CircleAnimationRatio;
+        }
+
+
+        public float CalculateCircleAnimationProgress(AnimatedTimerColumn column)
+        {
+            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationRatio;
             float result;
 
-            if (normalizedAnimationProgress > circleAnimationRatio)
+            if (column.BaseAnimationProgress > circleAnimationRatio)
             {
                 result = 1f;
             }
             else
             {
-                result = normalizedAnimationProgress / circleAnimationRatio;
+                result = column.BaseAnimationProgress / circleAnimationRatio;
             }
-
-
             return Math.Min(1.0f, result);
         }
 
@@ -183,17 +188,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        // Probably not needed
-        public bool NEWIsStillWithinAnimationWindow(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            var endDurationTime = column.NextTransitionTime + AnimatedColumnSettings.AnimationDuration;
-
-            if (elapsed >= endDurationTime)
-            {
-                return false;
-            }
-            return true;
-        }
 
         public void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating)
         {
@@ -250,7 +244,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void NEWUpdateCurrentAnimationEndTime(AnimatedTimerColumn column, TimeSpan elapsed)
         {
-            column.CurrentAnimationEndTime = elapsed + AnimatedColumnSettings.AnimationDuration;
+            column.CurrentAnimationEndTime = elapsed + AnimatedColumnSettings.ScrollAnimationTimespan;
             _appLogger.Debug($"Current animation end time updated to: {column.CurrentAnimationEndTime}");
         }
 
@@ -265,11 +259,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+ 
 
 
-
-
-
+        public void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress)
+        {
+            column.CircleAnimationProgress = circleAnimationProgress;
+        }
 
 
 
@@ -320,7 +316,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
 
             switch (column.ColumnType)
             {
@@ -353,7 +349,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             ColumnUnitType columnType = column.ColumnType;
 
-            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
 
             switch (columnType)
             {
@@ -389,7 +385,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-
+        
         public float WORKINGCalculateNormalizedProgress(float animationProgress)
         {
             if (animationProgress < 0.5f)
@@ -402,11 +398,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress)
         {
-            column.CircleAnimationProgress = animationProgress;
+            column.BaseAnimationProgress = animationProgress;
 
             if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
             {
-                _appLogger.Debug($"ANIMATION progress updated to {column.CircleAnimationProgress}.");
+                _appLogger.Debug($"ANIMATION progress updated to {column.BaseAnimationProgress}.");
             }
 
         }
@@ -429,6 +425,33 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+        public float WORKINGCalculateEasingValue(AnimatedTimerColumn column, TimerAnimationType animationType)
+        {
+            // Use different progress values to calculate the easing.
+            float animationProgress = animationType switch
+            {
+                TimerAnimationType.CircleAnimation => column.CircleAnimationProgress,
+                TimerAnimationType.ColumnScroll => column.ColumnScrollProgress,
+                _ => throw new ArgumentException($"Unsupported animation type: {animationType}")
+            };
+
+   
+            const float midpoint = 0.5f;
+            if (animationProgress < midpoint)
+            {
+                float scaledProgress = animationProgress;
+                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
+                return easeInValue;
+            }
+            else
+            {
+                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
+                                                                       // Cubic ease-out: 1 - ((1-t)^3)
+                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
+                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
+                return normalizedAnimationProgress;
+            }
+        }
     }
 }
 

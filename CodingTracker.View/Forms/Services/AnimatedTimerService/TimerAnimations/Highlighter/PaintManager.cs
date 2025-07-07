@@ -18,7 +18,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
     public class PaintManager : IPaintManager
     {
-        public bool IsEnabled { get; set; }
 
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedColumnStateManager _columnStateManager;
@@ -70,17 +69,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKPaint CreateOuterSegmentPaint(float circleAnimationProgress)
         {
-            float opacityMultiplier = TESTCalculateOpacityMultiplier(circleAnimationProgress);
+            float opacityMultiplier = CalculateOpacityMultiplier(circleAnimationProgress);
             
             byte alpha = (byte)(opacityMultiplier * 255);
 
             return new SKPaint()
             {
-                /*
-                Color = new SKColor(49, 50, 68),
-                */
-
-                Color = SKColors.HotPink,
+                
+                Color = new SKColor(49, 50, 68).WithAlpha(alpha),
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,

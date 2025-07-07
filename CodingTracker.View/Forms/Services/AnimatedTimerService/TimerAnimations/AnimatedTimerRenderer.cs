@@ -145,7 +145,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
 
             switch (column.ColumnType)
             {
@@ -178,7 +178,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             ColumnUnitType columnType = column.ColumnType;
 
-            float animationDurationFloat = AnimatedColumnSettings.AnimationDurationFloat;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
 
             switch (columnType)
             {
@@ -220,7 +220,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public float WORKINGCalculateNormalizedProgress(float animationProgress)
+        public float WORKINGCalculateColumnScrollProgress(float animationProgress)
         {
             if (animationProgress < 0.5f)
                 return 0f;
@@ -230,34 +230,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public float WORKINGCalculateEasingValue(float animationProgress)
-        {
-            const float midpoint = 0.5f;
-
-            if (animationProgress < midpoint)
-            {
-                float scaledProgress = animationProgress;
-                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
-                return easeInValue;
-            }
-            else
-            {
-
-                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
-
-                // Cubic ease-out: 1 - ((1-t)^3)
-                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
-                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
-
-                return normalizedAnimationProgress;
-            }
-        }
 
 
-        private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column, float animationProgress)
+        private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column)
         {
             float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = WORKINGCalculateEasingValue(animationProgress);
+            float easedProgress = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.ColumnScroll);
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 
@@ -273,7 +251,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, overLayIsAnimating);
 
             using (var innerPaint = _paintManager.CreateInnerSegmentPaint())
-            using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column.CircleAnimationProgress))
+            using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column.BaseAnimationProgress))
             {
 
 
@@ -337,12 +315,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     isCircleStatic = false;
 
                     float animationProgress = WORKINGCalculateAnimationProgress(column, elapsed);
-                    float normalizedProgress = WORKINGCalculateNormalizedProgress(animationProgress);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
                     _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
                     _columnStateManager.WORKINGUpdateNormalizedAnimationProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    column.ScrollOffset = WORKINGCalculateScrollOffset(column, animationProgress);
+                    column.ScrollOffset = WORKINGCalculateScrollOffset(column);
 
 
                 }
@@ -402,6 +382,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 canvas.Restore();
             }
         }
+
+
+
 
 
 

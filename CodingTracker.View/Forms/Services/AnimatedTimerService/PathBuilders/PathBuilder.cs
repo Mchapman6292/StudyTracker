@@ -1,9 +1,10 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using System.Security.RightsManagement;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 {
@@ -38,8 +39,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
                 circleRadius = AnimatedColumnSettings.MaxRadius;
             }
             */
-       
-                circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
+
+            float easingValue = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.CircleAnimation);
+            circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
+
+            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                _appLogger.Debug($"New radius calculated : {circleRadius}");
+            }
             
 
 
