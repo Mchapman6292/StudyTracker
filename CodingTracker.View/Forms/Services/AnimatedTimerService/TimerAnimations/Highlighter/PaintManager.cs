@@ -10,7 +10,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     public interface IPaintManager
     {
         SKPaint CreateInnerSegmentPaint();
-        SKPaint CreateOuterSegmentPaint(float circleAnimationProgress);
+        SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint CreateColumnPaint();
         SKPaint CreateNumberPaint();
         SKFont CreateNumberFont();
@@ -30,9 +30,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateOpacityMultiplier(float normalizedAnimationProgress)
+        private float CalculateOpacityMultiplier(AnimatedTimerColumn column)
         {
-            return 1.0f - normalizedAnimationProgress;
+            return 1.0f - column.CircleAnimationProgress;
         }
 
         private float TESTCalculateOpacityMultiplier(float circleAnimationProgress)
@@ -67,9 +67,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             };
         }
 
-        public SKPaint CreateOuterSegmentPaint(float circleAnimationProgress)
+        public SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn  column)
         {
-            float opacityMultiplier = CalculateOpacityMultiplier(circleAnimationProgress);
+            float opacityMultiplier = CalculateOpacityMultiplier(column);
             
             byte alpha = (byte)(opacityMultiplier * 255);
 

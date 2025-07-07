@@ -251,26 +251,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, overLayIsAnimating);
 
             using (var innerPaint = _paintManager.CreateInnerSegmentPaint())
-            using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column.BaseAnimationProgress))
+            using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
             {
 
 
 
-
-   
-
-
-
-                // OldDraw at transformed position.
                 canvas.DrawPath(innerSegmentPath, innerPaint);
                 canvas.DrawPath(outerOverlayPath, outerPaint);
-
-                /*
-                var innerBounds = innerSegmentPath.Bounds;
-                var outerBounds = outerOverlayPath.Bounds;
-                _appLogger.Debug($"Inner path innerBounds: {innerBounds}");
-                _appLogger.Debug($"Inner path innerBounds: {outerBounds}");
-                */
 
                 canvas.Restore();
             }
