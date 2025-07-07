@@ -98,7 +98,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             SKPath innerSegmentPath = _pathBuilder.CreateRectanglePath(column);
 
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint())
+            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
             {
                 canvas.Save();
                 canvas.Translate(0, +column.ScrollOffset);
@@ -250,7 +250,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, overLayIsAnimating);
 
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint())
+            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
             using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
             {
 

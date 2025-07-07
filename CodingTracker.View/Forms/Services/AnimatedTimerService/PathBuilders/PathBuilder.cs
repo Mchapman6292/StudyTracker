@@ -47,23 +47,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             {
                 _appLogger.Debug($"New radius calculated : {circleRadius}");
             }
-            
+
 
 
             float halfX = AnimatedColumnSettings.ColumnWidth / 2;
             float halfY = AnimatedColumnSettings.SegmentHeight / 2;
-
-
             float centerX = column.InitialLocation.X + halfX;
             float centerY = column.InitialLocation.Y + halfY;
-      
 
             circlePath.AddCircle(centerX, centerY, circleRadius);
-
-
-
             return circlePath;
-            
+
         }
 
 

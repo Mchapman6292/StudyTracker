@@ -19,7 +19,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public static readonly float ScrollAnimationDurationSeconds = (float)ScrollAnimationTimespan.TotalSeconds; // 0.7f
 
         // Circle animation is set to 70% of scroll duration
-        public static readonly float CircleAnimationRatio = 0.7f;
+        public static readonly float CircleAnimationRatio = ScrollAnimationDuration * 0.8f;
         public static readonly TimeSpan CircleAnimationTimespan = ScrollAnimationTimespan * CircleAnimationRatio; // 490ms
         public static readonly float CircleAnimationDurationSeconds = (float)CircleAnimationTimespan.TotalSeconds; 
 
@@ -32,8 +32,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        private const float _circlePaddingMultiplier = 1.0f;
-        public const float minRadiusScale = 0.5f;
+        private const float _circlePaddingMultiplier = 1.2f;
+        public const float minRadiusScale = 0.4f;
 
 
         public static readonly float MinRadius = CalculateMinRadius();
@@ -46,6 +46,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
         public static SKColor FormBackgroundColor = new SKColor(35, 34, 50);
+        public static SKColor TESTColumnColor = new SKColor(49, 50, 68);
+
+        public static SKColor MainPageDarkerColor = new SKColor(35, 34, 50);
 
 
 
