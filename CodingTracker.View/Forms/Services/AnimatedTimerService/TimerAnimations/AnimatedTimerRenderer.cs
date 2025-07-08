@@ -143,78 +143,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+ 
+
+
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
+            // Subtract the result of the module operation to get a value between 0 and the animation interval.
+            double secondsUntilChange = column.AnimationInterval.TotalSeconds - (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
 
-            switch (column.ColumnType)
-            {
-                case ColumnUnitType.SecondsSingleDigits:
-                    double secondsCycle = elapsed.TotalSeconds % 1.0;
-                    return secondsCycle >= (1.0 - animationDurationFloat);
-                case ColumnUnitType.SecondsLeadingDigit:
-                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
-                    return tenSecondsCycle >= (10.0 - animationDurationFloat);
-                case ColumnUnitType.MinutesSingleDigits:
-                    double minutesCycle = elapsed.TotalSeconds % 60.0;
-                    return minutesCycle >= (60.0 - animationDurationFloat);
-                case ColumnUnitType.MinutesLeadingDigits:
-                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
-                    return tenMinutesCycle >= (600.0 - animationDurationFloat);
-                case ColumnUnitType.HoursSinglesDigits:
-                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
-                    return hoursCycle >= (3600.0 - animationDurationFloat);
-                case ColumnUnitType.HoursLeadingDigits:
-                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
-                    return tenHoursCycle >= (36000.0 - animationDurationFloat);
-                default:
-                    return false;
-            }
-        }
-
-
-        private bool TESTShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
-        {
-            // Check if we're within 1 second of when this column changes.
-            double secondsUntilChange = column.AnimationInterval.TotalSeconds -
-                                       (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
-
-            return secondsUntilChange <= 1.0;  // Animate during last second before change.
+            return secondsUntilChange <= 1.0;  
         }
 
 
 
 
-        public float WORKINGCalculateAnimationProgress(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            ColumnUnitType columnType = column.ColumnType;
-
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
-
-            switch (columnType)
-            {
-                case ColumnUnitType.SecondsSingleDigits:
-                    double secondsCycle = elapsed.TotalSeconds % 1.0;
-                    return secondsCycle >= 0.7 ? (float)((secondsCycle - 0.7) / animationDurationFloat) : 0.0f;
-                case ColumnUnitType.SecondsLeadingDigit:
-                    double tenSecondsCycle = elapsed.TotalSeconds % 10.0;
-                    return tenSecondsCycle >= 9.7 ? (float)((tenSecondsCycle - 9.7) / animationDurationFloat) : 0.0f;
-                case ColumnUnitType.MinutesSingleDigits:
-                    double minutesCycle = elapsed.TotalSeconds % 60.0;
-                    return minutesCycle >= 59.7 ? (float)((minutesCycle - 59.7) / animationDurationFloat) : 0.0f;
-                case ColumnUnitType.MinutesLeadingDigits:
-                    double tenMinutesCycle = elapsed.TotalSeconds % 600.0;
-                    return tenMinutesCycle >= 599.7 ? (float)((tenMinutesCycle - 599.7) / animationDurationFloat) : 0.0f;
-                case ColumnUnitType.HoursSinglesDigits:
-                    double hoursCycle = elapsed.TotalSeconds % 3600.0;
-                    return hoursCycle >= 3599.7 ? (float)((hoursCycle - 3599.7) / animationDurationFloat) : 0.0f;
-                case ColumnUnitType.HoursLeadingDigits:
-                    double tenHoursCycle = elapsed.TotalSeconds % 36000.0;
-                    return tenHoursCycle >= 35999.7 ? (float)((tenHoursCycle - 35999.7) / animationDurationFloat) : 0.0f;
-                default:
-                    return 0.0f;
-            }
-        }
+  
 
 
 
@@ -222,13 +165,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             var focusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
 
-            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"Focused segment updated to {focusedSegment.Value}");
-            }
+         
         }
 
 
+
+        public float WORKINGCalculateAnimationProgress(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
+        }
 
 
         public float WORKINGCalculateColumnScrollProgress(float animationProgress)
@@ -245,6 +190,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column)
         {
+           
+
             float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
             float easedProgress = CalculateEasingValue(column);
             return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
@@ -298,7 +245,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             foreach (var column in columns)
             {
-         
+
 
 
                 int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
@@ -313,26 +260,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 
 
                 // 2. Determine if this column should animate right now.
-                column.IsAnimating = TESTShouldColumnAnimate(elapsed, column);
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
 
 
 
                 if (column.IsAnimating) 
                 {
 
-                    if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit)
-                    {
-                        _appLogger.Debug($"Animation started for SECONDSLEADINGDIGITS elapsed: {elapsed}");
-                    }
-
-                    // If the column is animating we need to update the timerpath radius and opacity.
-                    // If not/else then keep the same. 
-
-
 
                     isCircleStatic = false;
 
-                    float animationProgress = WORKINGCalculateAnimationProgress(column, elapsed);
+              
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
                     float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
                     float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
@@ -342,6 +282,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     column.ScrollOffset = WORKINGCalculateScrollOffset(column);
 
+                    if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit && elapsed > TimeSpan.FromSeconds(8))
+                    {
+                        _appLogger.Debug($"CURRENT VALUE : {column.CurrentValue} \n  elapsed : {elapsed}.  ScrollOFfset calculated : {column.ScrollOffset} \n \n ");
+                    }
+
+          
 
                 }
                 else
@@ -407,6 +353,58 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region TESTMethods
+
+
+
+
+        private float TESTCalculateScrollOffset(AnimatedTimerColumn column)
+        {
+            if(column.CurrentValue == column.MaxValue)
+            {
+
+            }
+
+            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float easedProgress = CalculateEasingValue(column);
+            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+        }
+
+
+
+
+
+
+
     }
 }
+#endregion
+
+
+
+
+
+
 #endregion

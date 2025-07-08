@@ -84,7 +84,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                     return totalSeconds % segmentCount;
                 case ColumnUnitType.SecondsLeadingDigit:
                     var result = (totalSeconds / 10) % segmentCount;
-                    _appLogger.Debug($"ColumnValue calculated: {result}.");
                     return result;
                 case ColumnUnitType.MinutesSingleDigits:
                     return minutes % 10;
@@ -368,24 +367,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress)
         {
             column.BaseAnimationProgress = animationProgress;
-
-            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"ANIMATION progress updated to {column.BaseAnimationProgress}.");
-            }
-
         }
 
 
         public void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float scolumnScrollProgress)
         {
             column.ColumnScrollProgress = scolumnScrollProgress;
-
-
-            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"NORMALIZEDANIMATION progress updated to {column.ColumnScrollProgress}.");
-            }
         }
 
 

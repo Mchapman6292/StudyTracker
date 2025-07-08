@@ -40,7 +40,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         // Animation progress for the circle (0-1 over first 70% of animation)
         public float CircleAnimationProgress { get; set; }
 
-
+        public int MaxValue;
 
 
 
@@ -54,11 +54,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
+            MaxValue = FindMaxColumnValue();
         }
 
 
 
-        
+        private int FindMaxColumnValue()
+        {
+            return TimerSegments.Max(segment => segment.Value);
+        }
 
 
 

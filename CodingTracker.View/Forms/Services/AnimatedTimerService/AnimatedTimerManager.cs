@@ -57,7 +57,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public void UpdateAndRender(SKControl skControl)
         {
             skControl.Invalidate();
-            TestLogSegmentPosition();
+  
         }
 
         public void TestLogSegmentPosition()
@@ -87,10 +87,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        public void LogXPosition(float spacing)
-        {
-            _appLogger.Debug($"Spacing: {spacing}");    
-        }
 
         private void DefineStartingYPosition(Form targetForm)
         {
