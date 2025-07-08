@@ -59,7 +59,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
         private SKRect CreateSKRectangle(AnimatedTimerColumn column)
         {
-            float newY = column.Location.Y - column.ScrollOffset;
+            float newY = column.Location.Y - column.YTranslation;
 
 
             SKPoint newLocation = new SKPoint(column.Location.X, newY);

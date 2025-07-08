@@ -82,7 +82,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.WORKINGDraw(canvas, elapsed, _columns);
+            _animatedRenderer.TESTDraw(canvas, elapsed, _columns);
         }
 
 
@@ -105,13 +105,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
             _columns = _animatedColumnFactory.CreateColumnsWithPositions(startingX, startingY);
 
+            foreach (var column in _columns)
+            {
+                var max = column.TimerSegments.Max(segment => segment.Value);
+                var min = column.TimerSegments.Min(segment => segment.Value);
+                _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, min Value : {min}, Max value : {max}.");
+            }
+
             // Remmove after tests!!!!!!!!!
             _stopWatchService.StartTimer();
 
         }
 
 
-     
+
+
 
         public List<AnimatedTimerColumn> ReturnTimerColumns()
         {

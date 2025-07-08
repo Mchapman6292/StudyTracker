@@ -58,7 +58,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
             
       
 
-            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
+            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
             xPosition += _columnSpacing;
 
 

@@ -3,17 +3,23 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
+using LiveChartsCore;
+using LiveChartsCore.Drawing.Segments;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 
 
 namespace CodingTracker.View.Forms
@@ -36,7 +42,6 @@ namespace CodingTracker.View.Forms
         private readonly IAnimatedTimerColumnFactory _animatedTimerColumnFactory;
         private readonly IAnimatedTimerManager _animatedTimerManager;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IAnimatedColumnStateManager _columnStateManager;
 
         public AnimatedTimerColumn column;
 
@@ -50,7 +55,7 @@ namespace CodingTracker.View.Forms
         private DateTime lastTime;
 
 
-        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager columnStateManager)
+        public TestForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, IDurationPanelFactory durationPanelFactory, IDurationParentPanelFactory durationParentPanelFactory, ISessionContainerPanelFactory sessionContainerPanelFactory, ICodingSessionRepository codingSessionRepository, ISessionVisualizationController sessionVisualizationController, IPanelColourAssigner panelColorAssigner, ILast28DayPanelSettings last28DayPanelSettings, ILabelAssignment labelAssignment, IDurationParentPanelPositionManager durationPanelPositionManager, IAnimatedTimerRenderer animatedTimerRenderer, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -69,15 +74,14 @@ namespace CodingTracker.View.Forms
             _animatedTimerColumnFactory = animatedTimerColumnFactory;
             _animatedTimerManager = animatedTimerManager;
             _stopWatchTimerService = stopWatchTimerService;
-            _columnStateManager = columnStateManager;
 
             InitializeComponent();
 
             _animatedTimerManager.InitializeColumns(this);
 
-     
 
             skControlTest.PaintSurface += _animatedTimerManager.DrawColumnsOnTick;
+
 
 
 
@@ -89,8 +93,9 @@ namespace CodingTracker.View.Forms
         }
 
 
-  
-    
+
+
+
 
         private async void TestForm_Load(object sender, EventArgs e)
         {
@@ -108,8 +113,6 @@ namespace CodingTracker.View.Forms
 
 
 
-
-
   
 
         private void InitializeAnimationTimer()
@@ -122,11 +125,7 @@ namespace CodingTracker.View.Forms
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
-
-            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
             _animatedTimerManager.UpdateAndRender(skControlTest);
-
-            
 
    
 
@@ -136,6 +135,8 @@ namespace CodingTracker.View.Forms
 
         private void newTestButton_Click(object sender, EventArgs e)
         {
+
+
 
         }
     }
