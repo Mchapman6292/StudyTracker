@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using Serilog;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace CodingTracker.Logging.ApplicationLoggers

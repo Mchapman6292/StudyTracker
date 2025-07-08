@@ -72,8 +72,8 @@
                 var currentValue = _phaseCalculator.GetCurrentValue(elapsed, column.ColumnType);
                 var scrollOffset = CalculateVerticalOffset(phase, currentValue, column);
 
-                column.ScrollOffset = scrollOffset;
-                column.CurrentValue = currentValue;
+                column.YTranslation = scrollOffset;
+                column.TargetValue = currentValue;
 
                 DrawSegments(canvas, column);
             }

@@ -22,13 +22,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public SKPoint InitialLocation { get; set; }
         public SKPoint Location { get; set; }
     
-        public float ScrollOffset { get; set; }
+        public float YTranslation { get; set; }
+
+        public float TargetY {  get; set; }
+
         public bool IsAnimating { get; set; }
 
-        public TimeSpan AnimationInterval { get; } // How long animation takes (300ms)
+        public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
-        public int CurrentValue { get; set; }
-        public int PreviousValue { get; set; } = 1;
+        public int TargetValue { get; set; } = 1;
+
+
+        public int PreviousValue { get; set; } = 0;
+
 
 
         //The base animation progress of the entire animation over 0.7ms. 
@@ -65,6 +71,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
+        public void UpdateTargetValue()
+        {
+            if (TargetValue == MaxValue)
+            {
+                TargetValue = 0;
+            }
+
+            else TargetValue = TargetValue + 1;
+        }
 
     
 

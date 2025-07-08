@@ -6,7 +6,10 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using CSharpMarkup.WinUI;
+using OpenTK.Graphics.ES11;
 using SkiaSharp;
+using System.Buffers.Text;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
@@ -19,6 +22,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
         void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+
+        void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
     }
 
@@ -59,12 +64,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             if (animationDirection == ColumnAnimationSetting.IsMovingUp)
             {
-                canvas.Translate(0, - column.ScrollOffset);
+                canvas.Translate(0, - column.YTranslation);
             }
 
             if (animationDirection == ColumnAnimationSetting.IsMovingDown)
             {
-                canvas.Translate(0, + column.ScrollOffset);
+                canvas.Translate(0, + column.YTranslation);
             }
 
 
@@ -101,7 +106,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
             {
                 canvas.Save();
-                canvas.Translate(0, +column.ScrollOffset);
+                canvas.Translate(0, +column.YTranslation);
                 canvas.DrawPath(innerSegmentPath, innerPaint);
                 canvas.Restore();
             }
@@ -151,7 +156,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             // Subtract the result of the module operation to get a value between 0 and the animation interval.
             double secondsUntilChange = column.AnimationInterval.TotalSeconds - (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
 
-            return secondsUntilChange <= 1.0;  
+            var result = secondsUntilChange <= 1.0;
+
+            if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit && result == true)
+            {
+                _appLogger.Debug($"SECONDS LEADING DIGITS ANIMATION STARTED AT: {elapsed.ToString(@"mm\:ss")}");
+            }
+
+            return result;
         }
 
 
@@ -190,20 +202,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column)
         {
-           
-
-            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float baseOffSet = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
             float easedProgress = CalculateEasingValue(column);
-            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+            return baseOffSet + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 
 
         private float CalculateEasingValue(AnimatedTimerColumn column)
         {
             float baseAnimationProgress = column.BaseAnimationProgress;
-            return baseAnimationProgress < 0.5f
+
+            var result = baseAnimationProgress < 0.5f
                 ? 4f * baseAnimationProgress * baseAnimationProgress * baseAnimationProgress
                 : 1f - MathF.Pow(-2f * baseAnimationProgress + 2f, 3f) / 2f;
+
+      
+  
+
+            return result;
+
 
 
         }
@@ -247,12 +264,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
 
 
-
+                // This sets the TargetValue to 0 
                 int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
-                column.CurrentValue = newValue;
+
+        
+
+                column.PreviousValue = column.TargetValue;
+                column.TargetValue = newValue;
+      
 
 
-       
+
                 // Update focused Segment to match the current value. Check if needed.
                 WORKINGSetFocusedSegmentByValue(column, newValue);
 
@@ -266,25 +288,28 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 if (column.IsAnimating) 
                 {
-
+                    // TODO check if secondsleading digit is stuck in ISAnimating at wrong times, circle not shwoing as static. 
 
                     isCircleStatic = false;
 
               
 
                     float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
-                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress); 
                     float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
                     _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
-                    _columnStateManager.WORKINGUpdateNormalizedAnimationProgress(column, normalizedProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    column.ScrollOffset = WORKINGCalculateScrollOffset(column);
 
-                    if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit && elapsed > TimeSpan.FromSeconds(8))
+
+
+                    column.YTranslation = TESTCaclulateColumnYTranslation(column, elapsed);
+
+                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                     {
-                        _appLogger.Debug($"CURRENT VALUE : {column.CurrentValue} \n  elapsed : {elapsed}.  ScrollOFfset calculated : {column.ScrollOffset} \n \n ");
+                        _appLogger.Debug($"CURRENT VALUE : {column.TargetValue}  elapsed : {elapsed}.  {column.YTranslation}\n \n ");
                     }
 
           
@@ -292,7 +317,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 }
                 else
                 {
-                    column.ScrollOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
                 }
 
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
@@ -316,11 +341,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 if (animationDirection == ColumnAnimationSetting.IsMovingUp)
                 {
-                    canvas.Translate(0, -column.ScrollOffset);
+                    canvas.Translate(0, -column.YTranslation);
                 }
                 else if (animationDirection == ColumnAnimationSetting.IsMovingDown)
                 {
-                    canvas.Translate(0, + column.ScrollOffset);
+                    canvas.Translate(0, + column.YTranslation);
                 }
 
 
@@ -330,7 +355,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     float baseY = column.Location.Y + (currentSegmentIndex * AnimatedColumnSettings.SegmentHeight);
 
                     float oldSegmentY = segment.Location.Y;
-                    float newSegmentY = segment.Location.Y - column.ScrollOffset; 
+                    float newSegmentY = segment.Location.Y - column.YTranslation; 
 
 
                     segment.UpdatePositionAndCenterPoint(column.Location.X, newSegmentY);
@@ -380,23 +405,169 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        private float TESTCalculateScrollOffset(AnimatedTimerColumn column)
-        {
-            if(column.CurrentValue == column.MaxValue)
-            {
 
+        private float TESTCaclulateColumnYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float easedProgress = CalculateEasingValue(column);
+
+            float baseY;
+            float yTranslation;
+
+            // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
+            if (column.TargetValue == 0 && column.IsAnimating && elapsed > column.AnimationInterval)
+            {
+                // Wrapping from max to 0, so animate downward from max position.
+                baseY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
+   
+                return baseY - (easedProgress * baseY);
             }
 
-            float baseOffset = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = CalculateEasingValue(column);
-            return baseOffset + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+            else
+            {
+                if(elapsed < column.AnimationInterval && column.PreviousValue == 0 && column.TargetValue == 1)
+                {
+                    baseY = column.Location.Y;
+                    yTranslation = baseY + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+                    return yTranslation;
+
+                }
+
+
+
+
+                baseY = (column.TargetValue * AnimatedColumnSettings.SegmentHeight);
+                yTranslation = baseY + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+
+   
+                return yTranslation;
+            }
         }
 
 
 
+        private float NEWTESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float easedProgress = CalculateEasingValue(column);
+
+            float baseY;
+            float yTranslation;
+
+            // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
+            if (column.TargetValue == 0 && column.PreviousValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
+            {
+                // Wrapping from max to 0, so animate downward from max position.
+                baseY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
+                yTranslation = baseY - (easedProgress * baseY);
+            
+            }
+            else
+            {
+
+                baseY = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                yTranslation = baseY + (easedProgress * AnimatedColumnSettings.SegmentHeight);
+           
+            }
+
+            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits && elapsed > TimeSpan.FromSeconds(9))
+            {
+                LogAnimatedTimerColumn(column, elapsed, baseY, easedProgress, yTranslation);
+            }
+
+            return yTranslation;
+        }
+
+
+        // Are the drawing and values not matched after 9?
+
+        public void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+
+           
+
+                int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
+
+
+                if (newValue != column.TargetValue)
+                {
+                    column.PreviousValue = column.TargetValue;
+                    column.TargetValue = newValue;
+
+                    WORKINGSetFocusedSegmentByValue(column, newValue);
+                }
+
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+
+
+       
+
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    column.YTranslation = NEWTESTCalculateYTranslation(column, elapsed);
+
+            
+
+                }
+                else
+                { 
+
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+                }
+
+                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDraw(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+            }
+        }
 
 
 
+        public void LogAnimatedTimerColumn(AnimatedTimerColumn column, TimeSpan elapsed, float? baseY, float? easedProgress, float? yTranslation)
+        {
+            string logMessage = $"\n \n"
+                                +$"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
+                                + $"\n-----Previous Value : {column.PreviousValue}, Target Value : {column.TargetValue}.-----"
+                                + $"\n-----IsAnimating: {column.IsAnimating}.-----"
+                                + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
+                                + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----";
+
+
+                                if (baseY != null && easedProgress != null && yTranslation != null)
+                                {
+                                    logMessage +=
+                                    $"\n---- OFFSET CALCULATION FOR COLUMN: {column.ColumnType}.-----"
+                                    + $"\n---- BASE Y: {baseY}, Easing Value: {easedProgress}, yTranslation: {yTranslation}.-----\n\n";
+                                }
+
+            _appLogger.Info(logMessage);
+        }
+
+        public string FormatElapsedTimeSPan(TimeSpan elapsed)
+        {
+            return elapsed.ToString(@"mm\:ss\.fff");
+        }
 
     }
 }
