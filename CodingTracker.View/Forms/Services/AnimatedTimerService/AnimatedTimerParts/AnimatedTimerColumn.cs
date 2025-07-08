@@ -25,11 +25,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public float ScrollOffset { get; set; }
         public bool IsAnimating { get; set; }
 
-        public TimeSpan AnimationStartTime { get; set; }  // When current animation began
-        public TimeSpan NextTransitionTime { get; set; } // When next animation should start
-        public TimeSpan CurrentAnimationEndTime { get; set; }
         public TimeSpan AnimationInterval { get; } // How long animation takes (300ms)
-
 
         public int CurrentValue { get; set; }
         public int PreviousValue { get; set; } = 1;
@@ -44,7 +40,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         // Animation progress for the circle (0-1 over first 70% of animation)
         public float CircleAnimationProgress { get; set; }
 
-
+        public int MaxValue;
 
 
 
@@ -58,12 +54,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
-            NextTransitionTime = TimeSpan.Zero + AnimationInterval;
+            MaxValue = FindMaxColumnValue();
         }
 
 
 
-        
+        private int FindMaxColumnValue()
+        {
+            return TimerSegments.Max(segment => segment.Value);
+        }
 
 
 

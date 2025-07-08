@@ -9,8 +9,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
     public interface IPaintManager
     {
-        SKPaint CreateInnerSegmentPaint();
-        SKPaint CreateOuterSegmentPaint(float circleAnimationProgress);
+        SKPaint CreateInnerSegmentPaint(AnimatedTimerColumn column);
+        SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint CreateColumnPaint();
         SKPaint CreateNumberPaint();
         SKFont CreateNumberFont();
@@ -30,9 +30,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        private float CalculateOpacityMultiplier(float normalizedAnimationProgress)
+        private float CalculateOpacityMultiplier(AnimatedTimerColumn column)
         {
-            return 1.0f - normalizedAnimationProgress;
+            return 1.0f - column.CircleAnimationProgress;
         }
 
         private float TESTCalculateOpacityMultiplier(float circleAnimationProgress)
@@ -54,22 +54,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public SKPaint CreateInnerSegmentPaint()
+        public SKPaint CreateInnerSegmentPaint(AnimatedTimerColumn column)
         {
+            float opacityMultiplier = CalculateOpacityMultiplier(column);
+            byte alpha = (byte)(opacityMultiplier * 255);
+
             return new SKPaint()
             {
 
-           
-                Color = new SKColor(255, 255, 255, 40).WithAlpha(AnimatedColumnSettings.OuterCircleOpacity),
+                
+                Color = AnimatedColumnSettings.MainPageDarkerColor,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
 
             };
         }
 
-        public SKPaint CreateOuterSegmentPaint(float circleAnimationProgress)
+        public SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn  column)
         {
-            float opacityMultiplier = CalculateOpacityMultiplier(circleAnimationProgress);
+            float opacityMultiplier = CalculateOpacityMultiplier(column);
             
             byte alpha = (byte)(opacityMultiplier * 255);
 
@@ -94,7 +97,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKPaint()
             {
-                Color = new SKColor(49, 50, 68),
+                Color = AnimatedColumnSettings.TESTColumnColor,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };

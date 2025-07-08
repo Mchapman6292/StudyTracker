@@ -23,15 +23,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
 
         void NEWUpdateIsAnimating(AnimatedTimerColumn column, bool isAnimating);
-        void NEWUpdateAnimationStartTime(AnimatedTimerColumn column, TimeSpan lastAnimationStartTime);
-
+ 
 
         int ExtractTimeDigitForColumn(AnimatedTimerColumn column, TimeSpan elapsed);
 
 
         AnimatedTimerSegment NEWFindNewTimeSegmentByTimeDigit(AnimatedTimerColumn column, int timeDigit);
         void UpdateFocusedSegment(AnimatedTimerColumn column, AnimatedTimerSegment segment);
-        void NEWUpdateCurrentAnimationEndTime(AnimatedTimerColumn column, TimeSpan elapsed);
 
 
 
@@ -68,13 +66,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        private void LogColumn(List<AnimatedTimerColumn> columns)
-        {
-            var column = columns.FirstOrDefault();
-
-            _appLogger.Debug($"Transition time set to {column.NextTransitionTime}.");
-        }
-
+    
 
 
 
@@ -92,7 +84,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                     return totalSeconds % segmentCount;
                 case ColumnUnitType.SecondsLeadingDigit:
                     var result = (totalSeconds / 10) % segmentCount;
-                    _appLogger.Debug($"ColumnValue calculated: {result}.");
                     return result;
                 case ColumnUnitType.MinutesSingleDigits:
                     return minutes % 10;
@@ -105,16 +96,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 default:
                     return 0;
             }
-        }
-
-        private void UpdateNextTransitionTime(AnimatedTimerColumn column)
-        {
-            var previous = column.NextTransitionTime;
-            var next = column.NextTransitionTime += column.AnimationInterval;
-
-            column.NextTransitionTime += column.AnimationInterval;
-
-            _appLogger.Debug($"Transition time updated by {column.NextTransitionTime} + {column.AnimationInterval} = {column.NextTransitionTime}.");
         }
 
 
@@ -134,13 +115,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public float TESTCalculateCircleAnimationProgress(AnimatedTimerColumn column)
         {
-            return column.BaseAnimationProgress / AnimatedColumnSettings.CircleAnimationRatio;
+            return column.BaseAnimationProgress / AnimatedColumnSettings.CircleAnimationDurationRatio;
         }
 
 
         public float CalculateCircleAnimationProgress(AnimatedTimerColumn column)
         {
-            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationRatio;
+            float circleAnimationRatio = AnimatedColumnSettings.CircleAnimationDurationRatio;
             float result;
 
             if (column.BaseAnimationProgress > circleAnimationRatio)
@@ -177,13 +158,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
-
-        public void NEWUpdateAnimationStartTime(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            var old = column.AnimationStartTime;
-            column.AnimationStartTime = elapsed;
-            _appLogger.Debug($"Last animation startTime updated to {column.AnimationStartTime}. Previous value : {old}.");
-        }
 
 
 
@@ -240,12 +214,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             column.FocusedSegment = segment;
     
-        }
-
-        public void NEWUpdateCurrentAnimationEndTime(AnimatedTimerColumn column, TimeSpan elapsed)
-        {
-            column.CurrentAnimationEndTime = elapsed + AnimatedColumnSettings.ScrollAnimationTimespan;
-            _appLogger.Debug($"Current animation end time updated to: {column.CurrentAnimationEndTime}");
         }
 
 
@@ -316,7 +284,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (column.ColumnType)
             {
@@ -349,7 +317,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             ColumnUnitType columnType = column.ColumnType;
 
-            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDuration;
+            float animationDurationFloat = AnimatedColumnSettings.ScrollAnimationDurationRatio;
 
             switch (columnType)
             {
@@ -399,24 +367,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress)
         {
             column.BaseAnimationProgress = animationProgress;
-
-            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"ANIMATION progress updated to {column.BaseAnimationProgress}.");
-            }
-
         }
 
 
         public void WORKINGUpdateNormalizedAnimationProgress(AnimatedTimerColumn column, float scolumnScrollProgress)
         {
             column.ColumnScrollProgress = scolumnScrollProgress;
-
-
-            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"NORMALIZEDANIMATION progress updated to {column.ColumnScrollProgress}.");
-            }
         }
 
 
