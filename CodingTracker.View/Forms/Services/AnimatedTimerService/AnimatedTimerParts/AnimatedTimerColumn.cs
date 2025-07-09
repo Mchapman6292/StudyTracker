@@ -28,7 +28,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsAnimating { get; set; }
 
-        public bool PassedFirstTransition { get; set; } 
+        public bool PassedFirstTransition { get; set; } = false;
 
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
@@ -73,15 +73,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
-        public void UpdateTargetValue()
-        {
-            if (TargetValue == MaxValue)
-            {
-                TargetValue = 0;
-            }
-
-            else TargetValue = TargetValue + 1;
-        }
+  
 
     
 
