@@ -37,15 +37,16 @@ namespace CodingTracker.View.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            CustomizableEdges customizableEdges4 = new CustomizableEdges();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
+            CustomizableEdges customizableEdges7 = new CustomizableEdges();
+            CustomizableEdges customizableEdges8 = new CustomizableEdges();
+            CustomizableEdges customizableEdges5 = new CustomizableEdges();
+            CustomizableEdges customizableEdges6 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
             newTestButton = new Guna2GradientButton();
             skControlTest = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            timeDisplayLabel = new Guna2HtmlLabel();
             mainPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,24 +63,24 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
+            mainPanel.Controls.Add(timeDisplayLabel);
             mainPanel.Controls.Add(newTestButton);
             mainPanel.Controls.Add(skControlTest);
-            mainPanel.CustomizableEdges = customizableEdges3;
+            mainPanel.CustomizableEdges = customizableEdges7;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
-            mainPanel.Margin = new Padding(3, 4, 3, 4);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(80, 0, 0, 0);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges8;
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
-            mainPanel.Size = new Size(1486, 960);
+            mainPanel.Size = new Size(1300, 720);
             mainPanel.TabIndex = 0;
             // 
             // newTestButton
             // 
-            newTestButton.CustomizableEdges = customizableEdges1;
+            newTestButton.CustomizableEdges = customizableEdges5;
             newTestButton.DisabledState.BorderColor = Color.DarkGray;
             newTestButton.DisabledState.CustomBorderColor = Color.DarkGray;
             newTestButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -87,11 +88,10 @@ namespace CodingTracker.View.Forms
             newTestButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             newTestButton.Font = new Font("Segoe UI", 9F);
             newTestButton.ForeColor = Color.White;
-            newTestButton.Location = new Point(0, 4);
-            newTestButton.Margin = new Padding(3, 4, 3, 4);
+            newTestButton.Location = new Point(0, 3);
             newTestButton.Name = "newTestButton";
-            newTestButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            newTestButton.Size = new Size(82, 60);
+            newTestButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            newTestButton.Size = new Size(72, 45);
             newTestButton.TabIndex = 7;
             newTestButton.Text = "Test Button";
             newTestButton.Click += newTestButton_Click;
@@ -100,21 +100,31 @@ namespace CodingTracker.View.Forms
             // 
             skControlTest.BackColor = Color.FromArgb(35, 34, 50);
             skControlTest.ForeColor = Color.FromArgb(35, 34, 50);
-            skControlTest.Location = new Point(58, 123);
-            skControlTest.Margin = new Padding(3, 4, 3, 4);
+            skControlTest.Location = new Point(51, 92);
             skControlTest.Name = "skControlTest";
-            skControlTest.Size = new Size(1195, 787);
+            skControlTest.Size = new Size(1046, 590);
             skControlTest.TabIndex = 0;
+            // 
+            // timeDisplayLabel
+            // 
+            timeDisplayLabel.AutoSize = false;
+            timeDisplayLabel.BackColor = Color.Transparent;
+            timeDisplayLabel.Font = new Font("Segoe UI", 13F);
+            timeDisplayLabel.ForeColor = Color.HotPink;
+            timeDisplayLabel.Location = new Point(1071, 47);
+            timeDisplayLabel.Name = "timeDisplayLabel";
+            timeDisplayLabel.Size = new Size(157, 47);
+            timeDisplayLabel.TabIndex = 8;
+            timeDisplayLabel.Text = "guna2HtmlLabel1";
             // 
             // TestForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1486, 960);
+            ClientSize = new Size(1300, 720);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "TestForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Modern Timer Test";
@@ -130,5 +140,6 @@ namespace CodingTracker.View.Forms
 
         private SKControl skControlTest;
         private Guna2GradientButton newTestButton;
+        private Guna2HtmlLabel timeDisplayLabel;
     }
 }

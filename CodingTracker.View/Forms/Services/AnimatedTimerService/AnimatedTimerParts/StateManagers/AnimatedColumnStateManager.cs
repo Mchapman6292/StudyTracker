@@ -18,7 +18,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
         float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
-        void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newValue);
         void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue);
         void UpdateScrollOffset(AnimatedTimerColumn column, float scrollOffSet);
 
@@ -139,15 +138,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
   
-
-        public void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newValue)
-        {
-            column.TargetValue = newValue;
-        }
-
         public void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue)
         {
-            column.PreviousValue = previousValue;
+            column.CurrentValue = previousValue;
         }
 
 
