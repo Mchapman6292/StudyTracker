@@ -147,7 +147,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue)
         {
-            column.PreviousValue = previousValue;
+            column.CurrentValue = previousValue;
         }
 
 

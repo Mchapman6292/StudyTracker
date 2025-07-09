@@ -7,6 +7,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CSharpMarkup.WinUI;
+using LiveChartsCore.Drawing.Segments;
 using OpenTK.Graphics.ES11;
 using SkiaSharp;
 using System.Buffers.Text;
@@ -21,9 +22,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         */
 
 
-        void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-
         void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+        void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
     }
 
@@ -168,8 +168,30 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        private bool TESTShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
+        {
+            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                return true;
+            }
 
-  
+            // Subtract the result of the module operation to get a value between 0 and the animation interval.
+            double secondsUntilChange = column.AnimationInterval.TotalSeconds - (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds);
+
+            var result = secondsUntilChange <= 1.0;
+
+            if (column.ColumnType == ColumnUnitType.SecondsLeadingDigit && result == true)
+            {
+                _appLogger.Debug($"SECONDS LEADING DIGITS ANIMATION STARTED AT: {elapsed.ToString(@"mm\:ss")}");
+            }
+
+            return result;
+        }
+
+
+
+
+
 
 
 
@@ -229,13 +251,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void WORKINGDrawTimerPaths(SKCanvas canvas, AnimatedTimerColumn column, TimeSpan elapsed,bool overLayIsAnimating, ColumnAnimationSetting animationDirection)
+        public void WORKINGDrawTimerPaths(SKCanvas canvas, AnimatedTimerColumn column, TimeSpan elapsed,bool isCircleStatic, ColumnAnimationSetting animationDirection)
         {
 
             SKPath innerSegmentPath;
             SKPath outerOverlayPath;
 
-            _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, overLayIsAnimating);
+            _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, isCircleStatic);
 
             using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
             using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
@@ -253,7 +275,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        public void OLDDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
@@ -269,7 +291,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         
 
-                column.PreviousValue = column.TargetValue;
+                column.CurrentValue = column.TargetValue;
                 column.TargetValue = newValue;
       
 
@@ -318,11 +340,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 else
                 {
                     column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
                 }
 
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed,isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                WORKINGNumberDraw(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
  
 
             }
@@ -330,7 +353,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void WORKINGNumberDraw(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        public void WORKINGNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
      
 
@@ -399,7 +422,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
         #region TESTMethods
 
 
@@ -424,7 +446,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             else
             {
-                if(elapsed < column.AnimationInterval && column.PreviousValue == 0 && column.TargetValue == 1)
+                if(elapsed < column.AnimationInterval && column.CurrentValue == 0 && column.TargetValue == 1)
                 {
                     baseY = column.Location.Y;
                     yTranslation = baseY + (easedProgress * AnimatedColumnSettings.SegmentHeight);
@@ -444,8 +466,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-
-        private float NEWTESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        // 1 extra animation, wrong animtion from 0-1 after first
+        private float YTranslatioExtraAnimationBug(AnimatedTimerColumn column, TimeSpan elapsed)
         {
             float easedProgress = CalculateEasingValue(column);
 
@@ -453,7 +475,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             float yTranslation;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetValue == 0 && column.PreviousValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
+            if (column.TargetValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
             {
                 // Wrapping from max to 0, so animate downward from max position.
                 baseY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
@@ -479,7 +501,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         // Are the drawing and values not matched after 9?
 
-        public void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        public void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
@@ -488,15 +510,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             foreach (var column in columns)
             {
-
-           
-
                 int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
 
 
-                if (newValue != column.TargetValue)
+                // Default values initialized as 0 and 1 for current and target
+                // When the elapsed was <1 , new value != targetValue
+                // This mean that the current value was updated to 1 and the target updated to 0.
+
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+                if (newValue != column.TargetValue || elapsed < TimeSpan.FromSeconds(1))
                 {
-                    column.PreviousValue = column.TargetValue;
+                    column.CurrentValue = column.TargetValue;
                     column.TargetValue = newValue;
 
                     WORKINGSetFocusedSegmentByValue(column, newValue);
@@ -504,13 +528,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                 // 2. Determine if this column should animate right now.
-                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+                column.IsAnimating = TESTShouldColumnAnimate(elapsed, column);
 
                 if (column.IsAnimating)
                 {
-
-
-       
 
                     isCircleStatic = false;
 
@@ -522,9 +543,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    column.YTranslation = NEWTESTCalculateYTranslation(column, elapsed);
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
 
-            
+
+                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                    {
+                        _appLogger.Debug($"Old Y Translation: {column.YTranslation}, new: {yTranslation}");
+                    }
+
+
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+              
 
                 }
                 else
@@ -536,11 +567,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                WORKINGNumberDraw(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
             }
         }
+        
 
 
 
@@ -548,7 +580,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             string logMessage = $"\n \n"
                                 +$"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
-                                + $"\n-----Previous Value : {column.PreviousValue}, Target Value : {column.TargetValue}.-----"
+                                + $"\n-----Previous Value : {column.CurrentValue}, Target Value : {column.TargetValue}.-----"
                                 + $"\n-----IsAnimating: {column.IsAnimating}.-----"
                                 + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
                                 + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----";
@@ -567,6 +599,142 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         public string FormatElapsedTimeSPan(TimeSpan elapsed)
         {
             return elapsed.ToString(@"mm\:ss\.fff");
+        }
+
+
+
+
+
+
+
+
+
+
+        private float WORKINGCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            float easedProgress = CalculateEasingValue(column);
+
+            float baseY;
+            float yTranslation;
+
+            // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
+            if (column.TargetValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
+            {
+                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(FormatElapsedTimeSPan(elapsed))}");
+
+                // Wrapping from max to 0, so animate downward from max position.
+                baseY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
+                yTranslation = baseY - (easedProgress * baseY);
+                return yTranslation;
+
+            }
+
+            else 
+            {
+
+                baseY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                float endY = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                float distance = endY - baseY;
+                yTranslation = baseY + (easedProgress * distance);
+                
+
+            }
+
+            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits && elapsed > TimeSpan.FromSeconds(9))
+            {
+                LogAnimatedTimerColumn(column, elapsed, baseY, easedProgress, yTranslation);
+            }
+
+  
+
+            return yTranslation;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+                int newValue = WORKINGCalculateColumnValue(elapsed, column.ColumnType);
+
+
+                // Default values initialized as 0 and 1 for current and target
+                // When the elapsed was <1 , new value != targetValue
+                // This mean that the current value was updated to 1 and the target updated to 0.
+
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+                if (newValue != column.TargetValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
+                {
+                    column.CurrentValue = column.TargetValue;
+                    column.TargetValue = newValue;
+
+                    column.PassedFirstTransition = true;
+                    WORKINGSetFocusedSegmentByValue(column, newValue);
+                }
+
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = TESTShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                    {
+                        _appLogger.Debug($"Old Y Translation: {column.YTranslation}, new: {yTranslation}");
+                    }
+
+
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+
+
+                }
+                else
+                {
+
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+                }
+
+                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+            }
         }
 
     }

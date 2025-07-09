@@ -110,7 +110,22 @@ namespace CodingTracker.View.Forms
 
         }
 
+        public string FormatElapsedTimeSPan(TimeSpan elapsed)
+        {
+            return elapsed.ToString(@"mm\:ss\.fff");
+        }
 
+
+
+        public void UpdateTimeDisplayLAbel()
+        {
+            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+
+            string elapsedString = FormatElapsedTimeSPan(elapsed);
+
+            timeDisplayLabel.Text = elapsedString;
+
+        }
 
 
   
@@ -126,8 +141,9 @@ namespace CodingTracker.View.Forms
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             _animatedTimerManager.UpdateAndRender(skControlTest);
+            UpdateTimeDisplayLAbel();
 
-   
+
 
         }
 

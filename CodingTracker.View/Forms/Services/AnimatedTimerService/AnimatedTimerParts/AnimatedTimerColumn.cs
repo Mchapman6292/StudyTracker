@@ -28,12 +28,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsAnimating { get; set; }
 
+        public bool PassedFirstTransition { get; set; } 
+
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
         public int TargetValue { get; set; } = 1;
 
 
-        public int PreviousValue { get; set; } = 0;
+        public int CurrentValue { get; set; } = 0;
 
 
 
