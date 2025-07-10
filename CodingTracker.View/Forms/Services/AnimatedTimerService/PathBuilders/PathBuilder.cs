@@ -39,9 +39,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
                 circleRadius = AnimatedColumnSettings.MaxRadius;
             }
 
+            else
+            {
 
-            float easingValue = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.CircleAnimation);
-            circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
+                float easingValue = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.CircleAnimation);
+                circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
+            }
+
 
      
 

@@ -21,7 +21,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
-
+        void LogColumnBools();
         List<AnimatedTimerColumn> ReturnTimerColumns();
     }
 
@@ -67,6 +67,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _appLogger.Debug($"Segment position : X = {segment.Location.X}   Y = {segment.Location.Y}");
         }
 
+        public void LogColumnBools()
+        {
+            string message = string.Empty;
+
+            foreach (var column in _columns)
+            {
+                message += $"ColumnType: {column.ColumnType}, PassedFirstTransition: {column.PassedFirstTransition.ToString()}\n";
+            }
+            _appLogger.Info(message);
+        }
          
 
         public void SortColumnsList()
@@ -82,7 +92,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.WORKINGDraw(canvas, elapsed, _columns);
+            _animatedRenderer.TESTDraw(canvas, elapsed, _columns);
         }
 
 
