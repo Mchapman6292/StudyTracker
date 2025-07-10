@@ -57,7 +57,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
 
-            bool isCircleStatic = true;
+            bool isCircleStatic;
 
             foreach (var column in columns)
             {
