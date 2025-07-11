@@ -625,8 +625,132 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         isCircleStatic = true;
                     }
 
+                SKRect columnRectangle = _pathBuilder.CreateRectangleForSegment(column);
+
+                // shadow should be drawn before rectangle?
+                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+            }
+        }
+
+
+
+
+
+
+
+
+        public void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+
+
+                SKRect shadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+
+                // Animation begins one second before the column changes so we add one second.
+                //TODO
+                // Change ColumnAnimationInterval initialization by -1 to fix.
+                //This band aid does not handle 0-1 animations.
+
+
+
+
+                // The liveTargetValue == currentValue + 1 = TargetValue?
+                int liveTargetValue = CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+
+
+
+
+
+                // Default values initialized as 0 and 1 for current and target
+                // When the elapsed was <1 , new value != targetValue
+                // This mean that the current value was updated to 1 and the target updated to 0.
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+
+
+                /*
+                if (liveTargetValue != column.TargetValue && elapsed < column.AnimationInterval && column.PassedFirstTransition == false)
+                {
+                    column.CurrentValue = column.TargetValue;
+                    column.TargetValue = liveTargetValue;
+
+                }
+                */
+
+
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+                if (liveTargetValue != column.TargetValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
+                {
+                    column.CurrentValue = column.TargetValue;
+                    column.TargetValue = liveTargetValue;
+
+                    column.PassedFirstTransition = true;
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+
+
+
+
+
+
+
+                WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+
+
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+                    _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
+                   
+             
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+              
+           
+
+                }
+                else
+                {
+                    // shadow should be drawn before rectangle?
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+
+                    _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
+                    
+             
+                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawInnerPathOnly(canvas, column);
                     WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
