@@ -16,7 +16,7 @@ namespace CodingTracker.View.Forms
         private System.ComponentModel.IContainer components = null;
         // Control declarations
         private Guna.UI2.WinForms.Guna2BorderlessForm borderlessForm;
-        private Guna.UI2.WinForms.Guna2Panel mainPanel;
+        private Guna.UI2.WinForms.Guna2GradientPanel mainPanel;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -42,7 +42,7 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges1 = new CustomizableEdges();
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
-            mainPanel = new Guna2Panel();
+            mainPanel = new Guna2GradientPanel();
             timeDisplayLabel = new Guna2HtmlLabel();
             newTestButton = new Guna2GradientButton();
             skControlTest = new SKControl();
@@ -68,6 +68,7 @@ namespace CodingTracker.View.Forms
             mainPanel.Controls.Add(skControlTest);
             mainPanel.CustomizableEdges = customizableEdges3;
             mainPanel.FillColor = Color.FromArgb(50, 49, 65);
+            mainPanel.FillColor2 = Color.FromArgb(50, 49, 65);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.ShadowDecoration.Color = Color.FromArgb(80, 0, 0, 0);

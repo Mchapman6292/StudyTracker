@@ -55,7 +55,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
                 float shadowOffset = AnimatedColumnSettings.ColumnElevationHeight;
                 baseRectangle.Offset(-shadowOffset, -shadowOffset);
-                baseRectangle.Inflate(2, 2);
+                baseRectangle.Inflate(-2, -2);
                 canvas.DrawRect(baseRectangle, leftShadowPaint);
             }
             canvas.Restore();
@@ -66,13 +66,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             canvas.Save();
 
-           
 
             using (var rightShadowPaint = _paintManager.CreateRightSideDarkShadowPaint(intensity, AnimatedColumnSettings.ColumnBottomRightShadow))
             {
                 float shadowOffset = AnimatedColumnSettings.ColumnElevationHeight;
 
-                baseRectangle.Offset(-shadowOffset, -shadowOffset);
+                baseRectangle.Offset(+shadowOffset, +shadowOffset);
                 baseRectangle.Inflate(2, 2);
                 canvas.DrawRect(baseRectangle, rightShadowPaint);
             }

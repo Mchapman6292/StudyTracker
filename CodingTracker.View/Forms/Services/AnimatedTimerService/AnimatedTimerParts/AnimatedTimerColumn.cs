@@ -84,10 +84,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
                 return true;
             }
             return false;
-
-
         }
-  
+
+   
 
     
 

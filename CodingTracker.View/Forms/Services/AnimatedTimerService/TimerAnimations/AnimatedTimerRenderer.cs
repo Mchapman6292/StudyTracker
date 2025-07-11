@@ -153,7 +153,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-            using (var rectPaint = _paintManager.CreateColumnPaint())
+            using (var rectPaint = _paintManager.CreateColumnPaint(column.IsColumnActive))
             {
                 canvas.DrawRect(columnRectangle, rectPaint);
             }
@@ -354,7 +354,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
 
 
-            using (var paint = _paintManager.CreateNumberPaint())
+            using (var paint = _paintManager.CreateNumberPaint(column.IsColumnActive))
             using (var font = _paintManager.CreateNumberFont())
             {
                 canvas.Save();
@@ -381,11 +381,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     segment.UpdatePositionAndCenterPoint(column.Location.X, newSegmentY);
 
-                    // Calculate text center position
+       
                     float centerX = column.Location.X + (segment.SegmentWidth / 2f);
                     float centerY = baseY + (segment.SegmentHeight / 2f) + (segment.TextSize / 2f);
 
-                    // Draw at the base position - translation handles the scroll
+
                     canvas.DrawText(segment.Value.ToString(), centerX, centerY, font, paint);
                 }
 
@@ -648,7 +648,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
 
 
-                SKRect shadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
 
                 // Animation begins one second before the column changes so we add one second.
                 //TODO
@@ -705,6 +706,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 if (column.IsAnimating)
                 {
 
+                    if(column.IsColumnActive == false)
+                    {
+                        column.IsColumnActive = true;
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
+                    }
+
                     isCircleStatic = false;
 
                     float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
@@ -722,8 +729,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
 
-                    _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
-                    _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
+                    _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
+             
 
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
@@ -739,8 +747,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
                     isCircleStatic = true;
 
-                    _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
-                    _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
+
+
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
+                    _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
+               
 
 
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
