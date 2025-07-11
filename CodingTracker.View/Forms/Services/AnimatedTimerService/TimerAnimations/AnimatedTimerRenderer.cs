@@ -5,6 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CSharpMarkup.WinUI;
 using SkiaSharp;
@@ -14,14 +15,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     public interface IAnimatedTimerRenderer
     {
 
+
+
         /*
         void NEWDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
         */
 
 
         void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        
-        void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+
+        void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
     }
 
@@ -34,8 +37,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IPathBuilder _pathBuilder;
         private readonly IAnimatedColumnStateManager _columnStateManager;
         private readonly IAnimatedSegmentStateManager _segmentStateManager;
+        private readonly IShadowBuilder _shadowBuilder;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
@@ -44,6 +48,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _pathBuilder = pathBuilder;
             _columnStateManager = columnStateManager;
             _segmentStateManager = segmentStateManager;
+            _shadowBuilder = shadowBuilder;
         }
 
 
@@ -148,7 +153,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-            using (var rectPaint = _paintManager.CreateColumnPaint())
+            using (var rectPaint = _paintManager.CreateColumnPaint(column.IsColumnActive))
             {
                 canvas.DrawRect(columnRectangle, rectPaint);
             }
@@ -160,19 +165,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-        public void DrawInnerPathOnly(SKCanvas canvas, AnimatedTimerColumn column)
-        {
-            SKPath innerSegmentPath = _pathBuilder.CreateRectanglePath(column);
-
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
-            {
-                canvas.Save();
-                canvas.Translate(0, +column.YTranslation);
-                canvas.DrawPath(innerSegmentPath, innerPaint);
-                canvas.Restore();
-            }
-        }
 
 
 
@@ -342,7 +334,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, isCircleStatic);
 
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
+            using (var innerPaint = _paintManager.TESTCreateInnerSegmentPaint(column))
             using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
             {
 
@@ -362,7 +354,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
 
 
-            using (var paint = _paintManager.CreateNumberPaint())
+            using (var paint = _paintManager.CreateNumberPaint(column.IsColumnActive))
             using (var font = _paintManager.CreateNumberFont())
             {
                 canvas.Save();
@@ -389,11 +381,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     segment.UpdatePositionAndCenterPoint(column.Location.X, newSegmentY);
 
-                    // Calculate text center position
+       
                     float centerX = column.Location.X + (segment.SegmentWidth / 2f);
                     float centerY = baseY + (segment.SegmentHeight / 2f) + (segment.TextSize / 2f);
 
-                    // Draw at the base position - translation handles the scroll
+
                     canvas.DrawText(segment.Value.ToString(), centerX, centerY, font, paint);
                 }
 
@@ -591,39 +583,176 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
-                    // 2. Determine if this column should animate right now.
-                    column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
 
-                    if (column.IsAnimating)
+                if (column.IsAnimating)
+                {
+
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+
+
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+
+
+                }
+                else
+                {
+
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+                }
+
+
+
+                // shadow should be drawn before rectangle?
+                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+            }
+        }
+
+
+
+
+
+
+
+        // Size of the numbers increase when focused.
+        // Possibly need to create another intersect of the column and the segment to have the segment drawn independently?
+
+        public void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+
+
+                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+
+                // Animation begins one second before the column changes so we add one second.
+                //TODO
+                // Change ColumnAnimationInterval initialization by -1 to fix.
+                //This band aid does not handle 0-1 animations.
+
+
+
+
+                // The liveTargetValue == currentValue + 1 = TargetValue?
+                int liveTargetValue = CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+
+
+
+
+
+                // Default values initialized as 0 and 1 for current and target
+                // When the elapsed was <1 , new value != targetValue
+                // This mean that the current value was updated to 1 and the target updated to 0.
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+
+
+                /*
+                if (liveTargetValue != column.TargetValue && elapsed < column.AnimationInterval && column.PassedFirstTransition == false)
+                {
+                    column.CurrentValue = column.TargetValue;
+                    column.TargetValue = liveTargetValue;
+
+                }
+                */
+
+
+                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
+                if (liveTargetValue != column.TargetValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
+                {
+                    column.CurrentValue = column.TargetValue;
+                    column.TargetValue = liveTargetValue;
+
+                    column.PassedFirstTransition = true;
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+
+
+
+
+
+
+
+                WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+
+                    if(column.IsColumnActive == false)
                     {
-
-                        isCircleStatic = false;
-
-                        float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
-                        float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
-                        float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
-
-                        _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
-                        _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
-                        _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
-
-                        float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
-
-
-
-
-                        column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
-
-
-
-
+                        column.IsColumnActive = true;
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
-                    else
-                    {
 
-                        column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
-                        isCircleStatic = true;
-                    }
+                    isCircleStatic = false;
+
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+
+
+
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
+                    _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
+             
+
+                    WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+          
+                    WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+
+                }
+                else
+                {
+                    // shadow should be drawn before rectangle?
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+
+
+
+                    _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
+                    _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
+               
+
 
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
@@ -632,9 +761,27 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 }
             }
-
         }
+
+
+
+
+        public void DrawInnerPathOnly(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            SKPath innerSegmentPath = _pathBuilder.CreateSegmentRectanglePath(column);
+
+            using (var innerPaint = _paintManager.TESTCreateInnerSegmentPaint(column))
+            {
+                canvas.Save();
+                canvas.Translate(0, +column.YTranslation);
+                canvas.DrawPath(innerSegmentPath, innerPaint);
+                canvas.Restore();
+            }
+        }
+
+
     }
+}
 
 #endregion
 

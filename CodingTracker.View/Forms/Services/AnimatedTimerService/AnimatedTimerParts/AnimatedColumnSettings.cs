@@ -44,10 +44,93 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public const byte OuterCircleOpacity = 64;
 
 
-        public static SKColor FormBackgroundColor = new SKColor(35, 34, 50);
+        public static SKColor FormBackgroundColor = new SKColor(50, 49, 65);
         public static SKColor TESTColumnColor = new SKColor(49, 50, 68);
 
         public static SKColor MainPageDarkerColor = new SKColor(35, 34, 50);
+
+
+
+
+
+        public static SKColor TestHotPink = SKColors.HotPink;
+
+        public static SKColor InactiveColumnColor = SKColors.Gray;
+
+
+
+
+        // Catppuccin Mocha Color Palette
+        public static SKColor CatppuccinBase = new SKColor(30, 30, 46);        // #1e1e2e - Main background
+        public static SKColor CatppuccinSurface0 = new SKColor(49, 50, 68);    // #313244 - Container/Column background
+        public static SKColor CatppuccinSurface1 = new SKColor(69, 71, 90);    // #45475a - Borders, dividers
+        public static SKColor CatppuccinText = new SKColor(205, 214, 244);     // #cdd6f4 - Primary text/numbers
+        public static SKColor CatppuccinSubtext = new SKColor(166, 173, 200);  // #a6adc8 - Secondary/inactive text
+        public static SKColor CatppuccinPink = new SKColor(245, 194, 231);     // #f5c2e7 - Accent highlights
+        public static SKColor CatppuccinMauve = new SKColor(203, 166, 247);    // #cba6f7 - Animations, glow effects
+        public static SKColor CatppuccinBlue = new SKColor(137, 180, 250);     // #89b4fa - Secondary accent
+
+
+
+        // Base color RGB(35, 34, 50) = #232232
+        public static SKColor ElevationBase = new SKColor(35, 34, 50);         // 0dp - Base background
+        public static SKColor Elevation1dp = new SKColor(46, 45, 66);          // 1dp - ~4% lighter
+        public static SKColor Elevation3dp = new SKColor(52, 51, 74);          // 3dp - ~6% lighter
+        public static SKColor Elevation6dp = new SKColor(58, 57, 82);          // 6dp - ~8% lighter
+        public static SKColor Elevation8dp = new SKColor(64, 62, 90);          // 8dp - ~10% lighter
+        public static SKColor Elevation12dp = new SKColor(70, 68, 98);         // 12dp - ~12% lighter
+        public static SKColor Elevation16dp = new SKColor(76, 74, 106);        // 16dp - ~14% lighter
+        public static SKColor Elevation24dp = new SKColor(82, 80, 114);        // 24dp - ~16% lighter
+
+        // Shadow properties
+        public static readonly SKColor ShadowColor = new SKColor(0, 0, 0, 64); // Black with 25% opacity
+        public static readonly float[] ShadowBlurRadii = new float[]
+        {
+            0f,    // 0dp
+            5f,    // 1dp
+            8f,    // 3dp
+            10f,   // 6dp
+            12f,   // 8dp
+            14f,   // 12dp
+            16f,   // 16dp
+            20f    // 24dp
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Column Shadow Colors
+        public static SKColor ColumnTopLeftShadow = new SKColor(50, 49, 65, 80);      // Highlight/rim light effect
+        public static SKColor ColumnBottomRightShadow = new SKColor(0, 0, 0, 100);    // Drop shadow for elevation
+
+        // Column Shadow Geometry
+        public const float ColumnElevationHeight = 6f;                                // How high column appears above background
+        public const float TopLeftShadowBlurRadius = 6f;                             // Blur amount for highlight edge
+        public const float BottomRightShadowBlurRadius = 6f;                         // Blur amount for drop shadow
+
+        // Alternative Shadow Intensities
+        public static SKColor ColumnTopLeftShadowWeak = new SKColor(45, 44, 60, 60);      // Less pronounced highlight
+        public static SKColor ColumnTopLeftShadowIntense = new SKColor(60, 59, 75, 100);  // More pronounced highlight
+        public static SKColor ColumnDropShadowWeak = new SKColor(0, 0, 0, 80);            // Subtle elevation effect
+        public static SKColor ColumnDropShadowIntense = new SKColor(0, 0, 0, 150);
+
+
+
+
+
+
+
+
+
 
 
 
