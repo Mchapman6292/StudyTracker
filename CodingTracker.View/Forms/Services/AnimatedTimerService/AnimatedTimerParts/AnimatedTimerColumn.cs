@@ -50,6 +50,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int MaxValue;
 
+        public bool IsColumnActive { get; set; }
+
 
 
 
@@ -63,6 +65,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
             MaxValue = FindMaxColumnValue();
+            IsColumnActive = SetIsColumnActive();
         }
 
 
@@ -73,6 +76,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
+
+        private bool SetIsColumnActive()
+        {
+            if(ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                return true;
+            }
+            return false;
+
+
+        }
   
 
     

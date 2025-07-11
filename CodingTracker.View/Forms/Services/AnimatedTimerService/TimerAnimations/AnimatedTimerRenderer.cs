@@ -5,6 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CSharpMarkup.WinUI;
 using SkiaSharp;
@@ -14,14 +15,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     public interface IAnimatedTimerRenderer
     {
 
+
+
         /*
         void NEWDraw(SKCanvas canvas, SKRect bounds, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
         */
 
 
         void WORKINGDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        
-        void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+
+        void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
     }
 
@@ -34,8 +37,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IPathBuilder _pathBuilder;
         private readonly IAnimatedColumnStateManager _columnStateManager;
         private readonly IAnimatedSegmentStateManager _segmentStateManager;
+        private readonly IShadowBuilder _shadowBuilder;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
@@ -44,6 +48,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _pathBuilder = pathBuilder;
             _columnStateManager = columnStateManager;
             _segmentStateManager = segmentStateManager;
+            _shadowBuilder = shadowBuilder;
         }
 
 
@@ -160,19 +165,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
-        public void DrawInnerPathOnly(SKCanvas canvas, AnimatedTimerColumn column)
-        {
-            SKPath innerSegmentPath = _pathBuilder.CreateRectanglePath(column);
-
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
-            {
-                canvas.Save();
-                canvas.Translate(0, +column.YTranslation);
-                canvas.DrawPath(innerSegmentPath, innerPaint);
-                canvas.Restore();
-            }
-        }
 
 
 
@@ -342,7 +334,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, isCircleStatic);
 
-            using (var innerPaint = _paintManager.CreateInnerSegmentPaint(column))
+            using (var innerPaint = _paintManager.TESTCreateInnerSegmentPaint(column))
             using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
             {
 
@@ -591,41 +583,41 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
-                    // 2. Determine if this column should animate right now.
-                    column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+                // 2. Determine if this column should animate right now.
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
 
-                    if (column.IsAnimating)
-                    {
+                if (column.IsAnimating)
+                {
 
-                        isCircleStatic = false;
+                    isCircleStatic = false;
 
-                        float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
-                        float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
-                        float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+                    float animationProgress = WORKINGCalculateAnimationProgress(elapsed);
+                    float normalizedProgress = WORKINGCalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
-                        _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
-                        _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
-                        _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                        float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
-
-
-
-
-                        column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
 
 
 
 
-                    }
-                    else
-                    {
+                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
 
-                        column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
-                        isCircleStatic = true;
-                    }
 
-                SKRect columnRectangle = _pathBuilder.CreateRectangleForSegment(column);
+
+
+                }
+                else
+                {
+
+                    column.YTranslation = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+                }
+
+
 
                 // shadow should be drawn before rectangle?
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
@@ -642,6 +634,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        // Size of the numbers increase when focused.
+        // Possibly need to create another intersect of the column and the segment to have the segment drawn independently?
 
         public void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
@@ -730,13 +724,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
                     _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
-                   
-             
-                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+          
                     WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
-              
-           
+
+
 
                 }
                 else
@@ -747,18 +741,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     _shadowBuilder.DrawColumnRightShadow(canvas, shadowRectangle);
                     _shadowBuilder.DrawColumnLeftShadow(canvas, shadowRectangle);
-                    
-             
+
+
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawInnerPathOnly(canvas, column);
+                    WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                     WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
                 }
             }
-
         }
+
+
+
+
+        public void DrawInnerPathOnly(SKCanvas canvas, AnimatedTimerColumn column)
+        {
+            SKPath innerSegmentPath = _pathBuilder.CreateSegmentRectanglePath(column);
+
+            using (var innerPaint = _paintManager.TESTCreateInnerSegmentPaint(column))
+            {
+                canvas.Save();
+                canvas.Translate(0, +column.YTranslation);
+                canvas.DrawPath(innerSegmentPath, innerPaint);
+                canvas.Restore();
+            }
+        }
+
+
     }
+}
 
 #endregion
 

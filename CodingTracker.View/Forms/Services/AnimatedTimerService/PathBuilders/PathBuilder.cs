@@ -11,7 +11,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
     public interface IPathBuilder
     {
         void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath, TimeSpan elapsed, bool isCircleStatic);
-        SKPath CreateRectanglePath(AnimatedTimerColumn column);
+        SKPath CreateSegmentRectanglePath(AnimatedTimerColumn column);
     }
 
     public class PathBuilder : IPathBuilder
@@ -72,9 +72,24 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             return SKRect.Create(newLocation, rectangleSize);
         }
 
-        public SKPath CreateRectanglePath(AnimatedTimerColumn column)
+
+
+        private SKRect CreateSegmentRectangle(AnimatedTimerColumn column)
         {
-            SKRect columnRectangle = CreateSKRectangle(column);
+            float newY = column.Location.Y - column.YTranslation;
+
+
+            SKPoint newLocation = new SKPoint(column.Location.X, newY);
+            SKSize rectangleSize = new SKSize(AnimatedColumnSettings.SegmentWidth, AnimatedColumnSettings.SegmentHeight);
+
+            return SKRect.Create(newLocation, rectangleSize);
+        }
+
+
+
+        public SKPath CreateSegmentRectanglePath(AnimatedTimerColumn column)
+        {
+            SKRect columnRectangle = CreateSegmentRectangle(column);
 
             SKPath rectanglePath = new SKPath();
 
@@ -90,7 +105,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 
         public void CreateTimerPaths(AnimatedTimerColumn column, out SKPath innerSegmentPath, out SKPath outerOverlayPath, TimeSpan elapsed, bool isCircleStatic)
         {
-            SKPath rectanglePath = CreateRectanglePath(column);
+            SKPath rectanglePath = CreateSegmentRectanglePath(column);
             SKPath circlePath = CreateCirclePath(column, elapsed, isCircleStatic);
 
             outerOverlayPath = new SKPath();
