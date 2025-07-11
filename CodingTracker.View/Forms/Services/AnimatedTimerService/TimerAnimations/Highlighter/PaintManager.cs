@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using LiveChartsCore.Painting;
 using SkiaSharp;
@@ -14,6 +15,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint CreateColumnPaint();
         SKPaint CreateNumberPaint();
         SKFont CreateNumberFont();
+        SKPaint CreateTopLeftLightShadowPaint(ShadowIntensity intensity, SKColor lightColor);
+        SKPaint CreateRightSideDarkShadowPaint(ShadowIntensity intensity, SKColor darkColor);
     }
 
     public class PaintManager : IPaintManager
@@ -52,6 +55,29 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             }
         }
 
+        public SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column)
+        {
+            float opacityMultiplier = CalculateOpacityMultiplier(column);
+            byte alpha = (byte)(opacityMultiplier * 200);
+
+            var shader = SKShader.CreateLinearGradient(
+                new SKPoint(column.Location.X, column.Location.Y),
+                new SKPoint(column.Location.X + column.Width, column.Location.Y + column.Height),
+                new SKColor[] {
+                    AnimatedColumnSettings.CatppuccinMauve.WithAlpha((byte)(alpha * 0.6f)),
+                    AnimatedColumnSettings.CatppuccinPink.WithAlpha((byte)(alpha * 0.8f))
+                },
+                SKShaderTileMode.Clamp
+            );
+
+            return new SKPaint()
+            {
+                Shader = shader,
+                Style = SKPaintStyle.Fill,
+                IsAntialias = true
+            };
+        }
+
 
 
         public SKPaint CreateInnerSegmentPaint(AnimatedTimerColumn column)
@@ -85,16 +111,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-                
-                Color = new SKColor(49, 50, 68).WithAlpha(alpha),
+                Color = new SKColor(0, 0, 0).WithAlpha(shadowAlpha),
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 IsAntialias = true,
-
-
+                MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 4 * opacityMultiplier)
             };
         }
 
@@ -104,7 +128,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKPaint()
             {
-                Color = AnimatedColumnSettings.TESTColumnColor,
+                Color = AnimatedColumnSettings.CatppuccinSurface0,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };
@@ -114,7 +138,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKPaint()
             {
-                Color = SKColors.Lavender,
+                Color = AnimatedColumnSettings.CatppuccinText,
                 IsAntialias = true,
                 TextAlign = SKTextAlign.Center,
             };
