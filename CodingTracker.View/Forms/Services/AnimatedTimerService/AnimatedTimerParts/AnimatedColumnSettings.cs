@@ -99,7 +99,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-
+        public static SKColor CatppuccinRosewater = new SKColor(245, 224, 220);  // #f5e0dc - Soft highlights
+        public static SKColor CatppuccinFlamingo = new SKColor(242, 205, 205);   // #f2cdcd - Gentle accents
+        public static SKColor CatppuccinRed = new SKColor(243, 139, 168);        // #f38ba8 - Error/active states
+        public static SKColor CatppuccinMaroon = new SKColor(235, 160, 172);     // #eba0ac - Warm accents
+        public static SKColor CatppuccinPeach = new SKColor(250, 179, 135);      // #fab387 - Warm highlights
+        public static SKColor CatppuccinYellow = new SKColor(249, 226, 175);     // #f9e2af - Bright accents
+        public static SKColor CatppuccinGreen = new SKColor(166, 227, 161);      // #a6e3a1 - Success states
+        public static SKColor CatppuccinTeal = new SKColor(148, 226, 213);       // #94e2d5 - Cool accents
+        public static SKColor CatppuccinSky = new SKColor(137, 220, 235);        // #89dceb - Light blue accents
+        public static SKColor CatppuccinSapphire = new SKColor(116, 199, 236);   // #74c7ec - Medium blue
+        public static SKColor CatppuccinLavender = new SKColor(180, 190, 254);
 
 
 
