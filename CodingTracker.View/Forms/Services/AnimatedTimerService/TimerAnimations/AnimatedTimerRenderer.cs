@@ -153,7 +153,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-            using (var rectPaint = _paintManager.CreateColumnPaint(column.IsColumnActive))
+            using (var rectPaint = _paintManager.CreateColumnPaint(column))
             {
                 canvas.DrawRect(columnRectangle, rectPaint);
             }

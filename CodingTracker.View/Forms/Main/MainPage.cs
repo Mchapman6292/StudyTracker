@@ -6,6 +6,7 @@ using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.MainPageService.DonutChartManagers;
+using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
 using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Panels;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
 using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
@@ -159,6 +160,21 @@ namespace CodingTracker.View
         }
 
 
+        private void SetDurationPanelLegendColors()
+        {
+            zeroMinutesLegendPanel.FillColor = DurationPanelColors.Under30MinsFillColour1;
+            zeroMinutesLegendPanel.FillColor2 = DurationPanelColors.Under30MinsfillColour2;
+
+            lessThanOneHourLegendPanel.FillColor = DurationPanelColors.HalfHourToOneHourFillColour1;
+            lessThanOneHourLegendPanel.FillColor2 = DurationPanelColors.HalfHourToOneHourFillColour2;
+
+            betweenOneAndTwoHoursLegendPanel.FillColor = DurationPanelColors.OneHourTo90MinsFillColour1;
+            betweenOneAndTwoHoursLegendPanel.FillColor2 = DurationPanelColors.OneHourTo90MinsFillColour2;
+
+            betweenTwoAndFourHoursLegendPanel.FillColor = DurationPanelColors.TwoHoursPlusFillColor1;
+            betweenTwoAndFourHoursLegendPanel.FillColor2 = DurationPanelColors.TwoHoursPlusFillColor2;
+        }
+
 
 
 
@@ -243,6 +259,7 @@ namespace CodingTracker.View
                 EditMossGifRegion();
 
                 _mainPagePieChartManager.SetPieChartSettings(starRatingsPieChart);
+                SetDurationPanelLegendColors();
             }
 
             finally
@@ -256,6 +273,7 @@ namespace CodingTracker.View
         {
 
             await InitializeActivityDurationPanel();
+
 
 
 
@@ -545,87 +563,48 @@ namespace CodingTracker.View
 
 
 
+
+
         private async Task PopulatestarRatingDoughnutChart()
         {
             Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
 
-            SKPoint start = new SKPoint(0.5f, 0);
-            SKPoint end = new SKPoint(0.5f, 1);
-
-
-            SKColor oneStarColor = new SKColor(40, 100, 120);
-            SKColor oneStarColor2 = new SKColor(80, 200, 220);
-            SKColor[] colorsOneStar = { oneStarColor, oneStarColor2 };
-
-            SKColor twoStarColor = new SKColor(85, 170, 255);
-            SKColor twoStarColor2 = new SKColor(255, 255, 86);
-            SolidColorPaint strokeTwoStar = new SolidColorPaint(twoStarColor);
-
-            SKColor[] colorsTwoStar = new SKColor[] { twoStarColor, twoStarColor2 };
-
-
-            SKColor threeStarColor = new SKColor(80, 160, 200);
-            SKColor threeStarColor2 = new SKColor(140, 120, 220);
-            SolidColorPaint strokeThreeStar = new SolidColorPaint(threeStarColor);
-
-            SKColor[] coloursThreeStar = [threeStarColor, threeStarColor2];
-
-            SKColor fourStarColor = new SKColor(180, 100, 200);
-            SKColor fourStarColor2 = new SKColor(255, 120, 180);
-            SKColor[] colorsFourStar = [fourStarColor, fourStarColor2];
-
-            SKColor fiveStarColor = new SKColor(120, 220, 160);
-            SKColor fiveStarColor2 = new SKColor(100, 180, 255);
-            SKColor[] colorsFiveStar = new SKColor[] { fiveStarColor, fiveStarColor2 };
-
-
             int radiusInner = 35;
             int pushOutValue = 2;
 
-
-
-
-            int oneStarCount = 3;
+            int oneStarCount = sessionStarRatings.GetValueOrDefault(1);
             int twoStarCount = sessionStarRatings.GetValueOrDefault(2);
             int threeStarCount = sessionStarRatings.GetValueOrDefault(3);
             int fourStarCount = sessionStarRatings.GetValueOrDefault(4);
             int fiveStarCount = sessionStarRatings.GetValueOrDefault(5);
 
-
             List<ISeries> pieSeriesList = new List<ISeries>();
-
-
 
             var oneStarSeries = new PieSeries<double>
             {
                 Values = new List<double> { oneStarCount },
                 Name = $"One Star",
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(colorsOneStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
-                Pushout = pushOutValue,
-               
-            }; 
-
+                Fill = new SolidColorPaint(new SKColor(247, 182, 210)),
+                Pushout = pushOutValue
+            };
 
             var twoStarSeries = new PieSeries<double>
             {
                 Values = new List<double> { twoStarCount },
-                Name = $"Two star",
+                Name = $"Two Star",
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(colorsTwoStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
-                Pushout = pushOutValue,
-                Stroke = strokeTwoStar,
+                Fill = new SolidColorPaint(new SKColor(168, 228, 255)),
+                Pushout = pushOutValue
             };
 
             var threeStarSeries = new PieSeries<double>
             {
                 Values = new List<double> { threeStarCount },
-                Name = "Three star",
+                Name = "Three Star",
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(coloursThreeStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
-                Pushout = pushOutValue,
-                Stroke = strokeThreeStar
-
+                Fill = new SolidColorPaint(new SKColor(212, 161, 236)),
+                Pushout = pushOutValue
             };
 
             var fourStarSeries = new PieSeries<double>
@@ -633,32 +612,24 @@ namespace CodingTracker.View
                 Values = new List<double> { fourStarCount },
                 Name = "Four Star",
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(colorsFourStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
+                Fill = new SolidColorPaint(new SKColor(175, 203, 255)),
                 Pushout = pushOutValue
-
             };
 
-            
             var fiveStarSeries = new PieSeries<double>
             {
                 Values = new List<double> { fiveStarCount },
                 Name = "Five Star",
                 InnerRadius = radiusInner,
-                Fill = new LinearGradientPaint(colorsFiveStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
+                Fill = new SolidColorPaint(new SKColor(168, 240, 216)),
                 Pushout = pushOutValue
             };
-            
 
             pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries });
 
-
             starRatingsPieChart.Series = pieSeriesList;
 
-
-            string order = $"series 1:  {pieSeriesList[0].Name.ToString()}. \n series2: {pieSeriesList[1].Name.ToString()}. \n Series3:           {pieSeriesList[2].Name.ToString()}.";
-
-
-
+            string order = $"series 1:  {pieSeriesList[0].Name.ToString()}.\nseries2: {pieSeriesList[1].Name.ToString()}.\nSeries3: {pieSeriesList[2].Name.ToString()}.";
 
             starRatingsPieChart.LegendTextPaint = new SolidColorPaint(SKColors.White)
             {
@@ -666,55 +637,10 @@ namespace CodingTracker.View
                 FontFamily = "Segoe UI Symbol"
             };
 
-            SKColor backColor1 = new SKColor(52, 90, 160, 220);
-            SKColor backColor2 = new SKColor(52, 255, 81, 195);
-            SKColor[] backColors = new SKColor[] { backColor1, backColor2 };
-
-            SKPoint topLeft = new SKPoint(0, 0);
-            SKPoint bottomRight = new SKPoint(1, 1);
-
-            LinearGradientPaint backPaint = new LinearGradientPaint(backColors, topLeft, bottomRight, [0.5f, 0.1f], SKShaderTileMode.Repeat);
-
-
-
             _notificationManager.ShowNotificationDialog(this, order);
-
-
-
-
-
-
-
-            // 10% opacity - Very transparent
-            Color.FromArgb(26, 35, 34, 50);
-
-            // 20% opacity - Quite transparent
-            Color.FromArgb(51, 35, 34, 50);
-
-            // 30% opacity - Moderately transparent
-            Color.FromArgb(77, 35, 34, 50);
-
-            // 40% opacity - Semi-transparent
-            Color.FromArgb(102, 35, 34, 50);
-
-            // 50% opacity - Half transparent
-            Color.FromArgb(128, 35, 34, 50);
-
-            // 60% opacity - More opaque
-            Color.FromArgb(153, 35, 34, 50);
-
-            // 70% opacity - Mostly opaque
-            Color.FromArgb(179, 35, 34, 50);
-
-            // 80% opacity - Quite opaque
-            Color.FromArgb(204, 35, 34, 50);
-
-            // 90% opacity - Nearly solid
-            Color.FromArgb(230, 35, 34, 50);
-
-            // 100% opacity - Completely solid
-            Color.FromArgb(255, 35, 34, 50);
         }
+
+
 
     }
 }

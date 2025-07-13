@@ -134,6 +134,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedColumnStateManager, AnimatedColumnStateManager>()
                     .AddSingleton<IAnimatedSegmentStateManager, AnimatedSegmentStateManager>()
                     .AddSingleton<IShadowBuilder, ShadowBuilder>()
+                    .AddSingleton<IGradientManager, GradientManager>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

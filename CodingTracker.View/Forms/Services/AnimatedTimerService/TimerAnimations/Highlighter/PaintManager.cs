@@ -4,12 +4,13 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using LiveChartsCore.Painting;
+using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
 {
     // Opactiy ratings 0 fully transparent, 255 fully opaque
-    
+
 
 
 
@@ -18,7 +19,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint CreateInnerSegmentPaint(AnimatedTimerColumn column);
         SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint TESTCreateOuterSegmentPaint(AnimatedTimerColumn column);
-        SKPaint CreateColumnPaint(bool IsColumnActive);
+        SKPaint CreateColumnPaint(AnimatedTimerColumn column);
         SKPaint CreateNumberPaint(bool isColumnActive);
         SKFont CreateNumberFont();
         SKPaint CreateTopLeftLightShadowPaint(ShadowIntensity intensity, SKColor lightColor);
@@ -29,12 +30,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
     }
 
-    
+
     public class PaintManager : IPaintManager
     {
 
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedColumnStateManager _columnStateManager;
+       private readonly IGradientManager _gradientManager;
 
 
         private byte InactiveColumnOpacity = 122;
@@ -42,78 +44,38 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private SKColor ColumnColor = new SKColor(49, 50, 68);
 
 
-        public PaintManager(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager)
+        public PaintManager(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager, IGradientManager gradientManager)
         {
             _appLogger = appLogger;
             _columnStateManager = columnStateManager;
+            _gradientManager = gradientManager;
         }
 
 
         private float CalculateSegmentOpacityMultiplier(AnimatedTimerColumn column)
         {
-           return 1.0f - column.CircleAnimationProgress;
-        }
-
-        private float TESTCalculateOpacityMultiplier(float circleAnimationProgress)
-        {
-            if (circleAnimationProgress < 0.7f)
-            {
-                return 1.0f;
-            }
-            else if (circleAnimationProgress < 0.9f)
-            {
-                float fadeProgress = (circleAnimationProgress - 0.7f) / 0.2f;
-                return Single.Lerp(1.0f, 0.0f, fadeProgress);
-            }
-            else
-            {
-                return 0.0f;
-            }
+            return 1.0f - column.CircleAnimationProgress;
         }
 
 
-        /*
-        public SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column)
-        {
-            float opacityMultiplier = CalculateSegmentOpacityMultiplier(column);
-            byte alpha = (byte)(opacityMultiplier * 200);
-
-            var shader = SKShader.CreateLinearGradient(
-                new SKPoint(column.Location.X, column.Location.Y),
-                new SKPoint(column.Location.X + column.Width, column.Location.Y + column.Height),
-                new SKColor[] {
-                    AnimatedColumnSettings.CatppuccinMauve.WithAlpha((byte)(alpha * 0.6f)),
-                    AnimatedColumnSettings.CatppuccinPink.WithAlpha((byte)(alpha * 0.8f))
-                },
-                SKShaderTileMode.Clamp
-            );
-
-            return new SKPaint()
-            {
-                Shader = shader,
-                Style = SKPaintStyle.Fill,
-                IsAntialias = true
-            };
-        }
-        */
 
 
         public SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column)
         {
+            SKShader gradientShader = _gradientManager.CreateInnerSegmentGradient(column);
+
             float opacityMultiplier = CalculateSegmentOpacityMultiplier(column);
             byte alpha = (byte)(opacityMultiplier * 255);
 
             return new SKPaint()
             {
 
-                Color = ColumnColor,
+                Shader = gradientShader,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true,
 
             };
         }
-
-
 
 
         public SKPaint CreateInnerSegmentPaint(AnimatedTimerColumn column)
@@ -123,7 +85,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-              
+
                 Color = ColumnColor,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
@@ -135,6 +97,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn column)
         {
+
             float opacityMultiplier = CalculateSegmentOpacityMultiplier(column);
 
             byte alpha = (byte)(opacityMultiplier * 255);
@@ -146,7 +109,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 /*
                 Color = new SKColor(49, 50, 68).WithAlpha(alpha),
                 */
-                Color =AnimatedColumnSettings.CatppuccinPink,
+                Color = AnimatedColumnSettings.CatppuccinPink,
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,
@@ -165,6 +128,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKPaint TESTCreateOuterSegmentPaint(AnimatedTimerColumn column)
         {
+            SKShader outerSegmentGradient = _gradientManager.CreateOuterSegmentGradient(column);
+
             float opacityMultiplier = CalculateSegmentOpacityMultiplier(column);
             byte shadowAlpha = (byte)(opacityMultiplier * 40);
 
@@ -172,7 +137,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-                Color = new SKColor(0, 0, 0).WithAlpha(shadowAlpha),
+               Shader = outerSegmentGradient,
                 Style = SKPaintStyle.Fill,
 
                 StrokeWidth = 1f,
@@ -184,18 +149,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public SKPaint CreateColumnPaint(bool isColumnActive)
+        public SKPaint CreateColumnPaint(AnimatedTimerColumn column)
         {
-            SKColor columnColor = ColumnColor;
+            SKShader columnGradinet = _gradientManager.CreateColumnGradientByIsColumnActive(column);
 
-            if(!isColumnActive)
-            {
-                columnColor = new SKColor(60, 60, 80);
-            }
-
+    
             return new SKPaint()
             {
-                Color = columnColor,
+                Shader = columnGradinet,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };
@@ -215,13 +176,30 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 textColour = AnimatedColumnSettings.CatppuccinText;
             }
 
-                return new SKPaint()
-                {
-                    Color = textColour,
-                    IsAntialias = true,
-                    TextAlign = SKTextAlign.Center,
-                };
+            return new SKPaint()
+            {
+                Color = textColour,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center,
+            };
         }
+
+
+
+
+        public SKPaint TESTCreateNumberPaint(AnimatedTimerColumn column)
+        {
+            SKShader numberGradient = _gradientManager.CreateNumberGradientByIsColumnActive(column.FocusedSegment, column.IsColumnActive);
+
+                return new SKPaint()
+            {
+                Shader = numberGradient,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center,
+            };
+
+        }
+
 
         public SKFont CreateNumberFont()
         {

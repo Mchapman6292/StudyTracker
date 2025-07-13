@@ -16,6 +16,26 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
      
      */
 
+    public static class DurationPanelColors
+    {
+        public static Color Under30MinsFillColour1 = Color.FromArgb(78, 205, 196);
+        public static Color Under30MinsfillColour2 = Color.FromArgb(68, 160, 141);
+
+        // Purple/Blue gradient (medium sessions) 
+        public static Color HalfHourToOneHourFillColour1 = Color.FromArgb(102, 126, 234);
+        public static Color HalfHourToOneHourFillColour2 = Color.FromArgb(118, 75, 162);
+
+        // Pink/Red gradient (long sessions)
+        public static Color OneHourTo90MinsFillColour1 = Color.FromArgb(240, 147, 251);
+        public static Color OneHourTo90MinsFillColour2 = Color.FromArgb(245, 87, 108);
+
+        // Blue/Cyan gradient (extra long sessions)
+        public static Color TwoHoursPlusFillColor1 = Color.FromArgb(79, 172, 254);
+        public static Color TwoHoursPlusFillColor2 = Color.FromArgb(0, 242, 254);
+
+    }
+
+
     public interface IDurationPanelFactory
     {
         DurationPanel CreateDurationPanel(CodingSessionEntity codingSession);
@@ -122,30 +142,32 @@ namespace CodingTracker.View.Forms.Services.MainPageService.RecentActivityServic
             return new Size(panelWidth, panelHeight);
         }
 
-  
+
+
+
+
 
         private void SetDurationPanelColours(DurationPanel durationPanel, int durationSeconds)
         {
-
             if (durationSeconds > 0 && durationSeconds < 1800)
             {
-                durationPanel.FillColor = Under30MinsFillColour1;
-                durationPanel.FillColor2 = Under30MinsfillColour2;
+                durationPanel.FillColor = DurationPanelColors.Under30MinsFillColour1;
+                durationPanel.FillColor2 = DurationPanelColors.Under30MinsfillColour2;
             }
             else if (durationSeconds >= 1800 && durationSeconds < 3600)
             {
-                durationPanel.FillColor = HalfHourToOneHourFillColour1;
-                durationPanel.FillColor2 = HalfHourToOneHourFillColour2;
+                durationPanel.FillColor = DurationPanelColors.HalfHourToOneHourFillColour1;
+                durationPanel.FillColor2 = DurationPanelColors.HalfHourToOneHourFillColour2;
             }
             else if (durationSeconds >= 3600 && durationSeconds < 5400)
             {
-                durationPanel.FillColor = OneHourTo90MinsFillColour1;
-                durationPanel.FillColor2 = OneHourTo90MinsFillColour2;
+                durationPanel.FillColor = DurationPanelColors.OneHourTo90MinsFillColour1;
+                durationPanel.FillColor2 = DurationPanelColors.OneHourTo90MinsFillColour2;
             }
             else if (durationSeconds >= 5400)
             {
-                durationPanel.FillColor = TwoHoursPlusFillColor1;
-                durationPanel.FillColor2 = TwoHoursPlusFillColor2;
+                durationPanel.FillColor = DurationPanelColors.TwoHoursPlusFillColor1;
+                durationPanel.FillColor2 = DurationPanelColors.TwoHoursPlusFillColor2;
             }
         }
 
