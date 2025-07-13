@@ -1,136 +1,152 @@
 ﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Guna.UI2.Material.Animation.AnimationManager;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
 {
     public interface IGradientManager
     {
-        SKShader CreateSegmentHighlightGradient(AnimatedTimerColumn column, float animationProgress);
-        SKShader CreateColumnBackgroundGradient(AnimatedTimerColumn column, bool isActive);
-        SKShader CreateCircleOverlayGradient(SKPoint center, float radius, float animationProgress);
-        SKShader CreateNumberGlowGradient(AnimatedTimerSegment segment, bool isActive);
-        SKShader CreateBackgroundGradient(SKRect bounds);
+        SKShader CreateInnerSegmentGradient(AnimatedTimerColumn column);
+        SKShader CreateColumnGradientByIsColumnActive(AnimatedTimerColumn column);
+        SKShader CreateOuterSegmentGradient(AnimatedTimerColumn column);
+        SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive);
+        SKShader CreateBackgroundCanvasGradient(SKRect bounds);
     }
 
     public class GradientManager : IGradientManager
     {
         private byte SegmentHighlightOpacityMultiplier = 255;
-        private byte CircleHighlightOpacityMultiplier = 60;
+        private byte CircleOverlayOpacityMultiplier = 60;
+        private byte NumberGlowOpacityMultiplier = 100;
+        private float CircleRadiusMultiplier = 1.5f;
+        private float NumberGlowRadiusMultiplier = 0.8f;
 
-
-        private readonly SKColor SegmentHighlightGradient = new SKColor[] { AnimatedColumnSettings.CatppuccinPink.WithAlpha(alpha), }
-        
-
+        private float[] threeColorStops = { 0f, 0.5f, 1f };
+        private float[] twoColorStops = { 0f, 1f };
+        private float[] fourColorStops = { 0f, 0.33f, 0.66f, 1f };
 
         public GradientManager()
         {
-
         }
 
-        public SKColor CreateSegmentHighlightGradient(AnimatedTimerColumn column)
+        private byte CalculateAlpha(float baseAnimationProgress, byte multiplier)
         {
-            byte alpha = (byte)((1.0f - column.BaseAnimationProgress) * SegmentHighlightOpacityMultiplier);
-
-            return new SKColor[] {AnimatedColumnSettings.CatppuccinPink.WithAlpha(alpha),       AnimatedColumnSettings.CatppuccinMauve.WithAlpha((byte)(alpha * 0.7f)),         AnimatedColumnSettings.CatppuccinBase.WithAlpha((byte)(alpha * 0.3f))
+            return (byte)((1.0f - baseAnimationProgress) * multiplier);
         }
 
-
-        public SKShader CreateSegmentHighlightGradient(AnimatedTimerColumn column, float animationProgress)
+        private SKColor[] CreateInnerSegmentColors(AnimatedTimerColumn column)
         {
-        
-
-            return SKShader.CreateRadialGradient(new SKPoint(AnimatedColumnSettings.SegmentWidth / 2, AnimatedColumnSettings.SegmentHeight / 2), AnimatedColumnSettings.MaxRadius,
-                new SKColor[] { AnimatedColumnSettings.CatppuccinPink.WithAlpha(alpha), AnimatedColumnSettings.CatppuccinMauve.WithAlpha((byte)(alpha * 0.7f)), AnimatedColumnSettings.CatppuccinBase.WithAlpha((byte)(alpha * 0.3f))
-                },
-                new float[] { 0f, 0.6f, 1f },
-                SKShaderTileMode.Clamp
-            );
-        }
-
-        public SKShader CreateColumnBackgroundGradient(AnimatedTimerColumn column, bool isActive)
-        {
-            if (!isActive)
+            byte alpha = CalculateAlpha(column.BaseAnimationProgress, SegmentHighlightOpacityMultiplier);
+            return new SKColor[]
             {
-                return SKShader.CreateLinearGradient( new SKPoint(0, 0),new SKPoint(0, AnimatedColumnSettings.SegmentHeight), new SKColor[] {
-                       new SKColor(45, 42, 62, 200),
-                       new SKColor(35, 34, 50, 220)
-                    },
-                    new float[] { 0f, 1f },
-                    SKShaderTileMode.Clamp
-                );
-            }
+               AnimatedColumnSettings.CatppuccinPink.WithAlpha(alpha),  AnimatedColumnSettings.CatppuccinMauve.WithAlpha((byte)(alpha * 0.7f)),    AnimatedColumnSettings.CatppuccinBase.WithAlpha((byte)(alpha * 0.3f))
+            };
+        }
+        public SKShader CreateInnerSegmentGradient(AnimatedTimerColumn column)
+        {
+            if (column.FocusedSegment == null) return null;
 
-            return SKShader.CreateLinearGradient(
-                new SKPoint(0, 0),
-                new SKPoint(0, AnimatedColumnSettings.SegmentHeight),
-                new SKColor[] {
-                   AnimatedColumnSettings.CatppuccinSurface1.WithAlpha(240),
-                   AnimatedColumnSettings.CatppuccinSurface0,
-                   AnimatedColumnSettings.CatppuccinBase.WithAlpha(250)
-                },
-                new float[] { 0f, 0.5f, 1f },
-                SKShaderTileMode.Clamp
-            );
+            SKColor[] highlightColors = CreateInnerSegmentColors(column);
+            return SKShader.CreateRadialGradient(column.FocusedSegment.LocationCenterPoint, AnimatedColumnSettings.MaxRadius, highlightColors, threeColorStops, SKShaderTileMode.Clamp);
         }
 
-        public SKShader CreateCircleOverlayGradient(SKPoint center, float radius, float animationProgress)
-        {
-            byte alpha = (byte)((1.0f - animationProgress) * CircleHighlightOpacityMultiplier);
 
-            return SKShader.CreateRadialGradient(
-                center,
-                radius * 1.5f,
-                new SKColor[] {
-                   SKColors.Transparent,
-                   AnimatedColumnSettings.CatppuccinBase.WithAlpha(alpha),
-                   AnimatedColumnSettings.CatppuccinBase.WithAlpha((byte)(alpha * 1.5f))
-                },
-                new float[] { 0f, 0.7f, 1f },
-                SKShaderTileMode.Clamp
-            );
-        }
 
-        public SKShader CreateNumberGlowGradient(AnimatedTimerSegment segment, bool isActive)
+
+
+        private SKColor[] CreateOuterSegmentColors(AnimatedTimerColumn column)
         {
-            if (!isActive)
+            byte alpha = CalculateAlpha(column.CircleAnimationProgress, CircleOverlayOpacityMultiplier);
+            return new SKColor[]
             {
-                return null;
-            }
-
-            return SKShader.CreateRadialGradient(
-                new SKPoint(segment.SegmentWidth / 2, segment.SegmentHeight / 2),
-                segment.SegmentHeight * 0.8f,
-                new SKColor[] {
-                   AnimatedColumnSettings.CatppuccinText,
-                   AnimatedColumnSettings.CatppuccinText.WithAlpha(100),
-                   SKColors.Transparent
-                },
-                new float[] { 0f, 0.3f, 1f },
-                SKShaderTileMode.Clamp
-            );
+               SKColors.Transparent, AnimatedColumnSettings.CatppuccinBase.WithAlpha(alpha),  AnimatedColumnSettings.CatppuccinBase.WithAlpha((byte)(alpha * 1.5f))
+            };
         }
 
-        public SKShader CreateBackgroundGradient(SKRect bounds)
+        public SKShader CreateOuterSegmentGradient(AnimatedTimerColumn column)
         {
-            return SKShader.CreateLinearGradient(
-                new SKPoint(bounds.Left, bounds.Top),
-                new SKPoint(bounds.Left, bounds.Bottom),
-                new SKColor[] {
-                   AnimatedColumnSettings.CatppuccinBase,
-                   new SKColor(49, 40, 68),
-                   new SKColor(89, 66, 102),
-                   new SKColor(120, 85, 130)
-                },
-                new float[] { 0f, 0.4f, 0.7f, 1f },
-                SKShaderTileMode.Clamp
-            );
+            if (column.FocusedSegment == null) return null;
+
+            SKColor[] overlayColors = CreateOuterSegmentColors(column);
+            float radius = AnimatedColumnSettings.MaxRadius * CircleRadiusMultiplier;
+
+            return SKShader.CreateRadialGradient(column.FocusedSegment.LocationCenterPoint, radius, overlayColors, threeColorStops, SKShaderTileMode.Clamp);
+        }
+
+
+
+
+
+
+        private SKColor[] CreateActiveColumnColors()
+        {
+            return new SKColor[]
+            {
+               AnimatedColumnSettings.CatppuccinSurface1.WithAlpha(240), AnimatedColumnSettings.CatppuccinSurface0,   AnimatedColumnSettings.CatppuccinBase.WithAlpha(250)
+            };
+        }
+
+        private SKColor[] CreateInactiveColumnColors()
+        {
+            return new SKColor[]
+            {
+                AnimatedColumnSettings.CatppuccinSurface0.WithAlpha(200), AnimatedColumnSettings.CatppuccinBase.WithAlpha(220)
+            };
+        }
+        private SKColor[] CreateBackgroundColors()
+        {
+            return new SKColor[]
+            {
+               AnimatedColumnSettings.CatppuccinBase, AnimatedColumnSettings.CatppuccinSurface0,AnimatedColumnSettings.CatppuccinSurface1,  AnimatedColumnSettings.CatppuccinMauve.WithAlpha(50) };
+        }
+
+        public SKShader CreateColumnGradientByIsColumnActive(AnimatedTimerColumn column)
+        {
+            SKColor[] colors = column.IsColumnActive ? CreateActiveColumnColors() : CreateInactiveColumnColors();
+            float[] stops = column.IsColumnActive ? threeColorStops : twoColorStops;
+
+            return SKShader.CreateLinearGradient(column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height), colors, stops, SKShaderTileMode.Clamp);
+        }
+
+
+
+
+
+        private SKColor[] CreateActiveNumberColors()
+        {
+            return new SKColor[]
+            {  
+                AnimatedColumnSettings.CatppuccinText,  AnimatedColumnSettings.CatppuccinText.WithAlpha(NumberGlowOpacityMultiplier), SKColors.Transparent
+            };
+        }
+
+        private SKColor[] CreateInvactiveNumberColors()
+        {
+            return new SKColor[]
+            {
+                AnimatedColumnSettings.InactiveColumnColor, AnimatedColumnSettings.CatppuccinText
+            };
+        }
+
+
+        public SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive)
+        {
+            SKColor[] colors = isActive ? CreateActiveNumberColors() : CreateInvactiveNumberColors();
+
+            float radius = segment.SegmentHeight * NumberGlowRadiusMultiplier;
+
+            return SKShader.CreateRadialGradient(segment.LocationCenterPoint, radius, colors, threeColorStops,  SKShaderTileMode.Clamp);
+        }
+
+
+
+
+
+        public SKShader CreateBackgroundCanvasGradient(SKRect bounds)
+        {
+            SKColor[] backgroundColors = CreateBackgroundColors();
+
+            return SKShader.CreateLinearGradient(new SKPoint(bounds.Left, bounds.Top), new SKPoint(bounds.Left, bounds.Bottom),  backgroundColors, fourColorStops,  SKShaderTileMode.Clamp);
         }
     }
 }

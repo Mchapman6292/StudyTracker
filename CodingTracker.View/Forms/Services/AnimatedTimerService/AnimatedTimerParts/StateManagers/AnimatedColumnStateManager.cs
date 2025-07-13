@@ -338,6 +338,33 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 return normalizedAnimationProgress;
             }
         }
+
+
+        /*
+        public float CalculateEasingValue(AnimatedTimerColumn column, TimerAnimationType animationType)
+        {
+            const float midpoint = 0.5f;
+            float animationProgress = column.BaseAnimationProgress; 
+
+            if(animationProgress < midpoint)
+            {
+                // If progress less than 0.5 scale it to get a value between 0-1 and then apply cubic easing.
+                float scaledAnimationProgress = animationProgress * 2;
+                return (scaledAnimationProgress * scaledAnimationProgress * scaledAnimationProgress) / 2;
+            }
+            else
+            {
+                // Again we need to transform the animation value between 0.5-0.1 to a value between 0 & 1.
+                // Subtract 0.5 then scale it.
+
+                float scaledAnimationProgress = (animationProgress - 0.5f ) * 2;
+                
+                // If we use the same approach as we did with animation < midpoint then 
+
+            }
+
+        }
+        */
     }
 }
 
