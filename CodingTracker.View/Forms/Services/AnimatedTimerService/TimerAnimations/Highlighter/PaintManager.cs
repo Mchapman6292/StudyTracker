@@ -21,6 +21,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint TESTCreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint CreateColumnPaint(AnimatedTimerColumn column);
         SKPaint CreateNumberPaint(bool isColumnActive);
+        SKPaint TESTCreateNumberPaint(AnimatedTimerColumn column);
         SKFont CreateNumberFont();
         SKPaint CreateTopLeftLightShadowPaint(ShadowIntensity intensity, SKColor lightColor);
         SKPaint CreateRightSideDarkShadowPaint(ShadowIntensity intensity, SKColor darkColor);
@@ -186,19 +187,47 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
+        // To handle blue occuring on first transition add a bool 
         public SKPaint TESTCreateNumberPaint(AnimatedTimerColumn column)
         {
             SKShader numberGradient = _gradientManager.CreateNumberGradientByIsColumnActive(column.FocusedSegment, column.IsColumnActive);
 
-                return new SKPaint()
-            {
-                Shader = numberGradient,
-                IsAntialias = true,
-                TextAlign = SKTextAlign.Center,
-            };
 
-        }
+            if (!column.IsColumnActive)
+            {
+                return new SKPaint()
+                {
+                    Shader = numberGradient,
+                    IsAntialias = true,
+                    TextAlign = SKTextAlign.Center,
+                    MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Outer, 0.5f)
+                };
+            }
+            else if (column.IsColumnActive && column.NumberBlurringStartAnimationActive)
+            {
+                float pulse = (float)(Math.Sin(column.BaseAnimationProgress * 2 * Math.PI) * 0.5 + 0.5);
+
+                return new SKPaint()
+                {
+                    Shader = numberGradient,
+                    IsAntialias = true,
+                    TextAlign = SKTextAlign.Center,
+                    MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, pulse * 2f),
+                };
+            }
+
+            else
+            {
+                return new SKPaint()
+                {
+                    Shader = numberGradient,
+                    IsAntialias = true,
+                    TextAlign = SKTextAlign.Center,
+                };
+                }
+
+          }
+
 
 
         public SKFont CreateNumberFont()

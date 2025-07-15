@@ -1,12 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using LiveChartsCore.SkiaSharpView;
 using SkiaSharp;
-using System.Timers;
-using Windows.ApplicationModel.Activation;
-using Windows.Networking.PushNotifications;
-using static Guna.UI2.Material.Animation.AnimationManager;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers
 {
@@ -38,6 +33,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateCircleAnimationProgress(AnimatedTimerColumn column, float circleAnimationProgress);
 
         //
+
+
+        void UpdatedNumberBlurringStartAnimationActive(AnimatedTimerColumn column, bool blurred);
 
 
         void WORKINGUpdateAnimationProgress(AnimatedTimerColumn column, float animationProgress);
@@ -195,6 +193,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
+
+        public void UpdatedNumberBlurringStartAnimationActive(AnimatedTimerColumn column, bool blurred)
+        {
+            column.NumberBlurringStartAnimationActive = blurred;
+        }
 
 
 
@@ -365,6 +368,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         }
         */
+
+
+        public void HandleNumberBlurringStartAnimationActive(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+
+        }
+
     }
 }
 

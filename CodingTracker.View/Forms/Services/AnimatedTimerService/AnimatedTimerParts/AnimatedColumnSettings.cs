@@ -10,16 +10,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public const float SegmentHeight = 40f;
         public const float TextSize = 15f;
 
-
-        public static readonly int[] OneToNineDigit = { 0,1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        public static readonly int[] OneToSixDigit = { 0 ,1, 2, 3, 4, 5, 6 };
+        public static readonly int[] ZeroToTwoDigit = { 0, 1, 2 };
+        public static readonly int[] ZeroToFourDigit = { 0, 1, 2, 3, 4};
+        public static readonly int[] ZeroToNineDigit = { 0,1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        public static readonly int[] ZeroToSixDigit = { 0 ,1, 2, 3, 4, 5, 6 };
 
         public static readonly float ScrollAnimationDurationRatio = 1.0f;
         public static readonly TimeSpan ScrollAnimationTimespan = TimeSpan.FromSeconds(ScrollAnimationDurationRatio);
     
 
         // Circle animation is set to 70% of scroll duration
-        public static readonly float CircleAnimationDurationRatio = ScrollAnimationDurationRatio * 0.8f;
+        public static readonly float CircleAnimationDurationRatio = ScrollAnimationDurationRatio * 0.6f;
         public static readonly TimeSpan CircleAnimationTimespan = TimeSpan.FromSeconds(CircleAnimationDurationRatio);
 
 

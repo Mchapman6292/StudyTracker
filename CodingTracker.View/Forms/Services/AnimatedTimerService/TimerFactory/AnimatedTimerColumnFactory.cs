@@ -44,26 +44,26 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
             List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
 
  
-            AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursLeadingDigits);
+            AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToTwoDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursLeadingDigits);
             xPosition += _columnSpacing;
 
-            AnimatedTimerColumn hoursSinlgeDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursSinglesDigits);
+            AnimatedTimerColumn hoursSinlgeDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursSinglesDigits);
             xPosition += _columnSpacing;
 
-            AnimatedTimerColumn minutesLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesLeadingDigits);
+            AnimatedTimerColumn minutesLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesLeadingDigits);
             xPosition += _columnSpacing;
 
-            AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesSingleDigits);
+            AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesSingleDigits);
             xPosition += _columnSpacing;
             
       
 
-            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.OneToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
+            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
             xPosition += _columnSpacing;
 
 
    
-            AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsSingleDigits);
+            AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsSingleDigits);
             xPosition += _columnSpacing;
             
 
