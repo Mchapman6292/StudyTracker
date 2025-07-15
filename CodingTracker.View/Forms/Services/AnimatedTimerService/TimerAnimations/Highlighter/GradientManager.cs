@@ -46,6 +46,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private static readonly SKColor InactiveNumberPrimary = new SKColor(120, 120, 140);
         private static readonly SKColor InactiveNumberSecondary = new SKColor(180, 180, 200);
 
+
+
+        private static readonly SKColor SnakeLoopBrightMagenta = new SKColor(255, 0, 255);
+        private static readonly SKColor SnakeLoopLavenderPurple = new SKColor(155, 89, 182);
+        private static readonly SKColor SnakeLoopVioletPurple = new SKColor(138, 43, 226);
+
+
+
         private byte SegmentHighlightOpacityMultiplier = 255;
         private byte CircleOverlayOpacityMultiplier = 60;
         private byte NumberGlowOpacityMultiplier = 100;
