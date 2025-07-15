@@ -335,7 +335,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _pathBuilder.CreateTimerPaths(column, out innerSegmentPath, out outerOverlayPath, elapsed, isCircleStatic);
 
             using (var innerPaint = _paintManager.TESTCreateInnerSegmentPaint(column))
-            using (var outerPaint = _paintManager.CreateOuterSegmentPaint(column))
+            using (var outerPaint = _paintManager.TESTCreateOuterSegmentPaint(column))
             {
 
 
@@ -354,7 +354,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
 
 
-            using (var paint = _paintManager.CreateNumberPaint(column.IsColumnActive))
+            using (var paint = _paintManager.TESTCreateNumberPaint(column))
             using (var font = _paintManager.CreateNumberFont())
             {
                 canvas.Save();
@@ -709,8 +709,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     if(column.IsColumnActive == false)
                     {
                         column.IsColumnActive = true;
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
+                       _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
+
+                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    {
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
+                        _appLogger.Debug($"Blur transition completed at {FormatElapsedTimeSPan(elapsed)}");
+                    }
+
+
 
                     isCircleStatic = false;
 

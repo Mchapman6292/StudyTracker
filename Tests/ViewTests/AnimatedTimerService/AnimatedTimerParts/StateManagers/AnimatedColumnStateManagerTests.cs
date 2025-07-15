@@ -32,7 +32,7 @@ namespace Tests.ViewTests.AnimatedTimerService.AnimatedTimerParts.StateManagers
         public void CalculateAnimationProgress_VariousTimePoints_ReturnsExpectedProgress(double elapsedSeconds, float expectedProgress)
         {
             {
-                AnimatedTimerColumn testSecondsLeadingDigit = _columnFactory.CreateColumnWithSegments(AnimatedColumnSettings.OneToNineDigit, (new SKPoint(100, 150)), ColumnUnitType.SecondsLeadingDigit);
+                AnimatedTimerColumn testSecondsLeadingDigit = _columnFactory.CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(100, 150)), ColumnUnitType.SecondsLeadingDigit);
 
                 testSecondsLeadingDigit.AnimationStartTime = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[testSecondsLeadingDigit.ColumnType];
                 testSecondsLeadingDigit.CurrentAnimationEndTime = testSecondsLeadingDigit.AnimationStartTime + testSecondsLeadingDigit.AnimationInterval;

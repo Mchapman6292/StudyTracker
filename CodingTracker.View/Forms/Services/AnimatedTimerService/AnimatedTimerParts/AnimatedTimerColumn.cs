@@ -52,6 +52,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsColumnActive { get; set; }
 
+        public bool NumberBlurringStartAnimationActive { get; set; }
+
 
 
 
@@ -65,7 +67,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
             MaxValue = FindMaxColumnValue();
-            IsColumnActive = SetIsColumnActive();
+            IsColumnActive = InitializeIsColumnActive();
+            NumberBlurringStartAnimationActive = InitializeNumberBlurringStartAnimationActive();
         }
 
 
@@ -77,7 +80,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        private bool SetIsColumnActive()
+        private bool InitializeIsColumnActive()
         {
             if(ColumnType == ColumnUnitType.SecondsSingleDigits)
             {
@@ -86,11 +89,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return false;
         }
 
-   
 
-    
+        private bool InitializeNumberBlurringStartAnimationActive()
+        {
+            if (ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                return true;
+            }
+            return false;
+        }
 
-   
+
+
+
+
+
 
     }
 }
+
