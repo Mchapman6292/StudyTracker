@@ -81,13 +81,12 @@ namespace CodingTracker.View.Forms
             // 
             // timeDisplayLabel
             // 
-            timeDisplayLabel.AutoSize = false;
             timeDisplayLabel.BackColor = Color.Transparent;
             timeDisplayLabel.Font = new Font("Segoe UI", 13F);
             timeDisplayLabel.ForeColor = Color.HotPink;
-            timeDisplayLabel.Location = new Point(1071, 47);
+            timeDisplayLabel.Location = new Point(1152, 3);
             timeDisplayLabel.Name = "timeDisplayLabel";
-            timeDisplayLabel.Size = new Size(157, 47);
+            timeDisplayLabel.Size = new Size(137, 24);
             timeDisplayLabel.TabIndex = 8;
             timeDisplayLabel.Text = "guna2HtmlLabel1";
             // 
@@ -111,11 +110,11 @@ namespace CodingTracker.View.Forms
             // 
             // skControlTest
             // 
-            skControlTest.BackColor = Color.FromArgb(50, 49, 65);
+            skControlTest.BackColor = Color.FromArgb(26, 26, 46);
             skControlTest.ForeColor = Color.FromArgb(50, 49, 65);
-            skControlTest.Location = new Point(51, 92);
+            skControlTest.Location = new Point(107, 40);
             skControlTest.Name = "skControlTest";
-            skControlTest.Size = new Size(1046, 590);
+            skControlTest.Size = new Size(1046, 668);
             skControlTest.TabIndex = 0;
             // 
             // TestForm
@@ -130,6 +129,7 @@ namespace CodingTracker.View.Forms
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Modern Timer Test";
             mainPanel.ResumeLayout(false);
+            mainPanel.PerformLayout();
             ResumeLayout(false);
         }
 
