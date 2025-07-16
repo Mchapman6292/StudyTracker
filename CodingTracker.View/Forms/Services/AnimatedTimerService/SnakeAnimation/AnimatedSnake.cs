@@ -11,7 +11,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.SnakeAnimation
         public SKPoint TailStart { get; set; }
 
 
-        public int SnakeLength { get; set; } = 20;
+
         public float SnakeThickness { get; set; } = 2f;
 
 
@@ -59,7 +59,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.SnakeAnimation
         {
             AnimatedTimerColumn startColumn = initializedColumns.FirstOrDefault(c => c.ColumnType == ColumnUnitType.SecondsSingleDigits);
 
-            return startColumn.Location:
+            return startColumn.Location;
             
 
 

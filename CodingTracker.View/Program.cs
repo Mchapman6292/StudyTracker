@@ -21,7 +21,10 @@ using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.SnakeAnimation;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
@@ -135,6 +138,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedSegmentStateManager, AnimatedSegmentStateManager>()
                     .AddSingleton<IShadowBuilder, ShadowBuilder>()
                     .AddSingleton<IGradientManager, GradientManager>()
+                    .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
+                    .AddSingleton<IRenderingCalculator, RenderingCalculator>()
+                    .AddSingleton<ISnakeRenderer, SnakeRenderer>()
+                    .AddSingleton<ISnakePathManager, SnakePathManager>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

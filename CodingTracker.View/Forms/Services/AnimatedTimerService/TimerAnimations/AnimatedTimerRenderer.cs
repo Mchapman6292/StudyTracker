@@ -3,6 +3,7 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
@@ -38,8 +39,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IAnimatedColumnStateManager _columnStateManager;
         private readonly IAnimatedSegmentStateManager _segmentStateManager;
         private readonly IShadowBuilder _shadowBuilder;
+        private readonly IRenderingCalculator _renderingCalculator;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder, IRenderingCalculator renderingCalculator)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
@@ -49,6 +51,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _columnStateManager = columnStateManager;
             _segmentStateManager = segmentStateManager;
             _shadowBuilder = shadowBuilder;
+            _renderingCalculator = renderingCalculator;
         }
 
 
@@ -109,7 +112,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
 
-                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    column.YTranslation = CalculateYTranslation(column, elapsed);
 
                 }
                 else
@@ -300,27 +303,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private float WORKINGCalculateScrollOffset(AnimatedTimerColumn column)
         {
             float baseOffSet = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
-            float easedProgress = CalculateEasingValue(column);
+            float easedProgress = _renderingCalculator.CalculateEasingValue(column);
             return baseOffSet + (easedProgress * AnimatedColumnSettings.SegmentHeight);
         }
 
 
-        private float CalculateEasingValue(AnimatedTimerColumn column)
-        {
-            float baseAnimationProgress = column.BaseAnimationProgress;
-
-            var result = baseAnimationProgress < 0.5f
-                ? 4f * baseAnimationProgress * baseAnimationProgress * baseAnimationProgress
-                : 1f - MathF.Pow(-2f * baseAnimationProgress + 2f, 3f) / 2f;
-
-
-
-
-            return result;
-
-
-
-        }
+   
 
 
 
@@ -464,9 +452,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        private float WORKINGCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        private float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
         {
-            float easedProgress = CalculateEasingValue(column);
+            float easedProgress = _renderingCalculator.CalculateEasingValue(column);
 
             float baseY;
             float yTranslation;
@@ -500,7 +488,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             }
 
 
-
+            _appLogger.Debug($"YTranslation calculated : {yTranslation}");
             return yTranslation;
         }
 
@@ -599,12 +587,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    float yTranslation = CalculateYTranslation(column, elapsed);
 
 
 
 
-                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    column.YTranslation = CalculateYTranslation(column, elapsed);
 
 
 
@@ -731,12 +719,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    float yTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    float yTranslation = CalculateYTranslation(column, elapsed);
 
 
 
 
-                    column.YTranslation = WORKINGCalculateYTranslation(column, elapsed);
+                    column.YTranslation = CalculateYTranslation(column, elapsed);
 
                     _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
                     _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
@@ -787,6 +775,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 canvas.Restore();
             }
         }
+
+        private float CalculateEasingValue(AnimatedTimerColumn column)
+        {
+            float baseAnimationProgress = column.BaseAnimationProgress;
+
+            var result = baseAnimationProgress < 0.5f
+                ? 4f * baseAnimationProgress * baseAnimationProgress * baseAnimationProgress
+                : 1f - MathF.Pow(-2f * baseAnimationProgress + 2f, 3f) / 2f;
+
+            return result;
+
+        }
+
 
 
     }
