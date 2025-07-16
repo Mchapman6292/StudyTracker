@@ -45,7 +45,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public const byte OuterCircleOpacity = 64;
 
 
-        public static SKColor FormBackgroundColor = new SKColor(50, 49, 65);
+        public static SKColor FormBackgroundColor = new SKColor(26, 26, 46);
         public static SKColor TESTColumnColor = new SKColor(49, 50, 68);
 
         public static SKColor MainPageDarkerColor = new SKColor(35, 34, 50);

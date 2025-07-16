@@ -90,5 +90,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             return yTranslation;
         }
 
+
+
+
+
     }
 }

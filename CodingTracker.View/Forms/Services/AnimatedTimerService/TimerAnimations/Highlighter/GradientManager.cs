@@ -1,6 +1,7 @@
 ﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
 {
@@ -11,54 +12,54 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKShader CreateOuterSegmentGradient(AnimatedTimerColumn column);
         SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive);
         SKShader CreateBackgroundCanvasGradient(SKRect bounds);
+        SKShader CreateFocusedNumberGradient(AnimatedTimerColumn column);
     }
 
     public class GradientManager : IGradientManager
     {
-        private static readonly SKColor BackgroundDeepDark = new SKColor(20, 20, 30);
-        private static readonly SKColor BackgroundMidDark = new SKColor(30, 32, 45);
-        private static readonly SKColor BackgroundSurface = new SKColor(40, 42, 55);
-        private static readonly SKColor BackgroundAccentHint = new SKColor(255, 81, 195, 15);
+        private static readonly SKColor BackgroundDeepDark = new SKColor(26, 26, 46);
+        private static readonly SKColor BackgroundMidDark = new SKColor(22, 33, 62);
+        private static readonly SKColor BackgroundSurface = new SKColor(15, 52, 96);
+        private static readonly SKColor BackgroundAccentHint = new SKColor(245, 194, 231, 25);
 
-        private static readonly SKColor InnerSegmentBrightCore = new SKColor(255, 255, 255);
-        private static readonly SKColor InnerSegmentGlowPrimary = new SKColor(255, 81, 195);
-        private static readonly SKColor InnerSegmentGlowSecondary = new SKColor(168, 228, 255);
+        private static readonly SKColor InnerSegmentBrightCore = new SKColor(245, 194, 231);
+        private static readonly SKColor InnerSegmentGlowPrimary = new SKColor(203, 166, 247);
+        private static readonly SKColor InnerSegmentGlowSecondary = new SKColor(137, 180, 250);
 
-        private static readonly SKColor OuterOverlayBrightFlash = new SKColor(255, 255, 255, 102);
-        private static readonly SKColor OuterOverlayGlowHalo = new SKColor(205, 214, 244, 51);
-        private static readonly SKColor OuterOverlayAtmospheric = SKColors.Transparent;
+        private static readonly SKColor OuterOverlayBrightFlash = new SKColor(245, 194, 231, 120);
+        private static readonly SKColor OuterOverlayGlowHalo = new SKColor(203, 166, 247, 80);
+        private static readonly SKColor OuterOverlayAtmospheric = new SKColor(137, 180, 250, 40);
 
-        private static readonly SKColor ActiveColumnPrimary = new SKColor(50, 52, 65);
-        private static readonly SKColor ActiveColumnSecondary = new SKColor(40, 42, 55);
-        private static readonly SKColor ActiveColumnBase = new SKColor(30, 32, 45);
+        private static readonly SKColor ActiveColumnPrimary = new SKColor(255, 255, 255, 8);
+        private static readonly SKColor ActiveColumnSecondary = new SKColor(255, 255, 255, 5);
+        private static readonly SKColor ActiveColumnBase = new SKColor(255, 255, 255, 3);
 
-        private static readonly SKColor InactiveColumnPrimary = new SKColor(35, 37, 50, 180);
-        private static readonly SKColor InactiveColumnBase = new SKColor(25, 27, 40, 200);
+        private static readonly SKColor InactiveColumnPrimary = new SKColor(255, 255, 255, 5);
+        private static readonly SKColor InactiveColumnBase = new SKColor(255, 255, 255, 2);
 
+        private static readonly SKColor ActiveNumberPrimary = new SKColor(245, 194, 231);
+        private static readonly SKColor ActiveNumberSecondary = new SKColor(203, 166, 247);
 
-        private static readonly SKColor ActiveNumberPrimary = new SKColor(127, 202, 209);
-        private static readonly SKColor ActiveNumberSecondary = new SKColor(147, 206, 209);
-        /*255, 255, 255
-        private static readonly SKColor ActiveNumberPrimary = new SKColor(255, 255, 255);
-        */
-        private static readonly SKColor ActiveNumberGlow = new SKColor(204, 84, 144);
+        private static readonly SKColor ActiveNumberGlow = new SKColor(245, 194, 231);
 
-        private static readonly SKColor InactiveNumberPrimary = new SKColor(120, 120, 140);
-        private static readonly SKColor InactiveNumberSecondary = new SKColor(180, 180, 200);
+        private static readonly SKColor InactiveNumberPrimary = new SKColor(205, 214, 244, 153);
+        private static readonly SKColor InactiveNumberSecondary = new SKColor(205, 214, 244, 102);
 
 
 
-        private static readonly SKColor SnakeLoopBrightMagenta = new SKColor(255, 0, 255);
-        private static readonly SKColor SnakeLoopLavenderPurple = new SKColor(155, 89, 182);
-        private static readonly SKColor SnakeLoopVioletPurple = new SKColor(138, 43, 226);
+        private static readonly SKColor FocusedNumberPrimary = new SKColor(245, 194, 231);
+        private static readonly SKColor FocusedNumberSecondary = new SKColor(203, 166, 247);
 
 
+        private static readonly SKColor SnakeLoopBrightMagenta = new SKColor(245, 194, 231);
+        private static readonly SKColor SnakeLoopLavenderPurple = new SKColor(203, 166, 247);
+        private static readonly SKColor SnakeLoopVioletPurple = new SKColor(137, 180, 250);
 
-        private byte SegmentHighlightOpacityMultiplier = 255;
-        private byte CircleOverlayOpacityMultiplier = 60;
-        private byte NumberGlowOpacityMultiplier = 100;
-        private float CircleRadiusMultiplier = 1.5f;
-        private float NumberGlowRadiusMultiplier = 0.8f;
+        private byte SegmentHighlightOpacityMultiplier = 200;
+        private byte CircleOverlayOpacityMultiplier = 100;
+        private byte NumberGlowOpacityMultiplier = 150;
+        private float CircleRadiusMultiplier = 2.0f;
+        private float NumberGlowRadiusMultiplier = 1.2f;
 
         private float[] threeColorStops = { 0f, 0.5f, 1f };
         private float[] twoColorStops = { 0f, 1f };
@@ -113,7 +114,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKColor[]
             {
-               ActiveColumnPrimary.WithAlpha(240), ActiveColumnSecondary, ActiveColumnBase.WithAlpha(250)
+               ActiveColumnPrimary.WithAlpha(20), ActiveColumnSecondary, ActiveColumnBase.WithAlpha(8)
             };
         }
 
@@ -153,19 +154,31 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKColor[]
             {
-                ActiveNumberPrimary, ActiveNumberSecondary
+                InactiveNumberPrimary, InactiveNumberSecondary
             };
         }
 
+        public SKColor[] CreateFocusedNumberColors()
+        {
+            return new SKColor[]
+            {
+                FocusedNumberPrimary, FocusedNumberSecondary
+            };
+        }
+
+        public SKShader CreateFocusedNumberGradient(AnimatedTimerColumn column)
+        {
+            SKColor[] focusedColors = CreateFocusedNumberColors();
+
+            return SKShader.CreateLinearGradient(column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height), focusedColors, twoColorStops, SKShaderTileMode.Clamp);
+        }
+
+
         public SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive)
         {
-            SKColor[] colors = isActive ? CreateActiveNumberColors() : CreateInvactiveNumberColors();
+            SKColor[] colors = isActive ? CreateInvactiveNumberColors() : CreateInvactiveNumberColors();
 
             float radius = segment.SegmentHeight * NumberGlowRadiusMultiplier;
-
-  
-     
-
 
             return SKShader.CreateRadialGradient(segment.LocationCenterPoint, radius, colors, twoColorStops, SKShaderTileMode.Clamp);
         }

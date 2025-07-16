@@ -20,11 +20,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint CreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint TESTCreateOuterSegmentPaint(AnimatedTimerColumn column);
         SKPaint CreateColumnPaint(AnimatedTimerColumn column);
-        SKPaint CreateNumberPaint(bool isColumnActive);
-        SKPaint TESTCreateNumberPaint(AnimatedTimerColumn column);
+        SKPaint CreateActiveNumberPaintAndGradient(AnimatedTimerColumn column);
         SKFont CreateNumberFont();
         SKPaint CreateTopLeftLightShadowPaint(ShadowIntensity intensity, SKColor lightColor);
         SKPaint CreateRightSideDarkShadowPaint(ShadowIntensity intensity, SKColor darkColor);
+        SKPaint CreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column);
 
 
         SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column);
@@ -157,38 +157,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     
             return new SKPaint()
             {
+                StrokeWidth = 1f,
                 Shader = columnGradinet,
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };
         }
 
-        public SKPaint CreateNumberPaint(bool isColumnActive)
-        {
-            SKColor textColour = ColumnColor;
-
-            if (!isColumnActive)
-            {
-                textColour = SKColors.Gray;
-            }
-
-            else
-            {
-                textColour = AnimatedColumnSettings.CatppuccinText;
-            }
-
-            return new SKPaint()
-            {
-                Color = textColour,
-                IsAntialias = true,
-                TextAlign = SKTextAlign.Center,
-            };
-        }
-
+ 
 
 
         // To handle blue occuring on first transition add a bool 
-        public SKPaint TESTCreateNumberPaint(AnimatedTimerColumn column)
+        public SKPaint CreateActiveNumberPaintAndGradient(AnimatedTimerColumn column)
         {
             SKShader numberGradient = _gradientManager.CreateNumberGradientByIsColumnActive(column.FocusedSegment, column.IsColumnActive);
 
@@ -213,6 +193,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     IsAntialias = true,
                     TextAlign = SKTextAlign.Center,
                     MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, pulse * 2f),
+
                 };
             }
 
@@ -228,6 +209,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
           }
 
+
+
+        public SKPaint CreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column)
+        {
+            SKShader focusedNumberGradient = _gradientManager.CreateFocusedNumberGradient(column);
+
+            return new SKPaint()
+            {
+                Shader = focusedNumberGradient,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center
+            };
+
+        }
 
 
         public SKFont CreateNumberFont()

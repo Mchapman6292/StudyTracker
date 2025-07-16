@@ -259,7 +259,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public void WORKINGSetFocusedSegmentByValue(AnimatedTimerColumn column, int newValue)
         {
-            var focusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
+            var newFocusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
+
+            column.FocusedSegment = newFocusedSegment;
 
 
         }
@@ -330,6 +332,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 canvas.DrawPath(innerSegmentPath, innerPaint);
                 canvas.DrawPath(outerOverlayPath, outerPaint);
+           
 
                 canvas.Restore();
             }
@@ -337,13 +340,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        
+        
+
 
         public void WORKINGNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
 
 
-            using (var paint = _paintManager.TESTCreateNumberPaint(column))
+            using (var notFocusedNumberPaint = _paintManager.CreateActiveNumberPaintAndGradient(column))
             using (var font = _paintManager.CreateNumberFont())
+            using (var focusedNumberPaint = _paintManager.CreateFocusedNumberPaintAndGradient(column))
+                
             {
                 canvas.Save();
 
@@ -374,7 +382,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     float centerY = baseY + (segment.SegmentHeight / 2f) + (segment.TextSize / 2f);
 
 
-                    canvas.DrawText(segment.Value.ToString(), centerX, centerY, font, paint);
+                    if(segment.Value == column.FocusedSegment.Value && column.IsColumnActive)
+                    {
+                        canvas.DrawText(segment.Value.ToString(), centerX, centerY, font, focusedNumberPaint);
+                    }
+
+                    else
+                    {
+                        canvas.DrawText(segment.Value.ToString(), centerX, centerY, font, notFocusedNumberPaint);
+                    }
+
+                 
                 }
 
                 canvas.Restore();
@@ -688,6 +706,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
+                if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                {
+                    _appLogger.Debug($"Value of segment to be targeted: {liveTargetValue}, focused segment value: {column.FocusedSegment.Value}.");
+                }
+
                 // 2. Determine if this column should animate right now.
                 column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
 
@@ -730,7 +753,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
              
 
+
+                    // Are timer paths being draw over each other / at the same time?
+                    /*
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    */
+
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
           
                     WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
@@ -752,7 +780,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+                    /*
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    */
                     WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
