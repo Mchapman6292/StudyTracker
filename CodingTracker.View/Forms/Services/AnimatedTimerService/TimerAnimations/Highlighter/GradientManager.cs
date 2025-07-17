@@ -225,8 +225,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKShader CreateBlendedNumberGradient(AnimatedTimerColumn column)
         {
-            float blendAlpha = CaclculateBlendAlpha(column.BaseAnimationProgress);
-            SKColor[] blendedColors = CreateFocusedNumberBlend(blendAlpha);
+            float blendFactor = CaclculateBlendAlpha(column.BaseAnimationProgress);
+            SKColor[] blendedColors = CreateFocusedNumberBlend(blendFactor);
 
             return SKShader.CreateLinearGradient( column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height),  blendedColors,   twoColorStops, SKShaderTileMode.Clamp );
         }

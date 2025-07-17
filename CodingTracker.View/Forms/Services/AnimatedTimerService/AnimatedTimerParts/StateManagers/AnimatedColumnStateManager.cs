@@ -44,6 +44,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         int WORKINGCalculateColumnValue(TimeSpan elapsed, ColumnUnitType columnType);
         float WORKINGCalculateEasingValue(AnimatedTimerColumn column, TimerAnimationType animationType);
+
+        int GetSkControlStartingY(Form targetForm);
+
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -375,6 +378,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         }
 
+
+
+        public int GetSkControlStartingY(Form targetForm)
+        {
+            return targetForm.Height / 2 - 100;
+        }
 
 
 

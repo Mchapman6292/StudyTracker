@@ -1,4 +1,5 @@
-﻿using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 
@@ -18,6 +19,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
     {
 
         private const float _columnSpacing = 100;
+        private readonly IApplicationLogger _appLogger;
+
+        public AnimatedTimerColumnFactory(IApplicationLogger appLogger) 
+        {
+            _appLogger = appLogger;
+        }
 
         public AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType columnType)
         {
@@ -64,6 +71,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
    
             AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsSingleDigits);
             xPosition += _columnSpacing;
+
+            _appLogger.Debug($"SecondsSingleDigits initialized at Y: {secondsLeadingDigit.InitialLocation.Y}.");
             
 
 

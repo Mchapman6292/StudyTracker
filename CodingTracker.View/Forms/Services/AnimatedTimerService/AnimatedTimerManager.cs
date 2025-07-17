@@ -5,6 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
@@ -98,7 +99,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         {
             float startingX = AnimatedColumnSettings.StartingXPosition;
 
-            int startingY = targetForm.ClientSize.Height / 2 - 100;
+            int startingY = targetForm.Height / 2 - 100;
 
 
 
@@ -108,13 +109,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             {
                 var max = column.TimerSegments.Max(segment => segment.Value);
                 var min = column.TimerSegments.Min(segment => segment.Value);
-                _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, min Value : {min}, Max value : {max}.");
+                _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, startingY: {startingY}. Location: X: {column.Location.X} Y: {column.Location.Y}. ");
             }
 
             // Remmove after tests!!!!!!!!!
             _stopWatchService.StartTimer();
 
         }
+
+
+
+   
 
 
 

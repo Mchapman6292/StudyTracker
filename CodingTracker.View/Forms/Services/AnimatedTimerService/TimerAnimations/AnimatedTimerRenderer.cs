@@ -95,9 +95,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
                 }
 
+                else
+                {
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
 
-
-                WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+           
 
                 // 2. Determine if this column should animate right now.
                 column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
@@ -169,6 +172,38 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
+
+
+
+        private void TESTDrawColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        {
+            float newY = column.Location.Y - column.YTranslation;
+
+            
+
+            SKPoint newLocation = new SKPoint(column.Location.X, newY);
+
+            SKSize rectangleSize = new SKSize(column.Width, column.Height);
+            SKRect columnRectangle = SKRect.Create(newLocation, rectangleSize);
+
+            canvas.Save();
+
+    
+            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                _appLogger.Debug($"New Y location for TESTDRAWCOlUMN : {newY}.");
+            }
+
+
+
+
+            using (var rectPaint = _paintManager.CreateColumnPaint(column))
+            {
+                canvas.DrawRect(columnRectangle, rectPaint);
+            }
+
+            canvas.Restore();
+        }
 
 
 
@@ -429,11 +464,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 for (int currentSegmentIndex = 0; currentSegmentIndex < column.TotalSegmentCount; currentSegmentIndex++)
                 {
                     var segment = column.TimerSegments[currentSegmentIndex];
+
+
+        
+                    
+           
                     float newY = segment.LocationCenterPoint.Y - column.YTranslation;
+             
 
                    
 
-                    if (segment.Value  == column.CurrentValue && column.IsColumnActive && column.BaseAnimationProgress > 0.6)
+                    if (segment.Value  == column.TargetSegmentValue && column.IsColumnActive && column.BaseAnimationProgress > 0.6)
                     {
                         canvas.DrawText(segment.Value.ToString(), segment.LocationCenterPoint.X, newY, font, focusedNumberPaint);
                     }
@@ -481,7 +522,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             string logMessage = $"\n \n"
                                 + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
-                                + $"\n-----Previous Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
+                                + $"\n-----Current Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
                                 + $"\n-----IsAnimating: {column.IsAnimating}.-----"
                                 + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
                                 + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
@@ -643,9 +684,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     float yTranslation = CalculateYTranslation(column, elapsed);
 
-
-
-
                     column.YTranslation = CalculateYTranslation(column, elapsed);
 
 
@@ -742,10 +780,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
-                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                {
-                    _appLogger.Debug($"Value of segment to be targeted: {liveTargetValue}, focused segment value: {column.FocusedSegment.Value}.");
-                }
+      
 
                 // 2. Determine if this column should animate right now.
                 column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
@@ -882,6 +917,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 // The liveTargetValue == currentValue + 1 = TargetSegmentValue?
                 int liveTargetValue = CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
 
+                if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                {
+                    _appLogger.Debug($"Targetvalue calculated : {liveTargetValue}.");
+                }
+
+
 
 
 
@@ -902,18 +943,29 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 */
 
 
+
                 // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
                 if (liveTargetValue != column.TargetSegmentValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
                 {
+                   
                     column.CurrentValue = column.TargetSegmentValue;
                     column.TargetSegmentValue = liveTargetValue;
 
                     column.PassedFirstTransition = true;
                     WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+
+                    if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                    {
+                        LogColumn(column, elapsed, null, null, null);
+                    }
                 }
 
+                else
+                {
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
 
-                WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+      
 
    
 
@@ -965,7 +1017,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                         */
 
-                        NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                        TESTDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
                     WorkingDrawNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -985,7 +1037,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-                        NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    TESTDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
                     /*
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
@@ -1001,8 +1053,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        }
+
+
+     
+
+
+
+
     }
+}
 
 
 #endregion

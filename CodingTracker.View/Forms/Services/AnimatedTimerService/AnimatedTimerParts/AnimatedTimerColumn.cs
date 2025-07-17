@@ -54,6 +54,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool NumberBlurringStartAnimationActive { get; set; }
 
+        public int StartingYSkControl;
+
 
 
 
