@@ -115,13 +115,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
 
 
-        public void UpdateYTranslationForAllSegmentsInColumn(float yTranslation)
-        {
-            foreach (AnimatedTimerSegment segment in TimerSegments)
-            {
-                segment.YTranslation = yTranslation;
-            }
-        }
+    
 
 
 

@@ -27,7 +27,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         void TestDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
-        void TESTNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection);
+        void WorkingDrawNumbers(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection);
 
         void SegmentYTranslationDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
@@ -128,7 +128,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
             }
@@ -348,7 +348,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void WORKINGNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        public void OldNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
 
 
@@ -415,7 +415,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void TESTNumberDrawANDUpdateSegmentPosition(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        public void WorkingDrawNumbers(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
 
 
@@ -426,25 +426,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
                 canvas.Save();
 
-
-
                 for (int currentSegmentIndex = 0; currentSegmentIndex < column.TotalSegmentCount; currentSegmentIndex++)
                 {
                     var segment = column.TimerSegments[currentSegmentIndex];
+                    float newY = segment.LocationCenterPoint.Y - column.YTranslation;
 
-                    if (segment.Value == column.FocusedSegment.Value & column.IsColumnActive)
+                   
+
+                    if (segment.Value  == column.CurrentValue && column.IsColumnActive && column.BaseAnimationProgress > 0.6)
                     {
-                        canvas.DrawText(segment.Value.ToString(), segment.LocationCenterPoint.X, segment.LocationCenterPoint.Y, font, focusedNumberPaint);
+                        canvas.DrawText(segment.Value.ToString(), segment.LocationCenterPoint.X, newY, font, focusedNumberPaint);
                     }
 
                     else
                     {
-                        canvas.DrawText(segment.Value.ToString(), segment.LocationCenterPoint.X, segment.LocationCenterPoint.Y, font, nonFocusedNumberPaint);
+                        canvas.DrawText(segment.Value.ToString(), segment.LocationCenterPoint.X, newY, font, nonFocusedNumberPaint);
                     }
-
-
                 }
-
                 canvas.Restore();
             }
         }
@@ -666,7 +664,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 // shadow should be drawn before rectangle?
                 NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
             }
@@ -799,7 +797,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
-                    WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
 
@@ -822,7 +820,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     /*
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                     */
-                    WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
                 }
@@ -915,11 +913,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 }
 
 
-
-
-
-
-
                 WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
    
@@ -960,17 +953,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                     column.YTranslation = CalculateYTranslation(column, elapsed);
-                    column.UpdateYTranslationForAllSegmentsInColumn(yTranslation);
-
-                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-                        string message = $"Ytranslation values at {elapsed}: \n";
-                        foreach (var segment in column.TimerSegments)
-                        {
-                            message += $"{segment.YTranslation.ToString()}--- .";
-                        }
-                        _appLogger.Debug(message);
-                    }
+            
 
                         _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
                         _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
@@ -984,7 +967,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                         NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
-                        WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    WorkingDrawNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
 
@@ -1004,10 +987,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                         NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
-                        /*
-                        WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                        */
-                        WORKINGNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    /*
+                    WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    */
+                    WorkingDrawNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
 
                     }

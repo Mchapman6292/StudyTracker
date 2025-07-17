@@ -185,19 +185,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Outer, 0.5f)
                 };
             }
-            else if (column.IsColumnActive && column.NumberBlurringStartAnimationActive)
-            {
-                float pulse = (float)(Math.Sin(column.BaseAnimationProgress * 2 * Math.PI) * 0.5 + 0.5);
-
-                return new SKPaint()
-                {
-                    Shader = numberGradient,
-                    IsAntialias = true,
-                    TextAlign = SKTextAlign.Center,
-                    MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, pulse * 2f),
-
-                };
-            }
+ 
 
             else
             {
@@ -206,10 +194,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     Shader = numberGradient,
                     IsAntialias = true,
                     TextAlign = SKTextAlign.Center,
+                    MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Outer, 0.5f)
                 };
-                }
-
-          }
+            }
+        }
 
 
 
