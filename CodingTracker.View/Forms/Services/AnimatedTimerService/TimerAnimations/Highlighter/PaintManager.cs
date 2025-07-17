@@ -26,6 +26,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint CreateRightSideDarkShadowPaint(ShadowIntensity intensity, SKColor darkColor);
         SKPaint CreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column);
 
+        SKPaint TESTCreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column);
+
 
         SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column);
 
@@ -211,9 +213,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        private float CalculateFocusedNumberOpactityValue(AnimatedTimerColumn column)
+        {
+            if(column.BaseAnimationProgress < 0.5f)
+            {
+                return column.BaseAnimationProgress * 2;
+            }
+
+            return 1f - column.BaseAnimationProgress;
+        }
+
+
         public SKPaint CreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column)
         {
-            SKShader focusedNumberGradient = _gradientManager.CreateFocusedNumberGradient(column);
+            float opacityMultiplier = 1f - column.BaseAnimationProgress;
+            byte alpha = (byte)(opacityMultiplier * 150);
+
+            SKShader focusedNumberGradient = _gradientManager.CreateBlendedNumberGradient(column);
+
+      
 
             return new SKPaint()
             {
@@ -222,6 +240,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 TextAlign = SKTextAlign.Center
             };
 
+        }
+
+
+
+        public SKPaint TESTCreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column)
+        {
+            SKShader blendedGradient = _gradientManager.CreateBlendedNumberGradient(column);
+
+            return new SKPaint()
+            {
+                Shader = blendedGradient,
+                IsAntialias = true,
+                TextAlign = SKTextAlign.Center
+            };
         }
 
 

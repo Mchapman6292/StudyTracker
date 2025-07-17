@@ -19,7 +19,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public SKPoint Location { get; set; }
 
-        public SKPoint LocationCenterPoint { get; private set; }    
+        public SKPoint LocationCenterPoint { get; private set; }
+
+        public float YTranslation; 
 
 
         public AnimatedTimerSegment(int value, SKPoint location)
@@ -49,7 +51,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         }
 
-
+   
 
     }
 }

@@ -63,7 +63,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             float yTranslation;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
+            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
             {
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
@@ -78,7 +78,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             {
 
                 baseY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-                float endY = column.TargetValue * AnimatedColumnSettings.SegmentHeight;
+                float endY = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
                 float distance = endY - baseY;
                 yTranslation = baseY + (easedProgress * distance);
 

@@ -133,7 +133,7 @@ namespace CodingTracker.View.Forms
         private void InitializeAnimationTimer()
         {
             animationTimer = new System.Windows.Forms.Timer();
-            animationTimer.Interval = 16;
+            animationTimer.Interval = 8;
             animationTimer.Tick += AnimationTimer_Tick;
             animationTimer.Start();
         }

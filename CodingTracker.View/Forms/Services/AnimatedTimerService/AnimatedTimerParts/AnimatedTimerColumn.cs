@@ -32,7 +32,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
-        public int TargetValue { get; set; } = 1;
+        public int TargetSegmentValue { get; set; } = 1;
 
 
         public int CurrentValue { get; set; } = 0;
@@ -66,14 +66,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
-            MaxValue = FindMaxColumnValue();
+            MaxValue = FindMaxSegmentValue();
             IsColumnActive = InitializeIsColumnActive();
             NumberBlurringStartAnimationActive = InitializeNumberBlurringStartAnimationActive();
         }
 
 
 
-        private int FindMaxColumnValue()
+        private int FindMaxSegmentValue()
         {
             return TimerSegments.Max(segment => segment.Value);
         }
@@ -100,7 +100,28 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         }
 
 
+        public int GetNextValueInSequence()
+        {
+            int focusedSegmentValue = FocusedSegment.Value;
+            int maxSegmentValue = FindMaxSegmentValue();
 
+            if (focusedSegmentValue == maxSegmentValue)
+            {
+                return 0;
+            }
+
+            else return focusedSegmentValue + 1;
+        }
+
+
+
+        public void UpdateYTranslationForAllSegmentsInColumn(float yTranslation)
+        {
+            foreach (AnimatedTimerSegment segment in TimerSegments)
+            {
+                segment.YTranslation = yTranslation;
+            }
+        }
 
 
 

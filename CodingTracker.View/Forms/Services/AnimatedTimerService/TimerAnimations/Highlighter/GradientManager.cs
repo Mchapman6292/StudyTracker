@@ -12,7 +12,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKShader CreateOuterSegmentGradient(AnimatedTimerColumn column);
         SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive);
         SKShader CreateBackgroundCanvasGradient(SKRect bounds);
-        SKShader CreateFocusedNumberGradient(AnimatedTimerColumn column);
+
+        SKShader CreateBlendedNumberGradient(AnimatedTimerColumn column);
     }
 
     public class GradientManager : IGradientManager
@@ -54,6 +55,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private static readonly SKColor SnakeLoopBrightMagenta = new SKColor(245, 194, 231);
         private static readonly SKColor SnakeLoopLavenderPurple = new SKColor(203, 166, 247);
         private static readonly SKColor SnakeLoopVioletPurple = new SKColor(137, 180, 250);
+
+
+        private SKColor testColor = new SKColor(168, 228, 255);
+
 
         private byte SegmentHighlightOpacityMultiplier = 200;
         private byte CircleOverlayOpacityMultiplier = 100;
@@ -114,7 +119,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKColor[]
             {
-               ActiveColumnPrimary.WithAlpha(20), ActiveColumnSecondary, ActiveColumnBase.WithAlpha(8)
+              SKColors.HotPink.WithAlpha(10), SKColors.HotPink.WithAlpha(20), SKColors.HotPink.WithAlpha(30) 
             };
         }
 
@@ -158,21 +163,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             };
         }
 
-        public SKColor[] CreateFocusedNumberColors()
-        {
-            return new SKColor[]
-            {
-                FocusedNumberPrimary, FocusedNumberSecondary
-            };
-        }
-
-        public SKShader CreateFocusedNumberGradient(AnimatedTimerColumn column)
-        {
-            SKColor[] focusedColors = CreateFocusedNumberColors();
-
-            return SKShader.CreateLinearGradient(column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height), focusedColors, twoColorStops, SKShaderTileMode.Clamp);
-        }
-
+  
 
         public SKShader CreateNumberGradientByIsColumnActive(AnimatedTimerSegment segment, bool isActive)
         {
@@ -188,6 +179,56 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             SKColor[] backgroundColors = CreateBackgroundColors();
 
             return SKShader.CreateLinearGradient(new SKPoint(bounds.Left, bounds.Top), new SKPoint(bounds.Left, bounds.Bottom), backgroundColors, fourColorStops, SKShaderTileMode.Clamp);
+        }
+
+
+
+
+
+
+
+
+
+
+        private float CaclculateBlendAlpha(float animationProgress)
+        {
+            if (animationProgress <= 0.5f)
+            {
+                return animationProgress * 2f;
+            }
+            else
+            {
+                return 2f - (animationProgress * 2f);
+            }
+        }
+
+        private SKColor InterpolateColors(SKColor from, SKColor to, float factor)
+        {
+            byte r = (byte)(from.Red + (to.Red - from.Red) * factor);
+            byte g = (byte)(from.Green + (to.Green - from.Green) * factor);
+            byte b = (byte)(from.Blue + (to.Blue - from.Blue) * factor);
+
+            return new SKColor(r, g, b);
+        }
+
+        private SKColor[] CreateFocusedNumberBlend(float blendFactor)
+        {
+            SKColor primaryColor = InterpolateColors(InactiveNumberPrimary, FocusedNumberPrimary, blendFactor);
+            SKColor secondaryColor = InterpolateColors(InactiveNumberSecondary, FocusedNumberSecondary, blendFactor);
+
+            byte activeAlpha = 153;
+            byte focusedAlpha = 255;
+            byte blendedAlpha = (byte)(activeAlpha + (focusedAlpha - activeAlpha) * blendFactor);
+
+            return new SKColor[] { primaryColor.WithAlpha(blendedAlpha),secondaryColor.WithAlpha(blendedAlpha)};
+        }
+
+        public SKShader CreateBlendedNumberGradient(AnimatedTimerColumn column)
+        {
+            float blendAlpha = CaclculateBlendAlpha(column.BaseAnimationProgress);
+            SKColor[] blendedColors = CreateFocusedNumberBlend(blendAlpha);
+
+            return SKShader.CreateLinearGradient( column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height),  blendedColors,   twoColorStops, SKShaderTileMode.Clamp );
         }
     }
 }

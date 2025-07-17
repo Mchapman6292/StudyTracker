@@ -5,10 +5,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using SkiaSharp;
 using SkiaSharp.Views.Desktop;
-using System.Collections.Generic;
-using System.Drawing.Text;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
 
@@ -92,24 +89,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.TestDraw(canvas, elapsed, _columns);
+            _animatedRenderer.SegmentYTranslationDraw(canvas, elapsed, _columns);
         }
 
 
-
-
-        private void DefineStartingYPosition(Form targetForm)
-        {
-            float startingX = 50;
-
-            int startingY = targetForm.Location.Y + 150;
-        }
 
         public void InitializeColumns(Form targetForm)
         {
-            float startingX = 350;
+            float startingX = AnimatedColumnSettings.StartingXPosition;
 
-            int startingY = targetForm.Location.Y + 150;
+            int startingY = targetForm.ClientSize.Height / 2 - 100;
 
 
 
@@ -140,11 +129,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-
-        public void DrawCircleSegmentHighlight()
-        {
-
-        }
 
 
 

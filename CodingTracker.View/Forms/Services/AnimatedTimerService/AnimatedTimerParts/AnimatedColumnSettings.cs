@@ -1,14 +1,18 @@
 ﻿using SkiaSharp;
+using Windows.ApplicationModel.Background;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts
 {
     public static class AnimatedColumnSettings
     {
         // TODO Change/review why two different values
-        public const float ColumnWidth = 20f;
-        public const float SegmentWidth = 20f;
-        public const float SegmentHeight = 40f;
-        public const float TextSize = 15f;
+        public const float ColumnWidth = 15f;
+        public const float SegmentWidth = 15f;
+        public const float SegmentHeight = 30f;
+        public const float TextSize = 20f;
+
+        public const float StartingXPosition = 250f;
+
 
         public static readonly int[] ZeroToTwoDigit = { 0, 1, 2 };
         public static readonly int[] ZeroToFourDigit = { 0, 1, 2, 3, 4};
