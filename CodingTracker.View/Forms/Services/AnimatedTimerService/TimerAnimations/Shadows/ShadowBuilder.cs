@@ -3,6 +3,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using LiveChartsCore.Painting;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows
@@ -12,6 +13,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         void DrawColumnLeftShadow(SKCanvas canvas, SKRect rect, ShadowIntensity intensity = ShadowIntensity.Normal);
         void DrawColumnRightShadow(SKCanvas canvas, SKRect rect, ShadowIntensity intensity = ShadowIntensity.Normal);
         SKRect CreateRectangleForShadow(AnimatedTimerColumn column);
+
+
+        void TESTDrawColumnLeftShadow(SKCanvas canvas, SKRect baseRectangle, ShadowIntensity intensity = ShadowIntensity.Normal);
+
     }
 
     public enum ShadowIntensity
@@ -51,7 +56,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             canvas.Save();
 
-            using(var leftShadowPaint = _paintManager.CreateTopLeftLightShadowPaint(intensity, AnimatedColumnSettings.ColumnTopLeftShadow))
+            using (var leftShadowPaint = _paintManager.CreateTopLeftLightShadowPaint(intensity, AnimatedColumnSettings.ColumnTopLeftShadow))
             {
                 float shadowOffset = AnimatedColumnSettings.ColumnElevationHeight;
                 baseRectangle.Offset(-shadowOffset, -shadowOffset);
@@ -91,6 +96,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
 
             return SKRect.Create(newLocation, rectangleSize);
+        }
+
+
+
+
+
+        public void TESTDrawColumnLeftShadow(SKCanvas canvas, SKRect baseRectangle, ShadowIntensity intensity = ShadowIntensity.Normal)
+        {
+            canvas.Save();
+
+            
+
+            var shadowRect = baseRectangle;
+            float offset = AnimatedColumnSettings.ColumnElevationHeight;
+            float blur = AnimatedColumnSettings.TopLeftShadowBlurRadius;
+
+            shadowRect.Offset(-offset, -offset);
+            shadowRect.Inflate(blur, blur);
+
+
+
+
+            using (var leftShadowPaint = _paintManager.CreateTopLeftLightShadowPaint(intensity, AnimatedColumnSettings.ColumnTopLeftShadow))
+            {
+                float shadowOffset = AnimatedColumnSettings.ColumnElevationHeight;
+                leftShadowPaint.MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, blur);
+                canvas.DrawRect(baseRectangle, leftShadowPaint);
+               
+            }
+            canvas.Restore();
         }
 
 

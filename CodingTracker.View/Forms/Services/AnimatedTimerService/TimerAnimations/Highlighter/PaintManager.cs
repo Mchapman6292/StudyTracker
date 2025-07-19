@@ -31,6 +31,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column);
 
+
+        SKPaint CreateNeonGlowPaint(AnimatedTimerColumn column);
+        SKPaint CreateNeonBorderPaint(AnimatedTimerColumn column);
+
     }
 
 
@@ -280,5 +284,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, AnimatedColumnSettings.BottomRightShadowBlurRadius)
             };
         }
+
+
+
+
+
+
+        public SKPaint CreateNeonGlowPaint(AnimatedTimerColumn column)
+        {
+            SKShader glowGradient = _gradientManager.CreateColumnGradientByIsColumnActive(column);
+
+            return new SKPaint()
+            {
+                Shader = glowGradient,
+                Style = SKPaintStyle.Fill,
+                IsAntialias = true,
+                MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 8f)
+            };
+        }
+
+
+
+        public SKPaint CreateNeonBorderPaint(AnimatedTimerColumn column)
+        {
+            SKColor borderColor = column.IsColumnActive ? AnimatedColumnSettings.NeonGlowCore : AnimatedColumnSettings.NeonGlowMiddle;
+
+            return new SKPaint()
+            {
+                Color = SKColors.HotPink,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 1f,
+                IsAntialias = true,
+            };
+        }
+
+
+
+
+
     }
 }

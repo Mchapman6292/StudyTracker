@@ -155,7 +155,9 @@ namespace CodingTracker.View.Program
                     .AddTransient<ConfirmUsernamePage>()
                     .AddTransient<ElapsedTimerPage>()
                     .AddSingleton<SessionRatingForm>()
+                    .AddSingleton<TimerPlaceHolderForm>()
                     .AddSingleton<TestForm>()
+    
 
 
                     .AddSingleton< IDurationParentPanelFactory, DurationParentPanelFactory>()

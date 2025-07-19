@@ -15,7 +15,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 {
     public interface IAnimatedTimerManager
     {
-        void InitializeColumns(Form targetForm);
+        void InitializeColumns(Form targetForm, TimerPlaceHolderForm timerPlaceHolderForm);
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
@@ -95,7 +95,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        public void InitializeColumns(Form targetForm)
+        public void InitializeColumns(Form targetForm, TimerPlaceHolderForm timerPlaceHolderForm)
         {
             float startingX = AnimatedColumnSettings.StartingXPosition;
 
@@ -103,7 +103,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-            _columns = _animatedColumnFactory.CreateColumnsWithPositions(startingX, startingY);
+            _columns = _animatedColumnFactory.TESTCreateColumnsWithPositions(startingX, startingY, timerPlaceHolderForm);
 
             foreach (var column in _columns)
             {

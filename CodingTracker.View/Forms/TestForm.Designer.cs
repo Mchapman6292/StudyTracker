@@ -86,7 +86,7 @@ namespace CodingTracker.View.Forms
             timeDisplayLabel.ForeColor = Color.HotPink;
             timeDisplayLabel.Location = new Point(1152, 3);
             timeDisplayLabel.Name = "timeDisplayLabel";
-            timeDisplayLabel.Size = new Size(137, 24);
+            timeDisplayLabel.Size = new Size(137, 25);
             timeDisplayLabel.TabIndex = 8;
             timeDisplayLabel.Text = "guna2HtmlLabel1";
             // 

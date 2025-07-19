@@ -10,6 +10,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
     {
         AnimatedTimerColumn CreateColumnWithSegments(int[] segmentNumbers, SKPoint location, ColumnUnitType timeUnit);
         List<AnimatedTimerColumn> CreateColumnsWithPositions(float xPosition, float yPosition);
+
+        List<AnimatedTimerColumn> TESTCreateColumnsWithPositions(float xPosition, float yPosition, TimerPlaceHolderForm timerPlaceHolderForm);
     }
 
 
@@ -19,6 +21,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
     {
 
         private const float _columnSpacing = 100;
+        private const float _spacingBetweenMatchingColumns = 60;
         private readonly IApplicationLogger _appLogger;
 
         public AnimatedTimerColumnFactory(IApplicationLogger appLogger) 
@@ -51,13 +54,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
             List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
 
             AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToTwoDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursLeadingDigits);
-            xPosition += 40f;
+            xPosition += _spacingBetweenMatchingColumns;
 
             AnimatedTimerColumn hoursSinlgeDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.HoursSinglesDigits);
             xPosition += _columnSpacing;
 
             AnimatedTimerColumn minutesLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesLeadingDigits);
-            xPosition += 40f;
+            xPosition += _spacingBetweenMatchingColumns;
 
             AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.MinutesSingleDigits);
             xPosition += _columnSpacing;
@@ -65,7 +68,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
       
 
             AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, (new SKPoint(xPosition, yPosition)), ColumnUnitType.SecondsLeadingDigit);
-            xPosition += 40f;
+            xPosition += _spacingBetweenMatchingColumns;
 
 
    
@@ -92,6 +95,60 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 
 
         }
+
+
+
+
+        public List<AnimatedTimerColumn> TESTCreateColumnsWithPositions(float xPosition, float yPosition, TimerPlaceHolderForm timerPlaceHolderForm)
+        {
+
+            Dictionary<ColumnUnitType, SKPoint> placeHolderColumnLocations = timerPlaceHolderForm.GetPlaceHolderColumnLocations();
+
+            List<AnimatedTimerColumn> columns = new List<AnimatedTimerColumn>();
+
+            AnimatedTimerColumn hoursLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToTwoDigit, placeHolderColumnLocations[ColumnUnitType.HoursLeadingDigits], ColumnUnitType.HoursLeadingDigits);
+            xPosition += _spacingBetweenMatchingColumns;
+
+            AnimatedTimerColumn hoursSinlgeDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, placeHolderColumnLocations[ColumnUnitType.HoursSinglesDigits], ColumnUnitType.HoursSinglesDigits);
+            xPosition += _columnSpacing;
+
+            AnimatedTimerColumn minutesLeadingDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, placeHolderColumnLocations[ColumnUnitType.MinutesLeadingDigits], ColumnUnitType.MinutesLeadingDigits);
+            xPosition += _spacingBetweenMatchingColumns;
+
+            AnimatedTimerColumn minutesSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, placeHolderColumnLocations[ColumnUnitType.MinutesSingleDigits], ColumnUnitType.MinutesSingleDigits);
+            xPosition += _columnSpacing;
+
+
+
+            AnimatedTimerColumn secondsLeadingDigit = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToSixDigit, placeHolderColumnLocations[ColumnUnitType.SecondsLeadingDigit], ColumnUnitType.SecondsLeadingDigit);
+            xPosition += _spacingBetweenMatchingColumns;
+
+
+
+            AnimatedTimerColumn secondsSingleDigits = CreateColumnWithSegments(AnimatedColumnSettings.ZeroToNineDigit, placeHolderColumnLocations[ColumnUnitType.SecondsSingleDigits], ColumnUnitType.SecondsSingleDigits);
+            xPosition += _columnSpacing;
+
+            _appLogger.Debug($"SecondsSingleDigits initialized at Y: {secondsLeadingDigit.InitialLocation.Y}.");
+
+
+
+            columns.Add(hoursLeadingDigits);
+            columns.Add(hoursSinlgeDigits);
+            columns.Add(minutesLeadingDigits);
+            columns.Add(minutesSingleDigits);
+
+
+            columns.Add(secondsSingleDigits);
+
+
+            columns.Add(secondsLeadingDigit);
+
+
+            return columns;
+
+
+        }
+
     }
 }
 

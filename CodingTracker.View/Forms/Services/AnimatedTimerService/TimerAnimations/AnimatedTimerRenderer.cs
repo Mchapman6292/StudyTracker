@@ -129,7 +129,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     isCircleStatic = true;
                 }
 
-                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WorkingDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                 OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -143,10 +143,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        private void NEWDrawColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        private void WorkingDrawColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
             SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
+            
+
 
             canvas.Save();
 
@@ -172,38 +174,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-
-
-
-        private void TESTDrawColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
-        {
-            float newY = column.Location.Y - column.YTranslation;
-
-            
-
-            SKPoint newLocation = new SKPoint(column.Location.X, newY);
-
-            SKSize rectangleSize = new SKSize(column.Width, column.Height);
-            SKRect columnRectangle = SKRect.Create(newLocation, rectangleSize);
-
-            canvas.Save();
-
-    
-            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"New Y location for TESTDRAWCOlUMN : {newY}.");
-            }
-
-
-
-
-            using (var rectPaint = _paintManager.CreateColumnPaint(column))
-            {
-                canvas.DrawRect(columnRectangle, rectPaint);
-            }
-
-            canvas.Restore();
-        }
 
 
 
@@ -700,7 +670,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                 // shadow should be drawn before rectangle?
-                NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                WorkingDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
                 WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                 OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -830,7 +800,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
                     */
 
-                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    WorkingDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
                     OldNumberDrawANDUpdateSegmentPosition(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -850,7 +820,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-                    NEWDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    WorkingDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
                     /*
                     WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
@@ -1005,19 +975,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                     column.YTranslation = CalculateYTranslation(column, elapsed);
-            
 
+
+                    /*
                         _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
+                    
                         _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
+                        
 
 
 
-                        // Are timer paths being draw over each other / at the same time?
-                        /*
-                        WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                        */
 
-                        TESTDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    // Are timer paths being draw over each other / at the same time?
+                    /*
+                    WORKINGDrawTimerPaths(canvas, column, elapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
+                    */
+
+                    TESTDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
                     WorkingDrawNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -1031,11 +1005,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         isCircleStatic = true;
 
 
+                    /*
+                _shadowBuilder.TESTDrawColumnLeftShadow(canvas, leftShadowRectangle);
 
-                        _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
-                        _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
 
+                _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
 
+            */
 
                     TESTDrawColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
 
@@ -1053,9 +1029,39 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+        private void TESTDrawColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        {
+            SKSize rectangleSize = new SKSize(column.Width, column.Height);
+            SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
+
+            SKRoundRect roundRect = new SKRoundRect(columnRectangle, AnimatedColumnSettings.RoundRectangleRadius);
 
 
-     
+            canvas.Save();
+
+            if (animationDirection == ColumnAnimationSetting.IsMovingUp)
+            {
+                canvas.Translate(0, -column.YTranslation);
+            }
+
+            if (animationDirection == ColumnAnimationSetting.IsMovingDown)
+            {
+                canvas.Translate(0, +column.YTranslation);
+            }
+
+
+
+
+            using (var rectPaint = _paintManager.CreateColumnPaint(column))
+            {
+                canvas.DrawRoundRect(roundRect, rectPaint);
+            }
+
+            canvas.Restore();
+        }
+
+
+
 
 
 

@@ -6,12 +6,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
     public static class AnimatedColumnSettings
     {
         // TODO Change/review why two different values
-        public const float ColumnWidth = 15f;
-        public const float SegmentWidth = 15f;
+        public const float ColumnWidth = 25f;
+        public const float SegmentWidth = 25f;
         public const float SegmentHeight = 30f;
         public const float TextSize = 20f;
 
         public const float StartingXPosition = 250f;
+
+        public const float RoundRectangleRadius = 25;
 
 
         public static readonly int[] ZeroToTwoDigit = { 0, 1, 2 };
@@ -143,7 +145,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-
+        public static readonly SKColor NeonGlowMiddle = new SKColor(203, 166, 247);
+        public static readonly SKColor NeonGlowOuter = new SKColor(137, 180, 250);
+        public static readonly SKColor NeonGlowCore = new SKColor(245, 194, 231);
 
 
 
