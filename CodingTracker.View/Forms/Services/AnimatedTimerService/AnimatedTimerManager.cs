@@ -112,8 +112,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
                 _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, startingY: {startingY}. Location: X: {column.Location.X} Y: {column.Location.Y}. ");
             }
 
-            // Remmove after tests!!!!!!!!!
-            _stopWatchService.StartTimer();
+      
 
         }
 

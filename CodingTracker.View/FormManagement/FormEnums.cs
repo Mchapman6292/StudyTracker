@@ -13,7 +13,7 @@
         ResetPasswordForm,
         OrbitalTimerForm,
         WaveVisualizationForm,
-        TestForm,
+        AnimatedTimerForm,
         SessionNotesForm,
         SessionRatingForm,
         TimerPlaceHolderForm

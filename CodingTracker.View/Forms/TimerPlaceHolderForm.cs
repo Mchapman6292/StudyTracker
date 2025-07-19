@@ -23,5 +23,18 @@ namespace CodingTracker.View.Forms
                 { ColumnUnitType.HoursLeadingDigits, new SKPoint(hoursLeadingPanel.Location.X, hoursLeadingPanel.Location.Y) }
             };
         }
+
+
+
+ 
+
+
+        public void GetSkControlSizeAndLocationFromPlaceholder(out Point placeHolderPanelForSkControlLocation, out Size placeHolderPanelForSkControlSize)
+        {
+            placeHolderPanelForSkControlLocation = placeHolderpanelForSkControl.Location;
+            placeHolderPanelForSkControlSize = placeHolderpanelForSkControl.Size;
+
+          
+        }
     }
 }

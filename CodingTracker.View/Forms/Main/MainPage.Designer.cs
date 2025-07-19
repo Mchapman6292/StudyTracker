@@ -575,6 +575,7 @@ namespace CodingTracker.View
             startSessionButton.Size = new Size(268, 44);
             startSessionButton.TabIndex = 34;
             startSessionButton.Text = " Start Session";
+            startSessionButton.Click += startSessionButton_Click;
             // 
             // guna2HtmlLabel2
             // 

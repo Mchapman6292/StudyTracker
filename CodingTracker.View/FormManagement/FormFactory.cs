@@ -48,7 +48,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.ElapsedTimerForm => typeof(ElapsedTimerPage),
                 FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
                 FormPageEnum.TimerPlaceHolderForm => typeof(TimerPlaceHolderForm),
-                FormPageEnum.TestForm => typeof(TestForm),
+                FormPageEnum.AnimatedTimerForm => typeof(AnimatedTimerForm),
 
 
 
