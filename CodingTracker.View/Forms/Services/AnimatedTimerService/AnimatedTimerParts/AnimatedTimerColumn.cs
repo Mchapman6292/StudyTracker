@@ -21,6 +21,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public SKPoint InitialLocation { get; set; }
         public SKPoint Location { get; set; }
+
     
         public float YTranslation { get; set; }
 
@@ -55,6 +56,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public bool NumberBlurringStartAnimationActive { get; set; }
 
         public int StartingYSkControl;
+
+        public bool IsRestarting { get; set; } 
 
 
 

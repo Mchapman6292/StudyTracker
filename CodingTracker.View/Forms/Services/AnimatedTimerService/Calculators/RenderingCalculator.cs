@@ -2,13 +2,19 @@
 using CodingTracker.Logging;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using System.Buffers.Text;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 {
     public interface IRenderingCalculator
     {
+        float CalculateAnimationProgress(TimeSpan elapsed);
+        float CalculateColumnScrollProgress(float animationProgress);
+        double CalculateSecondsUntilNextAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
         float CalculateEasingValue(AnimatedTimerColumn column);
         float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed);
+        int CalculateTargetValue(TimeSpan elapsed, ColumnUnitType columnType);
+
     }
 
     public class RenderingCalculator : IRenderingCalculator
@@ -20,6 +26,28 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         public RenderingCalculator(IApplicationLogger appLogger)
         {
             _appLogger = appLogger;
+        }
+
+
+
+
+        public float CalculateAnimationProgress(TimeSpan elapsed)
+        {
+            return (float)(elapsed.TotalSeconds % 1.0);
+        }
+
+        public float CalculateColumnScrollProgress(float animationProgress)
+        {
+            if (animationProgress < 0.5f)
+                return 0f;
+
+            return (animationProgress - 0.5f) / 0.5f;
+        }
+
+        public double CalculateSecondsUntilNextAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            // Modulo calculates how far into the current cycle, then subtract this from the interval to get a value between 0 and the animation interval
+            return column.AnimationInterval.TotalSeconds - (elapsed.TotalSeconds % column.AnimationInterval.TotalSeconds); 
         }
 
 
@@ -90,6 +118,44 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             return yTranslation;
         }
 
+
+
+        public int CalculateTargetValue(TimeSpan elapsed, ColumnUnitType columnType)
+        {
+            int totalSeconds = (int)elapsed.TotalSeconds;
+            int minutes = totalSeconds / 60;
+            int hours = totalSeconds / 3600;
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    return totalSeconds % 10;
+                case ColumnUnitType.SecondsLeadingDigit:
+                    return (totalSeconds / 10) % 6;
+                case ColumnUnitType.MinutesSingleDigits:
+                    return minutes % 10;
+                case ColumnUnitType.MinutesLeadingDigits:
+                    return (minutes / 10) % 6;
+                case ColumnUnitType.HoursSinglesDigits:
+                    return hours % 10;
+                case ColumnUnitType.HoursLeadingDigits:
+                    return (hours / 10) % 10;
+                default:
+                    return 0;
+            }
+        }
+
+
+
+
+
+        public float CalculateRestartYTranslation(AnimatedTimerColumn column, float progressOverOneSecond)
+        {
+           float baseY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+
+            return 0;
+
+        }
 
 
 

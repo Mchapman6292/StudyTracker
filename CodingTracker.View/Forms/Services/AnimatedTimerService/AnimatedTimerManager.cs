@@ -7,6 +7,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.Diagnostics;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
 
@@ -90,7 +91,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.SegmentYTranslationDraw(canvas, elapsed, _columns);
+            _animatedRenderer.WorkingDraw(canvas, elapsed, _columns);
         }
 
 
@@ -113,6 +114,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             }
 
       
+
+        }
+
+
+
+
+
+
+
+        public void HandleRestartSessionButton()
+        {
+            Stopwatch restartStopWatch = new Stopwatch();
+
+
+
+
+
+
+
+            // Only set to isActive after column positions have been reset. 
+            foreach (var column in _columns)
+            {
+                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                {
+                    column.IsColumnActive = false;
+                    column.IsAnimating = false;
+                }
+
+            }
+
 
         }
 

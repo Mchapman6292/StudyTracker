@@ -1,20 +1,14 @@
-﻿using CodingTracker.Business.MainPageService.PanelColourAssigners;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
-using CodingTracker.View.Forms.Services.MainPageService.RecentActivityService.Factories;
-using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.Controller.SessionVisualizationControllers;
-using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationService.PanelHelpers;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using SkiaSharp;
 
 
 namespace CodingTracker.View.Forms
@@ -89,6 +83,7 @@ namespace CodingTracker.View.Forms
             animatedTimerSKControl.PaintSurface += _animatedTimerManager.DrawColumnsOnTick;
             pauseButton.Click += PauseButton_Click;
             stopButton.Click += StopButton_Click;
+            restartButton.Click += RestartSessionButton_Click;
 
             this.Shown += AnimatedTimerForm_Shownn;
             this.Load += AnimatedTimerForm_Load;    
@@ -166,7 +161,7 @@ namespace CodingTracker.View.Forms
         private void InitializeAnimationTimer()
         {
             animationTimer = new System.Windows.Forms.Timer();
-            animationTimer.Interval = 8;
+            animationTimer.Interval = 16; // 16ms = 60fps.
             animationTimer.Tick += AnimationTimer_Tick;
             animationTimer.Start();
         }

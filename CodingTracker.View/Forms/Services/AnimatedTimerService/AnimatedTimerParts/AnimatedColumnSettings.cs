@@ -41,6 +41,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         private const float _circlePaddingMultiplier = 1.2f;
         public const float minRadiusScale = 0.4f;
 
+        public const float NumberHighlightActivationThreshold = 0.6f;
+
 
         public static readonly float MinRadius = CalculateMinRadius();
 
