@@ -1,8 +1,4 @@
-﻿using CodingTracker.View.FormManagement;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using SkiaSharp;
-
-namespace CodingTracker.View.FormManagement
+﻿namespace CodingTracker.View.FormManagement
 {
     public enum FormPageEnum
     {
@@ -17,9 +13,10 @@ namespace CodingTracker.View.FormManagement
         ResetPasswordForm,
         OrbitalTimerForm,
         WaveVisualizationForm,
-        TestForm,
+        AnimatedTimerForm,
         SessionNotesForm,
-        SessionRatingForm
+        SessionRatingForm,
+        TimerPlaceHolderForm
     }
 
 

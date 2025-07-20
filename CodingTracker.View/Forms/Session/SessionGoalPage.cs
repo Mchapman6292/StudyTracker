@@ -186,7 +186,7 @@ namespace CodingTracker.View.PopUpFormService
             }
 
 
-            _formNavigator.SwitchToTimerAndWaveForm();
+            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
         }
 
 

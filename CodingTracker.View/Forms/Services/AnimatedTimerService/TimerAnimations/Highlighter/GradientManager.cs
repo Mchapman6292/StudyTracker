@@ -14,6 +14,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKShader CreateBackgroundCanvasGradient(SKRect bounds);
 
         SKShader CreateBlendedNumberGradient(AnimatedTimerColumn column);
+
     }
 
     public class GradientManager : IGradientManager
@@ -37,6 +38,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         private static readonly SKColor InactiveColumnPrimary = new SKColor(255, 255, 255, 5);
         private static readonly SKColor InactiveColumnBase = new SKColor(255, 255, 255, 2);
+        private static readonly SKColor InactiveColumnSecondary = new SKColor(255, 255, 255, 3);
+
+
 
         private static readonly SKColor ActiveNumberPrimary = new SKColor(245, 194, 231);
         private static readonly SKColor ActiveNumberSecondary = new SKColor(203, 166, 247);
@@ -55,6 +59,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private static readonly SKColor SnakeLoopBrightMagenta = new SKColor(245, 194, 231);
         private static readonly SKColor SnakeLoopLavenderPurple = new SKColor(203, 166, 247);
         private static readonly SKColor SnakeLoopVioletPurple = new SKColor(137, 180, 250);
+
+
+
+
+
+        private static readonly SKColor NeonGlowCore = new SKColor(245, 194, 231);
+        private static readonly SKColor NeonGlowMiddle = new SKColor(203, 166, 247);
+        private static readonly SKColor NeonGlowOuter = new SKColor(137, 180, 250);
+
+
+
+        public SKColor ColumnTest1 = new SKColor(255, 255, 255, 12);  
+        public SKColor ColumnTest2 = new SKColor(255, 255, 255, 8);  
+        public SKColor ColumnTest3 = new SKColor(255, 255, 255, 3);
+
+
 
 
         private SKColor testColor = new SKColor(168, 228, 255);
@@ -119,7 +139,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             return new SKColor[]
             {
-              SKColors.HotPink.WithAlpha(10), SKColors.HotPink.WithAlpha(20), SKColors.HotPink.WithAlpha(30) 
+            NeonGlowCore.WithAlpha(40),  NeonGlowMiddle.WithAlpha(35),NeonGlowOuter.WithAlpha(40) 
+            };
+        }
+
+        private SKColor[] TestCreateActiveColumnColors()
+        {
+            return new SKColor[]
+            {
+                ColumnTest1, ColumnTest2, ColumnTest3
+
+
+                /*
+                  NeonGlowCore.WithAlpha(20),
+            NeonGlowMiddle.WithAlpha(12),
+            NeonGlowOuter.WithAlpha(5)
+                */
             };
         }
 
@@ -225,10 +260,27 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
         public SKShader CreateBlendedNumberGradient(AnimatedTimerColumn column)
         {
-            float blendAlpha = CaclculateBlendAlpha(column.BaseAnimationProgress);
-            SKColor[] blendedColors = CreateFocusedNumberBlend(blendAlpha);
+            float blendFactor = CaclculateBlendAlpha(column.BaseAnimationProgress);
+            SKColor[] blendedColors = CreateFocusedNumberBlend(blendFactor);
 
             return SKShader.CreateLinearGradient( column.Location, new SKPoint(column.Location.X, column.Location.Y + column.Height),  blendedColors,   twoColorStops, SKShaderTileMode.Clamp );
         }
+
+
+
+        public SKColor[] CreateColorAlphaVariations(SKColor color)
+        {
+            return new SKColor[] { color.WithAlpha(20), color.WithAlpha(12), color.WithAlpha(5) };
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }

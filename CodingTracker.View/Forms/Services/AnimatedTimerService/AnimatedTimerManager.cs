@@ -5,7 +5,9 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
+using System.Diagnostics;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
 
@@ -14,7 +16,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 {
     public interface IAnimatedTimerManager
     {
-        void InitializeColumns(Form targetForm);
+        void InitializeColumns(Form targetForm, TimerPlaceHolderForm timerPlaceHolderForm);
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
@@ -89,32 +91,65 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.SegmentYTranslationDraw(canvas, elapsed, _columns);
+            _animatedRenderer.WorkingDraw(canvas, elapsed, _columns);
         }
 
 
 
-        public void InitializeColumns(Form targetForm)
+        public void InitializeColumns(Form targetForm, TimerPlaceHolderForm timerPlaceHolderForm)
         {
             float startingX = AnimatedColumnSettings.StartingXPosition;
 
-            int startingY = targetForm.ClientSize.Height / 2 - 100;
+            int startingY = targetForm.Height / 2 - 100;
 
 
 
-            _columns = _animatedColumnFactory.CreateColumnsWithPositions(startingX, startingY);
+            _columns = _animatedColumnFactory.TESTCreateColumnsWithPositions(startingX, startingY, timerPlaceHolderForm);
 
             foreach (var column in _columns)
             {
                 var max = column.TimerSegments.Max(segment => segment.Value);
                 var min = column.TimerSegments.Min(segment => segment.Value);
-                _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, min Value : {min}, Max value : {max}.");
+                _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, startingY: {startingY}. Location: X: {column.Location.X} Y: {column.Location.Y}. ");
             }
 
-            // Remmove after tests!!!!!!!!!
-            _stopWatchService.StartTimer();
+      
 
         }
+
+
+
+
+
+
+
+        public void HandleRestartSessionButton()
+        {
+            Stopwatch restartStopWatch = new Stopwatch();
+
+
+
+
+
+
+
+            // Only set to isActive after column positions have been reset. 
+            foreach (var column in _columns)
+            {
+                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                {
+                    column.IsColumnActive = false;
+                    column.IsAnimating = false;
+                }
+
+            }
+
+
+        }
+
+
+
+   
 
 
 

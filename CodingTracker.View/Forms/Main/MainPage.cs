@@ -92,7 +92,7 @@ namespace CodingTracker.View
             ISessionVisualizationController sessionVisualizationController,
             IDurationParentPanelPositionManager durationPanelPositionManager,
             IMainPagePieChartManager mainPagePiechartManager
-            
+
 
 
         )
@@ -640,8 +640,10 @@ namespace CodingTracker.View
             _notificationManager.ShowNotificationDialog(this, order);
         }
 
-
-
+        private void startSessionButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.SessionGoalForm);
+        }
     }
 }
 
