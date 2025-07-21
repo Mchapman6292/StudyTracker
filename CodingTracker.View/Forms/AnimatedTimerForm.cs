@@ -56,7 +56,7 @@ namespace CodingTracker.View.Forms
 
             _buttonHighligherService = buttonHighlighterService;
             _notificationManager = notificationManager;
-            _codingSessionRepository = codingSessionRepository;;
+            _codingSessionRepository = codingSessionRepository; ;
             _labelAssignment = labelAssignment;
             _appLogger = appLogger;
             _animatedTimerColumnFactory = animatedTimerColumnFactory;
@@ -69,8 +69,8 @@ namespace CodingTracker.View.Forms
             _codingSessionManager = codingSessionManager;
             _buttonHighLighterService = buttonHighLighterService;
 
-            _timerPlaceHolderForm =(TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm);;
-            _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerPlaceHolderForm ,_timerPlaceHolderForm);
+            _timerPlaceHolderForm = (TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm); ;
+            _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerPlaceHolderForm, _timerPlaceHolderForm);
 
             InitializeComponent();
 
@@ -86,7 +86,7 @@ namespace CodingTracker.View.Forms
             restartButton.Click += RestartSessionButton_Click;
 
             this.Shown += AnimatedTimerForm_Shownn;
-            this.Load += AnimatedTimerForm_Load;    
+            this.Load += AnimatedTimerForm_Load;
 
 
 
@@ -128,11 +128,12 @@ namespace CodingTracker.View.Forms
             _buttonHighligherService.SetButtonBackColorAndBorderColor(stopButton);
 
             _buttonHighligherService.SetButtonHoverColors(restartButton);
-            _buttonHighligherService.SetButtonBackColorAndBorderColor(restartButton); 
+            _buttonHighligherService.SetButtonBackColorAndBorderColor(restartButton);
 
 
         }
 
+        // TODO review, what happens if we close re open form etc. 
         private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
         {
             _stopWatchTimerService.StartTimer();
@@ -156,7 +157,7 @@ namespace CodingTracker.View.Forms
         }
 
 
-  
+
 
         private void InitializeAnimationTimer()
         {
@@ -230,15 +231,48 @@ namespace CodingTracker.View.Forms
             _stopWatchTimerService.StopTimer();
             _stopWatchTimerService.RestartTimer();
 
-   
+
             TimeSpan elapsedAfterRestart = _stopWatchTimerService.ReturnElapsedTimeSpan();
 
             _appLogger.Debug($"elapsed after restart: {FormatElapsedTimeSPan(elapsedAfterRestart)}.");
 
-          
+
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+
+            _stopWatchTimerService.StartRestartTimer();
+            _animatedTimerManager.UpdateColumnStatesOnRestartButtonClick();
+
+
+
+            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            _stopWatchTimerService.StopTimer();
+
+            List<AnimatedTimerColumn> columns = _animatedTimerManager.ReturnTimerColumns();
+
+            var column = columns.FirstOrDefault(s => s.ColumnType == ColumnUnitType.SecondsSingleDigits);
+
+
+
+
+            _animatedTimerManager.UpdateColumnStatesOnRestartButtonClick();
         }
 
 
-    }
 
+
+        /*
+        public void TestElapsedBox_TextChange(object sender, EventArgs e)
+        {
+            if(TimeSpan.TryParseExact(testElapsedBox.Text, "hh\\:mm\\:ss", out TimeSpan elapsed))
+            {
+                testElapsedBox.Text = elapsed.ToString();
+            }
+        }
+        */
+
+
+    }
 }

@@ -58,6 +58,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         public int StartingYSkControl;
 
         public bool IsRestarting { get; set; } 
+        
+        // Records columns Y location when restart button pressed. 
+        public float YLocationAtRestart { get; set; }
 
 
 
@@ -83,7 +86,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return TimerSegments.Max(segment => segment.Value);
         }
 
-
+   
 
         private bool InitializeIsColumnActive()
         {

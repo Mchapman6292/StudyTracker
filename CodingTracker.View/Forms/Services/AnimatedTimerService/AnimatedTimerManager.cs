@@ -1,13 +1,16 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 // TODO: Change AnimationPhaseCalculator, define a single animation method, apply at timer intervals.
 
@@ -22,6 +25,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         void LogColumnBools();
         List<AnimatedTimerColumn> ReturnTimerColumns();
+
+        void UpdateColumnStatesOnRestartButtonClick();
+
+
+
+
     }
 
     public class AnimatedTimerManager : IAnimatedTimerManager
@@ -32,16 +41,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IAnimatedTimerColumnFactory _animatedColumnFactory;
         private readonly IApplicationLogger _appLogger;
         private readonly IPaintManager _circleHighlight;
+        private readonly IRenderingCalculator _renderingCalculator;
         private List<AnimatedTimerColumn> _columns;
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight)
+
+
+
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IRenderingCalculator renderingCalculator)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
             _animatedColumnFactory = animatedTimerColumnFactory;
             _appLogger = appLogger;
             _circleHighlight = circleHighLight;
+            _renderingCalculator = renderingCalculator;
             _columns = new List<AnimatedTimerColumn>(); 
   
         }
@@ -91,8 +105,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.WorkingDraw(canvas, elapsed, _columns);
+            _animatedRenderer.NEWTESTDraw(canvas, elapsed, _columns);
         }
+
+
+
+        
+
+        private float CalculateStartingYLocation(float formHeight)
+        {
+            return formHeight / 2 - 100;
+        }
+
+
 
 
 
@@ -123,33 +148,42 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        public void HandleRestartSessionButton()
+
+
+
+
+
+
+
+
+
+
+        public void LogColumn(AnimatedTimerColumn column, TimeSpan elapsed, float? initialYLocation, float? easedProgress, float? yTranslation)
         {
-            Stopwatch restartStopWatch = new Stopwatch();
+            string logMessage = $"\n \n"
+                                + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
+                                + $"\n-----Current Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
+                                + $"\n-----IsAnimating: {column.IsAnimating}.-----"
+                                + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
+                                + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
+                                + $"\n------PassedFirstTransition: {column.PassedFirstTransition.ToString()}."
+                                + $"\n------- IsRestarting: {column.IsRestarting}. RestartYLocation: {column.YLocationAtRestart}. ";
 
 
-
-
-
-
-
-            // Only set to isActive after column positions have been reset. 
-            foreach (var column in _columns)
+            if (initialYLocation != null && easedProgress != null && yTranslation != null)
             {
-                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
-                {
-                    column.IsColumnActive = false;
-                    column.IsAnimating = false;
-                }
-
+                logMessage +=
+                $"\n---- OFFSET CALCULATION FOR COLUMN: {column.ColumnType}.-----"
+                + $"\n---- InitialYLocation: {initialYLocation}, Easing Value: {easedProgress}, YTranslation: {yTranslation}.-----\n\n";
             }
 
-
+            _appLogger.Info(logMessage);
         }
 
-
-
-   
+        public string FormatElapsedTimeSPan(TimeSpan elapsed)
+        {
+            return elapsed.ToString(@"mm\:ss\.fff");
+        }
 
 
 
@@ -169,10 +203,34 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
+        public void UpdateColumnStatesOnRestartButtonClick()
+        {
+            _stopWatchService.ResetRestartTimer();
+            var span = _stopWatchService.ReturnElapsedTimeSpan();
 
+            foreach (var column in _columns)
+            {
+                column.IsRestarting = true;
+                column.YLocationAtRestart = column.YTranslation; 
+                column.IsAnimating = true;
+                column.IsColumnActive = true;
+
+
+                LogColumn(column, span, null, null, null);
+            }
+        }
     }
 
- 
+
+
+
+
+
+
+
+
+
+    }
 
     public enum ColumnUnitType
     {
@@ -183,4 +241,4 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         SecondsLeadingDigit,
         SecondsSingleDigits
     }
-}
+    

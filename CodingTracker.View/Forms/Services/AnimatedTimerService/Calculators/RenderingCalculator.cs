@@ -11,9 +11,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateColumnScrollProgress(float animationProgress);
         double CalculateSecondsUntilNextAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
-        float CalculateEasingValue(AnimatedTimerColumn column);
-        float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed);
+        float CalculateEasingValue(float animationProgress);
+        float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
         int CalculateTargetValue(TimeSpan elapsed, ColumnUnitType columnType);
+
+        float CalculateDistanceForReset(AnimatedTimerColumn column);
+        float TESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
 
     }
 
@@ -36,6 +39,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             return (float)(elapsed.TotalSeconds % 1.0);
         }
 
+        public float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed)
+        {
+            return (float)(restartTimerElapsed.TotalSeconds % 1.0);
+        }
+
+
         public float CalculateColumnScrollProgress(float animationProgress)
         {
             if (animationProgress < 0.5f)
@@ -53,10 +62,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public float CalculateEasingValue(AnimatedTimerColumn column)
+        public float CalculateEasingValue(float animationProgress)
         {
             const float midpoint = 0.5f;
-            float animationProgress = column.BaseAnimationProgress;
+
 
             if (animationProgress < midpoint)
             {
@@ -83,11 +92,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed)
+        public float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress)
         {
-            float easedProgress = CalculateEasingValue(column);
+            float easedProgress = CalculateEasingValue(animationProgress);
 
-            float baseY;
+            float startY;
             float yTranslation;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
@@ -96,27 +105,69 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
                 // Wrapping from max to 0, so animate downward from max position.
-                baseY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
-                yTranslation = baseY - (easedProgress * baseY);
+                startY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
+                yTranslation = startY - (easedProgress * startY);
                 return yTranslation;
 
             }
-
             else
             {
 
-                baseY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                startY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
                 float endY = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
-                float distance = endY - baseY;
-                yTranslation = baseY + (easedProgress * distance);
+                float distance = endY - startY;
+                yTranslation = startY + (easedProgress * distance);
 
 
             }
-
-
-            _appLogger.Debug($"YTranslation calculated : {yTranslation}");
             return yTranslation;
         }
+
+
+
+        public float TESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress)
+        {
+            float easedProgress = CalculateEasingValue(animationProgress);
+
+            float startY;
+            float currentY;
+            float endY;
+
+            // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
+            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval && !column.IsRestarting)
+            {
+                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
+
+                startY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
+                endY = 0;
+                currentY = startY - (easedProgress * startY); 
+                return currentY;
+
+            }
+
+            else if (column.IsRestarting)
+            {
+                startY = column.YLocationAtRestart;
+                endY = 0;
+                float distance = endY - startY;
+                currentY = startY + (easedProgress * distance);
+                return currentY;
+            }
+            // Normal animation transition.
+            else
+            {
+                startY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+                endY = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
+                float distance = endY - startY;
+                currentY = startY + (easedProgress * distance);
+                return currentY;
+            }
+        }
+
+
+
+
+
 
 
 
@@ -149,13 +200,24 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public float CalculateRestartYTranslation(AnimatedTimerColumn column, float progressOverOneSecond)
+
+        public float CalculateDistanceForReset(AnimatedTimerColumn column)
         {
-           float baseY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float resetYLocation = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float currentYlocation = resetYLocation - column.YTranslation;
 
-            return 0;
 
+            return currentYlocation;
         }
+
+
+
+        public void FormatElapsedMiliSecondsToAnimationProgress(TimeSpan restartTimerElapsed)
+        {
+            
+        }
+
+
 
 
 
