@@ -43,27 +43,27 @@ namespace CodingTracker.View
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.AnimatorNS.Animation animation1 = new Guna.UI2.AnimatorNS.Animation();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges33 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges34 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges31 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges32 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges40 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges35 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges36 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges37 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.AnimatorNS.Animation animation2 = new Guna.UI2.AnimatorNS.Animation();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginPage));
             rememberMeTextBox = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -97,7 +97,7 @@ namespace CodingTracker.View
             // rememberMeTextBox
             // 
             guna2Transition1.SetDecoration(rememberMeTextBox, Guna.UI2.AnimatorNS.DecorationType.None);
-            rememberMeTextBox.ForeColor = SystemColors.ControlLight;
+            rememberMeTextBox.ForeColor = Color.FromArgb(255, 200, 230);
             rememberMeTextBox.Location = new Point(99, 294);
             rememberMeTextBox.Name = "rememberMeTextBox";
             rememberMeTextBox.Size = new Size(100, 23);
@@ -121,7 +121,7 @@ namespace CodingTracker.View
             loginPageUsernameTextbox.AutoRoundedCorners = true;
             loginPageUsernameTextbox.BorderColor = Color.FromArgb(255, 81, 195);
             loginPageUsernameTextbox.BorderRadius = 17;
-            loginPageUsernameTextbox.CustomizableEdges = customizableEdges1;
+            loginPageUsernameTextbox.CustomizableEdges = customizableEdges21;
             guna2Transition1.SetDecoration(loginPageUsernameTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
             loginPageUsernameTextbox.DefaultText = "";
             loginPageUsernameTextbox.DisabledState.BorderColor = Color.FromArgb(255, 81, 195);
@@ -138,7 +138,7 @@ namespace CodingTracker.View
             loginPageUsernameTextbox.PlaceholderForeColor = Color.FromArgb(120, 120, 130);
             loginPageUsernameTextbox.PlaceholderText = "Username";
             loginPageUsernameTextbox.SelectedText = "";
-            loginPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            loginPageUsernameTextbox.ShadowDecoration.CustomizableEdges = customizableEdges22;
             loginPageUsernameTextbox.Size = new Size(258, 36);
             loginPageUsernameTextbox.TabIndex = 15;
             loginPageUsernameTextbox.Enter += LoginPagePasswordTextbox_Enter;
@@ -149,7 +149,7 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.AutoRoundedCorners = true;
             LoginPagePasswordTextbox.BorderColor = Color.FromArgb(255, 81, 195);
             LoginPagePasswordTextbox.BorderRadius = 17;
-            LoginPagePasswordTextbox.CustomizableEdges = customizableEdges3;
+            LoginPagePasswordTextbox.CustomizableEdges = customizableEdges23;
             guna2Transition1.SetDecoration(LoginPagePasswordTextbox, Guna.UI2.AnimatorNS.DecorationType.None);
             LoginPagePasswordTextbox.DefaultText = "";
             LoginPagePasswordTextbox.DisabledState.BorderColor = Color.FromArgb(255, 81, 195);
@@ -166,7 +166,7 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.PlaceholderForeColor = Color.Azure;
             LoginPagePasswordTextbox.PlaceholderText = "";
             LoginPagePasswordTextbox.SelectedText = "";
-            LoginPagePasswordTextbox.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            LoginPagePasswordTextbox.ShadowDecoration.CustomizableEdges = customizableEdges24;
             LoginPagePasswordTextbox.Size = new Size(258, 36);
             LoginPagePasswordTextbox.TabIndex = 16;
             LoginPagePasswordTextbox.UseSystemPasswordChar = true;
@@ -179,11 +179,11 @@ namespace CodingTracker.View
             rememberMeToggle.CheckedState.BorderThickness = 2;
             rememberMeToggle.CheckedState.FillColor = Color.Transparent;
             rememberMeToggle.CheckedState.InnerColor = Color.FromArgb(255, 81, 195);
-            rememberMeToggle.CustomizableEdges = customizableEdges5;
+            rememberMeToggle.CustomizableEdges = customizableEdges25;
             guna2Transition1.SetDecoration(rememberMeToggle, Guna.UI2.AnimatorNS.DecorationType.None);
             rememberMeToggle.Location = new Point(58, 294);
             rememberMeToggle.Name = "rememberMeToggle";
-            rememberMeToggle.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            rememberMeToggle.ShadowDecoration.CustomizableEdges = customizableEdges26;
             rememberMeToggle.Size = new Size(35, 20);
             rememberMeToggle.TabIndex = 17;
             rememberMeToggle.UncheckedState.BorderColor = Color.FromArgb(70, 70, 80);
@@ -196,13 +196,13 @@ namespace CodingTracker.View
             // 
             LoginPageMediaPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LoginPageMediaPanel.Controls.Add(LoginPageVLCPLayer);
-            LoginPageMediaPanel.CustomizableEdges = customizableEdges7;
+            LoginPageMediaPanel.CustomizableEdges = customizableEdges27;
             guna2Transition1.SetDecoration(LoginPageMediaPanel, Guna.UI2.AnimatorNS.DecorationType.None);
             LoginPageMediaPanel.ForeColor = Color.FromArgb(35, 34, 50);
             LoginPageMediaPanel.Location = new Point(461, 48);
             LoginPageMediaPanel.Margin = new Padding(0);
             LoginPageMediaPanel.Name = "LoginPageMediaPanel";
-            LoginPageMediaPanel.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            LoginPageMediaPanel.ShadowDecoration.CustomizableEdges = customizableEdges28;
             LoginPageMediaPanel.Size = new Size(820, 558);
             LoginPageMediaPanel.TabIndex = 22;
             // 
@@ -210,11 +210,11 @@ namespace CodingTracker.View
             // 
             loginPageTopPanel.Controls.Add(guna2ControlBox1);
             loginPageTopPanel.Controls.Add(LoginPageExitControlBox);
-            loginPageTopPanel.CustomizableEdges = customizableEdges13;
+            loginPageTopPanel.CustomizableEdges = customizableEdges33;
             guna2Transition1.SetDecoration(loginPageTopPanel, Guna.UI2.AnimatorNS.DecorationType.None);
             loginPageTopPanel.Location = new Point(0, 1);
             loginPageTopPanel.Name = "loginPageTopPanel";
-            loginPageTopPanel.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            loginPageTopPanel.ShadowDecoration.CustomizableEdges = customizableEdges34;
             loginPageTopPanel.Size = new Size(1281, 33);
             loginPageTopPanel.TabIndex = 23;
             // 
@@ -222,7 +222,7 @@ namespace CodingTracker.View
             // 
             guna2ControlBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             guna2ControlBox1.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            guna2ControlBox1.CustomizableEdges = customizableEdges9;
+            guna2ControlBox1.CustomizableEdges = customizableEdges29;
             guna2Transition1.SetDecoration(guna2ControlBox1, Guna.UI2.AnimatorNS.DecorationType.None);
             guna2ControlBox1.FillColor = Color.FromArgb(25, 24, 40);
             guna2ControlBox1.HoverState.FillColor = Color.FromArgb(0, 9, 43);
@@ -231,14 +231,14 @@ namespace CodingTracker.View
             guna2ControlBox1.Location = new Point(1211, 1);
             guna2ControlBox1.Margin = new Padding(0);
             guna2ControlBox1.Name = "guna2ControlBox1";
-            guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            guna2ControlBox1.ShadowDecoration.CustomizableEdges = customizableEdges30;
             guna2ControlBox1.Size = new Size(35, 29);
             guna2ControlBox1.TabIndex = 25;
             // 
             // LoginPageExitControlBox
             // 
             LoginPageExitControlBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            LoginPageExitControlBox.CustomizableEdges = customizableEdges11;
+            LoginPageExitControlBox.CustomizableEdges = customizableEdges31;
             guna2Transition1.SetDecoration(LoginPageExitControlBox, Guna.UI2.AnimatorNS.DecorationType.None);
             LoginPageExitControlBox.FillColor = Color.FromArgb(25, 24, 40);
             LoginPageExitControlBox.HoverState.IconColor = Color.White;
@@ -246,7 +246,7 @@ namespace CodingTracker.View
             LoginPageExitControlBox.Location = new Point(1246, 1);
             LoginPageExitControlBox.Margin = new Padding(0);
             LoginPageExitControlBox.Name = "LoginPageExitControlBox";
-            LoginPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            LoginPageExitControlBox.ShadowDecoration.CustomizableEdges = customizableEdges32;
             LoginPageExitControlBox.Size = new Size(35, 29);
             LoginPageExitControlBox.TabIndex = 24;
             LoginPageExitControlBox.Click += LoginPageExitControlBox_Click;
@@ -268,7 +268,7 @@ namespace CodingTracker.View
             loginButton.BackColor = Color.Transparent;
             loginButton.BorderColor = Color.FromArgb(35, 34, 50);
             loginButton.BorderRadius = 23;
-            loginButton.CustomizableEdges = customizableEdges19;
+            loginButton.CustomizableEdges = customizableEdges39;
             guna2Transition1.SetDecoration(loginButton, Guna.UI2.AnimatorNS.DecorationType.None);
             loginButton.EnableHoverRipple = true;
             loginButton.FillColor = Color.FromArgb(255, 81, 195);
@@ -278,7 +278,7 @@ namespace CodingTracker.View
             loginButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
             loginButton.Location = new Point(44, 352);
             loginButton.Name = "loginButton";
-            loginButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            loginButton.ShadowDecoration.CustomizableEdges = customizableEdges40;
             loginButton.Size = new Size(258, 36);
             loginButton.TabIndex = 27;
             loginButton.Text = "Login";
@@ -293,7 +293,7 @@ namespace CodingTracker.View
             newCreateAccountButton.BorderColor = Color.HotPink;
             newCreateAccountButton.BorderRadius = 23;
             newCreateAccountButton.BorderThickness = 1;
-            newCreateAccountButton.CustomizableEdges = customizableEdges15;
+            newCreateAccountButton.CustomizableEdges = customizableEdges35;
             guna2Transition1.SetDecoration(newCreateAccountButton, Guna.UI2.AnimatorNS.DecorationType.None);
             newCreateAccountButton.EnableHoverRipple = true;
             newCreateAccountButton.FillColor = Color.FromArgb(35, 34, 50);
@@ -303,7 +303,7 @@ namespace CodingTracker.View
             newCreateAccountButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
             newCreateAccountButton.Location = new Point(44, 450);
             newCreateAccountButton.Name = "newCreateAccountButton";
-            newCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            newCreateAccountButton.ShadowDecoration.CustomizableEdges = customizableEdges36;
             newCreateAccountButton.Size = new Size(258, 36);
             newCreateAccountButton.TabIndex = 29;
             newCreateAccountButton.Text = "Create Account";
@@ -316,7 +316,7 @@ namespace CodingTracker.View
             newForgotPasswordButton.BorderRadius = 10;
             newForgotPasswordButton.BorderThickness = 2;
             newForgotPasswordButton.Cursor = Cursors.Hand;
-            newForgotPasswordButton.CustomizableEdges = customizableEdges17;
+            newForgotPasswordButton.CustomizableEdges = customizableEdges37;
             guna2Transition1.SetDecoration(newForgotPasswordButton, Guna.UI2.AnimatorNS.DecorationType.None);
             newForgotPasswordButton.DisabledState.BorderColor = Color.DarkGray;
             newForgotPasswordButton.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -326,10 +326,10 @@ namespace CodingTracker.View
             newForgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
             newForgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
             newForgotPasswordButton.Font = new Font("Segoe UI", 9F);
-            newForgotPasswordButton.ForeColor = SystemColors.ControlLightLight;
+            newForgotPasswordButton.ForeColor = Color.FromArgb(255, 200, 230);
             newForgotPasswordButton.Location = new Point(196, 291);
             newForgotPasswordButton.Name = "newForgotPasswordButton";
-            newForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            newForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges38;
             newForgotPasswordButton.Size = new Size(158, 23);
             newForgotPasswordButton.TabIndex = 28;
             newForgotPasswordButton.Text = "Forgot password?";
@@ -340,22 +340,22 @@ namespace CodingTracker.View
             // guna2Transition1
             // 
             guna2Transition1.Cursor = null;
-            animation1.AnimateOnlyDifferences = true;
-            animation1.BlindCoeff = (PointF)resources.GetObject("animation1.BlindCoeff");
-            animation1.LeafCoeff = 0F;
-            animation1.MaxTime = 1F;
-            animation1.MinTime = 0F;
-            animation1.MosaicCoeff = (PointF)resources.GetObject("animation1.MosaicCoeff");
-            animation1.MosaicShift = (PointF)resources.GetObject("animation1.MosaicShift");
-            animation1.MosaicSize = 0;
-            animation1.Padding = new Padding(0);
-            animation1.RotateCoeff = 0F;
-            animation1.RotateLimit = 0F;
-            animation1.ScaleCoeff = (PointF)resources.GetObject("animation1.ScaleCoeff");
-            animation1.SlideCoeff = (PointF)resources.GetObject("animation1.SlideCoeff");
-            animation1.TimeCoeff = 0F;
-            animation1.TransparencyCoeff = 0F;
-            guna2Transition1.DefaultAnimation = animation1;
+            animation2.AnimateOnlyDifferences = true;
+            animation2.BlindCoeff = (PointF)resources.GetObject("animation2.BlindCoeff");
+            animation2.LeafCoeff = 0F;
+            animation2.MaxTime = 1F;
+            animation2.MinTime = 0F;
+            animation2.MosaicCoeff = (PointF)resources.GetObject("animation2.MosaicCoeff");
+            animation2.MosaicShift = (PointF)resources.GetObject("animation2.MosaicShift");
+            animation2.MosaicSize = 0;
+            animation2.Padding = new Padding(0);
+            animation2.RotateCoeff = 0F;
+            animation2.RotateLimit = 0F;
+            animation2.ScaleCoeff = (PointF)resources.GetObject("animation2.ScaleCoeff");
+            animation2.SlideCoeff = (PointF)resources.GetObject("animation2.SlideCoeff");
+            animation2.TimeCoeff = 0F;
+            animation2.TransparencyCoeff = 0F;
+            guna2Transition1.DefaultAnimation = animation2;
             // 
             // guna2Separator1
             // 

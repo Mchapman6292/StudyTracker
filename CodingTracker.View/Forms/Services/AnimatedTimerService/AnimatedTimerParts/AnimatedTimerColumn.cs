@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 {
-    public class AnimatedTimerColumn()
+    public class AnimatedTimerColumn
     {
 
         public List<AnimatedTimerSegment> TimerSegments;
