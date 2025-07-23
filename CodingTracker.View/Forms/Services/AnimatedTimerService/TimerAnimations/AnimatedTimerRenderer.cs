@@ -268,7 +268,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
 
-                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
                     }
@@ -410,7 +410,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                         {
                             column.IsColumnActive = true;
-                            column.NumberBlurringStartAnimationActive = true;
+                            column.IsNumberBlurringActive = true;
                         }
                     }
 
@@ -444,7 +444,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
 
-                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
                     }
@@ -501,13 +501,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
                     double restartProgressDouble = restartTimerElapsed.TotalSeconds;
 
+                    // Returns elapsed timepsan as miliseconds, multiply by 1000 to get the progress value of 1 second.
                     float restartProgress = (float)restartProgressDouble;
+                    float testProgress = restartProgress * 1000; 
 
-                    _columnStateManager.WORKINGUpdateAnimationProgress(column, restartProgress);
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, testProgress);
 
-                    _appLogger.Debug($"Animation progress Calculated for restart: {restartProgress}.");
+                    _appLogger.Debug($"Animation progress Calculated for restart: {testProgress}.");
 
-                    column.YTranslation = _renderingCalculator.TESTCalculateYTranslation(column, elapsed, restartProgress);
+                    column.YTranslation = _renderingCalculator.TESTCalculateYTranslation(column, elapsed, testProgress);
 
                     if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                     {
@@ -515,8 +517,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     }
 
 
-
-                    if (restartProgress >= 1f)
+                    if (testProgress >= 1f)
                     {
                         column.IsRestarting = false;
                         column.YTranslation = 0;
@@ -525,13 +526,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         column.PassedFirstTransition = false;
                         column.IsColumnActive = false;
                         column.IsAnimating = false;
-                        column.NumberBlurringStartAnimationActive = true;
+                        column.IsNumberBlurringActive = true;
 
 
                         if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                         {
                             column.IsColumnActive = true;
-                            column.NumberBlurringStartAnimationActive = false;
+                            column.IsNumberBlurringActive = false;
                             column.IsAnimating = true;
                         }
                     }
@@ -566,7 +567,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                         _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
 
-                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
                     }

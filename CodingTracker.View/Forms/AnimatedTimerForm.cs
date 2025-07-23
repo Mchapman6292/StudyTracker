@@ -5,6 +5,7 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -34,6 +35,7 @@ namespace CodingTracker.View.Forms
         private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IButtonHighlighterService _buttonHighLighterService;
+        private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
 
         public AnimatedTimerColumn column;
 
@@ -51,7 +53,7 @@ namespace CodingTracker.View.Forms
         private TimerPlaceHolderForm _timerPlaceHolderForm;
 
 
-        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IButtonNotificationManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService)
+        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IButtonNotificationManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -68,6 +70,7 @@ namespace CodingTracker.View.Forms
             _buttonNotificationManager = buttonNotificationManager;
             _codingSessionManager = codingSessionManager;
             _buttonHighLighterService = buttonHighLighterService;
+            _animatedColumnStateManager = animatedColumnStateManager;
 
             _timerPlaceHolderForm = (TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm); ;
             _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerPlaceHolderForm, _timerPlaceHolderForm);
@@ -243,6 +246,9 @@ namespace CodingTracker.View.Forms
         {
 
             _stopWatchTimerService.StartRestartTimer();
+
+            
+
             _animatedTimerManager.UpdateColumnStatesOnRestartButtonClick();
 
 

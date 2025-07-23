@@ -156,7 +156,7 @@ namespace CodingTracker.View.ApplicationControlService
                         if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                         {
                             column.IsColumnActive = true;
-                            column.NumberBlurringStartAnimationActive = true;
+                            column.IsNumberBlurringActive = true;
                         }
                     }
 
@@ -190,7 +190,7 @@ namespace CodingTracker.View.ApplicationControlService
                         _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
                     }
 
-                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
                     }

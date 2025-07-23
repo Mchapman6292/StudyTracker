@@ -28,6 +28,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         void UpdateColumnStatesOnRestartButtonClick();
 
+        void UpdateIsRestartingForAllColumns(bool isRestarting);
+
 
 
 
@@ -198,6 +200,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
+        public void UpdateIsRestartingForAllColumns(bool isRestarting)
+        {
+            foreach(var column in _columns)
+            {
+                column.IsRestarting = isRestarting;
+            }
+            _appLogger.Debug($"IsRestarting for all columns in {nameof(_columns)} updated to {isRestarting}");  
+        }
 
 
 
@@ -213,7 +223,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
                 column.IsRestarting = true;
                 column.YLocationAtRestart = column.YTranslation; 
                 column.IsAnimating = true;
-                column.IsColumnActive = true;
+                column.IsColumnActive = false;
+             
 
 
                 LogColumn(column, span, null, null, null);

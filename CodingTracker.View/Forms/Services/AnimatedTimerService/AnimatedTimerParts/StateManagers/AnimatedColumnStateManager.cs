@@ -47,6 +47,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         int GetSkControlStartingY(Form targetForm);
 
+        void UpdateIsNumberBlurringActive(AnimatedTimerColumn column, bool isNumberBlurringActive);
+        void UpdateIsRestarting(AnimatedTimerColumn column, bool isRestarting);
+
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -199,7 +202,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void UpdatedNumberBlurringStartAnimationActive(AnimatedTimerColumn column, bool blurred)
         {
-            column.NumberBlurringStartAnimationActive = blurred;
+            column.IsNumberBlurringActive = blurred;
         }
 
 
@@ -312,7 +315,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         }
 
 
-
+   
 
 
 
@@ -373,9 +376,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         */
 
 
-        public void HandleNumberBlurringStartAnimationActive(AnimatedTimerColumn column, TimeSpan elapsed)
+        public void UpdateIsNumberBlurringActive(AnimatedTimerColumn column, bool isNumberBlurringActive)
         {
-
+            column.IsNumberBlurringActive = isNumberBlurringActive;
         }
 
 
@@ -383,6 +386,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         public int GetSkControlStartingY(Form targetForm)
         {
             return targetForm.Height / 2 - 100;
+        }
+
+
+        public void UpdateIsRestarting(AnimatedTimerColumn column, bool isRestarting)
+        {
+            column.IsRestarting = isRestarting;
         }
 
 

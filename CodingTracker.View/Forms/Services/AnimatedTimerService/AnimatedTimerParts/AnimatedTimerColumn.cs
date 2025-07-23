@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 {
-    public class AnimatedTimerColumn
+    public class AnimatedTimerColumn()
     {
 
         public List<AnimatedTimerSegment> TimerSegments;
@@ -53,7 +53,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsColumnActive { get; set; }
 
-        public bool NumberBlurringStartAnimationActive { get; set; }
+        public bool IsNumberBlurringActive { get; set; }
 
         public int StartingYSkControl;
 
@@ -76,7 +76,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
             MaxValue = FindMaxSegmentValue();
             IsColumnActive = InitializeIsColumnActive();
-            NumberBlurringStartAnimationActive = InitializeNumberBlurringStartAnimationActive();
+            IsNumberBlurringActive = InitializeNumberBlurringStartAnimationActive();
         }
 
 
