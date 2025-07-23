@@ -5,6 +5,7 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -34,6 +35,7 @@ namespace CodingTracker.View.Forms
         private readonly IButtonNotificationManager _buttonNotificationManager;
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IButtonHighlighterService _buttonHighLighterService;
+        private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
 
         public AnimatedTimerColumn column;
 
@@ -51,12 +53,12 @@ namespace CodingTracker.View.Forms
         private TimerPlaceHolderForm _timerPlaceHolderForm;
 
 
-        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IButtonNotificationManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService)
+        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IButtonNotificationManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager)
         {
 
             _buttonHighligherService = buttonHighlighterService;
             _notificationManager = notificationManager;
-            _codingSessionRepository = codingSessionRepository;;
+            _codingSessionRepository = codingSessionRepository; ;
             _labelAssignment = labelAssignment;
             _appLogger = appLogger;
             _animatedTimerColumnFactory = animatedTimerColumnFactory;
@@ -68,9 +70,10 @@ namespace CodingTracker.View.Forms
             _buttonNotificationManager = buttonNotificationManager;
             _codingSessionManager = codingSessionManager;
             _buttonHighLighterService = buttonHighLighterService;
+            _animatedColumnStateManager = animatedColumnStateManager;
 
-            _timerPlaceHolderForm =(TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm);;
-            _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerPlaceHolderForm ,_timerPlaceHolderForm);
+            _timerPlaceHolderForm = (TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm); ;
+            _formStateManagement.SetFormByFormPageEnum(FormPageEnum.TimerPlaceHolderForm, _timerPlaceHolderForm);
 
             InitializeComponent();
 
@@ -86,7 +89,7 @@ namespace CodingTracker.View.Forms
             restartButton.Click += RestartSessionButton_Click;
 
             this.Shown += AnimatedTimerForm_Shownn;
-            this.Load += AnimatedTimerForm_Load;    
+            this.Load += AnimatedTimerForm_Load;
 
 
 
@@ -128,11 +131,12 @@ namespace CodingTracker.View.Forms
             _buttonHighligherService.SetButtonBackColorAndBorderColor(stopButton);
 
             _buttonHighligherService.SetButtonHoverColors(restartButton);
-            _buttonHighligherService.SetButtonBackColorAndBorderColor(restartButton); 
+            _buttonHighligherService.SetButtonBackColorAndBorderColor(restartButton);
 
 
         }
 
+        // TODO review, what happens if we close re open form etc. 
         private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
         {
             _stopWatchTimerService.StartTimer();
@@ -156,7 +160,7 @@ namespace CodingTracker.View.Forms
         }
 
 
-  
+
 
         private void InitializeAnimationTimer()
         {
@@ -228,17 +232,38 @@ namespace CodingTracker.View.Forms
             _appLogger.Debug($"Timer restarted at: {FormatElapsedTimeSPan(elapsed)}.");
 
             _stopWatchTimerService.StopTimer();
-            _stopWatchTimerService.RestartTimer();
+        
 
-   
+
             TimeSpan elapsedAfterRestart = _stopWatchTimerService.ReturnElapsedTimeSpan();
 
             _appLogger.Debug($"elapsed after restart: {FormatElapsedTimeSPan(elapsedAfterRestart)}.");
 
-          
+
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
+            _stopWatchTimerService.StartRestartTimer();
+            _animatedColumnStateManager.UpdateColumnStateWhenRestartBeginning(columnsList);
+
+
         }
 
 
-    }
 
+
+        /*
+        public void TestElapsedBox_TextChange(object sender, EventArgs e)
+        {
+            if(TimeSpan.TryParseExact(testElapsedBox.Text, "hh\\:mm\\:ss", out TimeSpan elapsed))
+            {
+                testElapsedBox.Text = elapsed.ToString();
+            }
+        }
+        */
+
+
+    }
 }

@@ -583,7 +583,7 @@ namespace CodingTracker.View
             guna2HtmlLabel2.BackColor = Color.Transparent;
             guna2HtmlLabel2.Enabled = false;
             guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
-            guna2HtmlLabel2.ForeColor = SystemColors.ControlLight;
+            guna2HtmlLabel2.ForeColor = Color.FromArgb(255, 200, 230);
             guna2HtmlLabel2.Location = new Point(126, 33);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
             guna2HtmlLabel2.Size = new Size(149, 19);
@@ -630,7 +630,7 @@ namespace CodingTracker.View
             last7DaysLabel.BackColor = Color.Transparent;
             last7DaysLabel.Enabled = false;
             last7DaysLabel.Font = new Font("Segoe UI", 10F);
-            last7DaysLabel.ForeColor = SystemColors.ControlLight;
+            last7DaysLabel.ForeColor = Color.FromArgb(255, 200, 230);
             last7DaysLabel.Location = new Point(11, 38);
             last7DaysLabel.Name = "last7DaysLabel";
             last7DaysLabel.Size = new Size(68, 19);
@@ -674,7 +674,7 @@ namespace CodingTracker.View
             guna2HtmlLabel13.BackColor = Color.Transparent;
             guna2HtmlLabel13.Enabled = false;
             guna2HtmlLabel13.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            guna2HtmlLabel13.ForeColor = Color.FromArgb(168, 228, 255);
+            guna2HtmlLabel13.ForeColor = Color.FromArgb(255, 200, 230);
             guna2HtmlLabel13.Location = new Point(297, 390);
             guna2HtmlLabel13.Name = "guna2HtmlLabel13";
             guna2HtmlLabel13.Size = new Size(135, 22);

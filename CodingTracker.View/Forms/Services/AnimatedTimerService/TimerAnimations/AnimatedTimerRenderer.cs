@@ -4,6 +4,7 @@ using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
@@ -18,6 +19,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         void DrawColumnNumbers(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection);
         void WorkingDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
+        void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+        void NEWTESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+
     }
 
     public class AnimatedTimerRenderer : IAnimatedTimerRenderer
@@ -30,9 +34,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private readonly IAnimatedColumnStateManager _columnStateManager;
         private readonly IAnimatedSegmentStateManager _segmentStateManager;
         private readonly IShadowBuilder _shadowBuilder;
-        private readonly IRenderingCalculator _renderingCalculator;
+        private readonly IAnimationCalculator _animationCalculator;
+        private readonly IAnimatedLogHelper _animatedLogHelper;
 
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder, IRenderingCalculator renderingCalculator)
+
+        public int tickCountsBeforeOneSecond = 0;
+
+        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder, IAnimationCalculator renderingCalculator, IAnimatedLogHelper animatedLogHelper)
         {
             _appLogger = appLogger;
             _phaseCalculator = phaseCalculator;
@@ -42,7 +50,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             _columnStateManager = columnStateManager;
             _segmentStateManager = segmentStateManager;
             _shadowBuilder = shadowBuilder;
-            _renderingCalculator = renderingCalculator;
+            _animationCalculator = renderingCalculator;
+            _animatedLogHelper = animatedLogHelper;
         }
 
 
@@ -112,7 +121,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         private bool WORKINGShouldColumnAnimate(TimeSpan elapsed, AnimatedTimerColumn column)
         {
             
-            double secondsBeforeNextAnimationInterval = _renderingCalculator.CalculateSecondsUntilNextAnimationInterval(column,elapsed);
+            double secondsBeforeNextAnimationInterval = _animationCalculator.CalculateSecondsUntilNextAnimationInterval(column,elapsed);
 
             bool isTimeToAnimate = secondsBeforeNextAnimationInterval <= 1.0;
 
@@ -175,13 +184,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-
+        // REVIEW ISPASSEDFIRSTRANSITION LOGIC, always set to true, but timer animating correctly.
 
         public void WorkingDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
-            int tickCountsBeforeOneSecond = 0;
+  
 
             bool isCircleStatic = true;
 
@@ -199,13 +208,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
                 // The liveTargetValue == currentValue + 1 = TargetSegmentValue?
-                int liveTargetValue = _renderingCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+                int liveTargetValue = _animationCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
 
-                if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                {
-                    _appLogger.Debug($"Targetvalue calculated : {liveTargetValue}.");
-                }
-
+   
 
 
 
@@ -238,27 +243,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     column.PassedFirstTransition = true;
                     WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
 
-                    if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-                        LogColumn(column, elapsed, null, null, null);
-                    }
                 }
 
 
 
-                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits && column.PassedFirstTransition == false)
-                {
-                    tickCountsBeforeOneSecond++;
-                }
-
-
-                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits && column.PassedFirstTransition == true)
-                {
-                    _appLogger.Info($"Total ticks for one second: {tickCountsBeforeOneSecond}.");
-
-                }
-
-
+        
 
                 else
                 {
@@ -279,10 +268,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     {
                         column.IsColumnActive = true;
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
                     }
 
-                    if (column.NumberBlurringStartAnimationActive && elapsed >= column.AnimationInterval)
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
                     }
@@ -291,15 +280,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
                     isCircleStatic = false;
 
-                    float animationProgress = _renderingCalculator.CalculateAnimationProgress(elapsed);
-                    float normalizedProgress = _renderingCalculator.CalculateColumnScrollProgress(animationProgress);
+                    float animationProgress = _animationCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
                     float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
                     _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
                     _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    float animatingYTranslation = _renderingCalculator.CalculateYTranslation(column, elapsed);
+                    float animatingYTranslation = _animationCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
 
 
 
@@ -362,37 +351,245 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
+  
 
-        public void LogColumn(AnimatedTimerColumn column, TimeSpan elapsed, float? baseY, float? easedProgress, float? yTranslation)
+
+
+
+        public void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
-            string logMessage = $"\n \n"
-                                + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
-                                + $"\n-----Current Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
-                                + $"\n-----IsAnimating: {column.IsAnimating}.-----"
-                                + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
-                                + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
-                                + $"\n------PassedFirstTransition: {column.PassedFirstTransition.ToString()}.";
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
+            bool isCircleStatic = true;
 
-            if (baseY != null && easedProgress != null && yTranslation != null)
+            foreach (var column in columns)
             {
-                logMessage +=
-                $"\n---- OFFSET CALCULATION FOR COLUMN: {column.ColumnType}.-----"
-                + $"\n---- BASE Y: {baseY}, Easing Value: {easedProgress}, animatingYTranslation: {yTranslation}.-----\n\n";
+                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+
+                if (column.IsRestarting)
+                {
+                    double restartElpasedSeconds = _stopWatchTimerService.GetRestartStopwatchSeconds();
+
+                    float restartProgress = Math.Min(1f, (float)restartElpasedSeconds / 0.5f);
+                    float easedProgress = _animationCalculator.CalculateEasingValue(restartProgress);
+                    column.YTranslation = column.YLocationAtRestart * (1f - easedProgress);
+
+                    if (restartProgress >= 1f)
+                    {
+                        column.IsRestarting = false;
+                        column.YTranslation = 0;
+                        column.CurrentValue = 0;
+                        column.TargetSegmentValue = 1;
+                        column.PassedFirstTransition = false;
+
+                        if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                        {
+                            column.IsColumnActive = true;
+                            column.IsNumberBlurringActive = true;
+                        }
+                    }
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    continue;
+                }
+
+                int liveTargetValue = _animationCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+
+                if (liveTargetValue != column.TargetSegmentValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
+                {
+                    column.CurrentValue = column.TargetSegmentValue;
+                    column.TargetSegmentValue = liveTargetValue;
+                    column.PassedFirstTransition = true;
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+                else
+                {
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+                    if (column.IsColumnActive == false)
+                    {
+                        column.IsColumnActive = true;
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
+                    }
+
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
+                    {
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
+                    }
+
+                    isCircleStatic = false;
+
+                    float animationProgress = _animationCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float animatingYTranslation = _animationCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
+
+                    column.YTranslation = animatingYTranslation;
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                }
+                else
+                {
+                    column.YTranslation = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                }
             }
-
-            _appLogger.Info(logMessage);
         }
 
-        public string FormatElapsedTimeSPan(TimeSpan elapsed)
+
+
+
+
+
+        public void DrawRestartAnimation(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
-            return elapsed.ToString(@"mm\:ss\.fff");
+
         }
 
 
 
 
 
+
+        public void NEWTESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+            bool isCircleStatic = true;
+
+            foreach (var column in columns)
+            {
+                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
+
+                if (column.IsRestarting)
+                {
+
+                    TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
+                    float restartAnimationProgress = _animationCalculator.CalculateRestartAnimationProgress(restartTimerElapsed);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, restartAnimationProgress);
+
+    
+
+                    _appLogger.Debug($"Animation progress Calculated for restart: {restartAnimationProgress}.");
+
+                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, restartAnimationProgress);
+
+                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                    {
+                        _appLogger.Debug($"YTranslation calculated during restart : {column.YTranslation} RestartTimer elapsed: {_animatedLogHelper.FormatElapsedTimeSpan(restartTimerElapsed)}.");
+                    }
+
+
+                    if (restartAnimationProgress >= 1f)
+                    {
+                        if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                        {
+                            column.IsRestarting = false;
+                            column.YTranslation = 0;
+                            column.CurrentValue = 0;
+                            column.TargetSegmentValue = 1;
+                            column.PassedFirstTransition = false;
+                            column.IsColumnActive = false;
+                            column.IsAnimating = false;
+                            column.IsNumberBlurringActive = true;
+                        }
+
+                        if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                        {
+                            {
+                                column.IsRestarting = false;
+                                column.IsColumnActive = true;
+                                column.IsAnimating = true;
+                                column.IsNumberBlurringActive = false;
+                                column.PassedFirstTransition = false;
+                                column.CurrentValue = 0;
+                                column.TargetSegmentValue = 1;
+
+                            }
+                        }
+                    }
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    continue;
+                }
+
+                int liveTargetValue = _animationCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+
+                if (liveTargetValue != column.TargetSegmentValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
+                {
+                    column.CurrentValue = column.TargetSegmentValue;
+                    column.TargetSegmentValue = liveTargetValue;
+                    column.PassedFirstTransition = true;
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+                else
+                {
+                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                }
+
+                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+
+                if (column.IsAnimating)
+                {
+                    if (column.IsColumnActive == false)
+                    {
+                        column.IsColumnActive = true;
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
+                    }
+
+                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
+                    {
+                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
+                    }
+
+                    isCircleStatic = false;
+
+                    float animationProgress = _animationCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
+                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
+
+                    _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
+                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
+                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
+
+                    float animatingYTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
+
+                    column.YTranslation = animatingYTranslation;
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                }
+                else
+                {
+                    column.YTranslation = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
+                    isCircleStatic = true;
+
+                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                }
+            }
+        }
 
 
 

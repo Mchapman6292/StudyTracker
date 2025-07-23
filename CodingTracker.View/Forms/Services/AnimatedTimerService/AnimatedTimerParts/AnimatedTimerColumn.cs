@@ -49,15 +49,20 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         // Animation progress for the circle (0-1 over first 70% of animation)
         public float CircleAnimationProgress { get; set; }
 
+        public float RestartAnimationProgress { get; set; } 
+
         public int MaxValue;
 
         public bool IsColumnActive { get; set; }
 
-        public bool NumberBlurringStartAnimationActive { get; set; }
+        public bool IsNumberBlurringActive { get; set; }
 
         public int StartingYSkControl;
 
-        public bool IsRestarting { get; set; } 
+        internal bool IsRestarting { get; set; } 
+        
+        // Records columns Y location when restart button pressed. 
+        public float YLocationAtRestart { get; set; }
 
 
 
@@ -73,7 +78,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
             MaxValue = FindMaxSegmentValue();
             IsColumnActive = InitializeIsColumnActive();
-            NumberBlurringStartAnimationActive = InitializeNumberBlurringStartAnimationActive();
+            IsNumberBlurringActive = InitializeNumberBlurringStartAnimationActive();
         }
 
 
@@ -83,7 +88,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
             return TimerSegments.Max(segment => segment.Value);
         }
 
-
+   
 
         private bool InitializeIsColumnActive()
         {
