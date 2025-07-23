@@ -142,7 +142,7 @@ namespace CodingTracker.View.ApplicationControlService
                     double restartElpasedSeconds = _stopWatchTimerService.GetRestartStopwatchSeconds();
 
                     float restartProgress = Math.Min(1f, (float)restartElpasedSeconds / 0.5f);
-                    float easedProgress = _renderingCalculator.CalculateEasingValue(restartProgress);
+                    float easedProgress = _animationCalculator.CalculateEasingValue(restartProgress);
                     column.YTranslation = column.YLocationAtRestart * (1f - easedProgress);
 
                     if (restartProgress >= 1f)
@@ -165,7 +165,7 @@ namespace CodingTracker.View.ApplicationControlService
                     continue;
                 }
 
-                int liveTargetValue = _renderingCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+                int liveTargetValue = _animationCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
 
                 if (liveTargetValue != column.TargetSegmentValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
                 {
@@ -187,7 +187,7 @@ namespace CodingTracker.View.ApplicationControlService
                     {
                         column.IsColumnActive = true;
                         _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSPan(elapsed)}");
+                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSpan(elapsed)}");
                     }
 
                     if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
@@ -197,15 +197,15 @@ namespace CodingTracker.View.ApplicationControlService
 
                     isCircleStatic = false;
 
-                    float animationProgress = _renderingCalculator.CalculateAnimationProgress(elapsed);
-                    float normalizedProgress = _renderingCalculator.CalculateColumnScrollProgress(animationProgress);
+                    float animationProgress = _animationCalculator.CalculateAnimationProgress(elapsed);
+                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
                     float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
 
                     _columnStateManager.WORKINGUpdateAnimationProgress(column, animationProgress);
                     _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
                     _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
 
-                    float animatingYTranslation = _renderingCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
+                    float animatingYTranslation = _animationCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
 
                     column.YTranslation = animatingYTranslation;
 

@@ -232,7 +232,7 @@ namespace CodingTracker.View.Forms
             _appLogger.Debug($"Timer restarted at: {FormatElapsedTimeSPan(elapsed)}.");
 
             _stopWatchTimerService.StopTimer();
-            _stopWatchTimerService.RestartTimer();
+        
 
 
             TimeSpan elapsedAfterRestart = _stopWatchTimerService.ReturnElapsedTimeSpan();
@@ -244,26 +244,11 @@ namespace CodingTracker.View.Forms
 
         private void RestartButton_Click(object sender, EventArgs e)
         {
-
+            List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
             _stopWatchTimerService.StartRestartTimer();
-
-            
-
-            _animatedTimerManager.UpdateColumnStatesOnRestartButtonClick();
+            _animatedColumnStateManager.UpdateColumnStateWhenRestartBeginning(columnsList);
 
 
-
-            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
-            _stopWatchTimerService.StopTimer();
-
-            List<AnimatedTimerColumn> columns = _animatedTimerManager.ReturnTimerColumns();
-
-            var column = columns.FirstOrDefault(s => s.ColumnType == ColumnUnitType.SecondsSingleDigits);
-
-
-
-
-            _animatedTimerManager.UpdateColumnStatesOnRestartButtonClick();
         }
 
 

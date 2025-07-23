@@ -26,14 +26,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         void LogColumnBools();
         List<AnimatedTimerColumn> ReturnTimerColumns();
 
-        void UpdateColumnStatesOnRestartButtonClick();
 
-        void UpdateIsRestartingForAllColumns(bool isRestarting);
 
 
 
 
     }
+
+
+
+    public enum ColumnUnitType
+    {
+        HoursLeadingDigits,
+        HoursSinglesDigits,
+        MinutesLeadingDigits,
+        MinutesSingleDigits,
+        SecondsLeadingDigit,
+        SecondsSingleDigits
+    }
+
 
     public class AnimatedTimerManager : IAnimatedTimerManager
     {
@@ -43,23 +54,23 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IAnimatedTimerColumnFactory _animatedColumnFactory;
         private readonly IApplicationLogger _appLogger;
         private readonly IPaintManager _circleHighlight;
-        private readonly IRenderingCalculator _renderingCalculator;
+        private readonly IAnimationCalculator _animationCalculator;
         private List<AnimatedTimerColumn> _columns;
 
 
 
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IRenderingCalculator renderingCalculator)
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IAnimationCalculator renderingCalculator)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
             _animatedColumnFactory = animatedTimerColumnFactory;
             _appLogger = appLogger;
             _circleHighlight = circleHighLight;
-            _renderingCalculator = renderingCalculator;
-            _columns = new List<AnimatedTimerColumn>(); 
-  
+            _animationCalculator = renderingCalculator;
+            _columns = new List<AnimatedTimerColumn>();
+
         }
 
 
@@ -72,7 +83,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public void UpdateAndRender(SKControl skControl)
         {
             skControl.Invalidate();
-  
+
         }
 
         public void TestLogSegmentPosition()
@@ -92,13 +103,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             }
             _appLogger.Info(message);
         }
-         
+
 
         public void SortColumnsList()
         {
 
         }
-  
+
 
         public void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e)
         {
@@ -112,7 +123,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        
+
 
         private float CalculateStartingYLocation(float formHeight)
         {
@@ -140,7 +151,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
                 _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, startingY: {startingY}. Location: X: {column.Location.X} Y: {column.Location.Y}. ");
             }
 
-      
+
 
         }
 
@@ -200,37 +211,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        public void UpdateIsRestartingForAllColumns(bool isRestarting)
-        {
-            foreach(var column in _columns)
-            {
-                column.IsRestarting = isRestarting;
-            }
-            _appLogger.Debug($"IsRestarting for all columns in {nameof(_columns)} updated to {isRestarting}");  
-        }
+   
 
 
 
 
 
-        public void UpdateColumnStatesOnRestartButtonClick()
-        {
-            _stopWatchService.ResetRestartTimer();
-            var span = _stopWatchService.ReturnElapsedTimeSpan();
-
-            foreach (var column in _columns)
-            {
-                column.IsRestarting = true;
-                column.YLocationAtRestart = column.YTranslation; 
-                column.IsAnimating = true;
-                column.IsColumnActive = false;
-             
-
-
-                LogColumn(column, span, null, null, null);
-            }
-        }
-    }
 
 
 
@@ -243,13 +229,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
     }
 
-    public enum ColumnUnitType
-    {
-        HoursLeadingDigits,
-        HoursSinglesDigits,
-        MinutesLeadingDigits,
-        MinutesSingleDigits,
-        SecondsLeadingDigit,
-        SecondsSingleDigits
-    }
+
+
+}
+ 
     

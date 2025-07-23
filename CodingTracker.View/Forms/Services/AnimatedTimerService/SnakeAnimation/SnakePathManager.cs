@@ -47,10 +47,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.SnakeAnimation
 
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
-        private readonly IRenderingCalculator _renderingCalculator;
+        private readonly IAnimationCalculator _animationCalculator;
 
 
-        public SnakePathManager(IApplicationLogger appLogger, IAnimatedColumnStateManager animatedColumnStateManager, IRenderingCalculator renderingCalculator)
+        public SnakePathManager(IApplicationLogger appLogger, IAnimatedColumnStateManager animatedColumnStateManager, IAnimationCalculator renderingCalculator)
         {
             _appLogger = appLogger;
             _animatedColumnStateManager = animatedColumnStateManager;

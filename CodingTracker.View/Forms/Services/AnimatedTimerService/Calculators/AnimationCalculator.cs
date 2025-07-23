@@ -6,7 +6,7 @@ using System.Buffers.Text;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 {
-    public interface IRenderingCalculator
+    public interface IAnimationCalculator
     {
         float CalculateAnimationProgress(TimeSpan elapsed);
         float CalculateColumnScrollProgress(float animationProgress);
@@ -17,16 +17,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
         float CalculateDistanceForReset(AnimatedTimerColumn column);
         float TESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
+        float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed);
 
     }
 
-    public class RenderingCalculator : IRenderingCalculator
+    public class AnimationCalculator : IAnimationCalculator
     {
 
         private readonly IApplicationLogger _appLogger;
         
 
-        public RenderingCalculator(IApplicationLogger appLogger)
+        public AnimationCalculator(IApplicationLogger appLogger)
         {
             _appLogger = appLogger;
         }
@@ -37,11 +38,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         public float CalculateAnimationProgress(TimeSpan elapsed)
         {
             return (float)(elapsed.TotalSeconds % 1.0);
-        }
-
-        public float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed)
-        {
-            return (float)(restartTimerElapsed.TotalSeconds % 1.0);
         }
 
 
@@ -211,10 +207,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         }
 
 
-
-        public void FormatElapsedMiliSecondsToAnimationProgress(TimeSpan restartTimerElapsed)
+        
+        public float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed)
         {
-            
+            double elapsedTotalSeconds = restartTimerElapsed.TotalSeconds;
+
+            float restartProgress = (float)elapsedTotalSeconds;
+            float testProgress = restartProgress * 1000;
+
+            return testProgress;
+
         }
 
 

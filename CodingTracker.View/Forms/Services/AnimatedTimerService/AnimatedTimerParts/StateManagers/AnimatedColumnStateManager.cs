@@ -1,5 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
 
@@ -49,20 +51,27 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         void UpdateIsNumberBlurringActive(AnimatedTimerColumn column, bool isNumberBlurringActive);
         void UpdateIsRestarting(AnimatedTimerColumn column, bool isRestarting);
+        void UpdateColumnStateWhenRestartBeginning(List<AnimatedTimerColumn> columns);
+        void UpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns);
+        void UpdateIsRestartingForAllColumns(List<AnimatedTimerColumn> columns, bool isRestarting);
 
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
     {
         private readonly IApplicationLogger _appLogger;
+        private readonly IAnimatedLogHelper _animatedLogHelper;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
 
 
 
 
 
-        public AnimatedColumnStateManager(IApplicationLogger appLogger)
+        public AnimatedColumnStateManager(IApplicationLogger appLogger, IAnimatedLogHelper aniamtedLogerHelper, IStopWatchTimerService stopWatchTimerService)
         {
             _appLogger = appLogger;
+            _animatedLogHelper = aniamtedLogerHelper;
+            _stopWatchTimerService = stopWatchTimerService;
         }
 
 
@@ -394,6 +403,68 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             column.IsRestarting = isRestarting;
         }
 
+
+
+
+
+
+        public void UpdateColumnStateWhenRestartBeginning(List<AnimatedTimerColumn> columns)
+        {
+            _stopWatchTimerService.ResetRestartTimer();
+            var span = _stopWatchTimerService.ReturnElapsedTimeSpan();
+
+            foreach (var column in columns)
+            {
+                column.IsRestarting = true;
+                column.YLocationAtRestart = column.YTranslation;
+                column.IsAnimating = true;
+                column.IsColumnActive = false;
+
+
+
+                _animatedLogHelper.LogColumn(column, span, null, null, null);
+            }
+        }
+
+
+
+        public void UpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns)
+        {
+            foreach (var column in columns)
+            {
+                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                {
+                    column.IsRestarting = false;
+                    column.YTranslation = 0;
+                    column.CurrentValue = 0;
+                    column.TargetSegmentValue = 1;
+                    column.PassedFirstTransition = false;
+                    column.IsColumnActive = false;
+                    column.IsAnimating = false;
+                    column.IsNumberBlurringActive = true;
+                }
+
+                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                {
+                    {
+                        column.IsRestarting = false;
+                        column.IsColumnActive = true;
+                        column.IsAnimating = true;
+                        column.IsNumberBlurringActive = false;
+
+                    }
+                }
+            }
+        }
+
+        public void UpdateIsRestartingForAllColumns(List<AnimatedTimerColumn> columns ,bool isRestarting)
+        {
+            foreach (var column in columns)
+            {
+                column.IsRestarting = isRestarting;
+            }
+            _appLogger.Debug($"IsRestarting for all columns in {nameof(columns)} updated to {isRestarting}");
+        }
 
 
     }

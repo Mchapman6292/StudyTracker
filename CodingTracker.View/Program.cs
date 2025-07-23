@@ -139,9 +139,10 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IShadowBuilder, ShadowBuilder>()
                     .AddSingleton<IGradientManager, GradientManager>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
-                    .AddSingleton<IRenderingCalculator, RenderingCalculator>()
+                    .AddSingleton<IAnimationCalculator, AnimationCalculator>()
                     .AddSingleton<ISnakeRenderer, SnakeRenderer>()
                     .AddSingleton<ISnakePathManager, SnakePathManager>()
+                    .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
