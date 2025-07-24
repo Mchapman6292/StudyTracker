@@ -10,7 +10,7 @@ namespace CodingTracker.View.ApplicationControlService
         double ReturnElapsedMilliseconds();
         void StopTimer();
         void StartTimer();
-        void RestartTimer();
+        void RestartSessionTimer();
         void StartRestartTimer();
 
 
@@ -63,7 +63,7 @@ namespace CodingTracker.View.ApplicationControlService
             sessionTimer.Stop();
         }
 
-        public void RestartTimer()
+        public void RestartSessionTimer()
         {
             sessionTimer.Restart();
         }
@@ -165,34 +165,34 @@ namespace CodingTracker.View.ApplicationControlService
                     continue;
                 }
 
-                int liveTargetValue = _animationCalculator.CalculateTargetValue(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+                int liveTargetValue = _animationCalculator.CalculateTargetDigitByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
 
                 if (liveTargetValue != column.TargetSegmentValue || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
                 {
                     column.CurrentValue = column.TargetSegmentValue;
                     column.TargetSegmentValue = liveTargetValue;
                     column.PassedFirstTransition = true;
-                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                    SetFocusedSegmentByColumnTargetValue(column, liveTargetValue);
                 }
                 else
                 {
-                    WORKINGSetFocusedSegmentByValue(column, liveTargetValue);
+                    SetFocusedSegmentByColumnTargetValue(column, liveTargetValue);
                 }
 
-                column.IsAnimating = WORKINGShouldColumnAnimate(elapsed, column);
+                column.IsAnimating = ShouldColumnAnimate(elapsed, column);
 
                 if (column.IsAnimating)
                 {
                     if (column.IsColumnActive == false)
                     {
                         column.IsColumnActive = true;
-                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, true);
+                        _columnStateManager.UpdateIsNumberBlurringActive(column, true);
                         _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {FormatElapsedTimeSpan(elapsed)}");
                     }
 
                     if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
                     {
-                        _columnStateManager.UpdatedNumberBlurringStartAnimationActive(column, false);
+                        _columnStateManager.UpdateIsNumberBlurringActive(column, false);
                     }
 
                     isCircleStatic = false;

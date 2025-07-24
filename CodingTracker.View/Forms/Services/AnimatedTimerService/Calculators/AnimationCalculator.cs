@@ -13,7 +13,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         double CalculateSecondsUntilNextAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
         float CalculateEasingValue(float animationProgress);
         float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
-        int CalculateTargetValue(TimeSpan elapsed, ColumnUnitType columnType);
+        int CalculateTargetDigitByElapsed(TimeSpan elapsed, ColumnUnitType columnType);
 
         float CalculateDistanceForReset(AnimatedTimerColumn column);
         float TESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
@@ -167,7 +167,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public int CalculateTargetValue(TimeSpan elapsed, ColumnUnitType columnType)
+        public int CalculateTargetDigitByElapsed(TimeSpan elapsed, ColumnUnitType columnType)
         {
             int totalSeconds = (int)elapsed.TotalSeconds;
             int minutes = totalSeconds / 60;
