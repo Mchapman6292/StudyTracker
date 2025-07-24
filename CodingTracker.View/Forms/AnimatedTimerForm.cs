@@ -246,7 +246,8 @@ namespace CodingTracker.View.Forms
         {
             List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
             _stopWatchTimerService.StartRestartTimer();
-            _animatedColumnStateManager.UpdateColumnStateWhenRestartBeginning(columnsList);
+            _stopWatchTimerService.StopTimer();
+            _animatedColumnStateManager.SetColumnStateAndStartRestartTimerForRestartBeginning(columnsList);
 
 
         }

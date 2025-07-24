@@ -64,6 +64,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
         // Records columns Y location when restart button pressed. 
         public float YLocationAtRestart { get; set; }
 
+ 
+
 
 
 

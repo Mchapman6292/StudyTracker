@@ -70,7 +70,7 @@ namespace CodingTracker.View.TimerDisplayService
             _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSecondsInt.Value, true);
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
 
-            _stopWatchTimerService.RestartTimer();
+            _stopWatchTimerService.RestartSessionTimer();
             _stopWatchTimerService.StartTimer();
 
             progressTimer.Start();

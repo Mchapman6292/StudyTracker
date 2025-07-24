@@ -54,7 +54,7 @@ namespace CodingTracker.View.Forms.Session
 
             _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
-            _stopWatchTimerService.RestartTimer();
+            _stopWatchTimerService.RestartSessionTimer();
             _stopWatchTimerService.StartTimer();
             SetFormPosition();
             winFormsTimer.Start();
@@ -82,7 +82,7 @@ namespace CodingTracker.View.Forms.Session
             _codingSessionManager.ResetCurrentCodingSession();
             _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
-            _stopWatchTimerService.RestartTimer();
+            _stopWatchTimerService.RestartSessionTimer();
             _stopWatchTimerService.StartTimer();
         }
 
