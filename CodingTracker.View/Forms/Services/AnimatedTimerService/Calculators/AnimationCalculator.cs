@@ -8,16 +8,17 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 {
     public interface IAnimationCalculator
     {
-        float CalculateAnimationProgress(TimeSpan elapsed);
+        float calculateBaseAnimationProgress(TimeSpan elapsed);
         float CalculateColumnScrollProgress(float animationProgress);
         double CalculateSecondsUntilNextAnimationInterval(AnimatedTimerColumn column, TimeSpan elapsed);
         float CalculateEasingValue(float animationProgress);
         float CalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
-        int CalculateTargetDigitByElapsed(TimeSpan elapsed, ColumnUnitType columnType);
+        int CalculateColumnTargetValueByElapsed(TimeSpan elapsed, ColumnUnitType columnType);
 
         float CalculateDistanceForReset(AnimatedTimerColumn column);
         float TESTCalculateYTranslation(AnimatedTimerColumn column, TimeSpan elapsed, float animationProgress);
         float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed);
+        float CalculateCurrentViewYLocation(AnimatedTimerColumn column);
 
     }
 
@@ -35,7 +36,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public float CalculateAnimationProgress(TimeSpan elapsed)
+        public float calculateBaseAnimationProgress(TimeSpan elapsed)
         {
             return (float)(elapsed.TotalSeconds % 1.0);
         }
@@ -96,7 +97,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             float yTranslation;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval)
+            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval)
             {
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
@@ -130,7 +131,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             float endY;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsAnimating && elapsed > column.AnimationInterval && !column.IsRestarting)
+            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval && !column.IsRestarting)
             {
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
@@ -167,7 +168,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
-        public int CalculateTargetDigitByElapsed(TimeSpan elapsed, ColumnUnitType columnType)
+        public int CalculateColumnTargetValueByElapsed(TimeSpan elapsed, ColumnUnitType columnType)
         {
             int totalSeconds = (int)elapsed.TotalSeconds;
             int minutes = totalSeconds / 60;
@@ -219,7 +220,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
         }
 
-
+        public float CalculateCurrentViewYLocation(AnimatedTimerColumn column)
+        {
+            return column.Location.Y - column.YTranslation;
+        }
 
 
 

@@ -27,7 +27,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public float TargetY {  get; set; }
 
-        public bool IsAnimating { get; set; }
+        public bool IsStandardAnimationOccuring { get; set; }
+
 
         public bool PassedFirstTransition { get; set; } = false;
 

@@ -118,7 +118,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
 
-            _animatedRenderer.RefactoredDraw(canvas, elapsed, _columns);
+            _animatedRenderer.TESTRefactoredDraw(canvas, elapsed, _columns);
         }
 
 
@@ -176,7 +176,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             string logMessage = $"\n \n"
                                 + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
                                 + $"\n-----Current Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
-                                + $"\n-----IsAnimating: {column.IsAnimating}.-----"
+                                + $"\n-----IsStandardAnimationOccuring: {column.IsStandardAnimationOccuring}.-----"
                                 + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
                                 + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
                                 + $"\n------PassedFirstTransition: {column.PassedFirstTransition.ToString()}."
