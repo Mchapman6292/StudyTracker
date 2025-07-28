@@ -3,8 +3,10 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
+using System.Runtime.CompilerServices;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers
 {
@@ -64,7 +66,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         void UpdateTargetSegmentValue(AnimatedTimerColumn column, int targetSegmentValue);
         void UpdateYLocationAtRestart(AnimatedTimerColumn column, float yLocationAtRestart);
 
+        void UpdateHasRestartedForAllColumns(List<AnimatedTimerColumn> columns, bool isRestarting);
 
+        void TESTUpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns);
+
+        void NEWTESTUpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns);
+        void UpdateTargetSegmentValue(AnimatedTimerColumn column, int newTargetValue, TimeSpan? elapsed, [CallerMemberName] string callerMethod = "");
+        void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newCurrentSegmentValue, TimeSpan? elapsed, [CallerMemberName] string callerMethod = "");
+        void SetFocusedSegmentByColumnTargetValue(AnimatedTimerColumn column, int newValue);
+        void UpdatePassedFirstAnimationTick(AnimatedTimerColumn column, bool passedFirstAnimationTick);
+        void UpdatePassedFirstTransition(AnimatedTimerColumn column, bool passedFirstTransition);
     }
 
     public class AnimatedColumnStateManager : IAnimatedColumnStateManager
@@ -72,7 +83,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedLogHelper _animatedLogHelper;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IAnimationCalculator _animationCaclulator;
+        private readonly IAnimationCalculator _animationCalculator;
 
         public bool IsTimerRestarting { get; set; }
 
@@ -82,7 +93,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             _appLogger = appLogger;
             _animatedLogHelper = aniamtedLogerHelper;
             _stopWatchTimerService = stopWatchTimerService;
-            _animationCaclulator = animationCalculator;
+            _animationCalculator = animationCalculator;
         }
 
 
@@ -165,7 +176,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
   
         public void UpdateColumnPreviousValue(AnimatedTimerColumn column, int previousValue)
         {
-            column.CurrentValue = previousValue;
+            column.ActiveDigit = previousValue;
         }
 
 
@@ -430,12 +441,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 column.IsStandardAnimationOccuring = false;
                 column.IsColumnActive = false;
                 column.PassedFirstTransition = false;
+                
 
 
                 if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
                 {
-
+                    string message = "SetColumnStateAndStartRestartTimerForRestartBeginning CALL";
                     _appLogger.Debug($"TIMER RESTARTED AT {formatedTimeSpan}----- YLocationAtRestart{column.YLocationAtRestart}, . ");
+                    _animatedLogHelper.LogColumn(column, elapsedSessionTimer, ColumnAnimationType.Restart, null, null, message);
                  
                 }
             }
@@ -451,8 +464,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                 {
                     column.IsRestarting = false;
                     column.YTranslation = 0;
-                    column.CurrentValue = 0;
-                    column.TargetSegmentValue = 1;
+                    column.ActiveDigit = 0;
+                    column.TargetDigit = 1;
                     column.PassedFirstTransition = false;
                     column.IsColumnActive = false;
                     column.IsStandardAnimationOccuring = false;
@@ -466,13 +479,87 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                         column.IsColumnActive = true;
                         column.IsStandardAnimationOccuring = true;
                         column.IsNumberBlurringActive = false;
-                        column.CurrentValue = 0;
-                        column.TargetSegmentValue = 1;
+
+                        if(column.ActiveDigit != 0)
+                        {
+                            UpdateColumnCurrentValue(column, 0, null);
+                        }
+
+                        if(column.TargetDigit != 1)
+                        {
+                            UpdateTargetSegmentValue(column, 1, null);
+                        }
+    
+                    }
+                }
+            }
+        }
+
+
+        public void NEWTESTUpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns)
+        {
+            foreach (var column in columns)
+            {
+       
+                    column.IsRestarting = false;
+                    column.YTranslation = 0;
+                    column.ActiveDigit = 0;
+                    column.TargetDigit = 1;
+                    column.PassedFirstTransition = false;
+                    column.IsColumnActive = false;
+                    column.IsStandardAnimationOccuring = false;
+                    column.IsNumberBlurringActive = true;
+                }
+
+  
+            }
+        
+
+
+
+
+
+
+        public void TESTUpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns)
+        {
+            foreach (var column in columns)
+            {
+                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                {
+                    column.IsRestarting = false;
+                    column.YTranslation = 0;
+                    column.ActiveDigit = 0;
+                    column.TargetDigit = 1;
+                    column.PassedFirstTransition = false;
+                    column.IsColumnActive = false;
+                    column.IsStandardAnimationOccuring = false;
+                    column.IsNumberBlurringActive = true;
+                }
+
+                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                {
+                    {
+                        column.IsRestarting = false;
+                        column.IsColumnActive = true;
+                        column.IsStandardAnimationOccuring = true;
+                        column.IsNumberBlurringActive = false;
+                        column.PassedFirstTransition = false;
+                        column.ActiveDigit = 0;
+                        column.TargetDigit = 1;
+
+                        column.YTranslation = 0;
 
                     }
                 }
             }
         }
+
+
+
+
+
+
+
 
         public void UpdateIsRestartingForAllColumns(List<AnimatedTimerColumn> columns ,bool isRestarting)
         {
@@ -483,6 +570,16 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             _appLogger.Debug($"IsRestarting for all columns in {nameof(columns)} updated to {isRestarting}");
         }
 
+
+
+        public void UpdateHasRestartedForAllColumns(List<AnimatedTimerColumn> columns, bool isRestarting)
+        {
+            foreach (var column in columns)
+            {
+                column.IsRestarting = isRestarting;
+            }
+            _appLogger.Debug($"IsRestarting for all columns in {nameof(columns)} updated to {isRestarting}");
+        }
 
 
 
@@ -594,7 +691,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         public void UpdateTargetSegmentValue(AnimatedTimerColumn column, int targetSegmentValue)
         {
-            column.TargetSegmentValue = targetSegmentValue;
+            column.TargetDigit = targetSegmentValue;
         }
 
         public void UpdateYLocationAtRestart(AnimatedTimerColumn column, float yLocationAtRestart)
@@ -602,6 +699,78 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             column.YLocationAtRestart = yLocationAtRestart;
         }
 
+        public void UpdateTargetSegmentValue(AnimatedTimerColumn column, int newTargetValue, TimeSpan? elapsed, [CallerMemberName] string callerMethod = "")
+        {
+            var oldValue = column.TargetDigit;
+
+            if (!elapsed.HasValue)
+            {
+                elapsed = TimeSpan.FromHours(12);
+            }
+
+
+            column.TargetDigit = newTargetValue;
+
+            
+            _appLogger.Debug($"UpdateTargetSegmentValue called by '{callerMethod}' at {elapsed}: " +
+                             $"TargetDigit changed from {oldValue} to {newTargetValue}.");
+            
+
+        }
+
+
+        public void UpdateColumnCurrentValue(AnimatedTimerColumn column, int newColumnCurrentValue, TimeSpan? elapsed, [CallerMemberName] string callerMethod = "")
+        {
+            int oldValue = column.ActiveDigit;
+            int newValue = newColumnCurrentValue;
+
+
+            if(!elapsed.HasValue)
+            {
+                elapsed = TimeSpan.FromHours(12);
+            }
+
+            if (oldValue != newValue)
+            {
+                column.ActiveDigit = newColumnCurrentValue;
+
+            }
+
+
+ 
+        }
+
+
+
+
+
+        public void SetFocusedSegmentByColumnTargetValue(AnimatedTimerColumn column, int newValue)
+        {
+            var newFocusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == newValue);
+
+            column.FocusedSegment = newFocusedSegment;
+
+            if (newFocusedSegment == null)
+            {
+                _appLogger.Error($"Unable to locate new Focused segment for column {column.ColumnType} ({newValue})");
+            }
+
+            if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+            {
+                _appLogger.Debug($"Column Focused segment updated to {column.FocusedSegment.Value}");
+            }
+
+        }
+
+        public void UpdatePassedFirstAnimationTick(AnimatedTimerColumn column, bool passedFirstAnimationTick)
+        {
+            column.PassedFirstAnimationTick = passedFirstAnimationTick;
+        }
+
+        public void UpdatePassedFirstTransition(AnimatedTimerColumn column, bool passedFirstTransition)
+        {
+            column.PassedFirstTransition = passedFirstTransition;
+        }
     }
 }
 

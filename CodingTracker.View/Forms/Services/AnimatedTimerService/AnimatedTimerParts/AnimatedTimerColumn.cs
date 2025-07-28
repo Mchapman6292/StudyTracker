@@ -34,14 +34,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
-        public int TargetSegmentValue { get; set; } = 1;
+        public int TargetDigit { get; set; } = 1;
 
 
-        public int CurrentValue { get; set; } = 0;
+        public int ActiveDigit { get; set; } = 0;
 
 
 
-        //The base animation progress of the entire animation over 0.7ms. 
+        //The base animation progress of the entire animation over 1s. Used for opactiy and colors. 
         public float BaseAnimationProgress { get; set; }
 
         // Animnation progress of column scroll which is base animation + scrolloffset (lerp * easing value).
@@ -60,12 +60,15 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public int StartingYSkControl;
 
-        internal bool IsRestarting { get; set; } 
+        internal bool IsRestarting { get; set; }
+
+        public bool HasRestarted { get; set; } = false;
         
         // Records columns Y location when restart button pressed. 
         public float YLocationAtRestart { get; set; }
 
- 
+
+        public bool PassedFirstAnimationTick { get; set; } = false;
 
 
 

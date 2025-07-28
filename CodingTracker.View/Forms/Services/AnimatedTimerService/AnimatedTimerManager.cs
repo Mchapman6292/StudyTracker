@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
@@ -22,6 +23,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         void InitializeColumns(Form targetForm, TimerPlaceHolderForm timerPlaceHolderForm);
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
+
+        void TESTDrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
         void LogColumnBools();
         List<AnimatedTimerColumn> ReturnTimerColumns();
@@ -55,13 +58,18 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IApplicationLogger _appLogger;
         private readonly IPaintManager _circleHighlight;
         private readonly IAnimationCalculator _animationCalculator;
+        private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
         private List<AnimatedTimerColumn> _columns;
 
 
 
+       
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IAnimationCalculator renderingCalculator)
+
+
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IAnimationCalculator renderingCalculator, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager animatedColumnStateManager)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
@@ -69,6 +77,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _appLogger = appLogger;
             _circleHighlight = circleHighLight;
             _animationCalculator = renderingCalculator;
+            _animatedColumnStateManager = animatedColumnStateManager;
+            _stopWatchTimerService = stopWatchTimerService; 
             _columns = new List<AnimatedTimerColumn>();
 
         }
@@ -117,11 +127,41 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var canvas = e.Surface.Canvas;
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
+   
+
+
 
             _animatedRenderer.TESTRefactoredDraw(canvas, elapsed, _columns);
         }
 
 
+
+
+        public void TESTDrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e)
+        {
+
+            var canvas = e.Surface.Canvas;
+            var bounds = e.Info.Rect;
+            var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
+            var restartElapsed = _stopWatchService.ReturnElapsedTimeSpan();
+
+            if (elapsed > TimeSpan.FromSeconds(2))
+            {
+                _stopWatchTimerService.StartRestartTimer();
+                _stopWatchTimerService.StopTimer();
+                _animatedColumnStateManager.SetColumnStateAndStartRestartTimerForRestartBeginning(_columns);
+            }
+
+            if (restartElapsed > TimeSpan.FromSeconds(1))
+            {
+                _stopWatchTimerService.StopRestartTimer();
+                _stopWatchTimerService.RestartSessionTimer();
+                _animatedColumnStateManager.UpdateColumnStateWhenRestartComplete(_columns);
+            }
+
+
+            _animatedRenderer.RefactoredDraw(canvas, elapsed, _columns);
+        }
 
 
 
@@ -153,6 +193,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
+
+
+
         }
 
 
@@ -175,7 +218,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         {
             string logMessage = $"\n \n"
                                 + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
-                                + $"\n-----Current Value : {column.CurrentValue}, Target Value : {column.TargetSegmentValue}.-----"
+                                + $"\n-----Current Value : {column.ActiveDigit}, Target Value : {column.TargetDigit}.-----"
                                 + $"\n-----IsStandardAnimationOccuring: {column.IsStandardAnimationOccuring}.-----"
                                 + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
                                 + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"

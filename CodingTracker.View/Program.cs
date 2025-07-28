@@ -29,6 +29,7 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.Validators;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -143,6 +144,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<ISnakeRenderer, SnakeRenderer>()
                     .AddSingleton<ISnakePathManager, SnakePathManager>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
+                    .AddSingleton<ITimerValidator, TimerValidator>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    

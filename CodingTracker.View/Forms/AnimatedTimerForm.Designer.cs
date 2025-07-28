@@ -65,8 +65,10 @@ namespace CodingTracker.View.Forms
             timeDisplayLabel = new Guna2HtmlLabel();
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
             mainPanel.SuspendLayout();
             controlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).BeginInit();
             SuspendLayout();
             // 
             // borderlessForm
@@ -82,6 +84,7 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
+            mainPanel.Controls.Add(iconPictureBox5);
             mainPanel.Controls.Add(testElapsedBox);
             mainPanel.Controls.Add(minimizeButton);
             mainPanel.Controls.Add(closeButton);
@@ -275,6 +278,21 @@ namespace CodingTracker.View.Forms
             animatedTimerSKControl.Size = new Size(448, 590);
             animatedTimerSKControl.TabIndex = 0;
             // 
+            // iconPictureBox5
+            // 
+            iconPictureBox5.BackColor = Color.FromArgb(35, 34, 50);
+            iconPictureBox5.ForeColor = Color.FromArgb(255, 160, 210);
+            iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            iconPictureBox5.IconColor = Color.FromArgb(255, 160, 210);
+            iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconPictureBox5.IconSize = 34;
+            iconPictureBox5.Location = new Point(579, 0);
+            iconPictureBox5.Margin = new Padding(3, 2, 3, 2);
+            iconPictureBox5.Name = "iconPictureBox5";
+            iconPictureBox5.Size = new Size(35, 34);
+            iconPictureBox5.TabIndex = 46;
+            iconPictureBox5.TabStop = false;
+            // 
             // AnimatedTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -289,6 +307,7 @@ namespace CodingTracker.View.Forms
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
             controlPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).EndInit();
             ResumeLayout(false);
         }
 
@@ -307,5 +326,6 @@ namespace CodingTracker.View.Forms
         private Guna2ControlBox minimizeButton;
         private Guna2ControlBox closeButton;
         private Guna2TextBox testElapsedBox;
+        private FontAwesome.Sharp.IconPictureBox iconPictureBox5;
     }
 }
