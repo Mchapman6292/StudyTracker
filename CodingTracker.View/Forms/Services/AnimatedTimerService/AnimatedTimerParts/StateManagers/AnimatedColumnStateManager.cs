@@ -53,7 +53,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
         void UpdateIsRestarting(AnimatedTimerColumn column, bool isRestarting);
         void SetColumnStateAndStartRestartTimerForRestartBeginning(List<AnimatedTimerColumn> columns);
-        void UpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns);
+        void UpdateColumnsWhenRestartComplete(List<AnimatedTimerColumn> columns);
         void UpdateIsRestartingForAllColumns(List<AnimatedTimerColumn> columns, bool isRestarting);
         bool CheckAllColumnsFinishedRestart(List<AnimatedTimerColumn> columns);
         void UpdateRestartAnimationProgress(AnimatedTimerColumn column, float restartAnimationProgress);
@@ -456,14 +456,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        public void UpdateColumnStateWhenRestartComplete(List<AnimatedTimerColumn> columns)
+        public void UpdateColumnsWhenRestartComplete(List<AnimatedTimerColumn> columns)
         {
             foreach (var column in columns)
             {
                 if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
                 {
                     column.IsRestarting = false;
-                    column.YTranslation = 0;
+      
                     column.ActiveDigit = 0;
                     column.TargetDigit = 1;
                     column.PassedFirstTransition = false;
@@ -479,6 +479,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                         column.IsColumnActive = true;
                         column.IsStandardAnimationOccuring = true;
                         column.IsNumberBlurringActive = false;
+
 
                         if(column.ActiveDigit != 0)
                         {
@@ -500,19 +501,40 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
         {
             foreach (var column in columns)
             {
-       
+                if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
+                {
                     column.IsRestarting = false;
-                    column.YTranslation = 0;
-                    column.ActiveDigit = 0;
-                    column.TargetDigit = 1;
                     column.PassedFirstTransition = false;
                     column.IsColumnActive = false;
                     column.IsStandardAnimationOccuring = false;
                     column.IsNumberBlurringActive = true;
+
                 }
 
-  
+                if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
+                {
+                    {
+                        column.IsRestarting = false;
+                        column.IsColumnActive = true;
+                        column.IsStandardAnimationOccuring = true;
+                        column.IsNumberBlurringActive = false;
+
+
+                        if (column.ActiveDigit != 0)
+                        {
+                            UpdateColumnCurrentValue(column, 0, null);
+                        }
+
+                        if (column.TargetDigit != 1)
+                        {
+                            UpdateTargetSegmentValue(column, 1, null);
+                        }
+
+
+                    }
+                }
             }
+        }
         
 
 
@@ -534,6 +556,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                     column.IsColumnActive = false;
                     column.IsStandardAnimationOccuring = false;
                     column.IsNumberBlurringActive = true;
+
                 }
 
                 if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
@@ -548,6 +571,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
                         column.TargetDigit = 1;
 
                         column.YTranslation = 0;
+
+                        column.Location = column.InitialLocation;
 
                     }
                 }
@@ -729,6 +754,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             {
                 elapsed = TimeSpan.FromHours(12);
             }
+
+
+
 
             if (oldValue != newValue)
             {

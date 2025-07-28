@@ -25,7 +25,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
         void NEWTESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
         void RefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        void TESTRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+        void WorkingRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
 
         void TESTDrawRestartAnimationForAllColumns(SKCanvas canvas, TimeSpan restartTimerElapsed, List<AnimatedTimerColumn> columns, float restartAnimationProgress);
 
@@ -82,6 +82,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
             SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
+
 
             SKRoundRect roundRect = new SKRoundRect(columnRectangle, AnimatedColumnSettings.RoundRectangleRadius);
 
@@ -654,7 +655,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 if (restartAnimationProgress >= 1)
                 {
                     // Set the properties of each indiviaul column to its correct state
-                    _columnStateManager.UpdateColumnStateWhenRestartComplete(columns);
+                    _columnStateManager.UpdateColumnsWhenRestartComplete(columns);
 
                     // Check each indivdual column is no longer isRestarting
                     bool allColumnsFinishedRestarting = _columnStateManager.CheckAllColumnsOutOfRestartState(columns);
@@ -674,21 +675,21 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             // Restart animation is calculated with the same values for all columns, since normal animation works differently for each we need to loop through each one. 
             foreach (AnimatedTimerColumn column in columns)
             {
-                int columnTargetValue = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+                int columnTargetDigit = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
 
 
                 // Handle assigning the correct target value in scenario outlined in UpdateColumnForStandardAnimation definition.
 
-                if (columnTargetValue != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1))
+                if (columnTargetDigit != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1))
                 {
-                    UpdateColumnStateStandardAnimation(column, columnTargetValue, elapsed);
+                    UpdateColumnStateStandardAnimation(column, columnTargetDigit, elapsed);
                 }
 
 
                 else
                 {
                     // Set the realTimeTargetValue to the one calculated by 
-                    SetTargetDigit(column, columnTargetValue);
+                    SetTargetDigit(column, columnTargetDigit);
                 }
 
 
@@ -858,7 +859,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        public void TESTRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        public void WorkingRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
         {
             canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
 
@@ -874,7 +875,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                 if (restartAnimationProgress >= 1)
                 {
                     // Set the properties of each indiviaul column to its correct state
-                    _columnStateManager.UpdateColumnStateWhenRestartComplete(columns);
+                    _columnStateManager.UpdateColumnsWhenRestartComplete(columns);
 
                     // Check each indivdual column is no longer isRestarting
                     bool allColumnsFinishedRestarting = _columnStateManager.CheckAllColumnsOutOfRestartState(columns);
@@ -884,6 +885,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
                     {
                         // Update global/controller bool IsTimerRestarting and stop restart time & restart session timer
                         _columnStateManager.UpdateStateAndTimerWhenRestartComplete();
+                        return;
                     }
                 }
                 DrawRestartAnimationForAllColumns(canvas, restartTimerElapsed, columns, restartAnimationProgress);

@@ -10,6 +10,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public List<AnimatedTimerSegment> TimerSegments;
 
+        public int TargetDigit { get; set; } = 1;
+        public int ActiveDigit { get; set; } = 0;
         public AnimatedTimerSegment FocusedSegment { get;  set; }
 
         public int TotalSegmentCount;
@@ -34,10 +36,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
 
-        public int TargetDigit { get; set; } = 1;
 
-
-        public int ActiveDigit { get; set; } = 0;
 
 
 

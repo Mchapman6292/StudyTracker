@@ -131,7 +131,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-            _animatedRenderer.TESTRefactoredDraw(canvas, elapsed, _columns);
+            _animatedRenderer.WorkingRefactoredDraw(canvas, elapsed, _columns);
         }
 
 
@@ -156,7 +156,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             {
                 _stopWatchTimerService.StopRestartTimer();
                 _stopWatchTimerService.RestartSessionTimer();
-                _animatedColumnStateManager.UpdateColumnStateWhenRestartComplete(_columns);
+                _animatedColumnStateManager.UpdateColumnsWhenRestartComplete(_columns);
             }
 
 
