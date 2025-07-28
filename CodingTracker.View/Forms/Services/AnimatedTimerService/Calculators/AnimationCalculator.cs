@@ -20,6 +20,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         float CalculateRestartAnimationProgress(TimeSpan restartTimerElapsed);
         float CalculateCurrentViewYLocation(AnimatedTimerColumn column);
 
+        int CalculateRealTimeTargetValue(TimeSpan elapsed, ColumnUnitType columnType);
+
     }
 
     public class AnimationCalculator : IAnimationCalculator
@@ -79,7 +81,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
                 float reversedProgress = 1f - scaledAnimationProgress;    // Flip the scaled value to prepare for cubic-out easing
                 float cubicEased = reversedProgress * reversedProgress * reversedProgress;  // Apply cubic function to reversed progress
-                float normalized = cubicEased / 2f;   // Normalize result to keep easing curve within 0–1 bounds
+                float normalized = cubicEased / 2f;   // Normalize realTimeTargetValue to keep easing curve within 0–1 bounds
 
       
                 float result = 1f - normalized; // Invert and shift to complete the ease-out curve
@@ -97,7 +99,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             float yTranslation;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval)
+            if (column.TargetDigit == 0 && column.ActiveDigit == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval)
             {
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
@@ -110,8 +112,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             else
             {
 
-                startY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-                float endY = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
+                startY = column.ActiveDigit * AnimatedColumnSettings.SegmentHeight;
+                float endY = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
                 float distance = endY - startY;
                 yTranslation = startY + (easedProgress * distance);
 
@@ -131,7 +133,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             float endY;
 
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
-            if (column.TargetSegmentValue == 0 && column.CurrentValue == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval && !column.IsRestarting)
+            if (column.TargetDigit == 0 && column.ActiveDigit == column.MaxValue && column.IsStandardAnimationOccuring && elapsed > column.AnimationInterval && !column.IsRestarting)
             {
                 _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
 
@@ -153,8 +155,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             // Normal animation transition.
             else
             {
-                startY = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
-                endY = column.TargetSegmentValue * AnimatedColumnSettings.SegmentHeight;
+                startY = column.ActiveDigit * AnimatedColumnSettings.SegmentHeight;
+                endY = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
                 float distance = endY - startY;
                 currentY = startY + (easedProgress * distance);
                 return currentY;
@@ -173,6 +175,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             int totalSeconds = (int)elapsed.TotalSeconds;
             int minutes = totalSeconds / 60;
             int hours = totalSeconds / 3600;
+
+
 
             switch (columnType)
             {
@@ -196,11 +200,52 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
 
 
 
+        public int CalculateRealTimeTargetValue(TimeSpan elapsed, ColumnUnitType columnType)
+        {
+            int totalSeconds = (int)elapsed.TotalSeconds;
+            int minutes = totalSeconds / 60;
+            int hours = totalSeconds / 3600;
+
+            int realTimeTargetValue;
+
+
+            switch (columnType)
+            {
+                case ColumnUnitType.SecondsSingleDigits:
+                    realTimeTargetValue = totalSeconds % 10;
+                    break;
+                case ColumnUnitType.SecondsLeadingDigit:
+                    realTimeTargetValue = (totalSeconds / 10) % 6;
+                    break;
+                case ColumnUnitType.MinutesSingleDigits:
+                    realTimeTargetValue = minutes % 10;
+                    break;
+                case ColumnUnitType.MinutesLeadingDigits:
+                    realTimeTargetValue = (minutes / 10) % 6;
+                    break;
+                case ColumnUnitType.HoursSinglesDigits:
+                    realTimeTargetValue = hours % 10;
+                    break;
+                case ColumnUnitType.HoursLeadingDigits:
+                    realTimeTargetValue = (hours / 10) % 10;
+                    break;
+                default:
+                    realTimeTargetValue = 0;
+                    break;
+            }
+
+     
+            return realTimeTargetValue;
+
+        }
+
+
+
 
 
         public float CalculateDistanceForReset(AnimatedTimerColumn column)
         {
-            float resetYLocation = column.CurrentValue * AnimatedColumnSettings.SegmentHeight;
+            float resetYLocation = column.ActiveDigit * AnimatedColumnSettings.SegmentHeight;
             float currentYlocation = resetYLocation - column.YTranslation;
 
 

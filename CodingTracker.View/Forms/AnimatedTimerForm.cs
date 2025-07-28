@@ -5,11 +5,13 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.MainPageService;
 using CodingTracker.View.Forms.Services.SharedFormServices;
+using System.Collections.Generic;
 
 
 namespace CodingTracker.View.Forms
@@ -98,8 +100,45 @@ namespace CodingTracker.View.Forms
 
 
 
+
+
+
         }
 
+
+
+
+        public void LogTargetValue0LocationAtIinitialization()
+        {
+
+            
+            List<AnimatedTimerColumn> columns = _animatedTimerManager.ReturnTimerColumns();
+
+            AnimatedTimerColumn targetColumn = columns.FirstOrDefault(s => s.ColumnType == ColumnUnitType.SecondsSingleDigits);
+
+
+            if (targetColumn != null)
+            {
+                throw new InvalidOperationException($"Unable to find targetColumn");
+            }
+
+
+
+
+            int targetValue = 0;
+
+            AnimatedTimerSegment targetSegment = targetColumn.TimerSegments.FirstOrDefault(s => s.Value == 0);
+
+            if (targetSegment != null)
+            {
+                throw new InvalidOperationException($"Unable to find timerSegment");
+            }
+
+
+            _appLogger.Debug($"SecondsSingleDigits Segment with value {targetSegment.Value} initial location = X: {targetSegment.Location.X} , Y = {targetSegment.Location.Y}.");
+
+
+        }
 
 
         public void SetSKControlLocationAndSize()

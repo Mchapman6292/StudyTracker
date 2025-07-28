@@ -73,7 +73,7 @@
                 var scrollOffset = CalculateVerticalOffset(phase, currentValue, column);
 
                 column.YTranslation = scrollOffset;
-                column.TargetSegmentValue = currentValue;
+                column.TargetDigit = currentValue;
 
                 DrawSegments(canvas, column);
             }
