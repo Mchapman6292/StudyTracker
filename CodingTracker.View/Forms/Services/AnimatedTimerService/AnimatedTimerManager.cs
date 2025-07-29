@@ -1,8 +1,10 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.ApplicationControlService;
+using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
@@ -24,7 +26,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         void UpdateAndRender(SKControl skControl);
         void DrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
-        void TESTDrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e);
 
         void LogColumnBools();
         List<AnimatedTimerColumn> ReturnTimerColumns();
@@ -59,7 +60,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         private readonly IPaintManager _circleHighlight;
         private readonly IAnimationCalculator _animationCalculator;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
+        private readonly IAnimatedColumnStateManager _columnStateManager;
+        private readonly IAnimatedTimerRenderer _animatedTimerRenderer;
+        private readonly IAnimatedLogHelper _animatedLogHelper;
+
         private List<AnimatedTimerColumn> _columns;
 
 
@@ -69,7 +73,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
-        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IAnimationCalculator renderingCalculator, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager animatedColumnStateManager)
+        public AnimatedTimerManager(IStopWatchTimerService stopWatchService, IAnimatedTimerRenderer animatedRenderer, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IApplicationLogger appLogger, IPaintManager circleHighLight, IAnimationCalculator renderingCalculator, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager animatedColumnStateManager, IAnimatedTimerRenderer animatedTimerRenderer, IAnimatedLogHelper animatedLogHelper)
         {
             _stopWatchService = stopWatchService;
             _animatedRenderer = animatedRenderer;
@@ -77,10 +81,112 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _appLogger = appLogger;
             _circleHighlight = circleHighLight;
             _animationCalculator = renderingCalculator;
-            _animatedColumnStateManager = animatedColumnStateManager;
+            _columnStateManager = animatedColumnStateManager;
             _stopWatchTimerService = stopWatchTimerService; 
+            _animatedTimerRenderer = animatedTimerRenderer;
+            _animatedLogHelper = animatedLogHelper;
             _columns = new List<AnimatedTimerColumn>();
 
+        }
+
+
+
+
+
+
+        public void DrawTimer(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
+        {
+            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
+
+            bool areColumnsInRestartState = _columnStateManager.ReturnAreColumnsInRestartState();
+
+            if (areColumnsInRestartState)
+            {
+
+                // Check is restart timer is complete(1 second).
+                TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
+                float restartAnimationProgress = _animationCalculator.CalculateRestartAnimationProgress(restartTimerElapsed);
+
+                if (restartAnimationProgress >= 1)
+                {
+                    // Set the properties of each indiviaul column to its correct state
+                    _columnStateManager.UpdateColumnsWhenRestartComplete(columns);
+
+                    // Check each indivdual column is no longer isRestarting
+                    bool allColumnsFinishedRestarting = _columnStateManager.CheckAllColumnsOutOfRestartState(columns);
+
+
+                    if (allColumnsFinishedRestarting)
+                    {
+                        // Update global/controller bool IsTimerRestarting and stop restart time & restart session timer
+                        _columnStateManager.UpdateStateAndTimerWhenRestartComplete();
+                        return;
+                    }
+                }
+                _animatedTimerRenderer.DrawRestartAnimationForAllColumns(canvas, restartTimerElapsed, columns, restartAnimationProgress);
+                return;
+            }
+
+            // Restart animation is calculated with the same values for all columns, since normal animation works differently for each we need to loop through each one. 
+            foreach (AnimatedTimerColumn column in columns)
+            {
+
+                // We use this method to extract the time digit for the corresponding column, this method will always return a value between 0-9, we can calculate this for each column inside the loop as we use the same elapsed value. 
+                int targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+
+                // If the targetDigitAtCurrentElapsed update the column & segment values. 
+                if (targetDigitAtCurrentElapsedTime != column.TargetDigit && !column.IsRestarting)
+                {
+                    // These are used to update the column position, numbers etc.
+                    _columnStateManager.UpdateColumnActiveDigit(column, column.TargetDigit, elapsed);
+                    _columnStateManager.UpdateTargetSegmentValue(column, targetDigitAtCurrentElapsedTime);
+                }
+
+
+                // Now check to see if it is the colummns time to animate(is restartTimerElapsed >= Column.animationInerval - 1
+                column.IsStandardAnimationOccurring = _animatedTimerRenderer.TimeToBeginStandardAnimation(elapsed, column);
+
+
+                if (column.IsStandardAnimationOccurring)
+                {
+                    // Record the point when column changes from inactive to active, the active flag is used for showing column active colors
+                    if (column.IsColumnActive == false)
+                    {
+                        _columnStateManager.UpdateIsColumnActive(column, true);
+                        _columnStateManager.UpdateIsNumberBlurringActive(column, false);
+                        _appLogger.Info($"Column : {column.ColumnType} changed to active at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
+                    }
+
+
+
+                    // Update the column to active and disable number blurring.
+
+
+                    // Calculate the progress values for the the animation over one second and the column scroll progress which is baseAnimation + easing method.
+                    float baseAnimationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
+                    float columnScrollProgress = _animationCalculator.CalculateColumnScrollProgress(baseAnimationProgress);
+
+
+
+                    _columnStateManager.UpdateBaseAnimationProgress(column, baseAnimationProgress);
+                    _columnStateManager.UpdateColumnScrollProgress(column, columnScrollProgress);
+
+
+                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
+
+                    _animatedTimerRenderer.DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    _animatedTimerRenderer.DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+                }
+                else
+                {
+                    // Else we just draw columns at the same location.
+                    _animatedTimerRenderer.DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
+                    _animatedTimerRenderer.DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
+
+
+                }
+            }
         }
 
 
@@ -127,48 +233,13 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             var canvas = e.Surface.Canvas;
             var bounds = e.Info.Rect;
             var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
-   
+  
 
-
-
-            _animatedRenderer.WorkingRefactoredDraw(canvas, elapsed, _columns);
+            DrawTimer(canvas, elapsed, _columns);
         }
 
 
 
-
-        public void TESTDrawColumnsOnTick(object sender, SKPaintSurfaceEventArgs e)
-        {
-
-            var canvas = e.Surface.Canvas;
-            var bounds = e.Info.Rect;
-            var elapsed = _stopWatchService.ReturnElapsedTimeSpan();
-            var restartElapsed = _stopWatchService.ReturnElapsedTimeSpan();
-
-            if (elapsed > TimeSpan.FromSeconds(2))
-            {
-                _stopWatchTimerService.StartRestartTimer();
-                _stopWatchTimerService.StopTimer();
-                _animatedColumnStateManager.SetColumnStateAndStartRestartTimerForRestartBeginning(_columns);
-            }
-
-            if (restartElapsed > TimeSpan.FromSeconds(1))
-            {
-                _stopWatchTimerService.StopRestartTimer();
-                _stopWatchTimerService.RestartSessionTimer();
-                _animatedColumnStateManager.UpdateColumnsWhenRestartComplete(_columns);
-            }
-
-
-            _animatedRenderer.RefactoredDraw(canvas, elapsed, _columns);
-        }
-
-
-
-        private float CalculateStartingYLocation(float formHeight)
-        {
-            return formHeight / 2 - 100;
-        }
 
 
 
@@ -190,55 +261,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
                 var min = column.TimerSegments.Min(segment => segment.Value);
                 _appLogger.Debug($"Column: {column.ColumnType} created with SegmentCount: {column.TimerSegments.Count}, startingY: {startingY}. Location: X: {column.Location.X} Y: {column.Location.Y}. ");
             }
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void LogColumn(AnimatedTimerColumn column, TimeSpan elapsed, float? initialYLocation, float? easedProgress, float? yTranslation)
-        {
-            string logMessage = $"\n \n"
-                                + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSPan(elapsed)}-----"
-                                + $"\n-----Current Value : {column.ActiveDigit}, Target Value : {column.TargetDigit}.-----"
-                                + $"\n-----IsStandardAnimationOccuring: {column.IsStandardAnimationOccuring}.-----"
-                                + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
-                                + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
-                                + $"\n------PassedFirstTransition: {column.PassedFirstTransition.ToString()}."
-                                + $"\n------- IsRestarting: {column.IsRestarting}. RestartYLocation: {column.YLocationAtRestart}. ";
-
-
-            if (initialYLocation != null && easedProgress != null && yTranslation != null)
-            {
-                logMessage +=
-                $"\n---- OFFSET CALCULATION FOR COLUMN: {column.ColumnType}.-----"
-                + $"\n---- InitialYLocation: {initialYLocation}, Easing Value: {easedProgress}, YTranslation: {yTranslation}.-----\n\n";
-            }
-
-            _appLogger.Info(logMessage);
-        }
-
-        public string FormatElapsedTimeSPan(TimeSpan elapsed)
-        {
-            return elapsed.ToString(@"mm\:ss\.fff");
         }
 
 

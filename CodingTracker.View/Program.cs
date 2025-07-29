@@ -24,12 +24,10 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.SnakeAnimation;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.Validators;
 using CodingTracker.View.Forms.Services.CountdownTimerService.CountdownTimerColorManagers;
 using CodingTracker.View.Forms.Services.EditSessionPageService;
 using CodingTracker.View.Forms.Services.MainPageService;
@@ -133,7 +131,6 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedTimerRenderer, AnimatedTimerRenderer>()
                     .AddSingleton<IAnimatedTimerManager, AnimatedTimerManager>()
                     .AddSingleton<IAnimatedTimerColumnFactory, AnimatedTimerColumnFactory>()
-                    .AddSingleton<IAnimationPhaseCalculator, AnimationPhaseCalculator>()
                     .AddSingleton<IPaintManager, PaintManager>()
                     .AddSingleton<IAnimatedColumnStateManager, AnimatedColumnStateManager>()
                     .AddSingleton<IAnimatedSegmentStateManager, AnimatedSegmentStateManager>()
@@ -141,10 +138,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IGradientManager, GradientManager>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
                     .AddSingleton<IAnimationCalculator, AnimationCalculator>()
-                    .AddSingleton<ISnakeRenderer, SnakeRenderer>()
-                    .AddSingleton<ISnakePathManager, SnakePathManager>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
-                    .AddSingleton<ITimerValidator, TimerValidator>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
