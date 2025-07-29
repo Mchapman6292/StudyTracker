@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.Logging;
+using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using System.Buffers.Text;
@@ -23,6 +24,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         int CalculateRealTimeTargetValue(TimeSpan elapsed, ColumnUnitType columnType);
 
         int CalculateTargetDigitAtCurrentElapsedTime(TimeSpan elapsed, ColumnUnitType columnType);
+
+        float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed);
+        float CalculateEasingValueForPaths(AnimatedTimerColumn column, TimerAnimationType animationType);
 
     }
 
@@ -273,6 +277,43 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
         }
 
 
+
+
+        public float CalculateCircleAnimationRadius(AnimatedTimerColumn column, TimeSpan elapsed)
+        {
+            return Single.Lerp(AnimatedColumnSettings.MaxRadius, AnimatedColumnSettings.MinRadius, column.CircleAnimationProgress);
+        }
+
+
+
+        [Obsolete("Was used in old TimerPaths creation, keeping in case this is revisited.")]
+        public float CalculateEasingValueForPaths(AnimatedTimerColumn column, TimerAnimationType animationType)
+        {
+            // Use different progress values to calculate the easing.
+            float animationProgress = animationType switch
+            {
+                TimerAnimationType.CircleAnimation => column.CircleAnimationProgress,
+                TimerAnimationType.ColumnScroll => column.ColumnScrollProgress,
+                _ => throw new ArgumentException($"Unsupported animation type: {animationType}")
+            };
+
+
+            const float midpoint = 0.5f;
+            if (animationProgress < midpoint)
+            {
+                float scaledProgress = animationProgress;
+                float easeInValue = 4f * scaledProgress * scaledProgress * scaledProgress;
+                return easeInValue;
+            }
+            else
+            {
+                float adjustedProgress = -2f * animationProgress + 2f; // Maps 0.5→1 to 1→0
+                                                                       // Cubic ease-out: 1 - ((1-t)^3)
+                float powerOfThree = MathF.Pow(adjustedProgress, 3f);
+                float normalizedAnimationProgress = 1f - (powerOfThree / 2f);
+                return normalizedAnimationProgress;
+            }
+        }
 
 
     }

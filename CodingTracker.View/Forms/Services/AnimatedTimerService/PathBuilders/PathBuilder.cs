@@ -2,9 +2,9 @@
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using SkiaSharp;
-using System.Security.RightsManagement;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
 {
@@ -18,12 +18,14 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
     {
         private readonly IApplicationLogger _appLogger;
         private readonly IAnimatedColumnStateManager _columnStateManager;
+        private readonly IAnimationCalculator _animationCalculator;
 
 
-        public PathBuilder(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager)
+        public PathBuilder(IApplicationLogger appLogger, IAnimatedColumnStateManager columnStateManager, IAnimationCalculator animationCalculator)
         {
             _appLogger = appLogger;
             _columnStateManager = columnStateManager;
+            _animationCalculator = animationCalculator;
         }
 
         private  SKPath CreateCirclePath(AnimatedTimerColumn column, TimeSpan elapsed, bool isCircleStatic)
@@ -42,8 +44,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders
             else
             {
 
-                float easingValue = _columnStateManager.WORKINGCalculateEasingValue(column, TimerAnimationType.CircleAnimation);
-                circleRadius = _columnStateManager.CalculateCircleAnimationRadius(column, elapsed);
+                float easingValue = _animationCalculator.CalculateEasingValueForPaths(column, TimerAnimationType.CircleAnimation);
+                circleRadius = _animationCalculator.CalculateCircleAnimationRadius(column, elapsed);
             }
 
 
