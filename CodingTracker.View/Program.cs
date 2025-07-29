@@ -38,6 +38,7 @@ using CodingTracker.View.Forms.Services.MainPageService.SessionVisualizationServ
 using CodingTracker.View.Forms.Services.SharedFormServices;
 using CodingTracker.View.Forms.Services.WaveVisualizerService;
 using CodingTracker.View.Forms.Session;
+using CodingTracker.View.Forms.TestForm;
 using CodingTracker.View.Forms.WaveVisualizer;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
@@ -154,6 +155,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TimerPlaceHolderForm>()
                     .AddSingleton<AnimatedTimerForm>()
+                    .AddSingleton<MainPageTestForm>()
     
 
 

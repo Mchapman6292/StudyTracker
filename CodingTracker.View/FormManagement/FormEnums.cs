@@ -16,7 +16,8 @@
         AnimatedTimerForm,
         SessionNotesForm,
         SessionRatingForm,
-        TimerPlaceHolderForm
+        TimerPlaceHolderForm,
+        MainPageTestFormn
     }
 
 
