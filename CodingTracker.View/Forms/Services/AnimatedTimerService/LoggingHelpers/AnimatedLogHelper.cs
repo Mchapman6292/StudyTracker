@@ -33,7 +33,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers
             string logMessage = $"\n \n"
                                 + $"\n-----LOGGING COLUMN {column.ColumnType} AT ELAPSED {FormatElapsedTimeSpan(elapsed)}, Animation type: {columnAnimationType} -----"
                                 + $"\n-----Current Value : {column.ActiveDigit}, Target Value : {column.TargetDigit}.-----"
-                                + $"\n-----IsStandardAnimationOccuring: {column.IsStandardAnimationOccuring}.-----"
+                                + $"\n-----IsStandardAnimationOccurring: {column.IsStandardAnimationOccurring}.-----"
                                 + $"\n-----BaseAnimationProgress: {column.BaseAnimationProgress}, ColumnScrollProgress: {column.ColumnScrollProgress}, CircleAnimationProgress: {column.CircleAnimationProgress}.-----"
                                 + $"\n-----Max Value: {column.MaxValue}, TotalSegmentCount: {column.TotalSegmentCount}, TimerSegments.Count: {column.TimerSegments.Count()}.-----"
                                 + $"\n------PassedFirstTransition: {column.PassedFirstTransition.ToString()}."

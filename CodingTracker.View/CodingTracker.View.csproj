@@ -131,6 +131,7 @@
 
   <ItemGroup>
     <Folder Include="Forms\Services\AnimatedTimerService\TimerAnimations\Highlighter\Calculators\" />
+    <Folder Include="Forms\Services\AnimatedTimerService\Validators\" />
   </ItemGroup>
 
 </Project>

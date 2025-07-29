@@ -1,34 +1,22 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.LoggingHelpers;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.PathBuilders;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using CodingTracker.View.Forms.Services.AnimatedTimerService.Validators;
-using CSharpMarkup.WinUI;
-using Guna.UI2.AnimatorNS;
-using Microsoft.UI.Xaml;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 {
     public interface IAnimatedTimerRenderer
     {
+        void DrawRoundedColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection);
         void DrawColumnNumbers(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection);
-        void WorkingDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
+        bool TimeToBeginStandardAnimation(TimeSpan elapsed, AnimatedTimerColumn column);
 
-        void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        void NEWTESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        void RefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-        void WorkingRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns);
-
-        void TESTDrawRestartAnimationForAllColumns(SKCanvas canvas, TimeSpan restartTimerElapsed, List<AnimatedTimerColumn> columns, float restartAnimationProgress);
-
+        void DrawRestartAnimationForAllColumns(SKCanvas canvas, TimeSpan restartTimerElapsed, List<AnimatedTimerColumn> columns, float restartAnimationProgress);
 
 
 
@@ -46,39 +34,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
     public class AnimatedTimerRenderer : IAnimatedTimerRenderer
     {
         private readonly IApplicationLogger _appLogger;
-        private readonly IAnimationPhaseCalculator _phaseCalculator;
-        private readonly IStopWatchTimerService _stopWatchTimerService;
         private readonly IPaintManager _paintManager;
-        private readonly IPathBuilder _pathBuilder;
         private readonly IAnimatedColumnStateManager _columnStateManager;
-        private readonly IAnimatedSegmentStateManager _segmentStateManager;
-        private readonly IShadowBuilder _shadowBuilder;
         private readonly IAnimationCalculator _animationCalculator;
         private readonly IAnimatedLogHelper _animatedLogHelper;
-        private readonly ITimerValidator _timerValidator;
 
 
-        public int tickCountsBeforeOneSecond = 0;
-
-        public AnimatedTimerRenderer(IApplicationLogger appLogger, IAnimationPhaseCalculator phaseCalculator, IStopWatchTimerService stopwWatchTimerService, IPaintManager circleHighlight, IPathBuilder pathBuilder, IAnimatedColumnStateManager columnStateManager, IAnimatedSegmentStateManager segmentStateManager, IShadowBuilder shadowBuilder, IAnimationCalculator renderingCalculator, IAnimatedLogHelper animatedLogHelper, ITimerValidator timerValidator)
+        public AnimatedTimerRenderer(IApplicationLogger appLogger,  IPaintManager circleHighlight, IAnimatedColumnStateManager columnStateManager, IAnimationCalculator renderingCalculator, IAnimatedLogHelper animatedLogHelper)
         {
             _appLogger = appLogger;
-            _phaseCalculator = phaseCalculator;
-            _stopWatchTimerService = stopwWatchTimerService;
             _paintManager = circleHighlight;
-            _pathBuilder = pathBuilder;
             _columnStateManager = columnStateManager;
-            _segmentStateManager = segmentStateManager;
-            _shadowBuilder = shadowBuilder;
             _animationCalculator = renderingCalculator;
             _animatedLogHelper = animatedLogHelper;
-            _timerValidator = timerValidator;
         }
 
 
 
 
-        private void DrawRoundedColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
+        public void DrawRoundedColumn(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
             SKSize rectangleSize = new SKSize(column.Width, column.Height);
             SKRect columnRectangle = SKRect.Create(column.Location, rectangleSize);
@@ -108,7 +82,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        // This is where the value for number animations is set
+
         public void DrawColumnNumbers(SKCanvas canvas, AnimatedTimerColumn column, ColumnAnimationSetting animationDirection)
         {
             using (var nonFocusedNumberPaint = _paintManager.CreateActiveNumberPaintAndGradient(column))
@@ -140,651 +114,25 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
 
 
-        private bool TimeToBeginStandardAnimation(TimeSpan elapsed, AnimatedTimerColumn column)
+        public bool TimeToBeginStandardAnimation(TimeSpan elapsed, AnimatedTimerColumn column)
         {
-
             if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
             {
                 return true;
             }
 
             double secondsBeforeNextAnimationInterval = _animationCalculator.CalculateSecondsUntilNextAnimationInterval(column, elapsed);
-
             bool isTimeToAnimate = secondsBeforeNextAnimationInterval <= 1.0;
-
-            
-
-
 
             return isTimeToAnimate;
         }
 
 
 
-
-
-
-
-
-
-        public void SetTargetDigit(AnimatedTimerColumn column, int targetDigit)
-        {
-            var newFocusedSegment = column.TimerSegments.FirstOrDefault(s => s.Value == targetDigit);
-
-            column.FocusedSegment = newFocusedSegment;
-
-            if(newFocusedSegment == null)
-            {
-                _appLogger.Error($"Unable to locate new Focused segment for column {column.ColumnType} ({targetDigit})");
-            }
-
-            if(column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-            {
-                _appLogger.Debug($"Column Focused segment updated to {column.FocusedSegment.Value}");
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Animation starting at correct time 2025-07-10 06:46:01.438 +10:00 [DBG] SECONDS LEADING DIGITS ANIMATION STARTED AT: 00:09
-        // Focused segment assignment incorrect? 2025-07-10 06:46:01.438 +10:00 [DBG] Focused segment updated to 0 (00:00:09.0298016)
-
-
-
-
-
-
-
-
-
-
-
-        // REVIEW ISPASSEDFIRSTRANSITION LOGIC, always set to true, but timer animating correctly.
-
-        public void WorkingDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
-
-
-
-            bool isCircleStatic = true;
-
-            foreach (var column in columns)
-            {
-                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-
-                // Animation begins one second before the column changes so we add one second.
-                //TODO
-                // Change ColumnAnimationInterval initialization by -1 to fix.
-                //This band aid does not handle 0-1 animations.
-
-
-
-
-                // The realTimeTargetValue == currentValue + 1 = TargetDigit?
-                int liveTargetValue = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
-
-
-
-
-
-
-
-                // Default values initialized as 0 and 1 for current and target
-                // When the restartTimerElapsed was <1 , new value != targetValue
-                // This mean that the current value was updated to 1 and the target updated to 0.
-                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
-
-
-                /*
-                if (realTimeTargetValue != column.TargetDigit && restartTimerElapsed < column.AnimationInterval && column.PassedFirstTransition == false)
-                {
-                    column.ActiveDigit = column.TargetDigit;
-                    column.TargetDigit = realTimeTargetValue;
-
-                }
-                */
-
-
-
-                // this will need reviewed and changed, what happens if timer stops and starts before one second etc. 
-                if (liveTargetValue != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
-                {
-
-                    column.ActiveDigit = column.TargetDigit;
-                    column.TargetDigit = liveTargetValue;
-
-                    column.PassedFirstTransition = true;
-                    SetTargetDigit(column, liveTargetValue);
-
-                }
-
-
-
-
-
-                else
-                {
-                    SetTargetDigit(column, liveTargetValue);
-                }
-
-
-
-
-
-                // 2. Determine if this column should animate right now.
-                column.IsStandardAnimationOccuring = TimeToBeginStandardAnimation(elapsed, column);
-
-                if (column.IsStandardAnimationOccuring)
-                {
-
-                    if (column.IsColumnActive == false)
-                    {
-                        column.IsColumnActive = true;
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, true);
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
-                    }
-
-                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
-                    {
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, false);
-                    }
-
-
-
-                    isCircleStatic = false;
-
-                    float animationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
-                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
-                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, animationProgress);
-                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
-                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
-
-                    float animatingYTranslation = _animationCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
-
-
-
-
-                    column.YTranslation = animatingYTranslation;
-
-
-                    /*
-                        _shadowBuilder.DrawColumnLeftShadow(canvas, leftShadowRectangle);
-                    
-                        _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
-                        
-
-
-
-
-                    // Are timer paths being draw over each other / at the same time?
-                    /*
-                    WORKINGDrawTimerPaths(canvas, column, restartTimerElapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                    */
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-
-
-                }
-                else
-                {
-                    // shadow should be drawn before rectangle?
-                    column.YTranslation = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
-                    isCircleStatic = true;
-
-
-                    /*
-                _shadowBuilder.TESTDrawColumnLeftShadow(canvas, leftShadowRectangle);
-
-
-                _shadowBuilder.DrawColumnRightShadow(canvas, rightShadowRectangle);
-
-            */
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-                    /*
-                    WORKINGDrawTimerPaths(canvas, column, restartTimerElapsed, isCircleStatic, ColumnAnimationSetting.IsMovingUp);
-                    */
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public void TESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
-
-            bool isCircleStatic = true;
-
-            foreach (var column in columns)
-            {
-                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-
-                if (column.IsRestarting)
-                {
-                    double restartElpasedSeconds = _stopWatchTimerService.GetRestartStopwatchSeconds();
-
-                    float restartProgress = Math.Min(1f, (float)restartElpasedSeconds / 0.5f);
-                    float easedProgress = _animationCalculator.CalculateEasingValue(restartProgress);
-                    column.YTranslation = column.YLocationAtRestart * (1f - easedProgress);
-
-                    if (restartProgress >= 1f)
-                    {
-                        column.IsRestarting = false;
-                        column.YTranslation = 0;
-                        column.ActiveDigit = 0;
-                        column.TargetDigit = 1;
-                        column.PassedFirstTransition = false;
-
-                        if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                        {
-                            column.IsColumnActive = true;
-                            column.IsNumberBlurringActive = true;
-                        }
-                    }
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    continue;
-                }
-
-                int liveTargetValue = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
-
-                if (liveTargetValue != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
-                {
-                    column.ActiveDigit = column.TargetDigit;
-                    column.TargetDigit = liveTargetValue;
-                    column.PassedFirstTransition = true;
-                    SetTargetDigit(column, liveTargetValue);
-                }
-                else
-                {
-                    SetTargetDigit(column, liveTargetValue);
-                }
-
-                column.IsStandardAnimationOccuring = TimeToBeginStandardAnimation(elapsed, column);
-
-                if (column.IsStandardAnimationOccuring)
-                {
-                    if (column.IsColumnActive == false)
-                    {
-                        column.IsColumnActive = true;
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, true);
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
-                    }
-
-                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
-                    {
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, false);
-                    }
-
-                    isCircleStatic = false;
-
-                    float animationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
-                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
-                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, animationProgress);
-                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
-                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
-
-                    float animatingYTranslation = _animationCalculator.CalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
-
-                    column.YTranslation = animatingYTranslation;
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                }
-                else
-                {
-                    column.YTranslation = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
-                    isCircleStatic = true;
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-        public void NEWTESTDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
-
-            // Check if restart animation has just completed. 
-            bool restartComplete = _columnStateManager.CheckAllColumnsFinishedRestart(columns);
-
-            if (restartComplete)
-            {
-                _appLogger.Debug($"Restart Complete Current restartTimerElapsed : {elapsed}");
-            }
-
-
-            bool isCircleStatic = true;
-
-            foreach (var column in columns)
-            {
-                SKRect leftShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-                SKRect rightShadowRectangle = _shadowBuilder.CreateRectangleForShadow(column);
-
-                if (column.IsRestarting)
-                {
-
-                    TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
-                    float restartAnimationProgress = _animationCalculator.CalculateRestartAnimationProgress(restartTimerElapsed);
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, restartAnimationProgress);
-
-
-
-                    _appLogger.Debug($"Animation progress Calculated for restart: {restartAnimationProgress}.");
-
-                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, restartAnimationProgress);
-
-
-
-
-                    if (restartAnimationProgress >= 1f)
-                    {
-                        if (column.ColumnType != ColumnUnitType.SecondsSingleDigits)
-                        {
-                            column.IsRestarting = false;
-                            column.YTranslation = 0;
-                            column.ActiveDigit = 0;
-                            column.TargetDigit = 1;
-                            column.PassedFirstTransition = false;
-                            column.IsColumnActive = false;
-                            column.IsStandardAnimationOccuring = false;
-                            column.IsNumberBlurringActive = true;
-                        }
-
-                        if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                        {
-                            {
-                                column.IsRestarting = false;
-                                column.IsColumnActive = true;
-                                column.IsStandardAnimationOccuring = true;
-                                column.IsNumberBlurringActive = false;
-                                column.PassedFirstTransition = false;
-                                column.ActiveDigit = 0;
-                                column.TargetDigit = 1;
-
-                            }
-                        }
-                    }
-
-
-                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-                        _animatedLogHelper.LogColumn(column, restartTimerElapsed, ColumnAnimationType.Restart, null, null, null);
-                    }
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    continue;
-                }
-
-                int liveTargetValue = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
-
-                if (liveTargetValue != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1) || column.PassedFirstTransition != true)
-                {
-                    column.ActiveDigit = column.TargetDigit;
-                    column.TargetDigit = liveTargetValue;
-                    column.PassedFirstTransition = true;
-                    SetTargetDigit(column, liveTargetValue);
-                }
-                else
-                {
-                    SetTargetDigit(column, liveTargetValue);
-                }
-
-                column.IsStandardAnimationOccuring = TimeToBeginStandardAnimation(elapsed, column);
-
-                if (column.IsStandardAnimationOccuring)
-                {
-                    if (column.IsColumnActive == false)
-                    {
-                        column.IsColumnActive = true;
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, true);
-                        _appLogger.Debug($"IsCOlumnACtive changed from false to: {column.IsColumnActive} at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
-                    }
-
-                    if (column.IsNumberBlurringActive && elapsed >= column.AnimationInterval)
-                    {
-                        _columnStateManager.UpdateIsNumberBlurringActive(column, false);
-                    }
-
-                    isCircleStatic = false;
-
-                    float animationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
-                    float normalizedProgress = _animationCalculator.CalculateColumnScrollProgress(animationProgress);
-                    float circleAnimationProgress = _columnStateManager.TESTCalculateCircleAnimationProgress(column);
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, animationProgress);
-                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, normalizedProgress);
-                    _columnStateManager.UpdateCircleAnimationProgress(column, circleAnimationProgress);
-
-                    float animatingYTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
-
-                    column.YTranslation = animatingYTranslation;
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                }
-                else
-                {
-                    column.YTranslation = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
-                    isCircleStatic = true;
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                }
-            }
-        }
-
-
-
-        // All Y locations when restarting and wrap around seem to be set correctly to 240,
-        //
-
-
-        public void RefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
-
-            bool areColumnsInRestartState = _columnStateManager.ReturnAreColumnsInRestartState();
-
-            if (areColumnsInRestartState)
-            {
-
-                // Check is restart timer is complete(1 second).
-                TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
-                float restartAnimationProgress = _animationCalculator.CalculateRestartAnimationProgress(restartTimerElapsed);
-
-                if (restartAnimationProgress >= 1)
-                {
-                    // Set the properties of each indiviaul column to its correct state
-                    _columnStateManager.UpdateColumnsWhenRestartComplete(columns);
-
-                    // Check each indivdual column is no longer isRestarting
-                    bool allColumnsFinishedRestarting = _columnStateManager.CheckAllColumnsOutOfRestartState(columns);
-
-
-                    if (allColumnsFinishedRestarting)
-                    {
-                        // Update global/controller bool IsTimerRestarting and stop restart time & restart session timer
-                        _columnStateManager.UpdateStateAndTimerWhenRestartComplete();
-                    }
-                }
-                DrawRestartAnimationForAllColumns(canvas, restartTimerElapsed, columns, restartAnimationProgress);
-
-                return;
-            }
-
-            // Restart animation is calculated with the same values for all columns, since normal animation works differently for each we need to loop through each one. 
-            foreach (AnimatedTimerColumn column in columns)
-            {
-                int columnTargetDigit = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
-
-
-                // Handle assigning the correct target value in scenario outlined in UpdateColumnForStandardAnimation definition.
-
-                if (columnTargetDigit != column.TargetDigit || elapsed < TimeSpan.FromSeconds(1))
-                {
-                    UpdateColumnStateStandardAnimation(column, columnTargetDigit, elapsed);
-                }
-
-
-                else
-                {
-                    // Set the realTimeTargetValue to the one calculated by 
-                    SetTargetDigit(column, columnTargetDigit);
-                }
-
-
-
-                // Now check to see if it is the colummns time to animate(is restartTimerElapsed >= Column.animationInerval - 1
-                column.IsStandardAnimationOccuring = TimeToBeginStandardAnimation(elapsed, column);
-
-
-                if (column.IsStandardAnimationOccuring)
-                {
-                    // Record the point when column changes from inactive to active, the active flag is used for showing column active colors
-                    if (column.IsColumnActive == false)
-                    {
-                        _appLogger.Info($"Column : {column.ColumnType} changed to active at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
-                    }
-
-                    // Update the column to active and disable number blurring.
-                    _columnStateManager.UpdateIsColumnActive(column, true);
-                    _columnStateManager.UpdateIsNumberBlurringActive(column, false);
-
-                    // Calculate the 
-                    float baseAnimationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
-                    float columnScrollProgress = _animationCalculator.CalculateColumnScrollProgress(baseAnimationProgress);
-
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, baseAnimationProgress);
-                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, columnScrollProgress);
-
-
-                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-                }
-                else
-                {
-                    // Else we just draw columns at the same location.
-
-
-
-                    column.YTranslation = column.TargetDigit * AnimatedColumnSettings.SegmentHeight;
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-
-                        _animatedLogHelper.LogColumn(column, elapsed, ColumnAnimationType.Static, null, null, null);
-                    }
-
-                }
-
-
-            }
-        }
-
-
-
-
-
-        
-        public void TESTSetColumnStateForFirstTransitionAnimation(AnimatedTimerColumn column, int realTimeTargetValue, TimeSpan elapsed)
-        {
-            int existingCurrent = column.ActiveDigit;
-            int existingTarget = column.TargetDigit;
-
-   
-
-            if (column.TargetDigit != realTimeTargetValue || column.ActiveDigit == column.TargetDigit)
-            {
-                _columnStateManager.UpdateTargetSegmentValue(column, realTimeTargetValue, elapsed);
-            }
-
-            column.PassedFirstTransition = true;
-            SetTargetDigit(column, column.ActiveDigit);
-
-        }
-        
-
-
-
-
-
-
         public void DrawRestartAnimationForAllColumns(SKCanvas canvas, TimeSpan restartTimerElapsed, List<AnimatedTimerColumn> columns, float restartAnimationProgress)
         {
-
             foreach (var column in columns)
             {
-
-  
-
-
                 float currentYPosition = column.Location.Y - column.YTranslation;
 
                 _columnStateManager.UpdateRestartAnimationProgress(column, restartAnimationProgress);
@@ -804,192 +152,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         }
 
 
-        public void TESTDrawRestartAnimationForAllColumns(SKCanvas canvas, TimeSpan restartTimerElapsed, List<AnimatedTimerColumn> columns, float restartAnimationProgress)
-        {
-            foreach (var column in columns)
-            {
-                if(column.IsRestarting)
-                {
 
-                    float currentYPosition = column.Location.Y - column.YTranslation;
 
-                    _columnStateManager.UpdateRestartAnimationProgress(column, restartAnimationProgress);
+  
 
-                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, restartTimerElapsed, restartAnimationProgress);
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-
-                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-                        _animatedLogHelper.LogColumnDuringRestart(column, restartTimerElapsed, column.RestartAnimationProgress, currentYPosition);
-                    }
-                    return;
-                }
-
-                _appLogger.Debug($"Skipping column {column.ColumnType} for DrawRestartAnimationForAllColumns at {_animatedLogHelper.FormatElapsedTimeSpan(restartTimerElapsed)}.");
-
-            }
-
-        }
-
-
-
-
-        public void LogTargetValue0LocationAtIinitialization(AnimatedTimerColumn column)
-        {
-
-            int targetValue = 0;
-
-            AnimatedTimerSegment targetSegment = column.TimerSegments.FirstOrDefault(s => s.Value == 0);
-
-
-            if (targetSegment == null)
-            {
-                throw new InvalidOperationException($"Unable to find timerSegment number of segments in column = {column.TimerSegments.Count()}");
-            }
-
-
-            _appLogger.Debug($"SecondsSingleDigits Segment with value {targetSegment.Value} initial location = X: {targetSegment.Location.X} , Y = {targetSegment.Location.Y}.");
-
-
-        }
-
-
-
-
-        public void WorkingRefactoredDraw(SKCanvas canvas, TimeSpan elapsed, List<AnimatedTimerColumn> columns)
-        {
-            canvas.Clear(AnimatedColumnSettings.FormBackgroundColor);
-
-            bool areColumnsInRestartState = _columnStateManager.ReturnAreColumnsInRestartState();
-
-            if (areColumnsInRestartState)
-            {
-
-                // Check is restart timer is complete(1 second).
-                TimeSpan restartTimerElapsed = _stopWatchTimerService.GetRestartElapsedTimeCappedAtOneSecond();
-                float restartAnimationProgress = _animationCalculator.CalculateRestartAnimationProgress(restartTimerElapsed);
-
-                if (restartAnimationProgress >= 1)
-                {
-                    // Set the properties of each indiviaul column to its correct state
-                    _columnStateManager.UpdateColumnsWhenRestartComplete(columns);
-
-                    // Check each indivdual column is no longer isRestarting
-                    bool allColumnsFinishedRestarting = _columnStateManager.CheckAllColumnsOutOfRestartState(columns);
-
-
-                    if (allColumnsFinishedRestarting)
-                    {
-                        // Update global/controller bool IsTimerRestarting and stop restart time & restart session timer
-                        _columnStateManager.UpdateStateAndTimerWhenRestartComplete();
-                        return;
-                    }
-                }
-                DrawRestartAnimationForAllColumns(canvas, restartTimerElapsed, columns, restartAnimationProgress);
-
-                return;
-            }
-
-            // Restart animation is calculated with the same values for all columns, since normal animation works differently for each we need to loop through each one. 
-            foreach (AnimatedTimerColumn column in columns)
-            {
-                int columnTargetValue = _animationCalculator.CalculateColumnTargetValueByElapsed(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
-
-
-                // Handle assigning the correct target value in scenario outlined in UpdateColumnForStandardAnimation definition.
-
-                if (columnTargetValue != column.TargetDigit && !column.IsRestarting)
-                {
-                    UpdateColumnStateStandardAnimation(column, columnTargetValue, elapsed);
-                    // Set the realTimeTargetValue to the one calculated by 
-                    SetTargetDigit(column, columnTargetValue);
-                }
-
-
-     
-
-
-
-                // Now check to see if it is the colummns time to animate(is restartTimerElapsed >= Column.animationInerval - 1
-                column.IsStandardAnimationOccuring = TimeToBeginStandardAnimation(elapsed, column);
-
-
-                if (column.IsStandardAnimationOccuring)
-                {
-                    // Record the point when column changes from inactive to active, the active flag is used for showing column active colors
-                    if (column.IsColumnActive == false)
-                    {
-                        _appLogger.Info($"Column : {column.ColumnType} changed to active at {_animatedLogHelper.FormatElapsedTimeSpan(elapsed)}");
-                    }
-
-                    // Update the column to active and disable number blurring.
-                    _columnStateManager.UpdateIsColumnActive(column, true);
-                    _columnStateManager.UpdateIsNumberBlurringActive(column, false);
-
-                    // Calculate the 
-                    float baseAnimationProgress = _animationCalculator.calculateBaseAnimationProgress(elapsed);
-                    float columnScrollProgress = _animationCalculator.CalculateColumnScrollProgress(baseAnimationProgress);
-
-
-                    _columnStateManager.UpdateBaseAnimationProgress(column, baseAnimationProgress);
-                    _columnStateManager.WORKINGUpdateColumnScrollProgress(column, columnScrollProgress);
-
-
-                    column.YTranslation = _animationCalculator.TESTCalculateYTranslation(column, elapsed, column.BaseAnimationProgress);
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-
-
-
-                }
-                else
-                {
-                    // Else we just draw columns at the same location.
-
-
-
-       
-
-                    DrawRoundedColumn(canvas, column, ColumnAnimationSetting.IsMovingUp);
-                    DrawColumnNumbers(canvas, column, ColumnAnimationSetting.IsMovingUp);
-
-                    if (column.ColumnType == ColumnUnitType.SecondsSingleDigits)
-                    {
-
-                        _animatedLogHelper.LogColumn(column, elapsed, ColumnAnimationType.Static, null, null, null);
-                    }
-
-                }
-
-
-            }
-        }
-
-
-
-
-
-
-
-        public void UpdateColumnStateStandardAnimation(AnimatedTimerColumn column, int columnTargetValue, TimeSpan elapsed)
-        {
-
-            if(elapsed < TimeSpan.FromSeconds(1))
-            {
-                return;
-            }
-
-            _columnStateManager.UpdateColumnCurrentValue(column, column.TargetDigit, elapsed);
-            _columnStateManager.UpdateTargetSegmentValue(column, columnTargetValue);
-
-
-
-        }
 
 
 
