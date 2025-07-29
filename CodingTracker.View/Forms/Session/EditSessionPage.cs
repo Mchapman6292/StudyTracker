@@ -24,7 +24,7 @@ namespace CodingTracker.View
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IDataGridViewManager _dataGridViewManager;
         private readonly INotificationManager _notificationManager;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly IButtonHighlighterService _buttonHighlighterService;
 
         private bool IsEditSession { get; set; } = false;
@@ -55,7 +55,7 @@ namespace CodingTracker.View
             ICodingSessionRepository codingSessionRepository,
             IDataGridViewManager dataGridViewManager,
             INotificationManager notificationManager,
-            IButtonNotificationManager buttonNotificationManager,
+            IExitFlowManager buttonNotificationManager,
             IButtonHighlighterService buttonHighlighterService)
         {
             _appLogger = appLogger;
@@ -63,7 +63,7 @@ namespace CodingTracker.View
             _codingSessionRepository = codingSessionRepository;
             _dataGridViewManager = dataGridViewManager;
             _notificationManager = notificationManager;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();

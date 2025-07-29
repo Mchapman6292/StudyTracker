@@ -38,7 +38,7 @@ namespace CodingTracker.View
         private readonly IFormNavigator _formNavigator;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IFormStateManagement _formStateManagement;
@@ -77,7 +77,7 @@ namespace CodingTracker.View
             IFormNavigator formNavigator,
             ILabelAssignment labelAssignment,
             IButtonHighlighterService buttonHighlighterService,
-            IButtonNotificationManager buttonNotificationManager,
+            IExitFlowManager buttonNotificationManager,
             INotificationManager notificationManager,
             ICodingSessionRepository codingSessionRepository,
             IFormStateManagement formStateManagement,
@@ -101,7 +101,7 @@ namespace CodingTracker.View
             _formNavigator = formNavigator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             _codingSessionRepository = codingSessionRepository;
             _formFactory = formFactory;
@@ -313,7 +313,7 @@ namespace CodingTracker.View
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)

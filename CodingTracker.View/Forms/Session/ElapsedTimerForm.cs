@@ -17,18 +17,18 @@ namespace CodingTracker.View.Forms.Session
         private readonly IFormNavigator _formNavigator;
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
  
         private readonly IButtonHighlighterService _buttonHighlighterService;
 
 
-        public ElapsedTimerPage(ICodingSessionManager codingSessionManager, IFormNavigator formNavigator, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IButtonNotificationManager buttonNotificationManager, IButtonHighlighterService buttonHighlighterService)
+        public ElapsedTimerPage(ICodingSessionManager codingSessionManager, IFormNavigator formNavigator, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager buttonNotificationManager, IButtonHighlighterService buttonHighlighterService)
         {
             _codingSessionManager = codingSessionManager;
             _formNavigator = formNavigator;
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();
@@ -55,7 +55,7 @@ namespace CodingTracker.View.Forms.Session
             _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
             _stopWatchTimerService.RestartSessionTimer();
-            _stopWatchTimerService.StartTimer();
+            _stopWatchTimerService.StartSessionTimer();
             SetFormPosition();
             winFormsTimer.Start();
 
@@ -83,23 +83,23 @@ namespace CodingTracker.View.Forms.Session
             _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
             _stopWatchTimerService.RestartSessionTimer();
-            _stopWatchTimerService.StartTimer();
+            _stopWatchTimerService.StartSessionTimer();
         }
 
         private void StopButton_Click(Object sender, EventArgs e) 
         {
-            _buttonNotificationManager.HandleStopButtonRequest(this);
+            _exitFlowManager.HandleStopButtonRequest(this);
         }
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             if (isPaused)
             {
-                _stopWatchTimerService.StartTimer();
+                _stopWatchTimerService.StartSessionTimer();
                 winFormsTimer.Start();
                 elapsedTimerPauseButton.Text = "⏸";
                 elapsedTimerPauseButton.TextOffset = new Point(2, 0);

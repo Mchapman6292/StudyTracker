@@ -11,15 +11,15 @@ namespace CodingTracker.View
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly INotificationManager _notificationManager;
         private readonly IFormNavigator _formNavigator;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private TimeSpan _sessionDuration;
 
-        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormNavigator formSwitcher, IButtonNotificationManager buttonNotificationManager)
+        public SessionNotesForm(ICodingSessionManager codingSessionManager, INotificationManager notificationManager, IFormNavigator formSwitcher, IExitFlowManager buttonNotificationManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _notificationManager = notificationManager;
-            _buttonNotificationManager =buttonNotificationManager;
+            _exitFlowManager =buttonNotificationManager;
             _formNavigator = formSwitcher;
             closeButton.Click += CloseButton_Click;
         }
@@ -72,7 +72,7 @@ namespace CodingTracker.View
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)

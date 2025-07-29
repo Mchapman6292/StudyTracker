@@ -19,7 +19,7 @@ namespace CodingTracker.View.PopUpFormService
         private readonly IInputValidator _inputValidator;
         private readonly IApplicationLogger _appLogger;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
 
         public string TimeGoal { get; private set; }
         public bool GoalSet { get; private set; } = false;
@@ -33,7 +33,7 @@ namespace CodingTracker.View.PopUpFormService
             IApplicationLogger appLogger,
             IFormStateManagement formStateManagement,
             IButtonHighlighterService buttonHighlighterService,
-            IButtonNotificationManager buttonNotificationManager)
+            IExitFlowManager buttonNotificationManager)
         {
             _codingSessionManager = codingSessionManager;
             _formNavigator = formSwitcher;
@@ -43,7 +43,7 @@ namespace CodingTracker.View.PopUpFormService
             _appLogger = appLogger;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
 
             InitializeComponent();
         }
@@ -263,7 +263,7 @@ namespace CodingTracker.View.PopUpFormService
         /// </summary>
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         public void HandleSkipButton()

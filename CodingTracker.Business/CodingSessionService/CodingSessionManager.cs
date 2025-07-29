@@ -107,8 +107,18 @@ namespace CodingTracker.Business.CodingSessionManagers
         public void ResetCurrentCodingSession()
         {
             CodingSession blankCodingSession = CreateCurrentCodingSession();
-
             _currentCodingSession = blankCodingSession;
+
+            _appLogger.LogCodingSession(blankCodingSession);
+
+
+        }
+
+
+        public void RestartCodingSession()
+        {
+            ResetCurrentCodingSession();
+
         }
 
   

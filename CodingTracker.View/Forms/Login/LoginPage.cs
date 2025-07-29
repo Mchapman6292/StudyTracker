@@ -21,12 +21,12 @@ namespace CodingTracker.View
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -36,7 +36,7 @@ namespace CodingTracker.View
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
@@ -292,7 +292,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.ExitCodingTracker();
+            _exitFlowManager.ExitCodingTracker();
         }
 
         private void RememberMeToggle_Checked(object sender, EventArgs e)

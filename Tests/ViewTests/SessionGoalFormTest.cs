@@ -25,7 +25,7 @@ namespace Tests.ViewTests.SessionGoalFormTests
             var mockLogger = new Mock<IApplicationLogger>();
             var mockFormStateManagement = new Mock<IFormStateManagement>();
             var mockButtonHighlighterService = new Mock<IButtonHighlighterService>();
-            var buttonNotificationManager = new Mock<IButtonNotificationManager>();
+            var buttonNotificationManager = new Mock<IExitFlowManager>();
 
             var form = new SessionGoalPage(
                 mockSessionManager.Object,

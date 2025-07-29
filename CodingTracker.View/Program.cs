@@ -113,7 +113,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<INotificationManager, NotificationManager>()
                     .AddSingleton<IStopWatchTimerService, StopWatchTimerService>()
                     .AddSingleton<IKeyboardActivityTracker, KeyboardActivityTracker>()
-                    .AddSingleton<IButtonNotificationManager, ButtonNotificationManager>()
+                    .AddSingleton<IExitFlowManager, ExitFlowManager>()
                     .AddSingleton<IButtonHighlighterService,  ButtonHighlighterService>()
                     .AddSingleton<SessionNotesForm>()
                     .AddSingleton<ICountdownTimerColorManager, CountdownTimerColorManager>()

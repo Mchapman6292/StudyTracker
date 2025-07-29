@@ -1,36 +1,46 @@
-﻿using Guna.UI2.WinForms;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.AnimatedTimerService;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
+using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
 using CodingTracker.View.Forms.Services.SharedFormServices;
-using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+using Guna.UI2.WinForms;
+using Microsoft.UI.Xaml;
+
 
 
 namespace CodingTracker.View.ApplicationControlService.ButtonNotificationManagers
 {
 
-    public interface IButtonNotificationManager
+    public interface IExitFlowManager
     {
         void HandleExitRequestAndStopSession(object sender, EventArgs e, Form currentForm);
         void HandleStopButtonRequest(Form currentForm);
+        void HandleRestartSessionRequest(Form currentForm);
         void ExitCodingTracker();
     }
 
-    public class ButtonNotificationManager : IButtonNotificationManager
+    public class ExitFlowManager : IExitFlowManager
     {
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
         private readonly IFormNavigator _formNavigator;
         private readonly IStopWatchTimerService _stopWatchTimerService;
+        private readonly IAnimatedTimerManager _animatedTimerManager;
+        private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
 
 
-        public ButtonNotificationManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IFormNavigator formSwitcher, IStopWatchTimerService stopWatchTimerService)
+        public ExitFlowManager(ICodingSessionManager codingSessionManager, IApplicationLogger appLogger, INotificationManager notificationManager, IFormNavigator formSwitcher, IStopWatchTimerService stopWatchTimerService, IAnimatedColumnStateManager animatedColumnStateManager, IAnimatedTimerManager animatedTimerManager)
         {
             _codingSessionManager = codingSessionManager;
             _appLogger = appLogger;
             _notificationManager = notificationManager;
             _formNavigator = formSwitcher;
             _stopWatchTimerService = stopWatchTimerService;
+            _animatedTimerManager = animatedTimerManager;
+            _animatedColumnStateManager = animatedColumnStateManager;
         }
 
 
@@ -98,11 +108,38 @@ namespace CodingTracker.View.ApplicationControlService.ButtonNotificationManager
             }
         }
 
-       
+
+
+        public void HandleRestartSessionRequest(Form currentForm)
+        {
+            RestartSessionDialogResultEnum restartButtonResult = _notificationManager.ShowRestartSessionMessageDialog(currentForm);
+
+            switch (restartButtonResult)
+            {
+                case RestartSessionDialogResultEnum.Restart:
+                    List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
+                    _codingSessionManager.ResetCurrentCodingSession();
+                    _stopWatchTimerService.StartRestartTimer();
+                    _animatedColumnStateManager.SetColumnStateAndStartRestartTimerForRestartBeginning(columnsList);
+                    break;
+
+                case RestartSessionDialogResultEnum.Continue:
+                    _stopWatchTimerService.StartSessionTimer();
+                    break;
+
+                case RestartSessionDialogResultEnum.Cancel:
+                    _stopWatchTimerService.StartSessionTimer();
+                    break;
+            }
+        }
+        
+
+
+
 
         public void ExitCodingTracker()
         {
-            Application.Exit();
+            System.Windows.Forms.Application.Exit();
         }
 
     }

@@ -12,6 +12,14 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices
         ContinueSession,            // Don't exit
     }
 
+    public enum RestartSessionDialogResultEnum
+    {
+        Restart,
+        Continue,
+        Cancel
+    }
+
+
     public enum StopSessionDialogResultEnum
     {
         StopAndSaveSession,
@@ -26,6 +34,7 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices
         ExitDialogResultEnum ShowExitMessageDialog(Form parentForm);
         Guna2MessageDialog ReturnStopSessionDialog();
         StopSessionDialogResultEnum ShowStopButtonMessageDialog(Form parentForm);
+        RestartSessionDialogResultEnum ShowRestartSessionMessageDialog(Form parentForm);
     }
 
 
@@ -158,51 +167,91 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices
             }
         }
 
-    public Guna2MessageDialog ReturnStopSessionDialog()
-    {
-        Guna2MessageDialog stopSessionDialog = new Guna2MessageDialog
+        public Guna2MessageDialog ReturnStopSessionDialog()
         {
-            Caption = "Session Stopped",
-            Text = "Save current session?",
-            Buttons = MessageDialogButtons.YesNoCancel,
-            Icon = MessageDialogIcon.Question,
-            Style = MessageDialogStyle.Dark
-        };
+            Guna2MessageDialog stopSessionDialog = new Guna2MessageDialog
+            {
+                Caption = "Session Stopped",
+                Text = "Save current session?",
+                Buttons = MessageDialogButtons.YesNoCancel,
+                Icon = MessageDialogIcon.Question,
+                Style = MessageDialogStyle.Dark
+            };
 
-        return stopSessionDialog;
-    }
-
-    public StopSessionDialogResultEnum ShowStopButtonMessageDialog(Form parentForm)
-    {
-        Guna2MessageDialog stopSessionDialog = new Guna2MessageDialog
-        {
-            Text = "Save coding session?",
-            Caption = "End Coding Session",
-            Buttons = MessageDialogButtons.YesNoCancel,
-            Icon = MessageDialogIcon.Question,
-            Style = MessageDialogStyle.Dark
-        };
-
-        SetNotificationParentForm(parentForm, stopSessionDialog);
-
-        DialogResult saveResult = stopSessionDialog.Show();
-
-        if (saveResult == DialogResult.No)
-        {
-            return StopSessionDialogResultEnum.StopWithoutSaving;
+            return stopSessionDialog;
         }
 
-        else if (saveResult == DialogResult.Yes)
+        public StopSessionDialogResultEnum ShowStopButtonMessageDialog(Form parentForm)
         {
-            return StopSessionDialogResultEnum.StopAndSaveSession;
+            Guna2MessageDialog stopSessionDialog = new Guna2MessageDialog
+            {
+                Text = "Save coding session?",
+                Caption = "End Coding Session",
+                Buttons = MessageDialogButtons.YesNoCancel,
+                Icon = MessageDialogIcon.Question,
+                Style = MessageDialogStyle.Dark
+            };
+
+            SetNotificationParentForm(parentForm, stopSessionDialog);
+
+            DialogResult saveResult = stopSessionDialog.Show();
+
+            if (saveResult == DialogResult.No)
+            {
+                return StopSessionDialogResultEnum.StopWithoutSaving;
+            }
+
+            else if (saveResult == DialogResult.Yes)
+            {
+                return StopSessionDialogResultEnum.StopAndSaveSession;
+            }
+
+            else
+            {
+                return StopSessionDialogResultEnum.Cancel;
+            }
         }
 
-        else
-        {
-            return StopSessionDialogResultEnum.Cancel;
-        }
-    }
 
+
+         public RestartSessionDialogResultEnum ShowRestartSessionMessageDialog(Form currentForm)
+        {
+            Guna2MessageDialog restartMessageDialog = new Guna2MessageDialog
+            {
+                Text = "Restart Coding Session?",
+                Caption = "Restart?",
+                Buttons = MessageDialogButtons.YesNo,
+                Icon = MessageDialogIcon.Question,
+                Style = MessageDialogStyle.Dark
+            };
+
+            SetNotificationParentForm(currentForm, restartMessageDialog);
+
+            DialogResult restartResult = restartMessageDialog.Show();
+
+            if(restartResult == DialogResult.Yes)
+            {
+                return RestartSessionDialogResultEnum.Restart;
+            }
+
+            if(restartResult == DialogResult.No)
+            {
+                return RestartSessionDialogResultEnum.Continue;
+            }
+
+            else
+            {
+                return RestartSessionDialogResultEnum.Cancel;
+            }
+
+
+
+
+
+
+
+        }
+   
 
 
     }

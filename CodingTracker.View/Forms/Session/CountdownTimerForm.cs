@@ -22,7 +22,7 @@ namespace CodingTracker.View.TimerDisplayService
         private readonly IFormNavigator _formNavigator;
         private readonly IApplicationLogger _appLogger;
         private readonly IStopWatchTimerService _stopWatchTimerService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly ICountdownTimerColorManager _countdownTimerColorManager;
         private readonly INotificationManager _notificationManager;
 
@@ -31,14 +31,14 @@ namespace CodingTracker.View.TimerDisplayService
 
         #region Constructor
 
-        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IButtonNotificationManager buttonNotificationManager, ICountdownTimerColorManager countdownTimerColorManager, INotificationManager notificationManager)
+        public CountdownTimerForm(ICodingSessionManager codingSessionManager, IFormNavigator formSwitcher, IApplicationLogger appLogger, IStopWatchTimerService stopWatchTimerService, IExitFlowManager buttonNotificationManager, ICountdownTimerColorManager countdownTimerColorManager, INotificationManager notificationManager)
         {
             InitializeComponent();
             _codingSessionManager = codingSessionManager;
             _formNavigator = formSwitcher;
             _appLogger = appLogger;
             _stopWatchTimerService = stopWatchTimerService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
 
             closeButton.Click += CloseButton_Click;
@@ -71,7 +71,7 @@ namespace CodingTracker.View.TimerDisplayService
             _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
 
             _stopWatchTimerService.RestartSessionTimer();
-            _stopWatchTimerService.StartTimer();
+            _stopWatchTimerService.StartSessionTimer();
 
             progressTimer.Start();
             timeDisplayLabel.BringToFront();
@@ -155,14 +155,14 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             if (isPaused && progressTimerGoalSecondsDouble > 0)
             {
-                _stopWatchTimerService.StartTimer();
+                _stopWatchTimerService.StartSessionTimer();
                 progressTimer.Start();
                 pauseButton.Text = "⏸";
                 pauseButton.TextOffset = new Point(2, 0);
@@ -215,7 +215,7 @@ namespace CodingTracker.View.TimerDisplayService
         private void StopButton_Click(object sender, EventArgs e)
         {
             TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
-            _buttonNotificationManager.HandleStopButtonRequest(this);
+            _exitFlowManager.HandleStopButtonRequest(this);
 
             _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
 

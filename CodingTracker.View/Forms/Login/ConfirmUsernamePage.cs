@@ -15,10 +15,10 @@ namespace CodingTracker.View.LoginPageService
         private readonly IAuthenticationService _authenticationService;
         private readonly IApplicationLogger _appLogger;
         private readonly INotificationManager _notificationManager;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly IButtonHighlighterService _buttonHighlighterService;
 
-        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger, INotificationManager notificationManager, IButtonNotificationManager buttonNotificationManager, IButtonHighlighterService buttonHighlighterService)
+        public ConfirmUsernamePage(ICodingSessionRepository codingSessionRepository, IUserCredentialRepository userCredentialRepository, IFormNavigator formSwitcher, IAuthenticationService authenticationService, IApplicationLogger appLogger, INotificationManager notificationManager, IExitFlowManager buttonNotificationManager, IButtonHighlighterService buttonHighlighterService)
         {
             _codingSessionRepository = codingSessionRepository;
             _userCredentialRepository = userCredentialRepository;
@@ -26,7 +26,7 @@ namespace CodingTracker.View.LoginPageService
             _authenticationService = authenticationService;
             _appLogger = appLogger;
             _notificationManager = notificationManager;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
 
             InitializeComponent();
@@ -64,7 +64,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ConfirmUsernameExitButtonControlBox_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.ExitCodingTracker();
+            _exitFlowManager.ExitCodingTracker();
         }
 
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
