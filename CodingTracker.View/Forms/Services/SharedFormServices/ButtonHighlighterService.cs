@@ -19,9 +19,15 @@ namespace CodingTracker.View.Forms.Services.SharedFormServices
 
         public void SetButtonHoverColors(Guna2GradientButton button)
         {
+       
             button.HoverState.FillColor = Color.FromArgb(94, 148, 255);
             button.HoverState.FillColor2 = Color.FromArgb(64, 224, 208);
+
+
         }
+
+
+
 
         public void SetButtonBackColorAndBorderColor(Guna2GradientButton button)
         {

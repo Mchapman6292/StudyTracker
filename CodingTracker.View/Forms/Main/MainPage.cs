@@ -160,17 +160,10 @@ namespace CodingTracker.View
 
         private void SetDurationPanelLegendColors()
         {
-            zeroMinutesLegendPanel.FillColor = DurationPanelColors.Under30MinsFillColour1;
-            zeroMinutesLegendPanel.FillColor2 = DurationPanelColors.Under30MinsfillColour2;
-
-            lessThanOneHourLegendPanel.FillColor = DurationPanelColors.HalfHourToOneHourFillColour1;
-            lessThanOneHourLegendPanel.FillColor2 = DurationPanelColors.HalfHourToOneHourFillColour2;
-
-            betweenOneAndTwoHoursLegendPanel.FillColor = DurationPanelColors.OneHourTo90MinsFillColour1;
-            betweenOneAndTwoHoursLegendPanel.FillColor2 = DurationPanelColors.OneHourTo90MinsFillColour2;
-
-            betweenTwoAndFourHoursLegendPanel.FillColor = DurationPanelColors.TwoHoursPlusFillColor1;
-            betweenTwoAndFourHoursLegendPanel.FillColor2 = DurationPanelColors.TwoHoursPlusFillColor2;
+            zeroMinutesLegendPanel.FillColor = DurationPanelColors.LowestCountColor;
+            lessThanOneHourLegendPanel.FillColor = DurationPanelColors.SecondLowestCountColor;
+            betweenOneAndTwoHoursLegendPanel.FillColor = DurationPanelColors.ThirdLowestCountColor;
+            betweenTwoAndFourHoursLegendPanel.FillColor = DurationPanelColors.HighestSecondCountColor;
         }
 
 

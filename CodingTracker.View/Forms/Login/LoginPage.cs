@@ -254,7 +254,7 @@ namespace CodingTracker.View
 
                     SaveUsernameForNextLogin(username);
 
-                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                    _formNavigator.SwitchToForm(FormPageEnum.MainPageTestFormn);
                 }
                 if(!isValidLogin) 
                 {
