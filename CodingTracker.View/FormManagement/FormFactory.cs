@@ -50,7 +50,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
                 FormPageEnum.TimerPlaceHolderForm => typeof(TimerPlaceHolderForm),
                 FormPageEnum.AnimatedTimerForm => typeof(AnimatedTimerForm),
-                FormPageEnum.MainPageTestFormn => typeof(MainPageTestForm),
+                FormPageEnum.MainPageTestFormn => typeof(TestFormMainPage),
 
 
 

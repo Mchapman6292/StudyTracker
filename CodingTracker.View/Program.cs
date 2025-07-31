@@ -155,7 +155,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TimerPlaceHolderForm>()
                     .AddSingleton<AnimatedTimerForm>()
-                    .AddSingleton<MainPageTestForm>()
+                    .AddSingleton<TestFormMainPage>()
     
 
 

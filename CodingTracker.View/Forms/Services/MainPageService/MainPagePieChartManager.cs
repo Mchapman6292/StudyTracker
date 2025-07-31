@@ -12,6 +12,10 @@ namespace CodingTracker.View.Forms.Services.MainPageService.DonutChartManagers
         ISeries[] ReturnPieChartISeries();
         int ReturnPieChartInitialRotation();
         void SetPieChartSettings(LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart);
+        Task PopulateStarRatingsDoughnut(LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart);
+
+        Task TESTPopulateStarRatingsDoughnut(LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart);
+
     }
 
 
@@ -166,15 +170,162 @@ namespace CodingTracker.View.Forms.Services.MainPageService.DonutChartManagers
                 Fill = new LinearGradientPaint(colorsFiveStar, start, end, [0.5f, 0.1f], SKShaderTileMode.Repeat),
                 Pushout = pushOutValue
             };
+        }
+
+
+
+        public async Task  PopulateStarRatingsDoughnut(LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart)
+        {
+            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
+
+
+
+            int oneStarCount = sessionStarRatings.GetValueOrDefault(1);
+            int twoStarCount = sessionStarRatings.GetValueOrDefault(2);
+            int threeStarCount = sessionStarRatings.GetValueOrDefault(3);
+            int fourStarCount = sessionStarRatings.GetValueOrDefault(4);
+            int fiveStarCount = sessionStarRatings.GetValueOrDefault(5);
+
+            List<ISeries> pieSeriesList = new List<ISeries>();
+
+            var oneStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { oneStarCount },
+                Name = $"One Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(247, 182, 210)),
+                Pushout = pushOutValue
+            };
+
+            var twoStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { twoStarCount },
+                Name = $"Two Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(168, 228, 255)),
+                Pushout = pushOutValue
+            };
+
+            var threeStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { threeStarCount },
+                Name = "Three Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(212, 161, 236)),
+                Pushout = pushOutValue
+            };
+
+            var fourStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { fourStarCount },
+                Name = "Four Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(175, 203, 255)),
+                Pushout = pushOutValue
+            };
+
+            var fiveStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { fiveStarCount },
+                Name = "Five Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(168, 240, 216)),
+                Pushout = pushOutValue
+            };
+
+            pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries });
+
+            starRatingsPieChart.Series = pieSeriesList;
+
+            string order = $"series 1:  {pieSeriesList[0].Name.ToString()}.\nseries2: {pieSeriesList[1].Name.ToString()}.\nSeries3: {pieSeriesList[2].Name.ToString()}.";
+
+            starRatingsPieChart.LegendTextPaint = new SolidColorPaint(SKColors.White)
+            {
+                SKTypeface = SKTypeface.FromFamilyName("Segoe UI Symbol"),
+                FontFamily = "Segoe UI Symbol"
+            };
 
         }
 
+
+
+        public async Task TESTPopulateStarRatingsDoughnut(LiveChartsCore.SkiaSharpView.WinForms.PieChart starRatingsPieChart)
+        {
+            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
+
+            int radiusInner = 55;
+            int pushOutValue = 2;
+
+            int oneStarCount = sessionStarRatings.GetValueOrDefault(1);
+            int twoStarCount = sessionStarRatings.GetValueOrDefault(2);
+            int threeStarCount = sessionStarRatings.GetValueOrDefault(3);
+            int fourStarCount = sessionStarRatings.GetValueOrDefault(4);
+            int fiveStarCount = sessionStarRatings.GetValueOrDefault(5);
+
+            List<ISeries> pieSeriesList = new List<ISeries>();
+
+            var oneStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { oneStarCount },
+                Name = $"One Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(247, 182, 210)),
+                Pushout = pushOutValue
+            };
+
+            var twoStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { twoStarCount },
+                Name = $"Two Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(168, 228, 255)),
+                Pushout = pushOutValue
+            };
+
+            var threeStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { threeStarCount },
+                Name = "Three Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(212, 161, 236)),
+                Pushout = pushOutValue
+            };
+
+            var fourStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { fourStarCount },
+                Name = "Four Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(175, 203, 255)),
+                Pushout = pushOutValue
+            };
+
+            var fiveStarSeries = new PieSeries<double>
+            {
+                Values = new List<double> { fiveStarCount },
+                Name = "Five Star",
+                InnerRadius = radiusInner,
+                Fill = new SolidColorPaint(new SKColor(168, 240, 216)),
+                Pushout = pushOutValue
+            };
+
+            pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries });
+
+            starRatingsPieChart.Series = pieSeriesList;
+
+            string order = $"series 1:  {pieSeriesList[0].Name.ToString()}.\nseries2: {pieSeriesList[1].Name.ToString()}.\nSeries3: {pieSeriesList[2].Name.ToString()}.";
+
+            starRatingsPieChart.LegendTextPaint = new SolidColorPaint(SKColors.White)
+            {
+                SKTypeface = SKTypeface.FromFamilyName("Segoe UI Symbol"),
+                FontFamily = "Segoe UI Symbol"
+            };
+
+        }
+
+
+
+
     }
-
-
-
-
-
-
-    }
+}
 
