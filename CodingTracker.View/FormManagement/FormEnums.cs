@@ -17,7 +17,8 @@
         SessionNotesForm,
         SessionRatingForm,
         TimerPlaceHolderForm,
-        MainPageTestFormn
+        MainPageTestFormn,
+        MainContainerForm
     }
 
 

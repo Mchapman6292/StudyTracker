@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms;
+using CodingTracker.View.Forms.Containers;
 using CodingTracker.View.Forms.Session;
 using CodingTracker.View.Forms.TestForm;
 using CodingTracker.View.LoginPageService;
@@ -51,6 +52,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.TimerPlaceHolderForm => typeof(TimerPlaceHolderForm),
                 FormPageEnum.AnimatedTimerForm => typeof(AnimatedTimerForm),
                 FormPageEnum.MainPageTestFormn => typeof(TestFormMainPage),
+                FormPageEnum.MainContainerForm => typeof(MainContainerForm),
 
 
 

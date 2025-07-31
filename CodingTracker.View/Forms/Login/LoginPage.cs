@@ -254,7 +254,7 @@ namespace CodingTracker.View
 
                     SaveUsernameForNextLogin(username);
 
-                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                    _formNavigator.SwitchToForm(FormPageEnum.MainPageTestFormn);
                 }
                 if(!isValidLogin) 
                 {
@@ -281,7 +281,7 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.MainPageTestFormn);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
