@@ -1,4 +1,7 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.View.Forms.Containers;
+using Windows.ApplicationModel.Contacts;
+using Windows.Foundation.Metadata;
 
 namespace CodingTracker.View.FormManagement
 {
@@ -9,6 +12,7 @@ namespace CodingTracker.View.FormManagement
         void CloseLoginPage();
         Form SwitchToFormWithoutPreviousFormClosing(FormPageEnum formType);
         void SwitchToTimerAndWaveForm();
+        void SwitchMainContainerChildForm(MainContainerForm mainContainer, FormPageEnum targetFormEnum);
 
     }
 
@@ -104,6 +108,29 @@ namespace CodingTracker.View.FormManagement
 
             timerForm.Show();
             waveForm.Show();
+        }
+
+
+        public void SwitchMainContainerChildForm(MainContainerForm mainContainer ,FormPageEnum targetFormEnum)
+        {
+            mainContainer.contentPanel.Controls.Clear();
+
+            var oldForm = _formStateManagement.GetCurrentForm();
+
+            if (oldForm != null)
+            {
+                oldForm.Hide();
+            }
+
+            Form targetForm = _formFactory.GetOrCreateForm(targetFormEnum);
+
+            _formStateManagement.SetCurrentForm(targetForm);
+
+            targetForm.TopLevel = false;
+            targetForm.Dock = DockStyle.Fill;
+            mainContainer.contentPanel.Controls.Add(targetForm);
+            targetForm.BringToFront();
+            targetForm.Show();
         }
 
     }

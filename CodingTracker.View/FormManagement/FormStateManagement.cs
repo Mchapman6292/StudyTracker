@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.Forms;
+using CodingTracker.View.Forms.Containers;
 using CodingTracker.View.Forms.Session;
 using CodingTracker.View.LoginPageService;
 using CodingTracker.View.PopUpFormService;
@@ -36,6 +37,7 @@ namespace CodingTracker.View.FormManagement
         private ElapsedTimerPage _elapsedTimerPageInstance;
         private SessionRatingForm _sessionRatingFormInstance;
         private TimerPlaceHolderForm _timerPlaceHolderFormInstance;
+        private MainContainerForm _MainContainerPlaceHolderInstance;
 
         private readonly IApplicationLogger _appLogger;
 
@@ -76,7 +78,6 @@ namespace CodingTracker.View.FormManagement
             { FormPageEnum.ConfirmUsernameForm, typeof(ConfirmUsernamePage)},
             { FormPageEnum.ResetPasswordForm, typeof(ResetPasswordPage)},
             { FormPageEnum.CountdownTimerForm, typeof(CountdownTimerForm)},
-
             { FormPageEnum.SessionRatingForm, typeof(SessionRatingForm)},
         };
 
@@ -141,6 +142,8 @@ namespace CodingTracker.View.FormManagement
                     return _sessionRatingFormInstance;
                 case FormPageEnum.TimerPlaceHolderForm:
                     return _timerPlaceHolderFormInstance;
+                case FormPageEnum.MainContainerForm:
+                    return _MainContainerPlaceHolderInstance;
 
                 default:
                     return null;
@@ -183,6 +186,9 @@ namespace CodingTracker.View.FormManagement
                     break;
                 case FormPageEnum.TimerPlaceHolderForm:
                     _timerPlaceHolderFormInstance = instance as TimerPlaceHolderForm;
+                    break;
+                case FormPageEnum.MainContainerForm:
+                    _MainContainerPlaceHolderInstance = instance as MainContainerForm;
                     break;
             }
         }

@@ -826,6 +826,7 @@ namespace CodingTracker.View.Forms.TestForm
             sidebarPanel.ShadowDecoration.CustomizableEdges = customizableEdges76;
             sidebarPanel.Size = new Size(183, 781);
             sidebarPanel.TabIndex = 50;
+            sidebarPanel.Hide();
             // 
             // newSessionButton
             // 

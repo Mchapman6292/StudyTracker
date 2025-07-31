@@ -19,6 +19,7 @@ using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms;
+using CodingTracker.View.Forms.Containers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators;
@@ -140,6 +141,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
                     .AddSingleton<IAnimationCalculator, AnimationCalculator>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
+                    .AddSingleton<MainContainerForm>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
