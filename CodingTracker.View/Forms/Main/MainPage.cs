@@ -38,7 +38,7 @@ namespace CodingTracker.View
         private readonly IFormNavigator _formNavigator;
         private readonly ILabelAssignment _labelAssignment;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
         private readonly ICodingSessionRepository _codingSessionRepository;
         private readonly IFormStateManagement _formStateManagement;
@@ -77,7 +77,7 @@ namespace CodingTracker.View
             IFormNavigator formNavigator,
             ILabelAssignment labelAssignment,
             IButtonHighlighterService buttonHighlighterService,
-            IButtonNotificationManager buttonNotificationManager,
+            IExitFlowManager buttonNotificationManager,
             INotificationManager notificationManager,
             ICodingSessionRepository codingSessionRepository,
             IFormStateManagement formStateManagement,
@@ -101,7 +101,7 @@ namespace CodingTracker.View
             _formNavigator = formNavigator;
             _labelAssignment = labelAssignment;
             _buttonHighlighterService = buttonHighlighterService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             _codingSessionRepository = codingSessionRepository;
             _formFactory = formFactory;
@@ -155,8 +155,6 @@ namespace CodingTracker.View
                 }
             }
             _durationPanelPositionManager.SetPanelPositionsAfterContainerAdd(dppList);
-
-
         }
 
 
@@ -252,7 +250,7 @@ namespace CodingTracker.View
                 SetWaveHostSize();
 
 
-                await PopulatestarRatingDoughnutChart();
+                await _mainPagePieChartManager.PopulateStarRatingsDoughnut(starRatingsPieChart);
 
 
                 Last28DaysPanel.BringToFront();
@@ -313,7 +311,7 @@ namespace CodingTracker.View
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.HandleExitRequestAndStopSession(sender, e, this);
+            _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
         private void MainPageStartSessionButton_Click(object sender, EventArgs e)
@@ -565,80 +563,7 @@ namespace CodingTracker.View
 
 
 
-        private async Task PopulatestarRatingDoughnutChart()
-        {
-            Dictionary<int, int> sessionStarRatings = await _codingSessionRepository.GetStarRatingAndCount();
-
-            int radiusInner = 35;
-            int pushOutValue = 2;
-
-            int oneStarCount = sessionStarRatings.GetValueOrDefault(1);
-            int twoStarCount = sessionStarRatings.GetValueOrDefault(2);
-            int threeStarCount = sessionStarRatings.GetValueOrDefault(3);
-            int fourStarCount = sessionStarRatings.GetValueOrDefault(4);
-            int fiveStarCount = sessionStarRatings.GetValueOrDefault(5);
-
-            List<ISeries> pieSeriesList = new List<ISeries>();
-
-            var oneStarSeries = new PieSeries<double>
-            {
-                Values = new List<double> { oneStarCount },
-                Name = $"One Star",
-                InnerRadius = radiusInner,
-                Fill = new SolidColorPaint(new SKColor(247, 182, 210)),
-                Pushout = pushOutValue
-            };
-
-            var twoStarSeries = new PieSeries<double>
-            {
-                Values = new List<double> { twoStarCount },
-                Name = $"Two Star",
-                InnerRadius = radiusInner,
-                Fill = new SolidColorPaint(new SKColor(168, 228, 255)),
-                Pushout = pushOutValue
-            };
-
-            var threeStarSeries = new PieSeries<double>
-            {
-                Values = new List<double> { threeStarCount },
-                Name = "Three Star",
-                InnerRadius = radiusInner,
-                Fill = new SolidColorPaint(new SKColor(212, 161, 236)),
-                Pushout = pushOutValue
-            };
-
-            var fourStarSeries = new PieSeries<double>
-            {
-                Values = new List<double> { fourStarCount },
-                Name = "Four Star",
-                InnerRadius = radiusInner,
-                Fill = new SolidColorPaint(new SKColor(175, 203, 255)),
-                Pushout = pushOutValue
-            };
-
-            var fiveStarSeries = new PieSeries<double>
-            {
-                Values = new List<double> { fiveStarCount },
-                Name = "Five Star",
-                InnerRadius = radiusInner,
-                Fill = new SolidColorPaint(new SKColor(168, 240, 216)),
-                Pushout = pushOutValue
-            };
-
-            pieSeriesList.AddRange(new[] { oneStarSeries, twoStarSeries, threeStarSeries, fourStarSeries, fiveStarSeries });
-
-            starRatingsPieChart.Series = pieSeriesList;
-
-            string order = $"series 1:  {pieSeriesList[0].Name.ToString()}.\nseries2: {pieSeriesList[1].Name.ToString()}.\nSeries3: {pieSeriesList[2].Name.ToString()}.";
-
-            starRatingsPieChart.LegendTextPaint = new SolidColorPaint(SKColors.White)
-            {
-                SKTypeface = SKTypeface.FromFamilyName("Segoe UI Symbol"),
-                FontFamily = "Segoe UI Symbol"
-            };
-
-            _notificationManager.ShowNotificationDialog(this, order);
-        }
+   
 
         private void startSessionButton_Click(object sender, EventArgs e)
         {

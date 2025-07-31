@@ -21,12 +21,12 @@ namespace CodingTracker.View
         private readonly IFormFactory _formFactory;
         private readonly IFormStateManagement _formStateManagement;
         private readonly IButtonHighlighterService _buttonHighlighterService;
-        private readonly IButtonNotificationManager _buttonNotificationManager;
+        private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IButtonNotificationManager buttonNotificationManager, INotificationManager notificationManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -36,7 +36,7 @@ namespace CodingTracker.View
             _formFactory = formFactory;
             _formStateManagement = formStateManagement;
             _buttonHighlighterService = buttonHighlighterService;
-            _buttonNotificationManager = buttonNotificationManager;
+            _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
@@ -49,8 +49,8 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
             // Set up button events
-            newCreateAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            newCreateAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+            createAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
+            createAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
 
 
 
@@ -72,9 +72,9 @@ namespace CodingTracker.View
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
             _buttonHighlighterService.SetButtonHoverColors(newForgotPasswordButton);
-            _buttonHighlighterService.SetButtonHoverColors(newCreateAccountButton);
+            _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
-            _buttonHighlighterService.SetButtonBackColorAndBorderColor(newCreateAccountButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(createAccountButton);
         }
 
 
@@ -281,7 +281,7 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.MainPageTestFormn);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)
@@ -292,7 +292,7 @@ namespace CodingTracker.View
 
         private void LoginPageExitControlBox_Click(object sender, EventArgs e)
         {
-            _buttonNotificationManager.ExitCodingTracker();
+            _exitFlowManager.ExitCodingTracker();
         }
 
         private void RememberMeToggle_Checked(object sender, EventArgs e)

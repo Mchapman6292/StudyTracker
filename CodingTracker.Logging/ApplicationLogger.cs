@@ -1,7 +1,7 @@
-﻿using CodingTracker.Common.Entities.CodingSessionEntities;
+﻿using CodingTracker.Common.CodingSessions;
+using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using Serilog;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
 namespace CodingTracker.Logging.ApplicationLoggers
@@ -113,6 +113,27 @@ namespace CodingTracker.Logging.ApplicationLoggers
             Info(session);
         }
 
+
+        public void LogCodingSession(CodingSession codingSessionEntity)
+        {
+            string session =
+                $"Values for codingSessionEntity \n" +
+                $"-------SessionId : {codingSessionEntity.SessionId}.\n" +
+                $"-------UserId : {codingSessionEntity.UserId}.\n" +
+                $"-------StartDateLocal : {codingSessionEntity.StartDateLocal}.\n" +
+                $"-------StartTimeLocal : {codingSessionEntity.StartTimeLocal}.\n" +
+                $"-------EndDateLocal : {codingSessionEntity.EndDateLocal}.\n" +
+                $"-------EndTimeLocal : {codingSessionEntity.EndTimeLocal}.\n" +
+                $"-------DurationSeconds : {codingSessionEntity.DurationSeconds}.\n" +
+                $"-------DurationHHMM : {codingSessionEntity.DurationHHMM}.\n" +
+                $"-------GoalSet : {codingSessionEntity.GoalSet}.\n" +
+                $"-------GoalSeconds : {codingSessionEntity.GoalSeconds}.\n" +
+                $"-------GoalReached : {codingSessionEntity.GoalReached}.\n" +
+                $"-------StudyProject : {codingSessionEntity.StudyProject}";
+
+            Info(session);
+        }
+
         public Task LogUpdatesAsync(string methodName, params (string Name, object Value)[] updates)
         {
             using (var activity = new Activity(nameof(LogUpdatesAsync)).Start())
@@ -131,10 +152,6 @@ namespace CodingTracker.Logging.ApplicationLoggers
         }
 
 
-        public void LogAnimatedTimerColumn()
-        {
-
-        }
 
 
     

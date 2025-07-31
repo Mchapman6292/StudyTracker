@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.Entities.CodingSessionEntities;
 using System.Diagnostics;
+using CodingTracker.Common.CodingSessions; 
 
 namespace CodingTracker.Common.LoggingInterfaces
 {
@@ -9,6 +10,7 @@ namespace CodingTracker.Common.LoggingInterfaces
         Task LogActivityAsync(string methodName, Func<Activity, Task> logAction, Func<Activity, Task> action);
         void LogUpdates(string methodName, params (string Name, object Value)[] updates);
         void LogCodingSessionEntity(CodingSessionEntity codingSessionEntity);
+        void LogCodingSession(CodingSession codingSessionEntity);
         void Info(string message);
         void Info(string message, params object[] propertyValues);
         void Debug(string message);

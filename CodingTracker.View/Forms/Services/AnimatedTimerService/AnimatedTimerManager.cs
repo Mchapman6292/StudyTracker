@@ -138,7 +138,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
                 if (targetDigitAtCurrentElapsedTime != column.TargetDigit && !column.IsRestarting)
                 {
                     // These are used to update the column position, numbers etc.
-                    _columnStateManager.UpdateColumnActiveDigit(column, column.TargetDigit, elapsed);
+                    _columnStateManager.UpdateColumnActiveDigit(column, column.TargetDigit);
                     _columnStateManager.UpdateTargetSegmentValue(column, targetDigitAtCurrentElapsedTime);
                 }
 

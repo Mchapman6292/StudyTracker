@@ -153,6 +153,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
+        public static SKColor MainPageSoftPinkTextColor = new SKColor(255, 200, 230);
+
 
 
 

@@ -55,9 +55,10 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges12 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2GradientPanel();
+            homeButton = new FontAwesome.Sharp.IconPictureBox();
             testElapsedBox = new Guna2TextBox();
             minimizeButton = new Guna2ControlBox();
-            closeButton = new Guna2ControlBox();
+            exitButton = new Guna2ControlBox();
             controlPanel = new Guna2Panel();
             pauseButton = new CustomGradientButton();
             restartButton = new CustomGradientButton();
@@ -65,10 +66,9 @@ namespace CodingTracker.View.Forms
             timeDisplayLabel = new Guna2HtmlLabel();
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
             mainPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
             controlPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).BeginInit();
             SuspendLayout();
             // 
             // borderlessForm
@@ -84,10 +84,10 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
-            mainPanel.Controls.Add(iconPictureBox5);
+            mainPanel.Controls.Add(homeButton);
             mainPanel.Controls.Add(testElapsedBox);
             mainPanel.Controls.Add(minimizeButton);
-            mainPanel.Controls.Add(closeButton);
+            mainPanel.Controls.Add(exitButton);
             mainPanel.Controls.Add(controlPanel);
             mainPanel.Controls.Add(timeDisplayLabel);
             mainPanel.Controls.Add(animatedTimerSKControl);
@@ -103,6 +103,22 @@ namespace CodingTracker.View.Forms
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
             mainPanel.Size = new Size(699, 749);
             mainPanel.TabIndex = 0;
+            // 
+            // homeButton
+            // 
+            homeButton.BackColor = Color.FromArgb(35, 34, 50);
+            homeButton.ForeColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            homeButton.IconColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            homeButton.IconSize = 34;
+            homeButton.Location = new Point(579, 0);
+            homeButton.Margin = new Padding(3, 2, 3, 2);
+            homeButton.Name = "homeButton";
+            homeButton.Size = new Size(35, 34);
+            homeButton.TabIndex = 46;
+            homeButton.TabStop = false;
+            homeButton.Click += HomeButton_Click;
             // 
             // testElapsedBox
             // 
@@ -141,21 +157,23 @@ namespace CodingTracker.View.Forms
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
             minimizeButton.Size = new Size(45, 34);
             minimizeButton.TabIndex = 28;
+            minimizeButton.Click += minimizeButton_Click;
             // 
-            // closeButton
+            // exitButton
             // 
-            closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            closeButton.Cursor = Cursors.Hand;
-            closeButton.CustomClick = true;
-            closeButton.CustomizableEdges = customizableEdges5;
-            closeButton.FillColor = Color.FromArgb(25, 24, 40);
-            closeButton.HoverState.IconColor = Color.White;
-            closeButton.IconColor = Color.HotPink;
-            closeButton.Location = new Point(652, 0);
-            closeButton.Name = "closeButton";
-            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            closeButton.Size = new Size(45, 34);
-            closeButton.TabIndex = 27;
+            exitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            exitButton.Cursor = Cursors.Hand;
+            exitButton.CustomClick = true;
+            exitButton.CustomizableEdges = customizableEdges5;
+            exitButton.FillColor = Color.FromArgb(25, 24, 40);
+            exitButton.HoverState.IconColor = Color.White;
+            exitButton.IconColor = Color.HotPink;
+            exitButton.Location = new Point(652, 0);
+            exitButton.Name = "exitButton";
+            exitButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            exitButton.Size = new Size(45, 34);
+            exitButton.TabIndex = 27;
+            exitButton.Click += ExitButton_Click;
             // 
             // controlPanel
             // 
@@ -278,21 +296,6 @@ namespace CodingTracker.View.Forms
             animatedTimerSKControl.Size = new Size(448, 590);
             animatedTimerSKControl.TabIndex = 0;
             // 
-            // iconPictureBox5
-            // 
-            iconPictureBox5.BackColor = Color.FromArgb(35, 34, 50);
-            iconPictureBox5.ForeColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
-            iconPictureBox5.IconColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            iconPictureBox5.IconSize = 34;
-            iconPictureBox5.Location = new Point(579, 0);
-            iconPictureBox5.Margin = new Padding(3, 2, 3, 2);
-            iconPictureBox5.Name = "iconPictureBox5";
-            iconPictureBox5.Size = new Size(35, 34);
-            iconPictureBox5.TabIndex = 46;
-            iconPictureBox5.TabStop = false;
-            // 
             // AnimatedTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -306,8 +309,8 @@ namespace CodingTracker.View.Forms
             Text = "Modern Timer Test";
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)homeButton).EndInit();
             controlPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).EndInit();
             ResumeLayout(false);
         }
 
@@ -324,8 +327,8 @@ namespace CodingTracker.View.Forms
         private CustomGradientButton restartButton;
         private CustomGradientButton stopButton;
         private Guna2ControlBox minimizeButton;
-        private Guna2ControlBox closeButton;
+        private Guna2ControlBox exitButton;
         private Guna2TextBox testElapsedBox;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox5;
+        private FontAwesome.Sharp.IconPictureBox homeButton;
     }
 }

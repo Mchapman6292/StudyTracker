@@ -9,7 +9,7 @@ namespace CodingTracker.View.ApplicationControlService
         double ReturnElapsedSeconds();
         double ReturnElapsedMilliseconds();
         void StopTimer();
-        void StartTimer();
+        void StartSessionTimer();
         void RestartSessionTimer();
         void StartRestartTimer();
 
@@ -53,7 +53,7 @@ namespace CodingTracker.View.ApplicationControlService
             return sessionTimer.Elapsed.TotalMilliseconds;
         }
 
-        public void StartTimer()
+        public void StartSessionTimer()
         {
             sessionTimer.Start();
         }

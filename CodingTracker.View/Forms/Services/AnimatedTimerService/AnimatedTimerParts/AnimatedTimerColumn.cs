@@ -31,7 +31,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsStandardAnimationOccurring { get; set; }
 
-
         public bool PassedFirstTransition { get; set; } = false;
 
         public TimeSpan AnimationInterval { get; } // How often the column will animate. 
@@ -56,27 +55,22 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts
 
         public bool IsNumberBlurringActive { get; set; }
 
-        public int StartingYSkControl;
-
         internal bool IsRestarting { get; set; }
-
-        public bool HasRestarted { get; set; } = false;
         
         // Records columns Y location when restart button pressed. 
         public float YLocationAtRestart { get; set; }
-
 
         public bool PassedFirstAnimationTick { get; set; } = false;
 
 
 
 
-        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint initalLocation, ColumnUnitType columnType)
+        public AnimatedTimerColumn(List<AnimatedTimerSegment> timerSegments, SKPoint initialLocation, ColumnUnitType columnType)
         {
             TimerSegments = timerSegments;
             ColumnType = columnType;
-            InitialLocation = initalLocation;
-            Location = initalLocation;
+            InitialLocation = initialLocation;
+            Location = initialLocation;
             TotalSegmentCount = timerSegments.Count;
             FocusedSegment = timerSegments[0];
             AnimationInterval = AnimatedColumnSettings.UnitTypesToAnimationTimeSpans[columnType];
