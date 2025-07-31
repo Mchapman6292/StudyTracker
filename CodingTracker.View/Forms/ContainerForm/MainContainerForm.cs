@@ -27,15 +27,29 @@ namespace CodingTracker.View.Forms.Containers
 
         }
 
+
+        public void UpdateAllControlLocationsInChildForm(Form childForm)
+        {
+            foreach (Control control in childForm.Controls)
+            {
+                if (control.Location.X > 100) 
+                {
+                    control.Location = new Point(control.Location.X - 178, control.Location.Y);
+                }
+            }
+        }
+
         private void LoadForm(Form childForm)
         {
 
             contentPanel.Controls.Clear();
 
-            // Configure the child form
-            childForm.TopLevel = false;              // This is crucial - makes it a child
-            childForm.FormBorderStyle = FormBorderStyle.None;  // Remove borders
-            childForm.Dock = DockStyle.Fill;         // Fill the entire content panel
+  
+            childForm.TopLevel = false;              
+            childForm.FormBorderStyle = FormBorderStyle.None;  
+            childForm.Dock = DockStyle.Fill;         
+
+         
 
             // Add to content panel and show
             contentPanel.Controls.Add(childForm);
@@ -50,7 +64,9 @@ namespace CodingTracker.View.Forms.Containers
 
             mainPageForm.TopLevel = false;
             mainPageForm.Dock = DockStyle.Fill;
+            UpdateAllControlLocationsInChildForm(mainPageForm);
             contentPanel.Controls.Add(mainPageForm);
+            mainPageForm.Anchor = AnchorStyles.Left;
             mainPageForm.BringToFront();
             mainPageForm.Show();
         }
