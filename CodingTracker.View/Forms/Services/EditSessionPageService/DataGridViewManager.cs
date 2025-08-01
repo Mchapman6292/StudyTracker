@@ -384,13 +384,13 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
                 dataGrid.Columns["DurationHHMM"].HeaderText = "Duration";
 
             if (dataGrid.Columns.Contains("StartDateUTC"))
-                dataGrid.Columns["StartDateUTC"].HeaderText = "Start PanelDateLocal";
+                dataGrid.Columns["StartDateUTC"].HeaderText = "Start Date";
 
             if (dataGrid.Columns.Contains("StartTimeUTC"))
                 dataGrid.Columns["StartTimeUTC"].HeaderText = "Start Time";
 
             if (dataGrid.Columns.Contains("EndDateUTC"))
-                dataGrid.Columns["EndDateUTC"].HeaderText = "End PanelDateLocal";
+                dataGrid.Columns["EndDateUTC"].HeaderText = "End Date";
 
             if (dataGrid.Columns.Contains("EndTimeUTC"))
                 dataGrid.Columns["EndTimeUTC"].HeaderText = "End Time";

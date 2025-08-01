@@ -158,7 +158,7 @@ namespace CodingTracker.View.Forms.TestForm
             {
                 foreach (var dpp in dppList)
                 {
-                    _sessionVisualizationController.LogDurationParentPanel(dpp);
+            
                     activityParentPanel.Controls.Add(dpp);
 
 

@@ -82,7 +82,7 @@ namespace CodingTracker.View
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, SessionSortCriteria.StartDate);
+            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, SessionSortCriteria.StartDate);
             _buttonHighlighterService.SetButtonHoverColors(toggleEditSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(deleteSessionButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(toggleEditSessionsButton);
@@ -158,7 +158,7 @@ namespace CodingTracker.View
                 List<int> sessionIdsNotMarkedForDeletion = _dataGridViewManager.GetSessionIdsNotMarkedForDeletion();
                 List<CodingSessionEntity> sessionsNotDeleted = await _codingSessionRepository.GetSessionsbyIDAsync(sessionIdsNotMarkedForDeletion);
 
-                _dataGridViewManager.CONTROLLERClearAndLoadDataGridViewWithSessions(EditSessionPageDataGridView, sessionsNotDeleted);
+                _dataGridViewManager.CONTROLLERClearAndLoadDataGridViewWithSessions(editSessionPageDataGridView, sessionsNotDeleted);
                 UpdateDeleteSessionButtonEnabled(IsEditSession);
                 this.ActiveControl = EditSessionPageComboBox;
             }
@@ -172,7 +172,7 @@ namespace CodingTracker.View
         {
             if (!CheckValidRowSelectedDuringEditSession(dataGridViewArgs.RowIndex)) return;
 
-            EditSessionPageDataGridView.SuspendLayout();
+            editSessionPageDataGridView.SuspendLayout();
 
             if (IsEditSession)
             {
@@ -183,13 +183,13 @@ namespace CodingTracker.View
                 UpdateDefaultSelectionColors();
             }
 
-            EditSessionPageDataGridView.ResumeLayout();
+            editSessionPageDataGridView.ResumeLayout();
         }
 
         private void HandleEditModeDataGridViewClick(int rowIndex)
         {
-            int selectedRowSessionId = _dataGridViewManager.GetSessionIdForRowIndex(EditSessionPageDataGridView.Rows[rowIndex]);
-            DataGridViewRow selectedRow = EditSessionPageDataGridView.Rows[rowIndex];
+            int selectedRowSessionId = _dataGridViewManager.GetSessionIdForRowIndex(editSessionPageDataGridView.Rows[rowIndex]);
+            DataGridViewRow selectedRow = editSessionPageDataGridView.Rows[rowIndex];
 
             HighlightRow(selectedRow);
             AddHighlightedRowToCurrentHighlightedRows(selectedRow);
@@ -220,8 +220,8 @@ namespace CodingTracker.View
         {
             foreach (int rowIndex in _currentHighlightedRows)
             {
-                var targetRow = EditSessionPageDataGridView.Rows[rowIndex];
-                targetRow.DefaultCellStyle.BackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
+                var targetRow = editSessionPageDataGridView.Rows[rowIndex];
+                targetRow.DefaultCellStyle.BackColor = editSessionPageDataGridView.DefaultCellStyle.BackColor;
             }
             _currentHighlightedRows.Clear();
         }
@@ -232,8 +232,8 @@ namespace CodingTracker.View
 
         private void UpdateDefaultSelectionColors()
         {
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = ColorService.DarkerGrey;
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = ColorService.DarkerGrey;
+            editSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = ColorService.DarkerGrey;
+            editSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = ColorService.DarkerGrey;
         }
 
         private void SetEditSessionNotificationPaintColours()
@@ -253,14 +253,14 @@ namespace CodingTracker.View
 
         private void DisableDataGridViewSelectionHighlighting()
         {
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.DefaultCellStyle.BackColor;
-            EditSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = EditSessionPageDataGridView.DefaultCellStyle.ForeColor;
+            editSessionPageDataGridView.DefaultCellStyle.SelectionBackColor = editSessionPageDataGridView.DefaultCellStyle.BackColor;
+            editSessionPageDataGridView.DefaultCellStyle.SelectionForeColor = editSessionPageDataGridView.DefaultCellStyle.ForeColor;
         }
 
         private void UniformDataGridViewRowColors()
         {
-            EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.BackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
-            EditSessionPageDataGridView.AlternatingRowsDefaultCellStyle.SelectionBackColor = EditSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
+            editSessionPageDataGridView.AlternatingRowsDefaultCellStyle.BackColor = editSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
+            editSessionPageDataGridView.AlternatingRowsDefaultCellStyle.SelectionBackColor = editSessionPageDataGridView.RowsDefaultCellStyle.BackColor;
         }
 
         #endregion
@@ -297,7 +297,7 @@ namespace CodingTracker.View
             string selectedOption = EditSessionPageComboBox?.SelectedItem?.ToString() ?? SortOptions[2];
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
 
-            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(EditSessionPageDataGridView, selectedCriteria);
+            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, selectedCriteria);
         }
 
         #endregion
@@ -306,21 +306,23 @@ namespace CodingTracker.View
 
         private void CustomizeDatePicker()
         {
-            EditSessionPageTimePicker.BackColor = ColorService.DarkerGrey;
-            EditSessionPageTimePicker.FillColor = ColorService.DarkerGrey;
-            EditSessionPageTimePicker.BorderColor = ColorService.MediumGrey;
-            EditSessionPageTimePicker.ForeColor = ColorService.White;
-            EditSessionPageTimePicker.Font = new Font("Segoe UI", 10F);
-            EditSessionPageTimePicker.FocusedColor = ColorService.LightTeal;
-            EditSessionPageTimePicker.Size = new Size(200, 36);
-            EditSessionPageTimePicker.ShadowDecoration.Enabled = true;
-            EditSessionPageTimePicker.ShadowDecoration.Color = ColorService.MediumGrey;
+            
+            editSessionPageTimePicker.BackColor = ColorService.DarkerGrey;
+            editSessionPageTimePicker.FillColor = ColorService.DarkerGrey;
+            editSessionPageTimePicker.BorderColor = ColorService.MediumGrey;
+            editSessionPageTimePicker.ForeColor = Color.FromArgb(255, 200, 230);
+            editSessionPageTimePicker.Font = new Font("Segoe UI", 10F);
+            editSessionPageTimePicker.FocusedColor = ColorService.LightTeal;
+            editSessionPageTimePicker.Size = new Size(200, 36);
+            editSessionPageTimePicker.ShadowDecoration.Enabled = true;
+            editSessionPageTimePicker.ShadowDecoration.Color = ColorService.MediumGrey;
+            
         }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            var date = DateOnly.FromDateTime(EditSessionPageTimePicker.Value);
-            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDateAsync(EditSessionPageDataGridView, date);
+            var date = DateOnly.FromDateTime(editSessionPageTimePicker.Value);
+            await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDateAsync(editSessionPageDataGridView, date);
         }
 
         #endregion

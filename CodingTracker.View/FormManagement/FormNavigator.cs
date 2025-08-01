@@ -113,7 +113,7 @@ namespace CodingTracker.View.FormManagement
 
         public void SwitchMainContainerChildForm(MainContainerForm mainContainer ,FormPageEnum targetFormEnum)
         {
-            mainContainer.contentPanel.Controls.Clear();
+            mainContainer.mainContentPanel.Controls.Clear();
 
             var oldForm = _formStateManagement.GetCurrentForm();
 
@@ -128,7 +128,7 @@ namespace CodingTracker.View.FormManagement
 
             targetForm.TopLevel = false;
             targetForm.Dock = DockStyle.Fill;
-            mainContainer.contentPanel.Controls.Add(targetForm);
+            mainContainer.mainContentPanel.Controls.Add(targetForm);
             targetForm.BringToFront();
             targetForm.Show();
         }

@@ -898,7 +898,7 @@ namespace CodingTracker.View.Forms.TestForm
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1300, 781);
+            ClientSize = new Size(1300, 780);
             Controls.Add(home);
             Controls.Add(statsPanelsParentPanel);
             Controls.Add(topHalfSeperator);
