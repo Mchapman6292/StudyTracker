@@ -41,6 +41,7 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             MainPageExitControlBox = new Guna.UI2.WinForms.Guna2ControlBox();
             createAccountButton = new CodingTracker.View.Forms.Services.SharedFormServices.CustomGradientButtons.CustomGradientButton();
@@ -48,10 +49,9 @@
             guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             passwordTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             usernameTextBox = new Guna.UI2.WinForms.Guna2TextBox();
-            iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
             guna2Panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)iconPictureBox5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).BeginInit();
             SuspendLayout();
             // 
             // guna2Panel1
@@ -66,6 +66,21 @@
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges6;
             guna2Panel1.Size = new Size(455, 32);
             guna2Panel1.TabIndex = 22;
+            // 
+            // iconPictureBox5
+            // 
+            iconPictureBox5.BackColor = Color.FromArgb(25, 24, 40);
+            iconPictureBox5.ForeColor = Color.FromArgb(255, 160, 210);
+            iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            iconPictureBox5.IconColor = Color.FromArgb(255, 160, 210);
+            iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconPictureBox5.Location = new Point(328, 0);
+            iconPictureBox5.Margin = new Padding(3, 2, 3, 2);
+            iconPictureBox5.Name = "iconPictureBox5";
+            iconPictureBox5.Size = new Size(45, 32);
+            iconPictureBox5.SizeMode = PictureBoxSizeMode.CenterImage;
+            iconPictureBox5.TabIndex = 46;
+            iconPictureBox5.TabStop = false;
             // 
             // MainPageExitControlMinimizeButton
             // 
@@ -196,21 +211,6 @@
             usernameTextBox.Size = new Size(258, 36);
             usernameTextBox.TabIndex = 43;
             // 
-            // iconPictureBox5
-            // 
-            iconPictureBox5.BackColor = Color.FromArgb(25, 24, 40);
-            iconPictureBox5.ForeColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
-            iconPictureBox5.IconColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            iconPictureBox5.IconSize = 29;
-            iconPictureBox5.Location = new Point(328, -2);
-            iconPictureBox5.Margin = new Padding(3, 2, 3, 2);
-            iconPictureBox5.Name = "iconPictureBox5";
-            iconPictureBox5.Size = new Size(45, 29);
-            iconPictureBox5.TabIndex = 46;
-            iconPictureBox5.TabStop = false;
-            // 
             // CreateAccountPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -226,8 +226,8 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "CreateAccountPage";
             guna2Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)iconPictureBox5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)iconPictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }

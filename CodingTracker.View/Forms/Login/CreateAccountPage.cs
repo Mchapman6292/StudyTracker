@@ -109,18 +109,18 @@ namespace CodingTracker.View
                     }
                     else
                     {
-                        DisplayErrorMessage("Account creation failed. Please try again.");
+                        _notificationManager.ShowNotificationDialog(this,"Account creation failed. Please try again.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    DisplayErrorMessage(ex.Message);
+                    _notificationManager.ShowNotificationDialog(this, ex.Message);
                 }
             }
             else
             {
                 var errorMessages = $"{usernameResult.GetAllErrorMessages()}\n{passwordResult.GetAllErrorMessages()}";
-                DisplayErrorMessage(errorMessages);
+                _notificationManager.ShowNotificationDialog(this, errorMessages);
             }
         }
 
