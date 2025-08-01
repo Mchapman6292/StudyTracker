@@ -42,48 +42,48 @@ namespace CodingTracker.View
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
-            CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            CustomizableEdges customizableEdges4 = new CustomizableEdges();
-            CustomizableEdges customizableEdges5 = new CustomizableEdges();
-            CustomizableEdges customizableEdges6 = new CustomizableEdges();
-            CustomizableEdges customizableEdges7 = new CustomizableEdges();
-            CustomizableEdges customizableEdges8 = new CustomizableEdges();
-            CustomizableEdges customizableEdges9 = new CustomizableEdges();
-            CustomizableEdges customizableEdges10 = new CustomizableEdges();
-            CustomizableEdges customizableEdges33 = new CustomizableEdges();
-            CustomizableEdges customizableEdges34 = new CustomizableEdges();
-            CustomizableEdges customizableEdges11 = new CustomizableEdges();
-            CustomizableEdges customizableEdges12 = new CustomizableEdges();
-            CustomizableEdges customizableEdges17 = new CustomizableEdges();
-            CustomizableEdges customizableEdges18 = new CustomizableEdges();
-            CustomizableEdges customizableEdges13 = new CustomizableEdges();
-            CustomizableEdges customizableEdges14 = new CustomizableEdges();
-            CustomizableEdges customizableEdges15 = new CustomizableEdges();
-            CustomizableEdges customizableEdges16 = new CustomizableEdges();
-            CustomizableEdges customizableEdges31 = new CustomizableEdges();
-            CustomizableEdges customizableEdges32 = new CustomizableEdges();
-            CustomizableEdges customizableEdges19 = new CustomizableEdges();
-            CustomizableEdges customizableEdges20 = new CustomizableEdges();
-            CustomizableEdges customizableEdges21 = new CustomizableEdges();
-            CustomizableEdges customizableEdges22 = new CustomizableEdges();
-            CustomizableEdges customizableEdges23 = new CustomizableEdges();
-            CustomizableEdges customizableEdges24 = new CustomizableEdges();
-            CustomizableEdges customizableEdges25 = new CustomizableEdges();
-            CustomizableEdges customizableEdges26 = new CustomizableEdges();
-            CustomizableEdges customizableEdges27 = new CustomizableEdges();
-            CustomizableEdges customizableEdges28 = new CustomizableEdges();
-            CustomizableEdges customizableEdges29 = new CustomizableEdges();
-            CustomizableEdges customizableEdges30 = new CustomizableEdges();
-            CustomizableEdges customizableEdges35 = new CustomizableEdges();
-            CustomizableEdges customizableEdges36 = new CustomizableEdges();
-            CustomizableEdges customizableEdges41 = new CustomizableEdges();
-            CustomizableEdges customizableEdges42 = new CustomizableEdges();
-            CustomizableEdges customizableEdges37 = new CustomizableEdges();
-            CustomizableEdges customizableEdges38 = new CustomizableEdges();
-            CustomizableEdges customizableEdges39 = new CustomizableEdges();
-            CustomizableEdges customizableEdges40 = new CustomizableEdges();
+            CustomizableEdges customizableEdges43 = new CustomizableEdges();
+            CustomizableEdges customizableEdges44 = new CustomizableEdges();
+            CustomizableEdges customizableEdges45 = new CustomizableEdges();
+            CustomizableEdges customizableEdges46 = new CustomizableEdges();
+            CustomizableEdges customizableEdges47 = new CustomizableEdges();
+            CustomizableEdges customizableEdges48 = new CustomizableEdges();
+            CustomizableEdges customizableEdges49 = new CustomizableEdges();
+            CustomizableEdges customizableEdges50 = new CustomizableEdges();
+            CustomizableEdges customizableEdges51 = new CustomizableEdges();
+            CustomizableEdges customizableEdges52 = new CustomizableEdges();
+            CustomizableEdges customizableEdges75 = new CustomizableEdges();
+            CustomizableEdges customizableEdges76 = new CustomizableEdges();
+            CustomizableEdges customizableEdges53 = new CustomizableEdges();
+            CustomizableEdges customizableEdges54 = new CustomizableEdges();
+            CustomizableEdges customizableEdges59 = new CustomizableEdges();
+            CustomizableEdges customizableEdges60 = new CustomizableEdges();
+            CustomizableEdges customizableEdges55 = new CustomizableEdges();
+            CustomizableEdges customizableEdges56 = new CustomizableEdges();
+            CustomizableEdges customizableEdges57 = new CustomizableEdges();
+            CustomizableEdges customizableEdges58 = new CustomizableEdges();
+            CustomizableEdges customizableEdges73 = new CustomizableEdges();
+            CustomizableEdges customizableEdges74 = new CustomizableEdges();
+            CustomizableEdges customizableEdges61 = new CustomizableEdges();
+            CustomizableEdges customizableEdges62 = new CustomizableEdges();
+            CustomizableEdges customizableEdges63 = new CustomizableEdges();
+            CustomizableEdges customizableEdges64 = new CustomizableEdges();
+            CustomizableEdges customizableEdges65 = new CustomizableEdges();
+            CustomizableEdges customizableEdges66 = new CustomizableEdges();
+            CustomizableEdges customizableEdges67 = new CustomizableEdges();
+            CustomizableEdges customizableEdges68 = new CustomizableEdges();
+            CustomizableEdges customizableEdges69 = new CustomizableEdges();
+            CustomizableEdges customizableEdges70 = new CustomizableEdges();
+            CustomizableEdges customizableEdges71 = new CustomizableEdges();
+            CustomizableEdges customizableEdges72 = new CustomizableEdges();
+            CustomizableEdges customizableEdges77 = new CustomizableEdges();
+            CustomizableEdges customizableEdges78 = new CustomizableEdges();
+            CustomizableEdges customizableEdges83 = new CustomizableEdges();
+            CustomizableEdges customizableEdges84 = new CustomizableEdges();
+            CustomizableEdges customizableEdges79 = new CustomizableEdges();
+            CustomizableEdges customizableEdges80 = new CustomizableEdges();
+            CustomizableEdges customizableEdges81 = new CustomizableEdges();
+            CustomizableEdges customizableEdges82 = new CustomizableEdges();
             closeButton = new Guna2ControlBox();
             minimizeButton = new Guna2ControlBox();
             TodayTotalPanel = new Guna2GradientPanel();
@@ -137,7 +137,7 @@ namespace CodingTracker.View
             averageSessionContainerPanel = new Guna2GradientPanel();
             guna2GradientPanel7 = new Guna2GradientPanel();
             guna2AnimateWindow1 = new Guna2AnimateWindow(components);
-            iconPictureBox5 = new FontAwesome.Sharp.IconPictureBox();
+            homeButton = new FontAwesome.Sharp.IconPictureBox();
             TodayTotalPanel.SuspendLayout();
             guna2GradientPanel3.SuspendLayout();
             averageSessionPanel.SuspendLayout();
@@ -156,7 +156,7 @@ namespace CodingTracker.View
             statsPanelsParentPanel.SuspendLayout();
             averageSessionContainerPanel.SuspendLayout();
             guna2GradientPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
             SuspendLayout();
             // 
             // closeButton
@@ -164,13 +164,13 @@ namespace CodingTracker.View
             closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             closeButton.Cursor = Cursors.Hand;
             closeButton.CustomClick = true;
-            closeButton.CustomizableEdges = customizableEdges1;
+            closeButton.CustomizableEdges = customizableEdges43;
             closeButton.FillColor = Color.FromArgb(25, 24, 40);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.White;
             closeButton.Location = new Point(1254, 0);
             closeButton.Name = "closeButton";
-            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges44;
             closeButton.Size = new Size(45, 34);
             closeButton.TabIndex = 25;
             closeButton.Click += CloseButton_Click;
@@ -180,14 +180,14 @@ namespace CodingTracker.View
             minimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             minimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             minimizeButton.Cursor = Cursors.Hand;
-            minimizeButton.CustomizableEdges = customizableEdges3;
+            minimizeButton.CustomizableEdges = customizableEdges45;
             minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
             minimizeButton.IconColor = Color.White;
             minimizeButton.Location = new Point(1212, 0);
             minimizeButton.Name = "minimizeButton";
-            minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges46;
             minimizeButton.Size = new Size(45, 34);
             minimizeButton.TabIndex = 26;
             // 
@@ -200,7 +200,7 @@ namespace CodingTracker.View
             TodayTotalPanel.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             TodayTotalPanel.Controls.Add(todayTotalLabel);
             TodayTotalPanel.CustomBorderColor = Color.FromArgb(35, 34, 50);
-            TodayTotalPanel.CustomizableEdges = customizableEdges5;
+            TodayTotalPanel.CustomizableEdges = customizableEdges47;
             TodayTotalPanel.FillColor = Color.FromArgb(255, 182, 218);
             TodayTotalPanel.FillColor2 = Color.FromArgb(168, 228, 255);
             TodayTotalPanel.ForeColor = Color.FromArgb(44, 45, 65);
@@ -208,7 +208,7 @@ namespace CodingTracker.View
             TodayTotalPanel.Name = "TodayTotalPanel";
             TodayTotalPanel.ShadowDecoration.BorderRadius = 33;
             TodayTotalPanel.ShadowDecoration.Color = Color.FromArgb(25, 255, 255, 255);
-            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            TodayTotalPanel.ShadowDecoration.CustomizableEdges = customizableEdges48;
             TodayTotalPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             TodayTotalPanel.Size = new Size(232, 116);
             TodayTotalPanel.TabIndex = 28;
@@ -231,13 +231,13 @@ namespace CodingTracker.View
             guna2GradientPanel3.BorderRadius = 30;
             guna2GradientPanel3.Controls.Add(WeekTotalLabel);
             guna2GradientPanel3.CustomBorderColor = Color.Transparent;
-            guna2GradientPanel3.CustomizableEdges = customizableEdges7;
+            guna2GradientPanel3.CustomizableEdges = customizableEdges49;
             guna2GradientPanel3.FillColor = Color.FromArgb(180, 190, 254);
             guna2GradientPanel3.FillColor2 = Color.FromArgb(252, 124, 180);
             guna2GradientPanel3.ForeColor = Color.Transparent;
             guna2GradientPanel3.Location = new Point(18, 14);
             guna2GradientPanel3.Name = "guna2GradientPanel3";
-            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            guna2GradientPanel3.ShadowDecoration.CustomizableEdges = customizableEdges50;
             guna2GradientPanel3.Size = new Size(232, 116);
             guna2GradientPanel3.TabIndex = 29;
             // 
@@ -259,13 +259,13 @@ namespace CodingTracker.View
             averageSessionPanel.BorderRadius = 30;
             averageSessionPanel.Controls.Add(guna2HtmlLabel9);
             averageSessionPanel.Controls.Add(AverageSessionLabel);
-            averageSessionPanel.CustomizableEdges = customizableEdges9;
+            averageSessionPanel.CustomizableEdges = customizableEdges51;
             averageSessionPanel.FillColor = Color.FromArgb(168, 228, 255);
             averageSessionPanel.FillColor2 = Color.FromArgb(242, 130, 220);
             averageSessionPanel.ForeColor = Color.Transparent;
             averageSessionPanel.Location = new Point(18, 14);
             averageSessionPanel.Name = "averageSessionPanel";
-            averageSessionPanel.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            averageSessionPanel.ShadowDecoration.CustomizableEdges = customizableEdges52;
             averageSessionPanel.Size = new Size(232, 116);
             averageSessionPanel.TabIndex = 30;
             // 
@@ -303,10 +303,10 @@ namespace CodingTracker.View
             bottomHalfParentPanel.Controls.Add(starRatingPanel);
             bottomHalfParentPanel.Controls.Add(guna2GradientPanel10);
             bottomHalfParentPanel.Controls.Add(Last28DaysPanel);
-            bottomHalfParentPanel.CustomizableEdges = customizableEdges33;
+            bottomHalfParentPanel.CustomizableEdges = customizableEdges75;
             bottomHalfParentPanel.Location = new Point(0, 226);
             bottomHalfParentPanel.Name = "bottomHalfParentPanel";
-            bottomHalfParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges34;
+            bottomHalfParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges76;
             bottomHalfParentPanel.Size = new Size(1298, 557);
             bottomHalfParentPanel.TabIndex = 29;
             // 
@@ -334,7 +334,7 @@ namespace CodingTracker.View
             starRatingPanel.Controls.Add(starRatingTotalLabel);
             starRatingPanel.Controls.Add(starRatingsTitleLabel);
             starRatingPanel.Controls.Add(starRatingsPieChart);
-            starRatingPanel.CustomizableEdges = customizableEdges11;
+            starRatingPanel.CustomizableEdges = customizableEdges53;
             starRatingPanel.FillColor = Color.FromArgb(44, 45, 65);
             starRatingPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             starRatingPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
@@ -342,7 +342,7 @@ namespace CodingTracker.View
             starRatingPanel.Name = "starRatingPanel";
             starRatingPanel.ShadowDecoration.BorderRadius = 12;
             starRatingPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            starRatingPanel.ShadowDecoration.CustomizableEdges = customizableEdges54;
             starRatingPanel.ShadowDecoration.Enabled = true;
             starRatingPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             starRatingPanel.Size = new Size(340, 366);
@@ -506,7 +506,7 @@ namespace CodingTracker.View
             guna2GradientPanel10.Controls.Add(readyToBeginLabel);
             guna2GradientPanel10.Controls.Add(startSessionButton);
             guna2GradientPanel10.Controls.Add(guna2HtmlLabel2);
-            guna2GradientPanel10.CustomizableEdges = customizableEdges17;
+            guna2GradientPanel10.CustomizableEdges = customizableEdges59;
             guna2GradientPanel10.FillColor = Color.FromArgb(44, 45, 65);
             guna2GradientPanel10.FillColor2 = Color.FromArgb(44, 45, 65);
             guna2GradientPanel10.ForeColor = Color.FromArgb(44, 45, 65);
@@ -515,7 +515,7 @@ namespace CodingTracker.View
             guna2GradientPanel10.Name = "guna2GradientPanel10";
             guna2GradientPanel10.ShadowDecoration.BorderRadius = 12;
             guna2GradientPanel10.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
-            guna2GradientPanel10.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            guna2GradientPanel10.ShadowDecoration.CustomizableEdges = customizableEdges60;
             guna2GradientPanel10.ShadowDecoration.Enabled = true;
             guna2GradientPanel10.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             guna2GradientPanel10.Size = new Size(445, 122);
@@ -523,12 +523,12 @@ namespace CodingTracker.View
             // 
             // mossPictureBoxGif
             // 
-            mossPictureBoxGif.CustomizableEdges = customizableEdges13;
+            mossPictureBoxGif.CustomizableEdges = customizableEdges55;
             mossPictureBoxGif.Image = Resources.The_IT_Crowd_Intro_BitMap;
             mossPictureBoxGif.ImageRotate = 0F;
             mossPictureBoxGif.Location = new Point(362, 16);
             mossPictureBoxGif.Name = "mossPictureBoxGif";
-            mossPictureBoxGif.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            mossPictureBoxGif.ShadowDecoration.CustomizableEdges = customizableEdges56;
             mossPictureBoxGif.Size = new Size(80, 75);
             mossPictureBoxGif.SizeMode = PictureBoxSizeMode.Zoom;
             mossPictureBoxGif.TabIndex = 9;
@@ -555,7 +555,7 @@ namespace CodingTracker.View
             startSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
             startSessionButton.BorderRadius = 15;
             startSessionButton.Cursor = Cursors.Hand;
-            startSessionButton.CustomizableEdges = customizableEdges15;
+            startSessionButton.CustomizableEdges = customizableEdges57;
             startSessionButton.DisabledState.BorderColor = Color.DarkGray;
             startSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             startSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -571,7 +571,7 @@ namespace CodingTracker.View
             startSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
             startSessionButton.Location = new Point(74, 58);
             startSessionButton.Name = "startSessionButton";
-            startSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            startSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges58;
             startSessionButton.Size = new Size(268, 44);
             startSessionButton.TabIndex = 34;
             startSessionButton.Text = " Start Session";
@@ -610,7 +610,7 @@ namespace CodingTracker.View
             Last28DaysPanel.Controls.Add(betweenTwoAndFourHoursLegendPanel);
             Last28DaysPanel.Controls.Add(guna2HtmlLabel1);
             Last28DaysPanel.Controls.Add(betweenOneAndTwoHoursLegendPanel);
-            Last28DaysPanel.CustomizableEdges = customizableEdges31;
+            Last28DaysPanel.CustomizableEdges = customizableEdges73;
             Last28DaysPanel.FillColor = Color.FromArgb(44, 45, 65);
             Last28DaysPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             Last28DaysPanel.ForeColor = SystemColors.ControlText;
@@ -618,7 +618,7 @@ namespace CodingTracker.View
             Last28DaysPanel.Location = new Point(34, 24);
             Last28DaysPanel.Name = "Last28DaysPanel";
             Last28DaysPanel.ShadowDecoration.Color = Color.FromArgb(35, 34, 50);
-            Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges32;
+            Last28DaysPanel.ShadowDecoration.CustomizableEdges = customizableEdges74;
             Last28DaysPanel.ShadowDecoration.Depth = 50;
             Last28DaysPanel.ShadowDecoration.Enabled = true;
             Last28DaysPanel.Size = new Size(754, 505);
@@ -646,7 +646,7 @@ namespace CodingTracker.View
             viewSessionButton.BorderColor = Color.FromArgb(35, 34, 50);
             viewSessionButton.BorderRadius = 15;
             viewSessionButton.Cursor = Cursors.Hand;
-            viewSessionButton.CustomizableEdges = customizableEdges19;
+            viewSessionButton.CustomizableEdges = customizableEdges61;
             viewSessionButton.DisabledState.BorderColor = Color.DarkGray;
             viewSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             viewSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -662,7 +662,7 @@ namespace CodingTracker.View
             viewSessionButton.HoverState.FillColor2 = Color.FromArgb(168, 228, 255);
             viewSessionButton.Location = new Point(228, 430);
             viewSessionButton.Name = "viewSessionButton";
-            viewSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            viewSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges62;
             viewSessionButton.Size = new Size(268, 44);
             viewSessionButton.TabIndex = 35;
             viewSessionButton.Text = "View Sessions";
@@ -702,14 +702,14 @@ namespace CodingTracker.View
             activityParentPanel.BorderRadius = 8;
             activityParentPanel.BorderThickness = 1;
             activityParentPanel.CustomBorderThickness = new Padding(0, 0, 0, 4);
-            customizableEdges21.TopLeft = false;
-            customizableEdges21.TopRight = false;
-            activityParentPanel.CustomizableEdges = customizableEdges21;
+            customizableEdges63.TopLeft = false;
+            customizableEdges63.TopRight = false;
+            activityParentPanel.CustomizableEdges = customizableEdges63;
             activityParentPanel.FillColor = Color.FromArgb(44, 45, 65);
             activityParentPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             activityParentPanel.Location = new Point(22, 81);
             activityParentPanel.Name = "activityParentPanel";
-            activityParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            activityParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges64;
             activityParentPanel.Size = new Size(697, 297);
             activityParentPanel.TabIndex = 0;
             // 
@@ -717,12 +717,12 @@ namespace CodingTracker.View
             // 
             zeroMinutesLegendPanel.BackColor = Color.Transparent;
             zeroMinutesLegendPanel.BorderRadius = 4;
-            zeroMinutesLegendPanel.CustomizableEdges = customizableEdges23;
+            zeroMinutesLegendPanel.CustomizableEdges = customizableEdges65;
             zeroMinutesLegendPanel.FillColor = Color.FromArgb(20, 60, 80);
             zeroMinutesLegendPanel.FillColor2 = Color.FromArgb(40, 100, 120);
             zeroMinutesLegendPanel.Location = new Point(249, 45);
             zeroMinutesLegendPanel.Name = "zeroMinutesLegendPanel";
-            zeroMinutesLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            zeroMinutesLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges66;
             zeroMinutesLegendPanel.Size = new Size(23, 15);
             zeroMinutesLegendPanel.TabIndex = 1;
             // 
@@ -752,12 +752,12 @@ namespace CodingTracker.View
             // 
             lessThanOneHourLegendPanel.BackColor = Color.Transparent;
             lessThanOneHourLegendPanel.BorderRadius = 4;
-            lessThanOneHourLegendPanel.CustomizableEdges = customizableEdges25;
+            lessThanOneHourLegendPanel.CustomizableEdges = customizableEdges67;
             lessThanOneHourLegendPanel.FillColor = Color.FromArgb(40, 140, 160);
             lessThanOneHourLegendPanel.FillColor2 = Color.FromArgb(80, 200, 220);
             lessThanOneHourLegendPanel.Location = new Point(329, 45);
             lessThanOneHourLegendPanel.Name = "lessThanOneHourLegendPanel";
-            lessThanOneHourLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            lessThanOneHourLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges68;
             lessThanOneHourLegendPanel.Size = new Size(23, 15);
             lessThanOneHourLegendPanel.TabIndex = 3;
             // 
@@ -778,13 +778,13 @@ namespace CodingTracker.View
             betweenTwoAndFourHoursLegendPanel.BorderColor = Color.FromArgb(255, 140, 200);
             betweenTwoAndFourHoursLegendPanel.BorderRadius = 4;
             betweenTwoAndFourHoursLegendPanel.BorderThickness = 1;
-            betweenTwoAndFourHoursLegendPanel.CustomizableEdges = customizableEdges27;
+            betweenTwoAndFourHoursLegendPanel.CustomizableEdges = customizableEdges69;
             betweenTwoAndFourHoursLegendPanel.FillColor = Color.FromArgb(180, 100, 200);
             betweenTwoAndFourHoursLegendPanel.FillColor2 = Color.FromArgb(255, 120, 180);
             betweenTwoAndFourHoursLegendPanel.Location = new Point(492, 45);
             betweenTwoAndFourHoursLegendPanel.Name = "betweenTwoAndFourHoursLegendPanel";
             betweenTwoAndFourHoursLegendPanel.ShadowDecoration.Color = Color.FromArgb(255, 120, 200);
-            betweenTwoAndFourHoursLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            betweenTwoAndFourHoursLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges70;
             betweenTwoAndFourHoursLegendPanel.ShadowDecoration.Enabled = true;
             betweenTwoAndFourHoursLegendPanel.ShadowDecoration.Shadow = new Padding(2);
             betweenTwoAndFourHoursLegendPanel.Size = new Size(23, 15);
@@ -805,14 +805,14 @@ namespace CodingTracker.View
             // 
             betweenOneAndTwoHoursLegendPanel.BackColor = Color.Transparent;
             betweenOneAndTwoHoursLegendPanel.BorderRadius = 4;
-            betweenOneAndTwoHoursLegendPanel.CustomizableEdges = customizableEdges29;
+            betweenOneAndTwoHoursLegendPanel.CustomizableEdges = customizableEdges71;
             betweenOneAndTwoHoursLegendPanel.FillColor = Color.FromArgb(80, 160, 200);
             betweenOneAndTwoHoursLegendPanel.FillColor2 = Color.FromArgb(140, 120, 220);
             betweenOneAndTwoHoursLegendPanel.ImeMode = ImeMode.NoControl;
             betweenOneAndTwoHoursLegendPanel.Location = new Point(409, 45);
             betweenOneAndTwoHoursLegendPanel.Name = "betweenOneAndTwoHoursLegendPanel";
             betweenOneAndTwoHoursLegendPanel.ShadowDecoration.Color = Color.FromArgb(140, 140, 255);
-            betweenOneAndTwoHoursLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges30;
+            betweenOneAndTwoHoursLegendPanel.ShadowDecoration.CustomizableEdges = customizableEdges72;
             betweenOneAndTwoHoursLegendPanel.ShadowDecoration.Enabled = true;
             betweenOneAndTwoHoursLegendPanel.ShadowDecoration.Shadow = new Padding(1);
             betweenOneAndTwoHoursLegendPanel.Size = new Size(23, 15);
@@ -824,7 +824,7 @@ namespace CodingTracker.View
             todayTotalParentPanel.BorderColor = Color.FromArgb(44, 45, 65);
             todayTotalParentPanel.BorderRadius = 25;
             todayTotalParentPanel.Controls.Add(TodayTotalPanel);
-            todayTotalParentPanel.CustomizableEdges = customizableEdges35;
+            todayTotalParentPanel.CustomizableEdges = customizableEdges77;
             todayTotalParentPanel.FillColor = Color.FromArgb(44, 45, 65);
             todayTotalParentPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             todayTotalParentPanel.ForeColor = Color.FromArgb(44, 45, 65);
@@ -833,7 +833,7 @@ namespace CodingTracker.View
             todayTotalParentPanel.Name = "todayTotalParentPanel";
             todayTotalParentPanel.ShadowDecoration.BorderRadius = 12;
             todayTotalParentPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
-            todayTotalParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges36;
+            todayTotalParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges78;
             todayTotalParentPanel.ShadowDecoration.Enabled = true;
             todayTotalParentPanel.Size = new Size(270, 144);
             todayTotalParentPanel.TabIndex = 43;
@@ -893,11 +893,11 @@ namespace CodingTracker.View
             statsPanelsParentPanel.Controls.Add(todayTotalParentPanel);
             statsPanelsParentPanel.Controls.Add(averageSessionContainerPanel);
             statsPanelsParentPanel.Controls.Add(guna2GradientPanel7);
-            statsPanelsParentPanel.CustomizableEdges = customizableEdges41;
+            statsPanelsParentPanel.CustomizableEdges = customizableEdges83;
             statsPanelsParentPanel.Location = new Point(0, 34);
             statsPanelsParentPanel.Name = "statsPanelsParentPanel";
             statsPanelsParentPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
-            statsPanelsParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges42;
+            statsPanelsParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges84;
             statsPanelsParentPanel.Size = new Size(1300, 196);
             statsPanelsParentPanel.TabIndex = 44;
             // 
@@ -907,7 +907,7 @@ namespace CodingTracker.View
             averageSessionContainerPanel.BorderColor = Color.FromArgb(44, 45, 65);
             averageSessionContainerPanel.BorderRadius = 25;
             averageSessionContainerPanel.Controls.Add(averageSessionPanel);
-            averageSessionContainerPanel.CustomizableEdges = customizableEdges37;
+            averageSessionContainerPanel.CustomizableEdges = customizableEdges79;
             averageSessionContainerPanel.FillColor = Color.FromArgb(44, 45, 65);
             averageSessionContainerPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             averageSessionContainerPanel.ForeColor = Color.FromArgb(44, 45, 65);
@@ -916,7 +916,7 @@ namespace CodingTracker.View
             averageSessionContainerPanel.Name = "averageSessionContainerPanel";
             averageSessionContainerPanel.ShadowDecoration.BorderRadius = 12;
             averageSessionContainerPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
-            averageSessionContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges38;
+            averageSessionContainerPanel.ShadowDecoration.CustomizableEdges = customizableEdges80;
             averageSessionContainerPanel.ShadowDecoration.Enabled = true;
             averageSessionContainerPanel.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             averageSessionContainerPanel.Size = new Size(270, 144);
@@ -928,7 +928,7 @@ namespace CodingTracker.View
             guna2GradientPanel7.BorderColor = Color.FromArgb(44, 45, 65);
             guna2GradientPanel7.BorderRadius = 25;
             guna2GradientPanel7.Controls.Add(guna2GradientPanel3);
-            guna2GradientPanel7.CustomizableEdges = customizableEdges39;
+            guna2GradientPanel7.CustomizableEdges = customizableEdges81;
             guna2GradientPanel7.FillColor = Color.FromArgb(44, 45, 65);
             guna2GradientPanel7.FillColor2 = Color.FromArgb(44, 45, 65);
             guna2GradientPanel7.ForeColor = Color.FromArgb(44, 45, 65);
@@ -937,26 +937,26 @@ namespace CodingTracker.View
             guna2GradientPanel7.Name = "guna2GradientPanel7";
             guna2GradientPanel7.ShadowDecoration.BorderRadius = 12;
             guna2GradientPanel7.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
-            guna2GradientPanel7.ShadowDecoration.CustomizableEdges = customizableEdges40;
+            guna2GradientPanel7.ShadowDecoration.CustomizableEdges = customizableEdges82;
             guna2GradientPanel7.ShadowDecoration.Enabled = true;
             guna2GradientPanel7.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             guna2GradientPanel7.Size = new Size(270, 144);
             guna2GradientPanel7.TabIndex = 44;
             // 
-            // iconPictureBox5
+            // homeButton
             // 
-            iconPictureBox5.BackColor = Color.FromArgb(35, 34, 50);
-            iconPictureBox5.ForeColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
-            iconPictureBox5.IconColor = Color.FromArgb(255, 160, 210);
-            iconPictureBox5.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            iconPictureBox5.IconSize = 34;
-            iconPictureBox5.Location = new Point(1173, 0);
-            iconPictureBox5.Margin = new Padding(3, 2, 3, 2);
-            iconPictureBox5.Name = "iconPictureBox5";
-            iconPictureBox5.Size = new Size(35, 34);
-            iconPictureBox5.TabIndex = 45;
-            iconPictureBox5.TabStop = false;
+            homeButton.BackColor = Color.FromArgb(25, 24, 40);
+            homeButton.ForeColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            homeButton.IconColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            homeButton.IconSize = 34;
+            homeButton.Location = new Point(1173, 0);
+            homeButton.Margin = new Padding(3, 2, 3, 2);
+            homeButton.Name = "homeButton";
+            homeButton.Size = new Size(35, 34);
+            homeButton.TabIndex = 45;
+            homeButton.TabStop = false;
             // 
             // MainPage
             // 
@@ -964,7 +964,7 @@ namespace CodingTracker.View
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(1300, 781);
-            Controls.Add(iconPictureBox5);
+            Controls.Add(homeButton);
             Controls.Add(statsPanelsParentPanel);
             Controls.Add(githubPictureBox);
             Controls.Add(topHalfSeperator);
@@ -996,7 +996,7 @@ namespace CodingTracker.View
             statsPanelsParentPanel.ResumeLayout(false);
             averageSessionContainerPanel.ResumeLayout(false);
             guna2GradientPanel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)iconPictureBox5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)homeButton).EndInit();
             ResumeLayout(false);
 
         }
@@ -1066,6 +1066,6 @@ namespace CodingTracker.View
         private FontAwesome.Sharp.IconPictureBox iconPictureBox1;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox4;
         private FontAwesome.Sharp.IconPictureBox iconPictureBox3;
-        private FontAwesome.Sharp.IconPictureBox iconPictureBox5;
+        private FontAwesome.Sharp.IconPictureBox homeButton;
     }
 }

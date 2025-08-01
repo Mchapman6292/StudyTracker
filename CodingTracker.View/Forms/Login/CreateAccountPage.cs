@@ -1,6 +1,8 @@
-﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+﻿using CodingTracker.Common.BusinessInterfaces;
+using CodingTracker.Common.BusinessInterfaces.Authentication;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
 using System.Diagnostics;
 
 namespace CodingTracker.View
@@ -13,9 +15,10 @@ namespace CodingTracker.View
         private readonly IFormManager _formController;
         private readonly IFormNavigator _formNavigator;
         private readonly IAuthenticationService _authenticationService;
+        private readonly INotificationManager _notificationManager;
         public Action<string> AccountCreatedCallback { get; set; }
 
-        public CreateAccountPage(IInputValidator inputValidator, IApplicationLogger appLogger, IFormManager formController, IFormNavigator formSwitcher, IAuthenticationService authentication)
+        public CreateAccountPage(IInputValidator inputValidator, IApplicationLogger appLogger, IFormManager formController, IFormNavigator formSwitcher, IAuthenticationService authentication, INotificationManager notificationManager)
         {
             InitializeComponent();
             _inputValidator = inputValidator;
@@ -23,12 +26,13 @@ namespace CodingTracker.View
             _formController = formController;
             _formNavigator = formSwitcher;
             _authenticationService = authentication;
+            _notificationManager = notificationManager;
 
         }
 
         private void DisplayErrorMessage(string message)
         {
-            CreateAccountPageErrorTextBox.Text = message;
+;
         }
 
 
@@ -36,12 +40,12 @@ namespace CodingTracker.View
         private async void CreateAccountPageCreateAccountButton_Click(object sender, EventArgs e)
         {
             Stopwatch overallStopwatch = Stopwatch.StartNew();
-            using (var activity = new Activity(nameof(CreateAccountPageCreateAccountButton)).Start())
+            using (var activity = new Activity(nameof(createAccountButton)).Start())
             {
-                _appLogger.Debug($"Starting {nameof(CreateAccountPageCreateAccountButton)}. TraceID: {activity.TraceId}");
+                _appLogger.Debug($"Starting {nameof(createAccountButton)}. TraceID: {activity.TraceId}");
 
-                string username = CreateAccountPageUsernameTextbox.Text;
-                string password = CreateAccountPasswordTextbox.Text;
+                string username = usernameTextBox.Text;
+                string password = passwordTextBox.Text;
 
                 var usernameResult = _inputValidator.ValidateUsername(username);
                 var passwordResult = _inputValidator.ValidatePassword(password);
@@ -81,7 +85,45 @@ namespace CodingTracker.View
             overallStopwatch.Stop();
         }
 
+ 
 
+        private async void CreateAccountButton_Click(object sender, EventArgs e)
+        {
+            string username = usernameTextBox.Text;
+            string password = passwordTextBox.Text;
+
+            InputValidationResult usernameResult = _inputValidator.ValidateUsername(username);
+            InputValidationResult passwordResult = _inputValidator.ValidatePassword(password);
+
+
+            if (usernameResult.IsValid && passwordResult.IsValid)
+            {
+                try
+                {
+                    bool isAccountCreated = await _authenticationService.CreateAccount(username, password);
+
+                    if (isAccountCreated)
+                    {
+                        AccountCreatedCallback?.Invoke("Account created successfully.");
+                        _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
+                    }
+                    else
+                    {
+                        DisplayErrorMessage("Account creation failed. Please try again.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DisplayErrorMessage(ex.Message);
+                }
+            }
+            else
+            {
+                var errorMessages = $"{usernameResult.GetAllErrorMessages()}\n{passwordResult.GetAllErrorMessages()}";
+                DisplayErrorMessage(errorMessages);
+            }
+        }
 
     }
 }
+

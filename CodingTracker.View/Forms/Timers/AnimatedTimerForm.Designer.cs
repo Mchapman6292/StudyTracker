@@ -106,19 +106,19 @@ namespace CodingTracker.View.Forms
             // 
             // homeButton
             // 
-            homeButton.BackColor = Color.FromArgb(35, 34, 50);
+            homeButton.BackColor = Color.FromArgb(25, 24, 40);
             homeButton.ForeColor = Color.FromArgb(255, 160, 210);
             homeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
             homeButton.IconColor = Color.FromArgb(255, 160, 210);
             homeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            homeButton.IconSize = 34;
-            homeButton.Location = new Point(579, 0);
+            homeButton.IconSize = 30;
+            homeButton.Location = new Point(567, 0);
             homeButton.Margin = new Padding(3, 2, 3, 2);
             homeButton.Name = "homeButton";
-            homeButton.Size = new Size(35, 34);
-            homeButton.TabIndex = 46;
+            homeButton.Size = new Size(45, 34);
+            homeButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            homeButton.TabIndex = 47;
             homeButton.TabStop = false;
-            homeButton.Click += HomeButton_Click;
             // 
             // testElapsedBox
             // 
@@ -151,7 +151,7 @@ namespace CodingTracker.View.Forms
             minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
-            minimizeButton.IconColor = Color.HotPink;
+            minimizeButton.IconColor = Color.FromArgb(255, 160, 210);
             minimizeButton.Location = new Point(610, 0);
             minimizeButton.Name = "minimizeButton";
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -167,7 +167,7 @@ namespace CodingTracker.View.Forms
             exitButton.CustomizableEdges = customizableEdges5;
             exitButton.FillColor = Color.FromArgb(25, 24, 40);
             exitButton.HoverState.IconColor = Color.White;
-            exitButton.IconColor = Color.HotPink;
+            exitButton.IconColor = Color.FromArgb(255, 160, 210);
             exitButton.Location = new Point(652, 0);
             exitButton.Name = "exitButton";
             exitButton.ShadowDecoration.CustomizableEdges = customizableEdges6;

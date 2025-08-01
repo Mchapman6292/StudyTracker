@@ -172,7 +172,7 @@ namespace CodingTracker.View.PopUpFormService
             closeButton.CustomizableEdges = customizableEdges3;
             closeButton.FillColor = Color.FromArgb(25, 24, 40);
             closeButton.HoverState.IconColor = Color.White;
-            closeButton.IconColor = Color.White;
+            closeButton.IconColor = Color.FromArgb(255, 160, 210);
             closeButton.Location = new Point(355, -1);
             closeButton.Name = "closeButton";
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -188,7 +188,7 @@ namespace CodingTracker.View.PopUpFormService
             minimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
-            minimizeButton.IconColor = Color.White;
+            minimizeButton.IconColor = Color.FromArgb(255, 160, 210);
             minimizeButton.Location = new Point(322, -1);
             minimizeButton.Name = "minimizeButton";
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
@@ -225,11 +225,11 @@ namespace CodingTracker.View.PopUpFormService
             newHomeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
             newHomeButton.IconColor = Color.FromArgb(255, 160, 210);
             newHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            newHomeButton.IconSize = 29;
+            newHomeButton.IconSize = 28;
             newHomeButton.Location = new Point(286, 0);
             newHomeButton.Margin = new Padding(3, 2, 3, 2);
             newHomeButton.Name = "newHomeButton";
-            newHomeButton.Size = new Size(35, 29);
+            newHomeButton.Size = new Size(43, 28);
             newHomeButton.SizeMode = PictureBoxSizeMode.CenterImage;
             newHomeButton.TabIndex = 46;
             newHomeButton.TabStop = false;
@@ -242,6 +242,7 @@ namespace CodingTracker.View.PopUpFormService
             BackColor = Color.FromArgb(35, 34, 50);
             ClientSize = new Size(400, 280);
             Controls.Add(mainPanel);
+            ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Name = "SessionGoalPage";
             StartPosition = FormStartPosition.CenterParent;
