@@ -79,7 +79,7 @@ namespace CodingTracker.View.Forms.Services.MainPageService.SessionVisualization
                 }
 
                 durationParentPanel.UpdateDurationTotalLabel();
-                LogDurationParentPanel(durationParentPanel);
+        
             }
 
             return newDurationParentPanelsWithoutData;

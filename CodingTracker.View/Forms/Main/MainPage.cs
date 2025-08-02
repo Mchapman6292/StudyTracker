@@ -148,7 +148,7 @@ namespace CodingTracker.View
             {
                 foreach (var dpp in dppList)
                 {
-                    _sessionVisualizationController.LogDurationParentPanel(dpp);
+       
                     activityParentPanel.Controls.Add(dpp);
 
 

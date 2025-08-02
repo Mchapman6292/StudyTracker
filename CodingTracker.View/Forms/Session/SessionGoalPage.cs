@@ -57,7 +57,7 @@ namespace CodingTracker.View.PopUpFormService
         }
 
 
-        /// <summary>
+
         /// Updates real-time input to update a display label as the user types, e.g 130 = 1 hours, 30 minutes.
         /// <param name="timeGoalTextBoxText">The text from timeDisplayLabel.</param>
         /// <returns> String to be used in SessionGoalForm top label.  </returns>
@@ -183,6 +183,7 @@ namespace CodingTracker.View.PopUpFormService
             {
                 _notificationManager.ShowDialogWithMultipleMessages(this, errorMessages);
                 timeGoalTextBox.Text = string.Empty;
+                return;
             }
 
 
@@ -269,8 +270,14 @@ namespace CodingTracker.View.PopUpFormService
         public void HandleSkipButton()
         {
 
-            _formNavigator.SwitchToForm(FormPageEnum.ElapsedTimerForm);
- 
+            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+
+        }
+
+        private void newHomeButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+            this.Close();
         }
     }
 }

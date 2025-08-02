@@ -9,5 +9,8 @@ namespace CodingTracker.View.Forms.Colors
         public static SKColor LoginButtonBlueColor = new SKColor(168, 228, 255);
 
 
+        public static Color FocusedColor = Color.FromArgb(94, 148, 255);
+        public static Color FocusedColor2 = Color.FromArgb(64, 224, 208);
+
     }
 }

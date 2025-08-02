@@ -71,7 +71,7 @@ namespace CodingTracker.View
         private void LoginPage_Load(object sender, EventArgs e)
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
-            _buttonHighlighterService.SetButtonHoverColors(newForgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(forgotPasswordButton);
             _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(createAccountButton);
@@ -254,7 +254,7 @@ namespace CodingTracker.View
 
                     SaveUsernameForNextLogin(username);
 
-                    _formNavigator.SwitchToForm(FormPageEnum.MainPageTestFormn);
+                    _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
                 }
                 if(!isValidLogin) 
                 {
@@ -281,7 +281,7 @@ namespace CodingTracker.View
         */
         private void NewCreateAccountButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
         }
 
         private void NewForgotPasswordButton_Click(object sender, EventArgs e)

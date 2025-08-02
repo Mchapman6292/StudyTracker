@@ -77,7 +77,7 @@ namespace CodingTracker.View
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
         }
     }
 }

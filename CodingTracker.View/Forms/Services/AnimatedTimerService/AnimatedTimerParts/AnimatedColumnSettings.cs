@@ -69,18 +69,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
 
 
 
-        // Catppuccin Mocha Color Palette
-        public static SKColor CatppuccinBase = new SKColor(30, 30, 46);        // #1e1e2e - Main background
-        public static SKColor CatppuccinSurface0 = new SKColor(49, 50, 68);    // #313244 - Container/Column background
-        public static SKColor CatppuccinSurface1 = new SKColor(69, 71, 90);    // #45475a - Borders, dividers
-        public static SKColor CatppuccinText = new SKColor(205, 214, 244);     // #cdd6f4 - Primary text/numbers
-        public static SKColor CatppuccinSubtext = new SKColor(166, 173, 200);  // #a6adc8 - Secondary/inactive text
-        public static SKColor CatppuccinPink = new SKColor(245, 194, 231);     // #f5c2e7 - Accent highlights
-        public static SKColor CatppuccinMauve = new SKColor(203, 166, 247);    // #cba6f7 - Animations, glow effects
-        public static SKColor CatppuccinBlue = new SKColor(137, 180, 250);     // #89b4fa - Secondary accent
-
-
-
         // Base color RGB(35, 34, 50) = #232232
         public static SKColor ElevationBase = new SKColor(35, 34, 50);         // 0dp - Base background
         public static SKColor Elevation1dp = new SKColor(46, 45, 66);          // 1dp - ~4% lighter
@@ -104,21 +92,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerPa
             16f,   // 16dp
             20f    // 24dp
         };
-
-
-
-
-        public static SKColor CatppuccinRosewater = new SKColor(245, 224, 220);  // #f5e0dc - Soft highlights
-        public static SKColor CatppuccinFlamingo = new SKColor(242, 205, 205);   // #f2cdcd - Gentle accents
-        public static SKColor CatppuccinRed = new SKColor(243, 139, 168);        // #f38ba8 - Error/active states
-        public static SKColor CatppuccinMaroon = new SKColor(235, 160, 172);     // #eba0ac - Warm accents
-        public static SKColor CatppuccinPeach = new SKColor(250, 179, 135);      // #fab387 - Warm highlights
-        public static SKColor CatppuccinYellow = new SKColor(249, 226, 175);     // #f9e2af - Bright accents
-        public static SKColor CatppuccinGreen = new SKColor(166, 227, 161);      // #a6e3a1 - Success states
-        public static SKColor CatppuccinTeal = new SKColor(148, 226, 213);       // #94e2d5 - Cool accents
-        public static SKColor CatppuccinSky = new SKColor(137, 220, 235);        // #89dceb - Light blue accents
-        public static SKColor CatppuccinSapphire = new SKColor(116, 199, 236);   // #74c7ec - Medium blue
-        public static SKColor CatppuccinLavender = new SKColor(180, 190, 254);
 
 
 
