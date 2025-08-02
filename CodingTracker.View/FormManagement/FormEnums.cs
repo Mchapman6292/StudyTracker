@@ -3,7 +3,7 @@
     public enum FormPageEnum
     {
         LoginPage,
-        MainPage,
+        OldMainPage,
         EditSessionForm,
         CreateAccountForm,
         SessionGoalForm,
@@ -17,7 +17,7 @@
         SessionNotesForm,
         SessionRatingForm,
         TimerPlaceHolderForm,
-        MainPageTestFormn,
+        MainPageForm,
         MainContainerForm
     }
 

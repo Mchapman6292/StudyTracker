@@ -39,7 +39,7 @@ namespace CodingTracker.View.FormManagement
             Type formClassType = formType switch
             {
                 FormPageEnum.LoginPage => typeof(LoginPage),
-                FormPageEnum.MainPage => typeof(MainPage),
+                FormPageEnum.OldMainPage => typeof(OldMainPage),
                 FormPageEnum.EditSessionForm => typeof(EditSessionPage),
                 FormPageEnum.CreateAccountForm => typeof(CreateAccountPage),
                 FormPageEnum.SessionGoalForm => typeof(SessionGoalPage),
@@ -51,7 +51,7 @@ namespace CodingTracker.View.FormManagement
                 FormPageEnum.SessionRatingForm => typeof(SessionRatingForm),
                 FormPageEnum.TimerPlaceHolderForm => typeof(TimerPlaceHolderForm),
                 FormPageEnum.AnimatedTimerForm => typeof(AnimatedTimerForm),
-                FormPageEnum.MainPageTestFormn => typeof(TestFormMainPage),
+                FormPageEnum.MainPageForm => typeof(MainPage),
                 FormPageEnum.MainContainerForm => typeof(MainContainerForm),
 
 

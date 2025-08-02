@@ -38,7 +38,7 @@ namespace CodingTracker.View.LoginPageService
 
         private void ResetPasswordButton_Click(object sender, EventArgs e)
         {
-            string newPassword = NewPasswordTextBox.Text;
+            string newPassword = passwordTextBox.Text;
             string message = string.Empty;
 
 
@@ -71,6 +71,11 @@ namespace CodingTracker.View.LoginPageService
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
+        }
+
+        private void NewPasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

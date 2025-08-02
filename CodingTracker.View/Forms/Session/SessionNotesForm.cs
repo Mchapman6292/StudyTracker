@@ -67,7 +67,7 @@ namespace CodingTracker.View
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
 
         private void CloseButton_Click(object sender, EventArgs e)

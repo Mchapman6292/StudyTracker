@@ -136,7 +136,7 @@ namespace CodingTracker.View.Forms.Containers
 
         private void LoadMainPageOnStart()
         {
-            Form mainPageForm = _formFactory.GetOrCreateForm(FormPageEnum.MainPageTestFormn);
+            Form mainPageForm = _formFactory.GetOrCreateForm(FormPageEnum.MainPageForm);
 
             mainPageForm.TopLevel = false;
             mainPageForm.Dock = DockStyle.Fill;
@@ -211,12 +211,12 @@ namespace CodingTracker.View.Forms.Containers
         private void MainPageButton_Click(object sender, EventArgs e)
         {
             /*
-            Form mainPage = _formFactory.GetOrCreateForm(FormPageEnum.MainPageTestFormn);
+            Form mainPage = _formFactory.GetOrCreateForm(FormPageEnum.MainPageForm);
             LoadForm(mainPage);
             UpdateActiveButton("dashboard");
             */
 
-            SwitchToForm(FormPageEnum.MainPageTestFormn);
+            SwitchToForm(FormPageEnum.MainPageForm);
  
         }
 

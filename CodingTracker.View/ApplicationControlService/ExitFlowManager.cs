@@ -99,7 +99,7 @@ namespace CodingTracker.View.ApplicationControlService.ButtonNotificationManager
                     _stopWatchTimerService.StopTimer();
                     _codingSessionManager.UpdateSessionTimerActiveBooleansToFalse();
                     _codingSessionManager.ResetCurrentCodingSession();
-                    _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+                    _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
                     break;
 
                 case StopSessionDialogResultEnum.Cancel:

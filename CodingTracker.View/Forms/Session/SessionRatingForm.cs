@@ -21,7 +21,7 @@ namespace CodingTracker.View.Forms.Session
             starRating.Value = (float)Math.Round(starRating.Value);
             _codingSessionManager.SetSessionStarRating((int)starRating.Value);
 
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
     }
 }

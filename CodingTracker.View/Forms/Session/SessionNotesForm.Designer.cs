@@ -64,6 +64,7 @@ namespace CodingTracker.View
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
+            homeButton = new FontAwesome.Sharp.IconPictureBox();
             skipButton = new Guna2GradientButton();
             saveButton = new Guna2GradientButton();
             SessionNotesTextBox = new Guna2TextBox();
@@ -73,7 +74,6 @@ namespace CodingTracker.View
             titleLabel = new Guna2HtmlLabel();
             minimizeButton = new Guna2ControlBox();
             closeButton = new Guna2ControlBox();
-            homeButton = new FontAwesome.Sharp.IconPictureBox();
             mainPanel.SuspendLayout();
             ((ISupportInitialize)homeButton).BeginInit();
             SuspendLayout();
@@ -109,6 +109,22 @@ namespace CodingTracker.View
             mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges14;
             mainPanel.Size = new Size(450, 500);
             mainPanel.TabIndex = 0;
+            // 
+            // homeButton
+            // 
+            homeButton.BackColor = Color.FromArgb(25, 24, 40);
+            homeButton.ForeColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            homeButton.IconColor = Color.FromArgb(255, 160, 210);
+            homeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            homeButton.IconSize = 28;
+            homeButton.Location = new Point(328, 0);
+            homeButton.Margin = new Padding(3, 2, 3, 2);
+            homeButton.Name = "homeButton";
+            homeButton.Size = new Size(43, 28);
+            homeButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            homeButton.TabIndex = 46;
+            homeButton.TabStop = false;
             // 
             // skipButton
             // 
@@ -265,22 +281,6 @@ namespace CodingTracker.View
             closeButton.Size = new Size(45, 29);
             closeButton.TabIndex = 9;
             closeButton.Click += CloseButton_Click;
-            // 
-            // homeButton
-            // 
-            homeButton.BackColor = Color.FromArgb(25, 24, 40);
-            homeButton.ForeColor = Color.FromArgb(255, 160, 210);
-            homeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
-            homeButton.IconColor = Color.FromArgb(255, 160, 210);
-            homeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            homeButton.IconSize = 28;
-            homeButton.Location = new Point(328, 0);
-            homeButton.Margin = new Padding(3, 2, 3, 2);
-            homeButton.Name = "homeButton";
-            homeButton.Size = new Size(43, 28);
-            homeButton.SizeMode = PictureBoxSizeMode.CenterImage;
-            homeButton.TabIndex = 46;
-            homeButton.TabStop = false;
             // 
             // SessionNotesForm
             // 

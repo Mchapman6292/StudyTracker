@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace CodingTracker.View.Forms.TestForm
 {
-    public partial class TestFormMainPage : Form
+    public partial class MainPage : Form
     {
 
         private readonly IFormNavigator _formNavigator;
@@ -56,7 +56,7 @@ namespace CodingTracker.View.Forms.TestForm
         private readonly IMainPagePieChartManager _mainPagePieChartManager;
 
 
-        public TestFormMainPage
+        public MainPage
         (
             IFormNavigator formNavigator,
             ILabelAssignment labelAssignment,

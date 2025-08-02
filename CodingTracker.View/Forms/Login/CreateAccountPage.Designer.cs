@@ -153,7 +153,7 @@
             guna2HtmlLabel1.BackColor = Color.Transparent;
             guna2HtmlLabel1.Font = new Font("Century Gothic", 20F, FontStyle.Bold);
             guna2HtmlLabel1.ForeColor = Color.FromArgb(204, 84, 144);
-            guna2HtmlLabel1.Location = new Point(116, 83);
+            guna2HtmlLabel1.Location = new Point(137, 83);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
             guna2HtmlLabel1.Size = new Size(196, 34);
             guna2HtmlLabel1.TabIndex = 45;
