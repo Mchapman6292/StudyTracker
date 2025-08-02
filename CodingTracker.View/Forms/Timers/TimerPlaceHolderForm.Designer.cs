@@ -63,7 +63,7 @@
             placeHolderpanelForSkControl.Controls.Add(minutesSinglePanel);
             placeHolderpanelForSkControl.Controls.Add(hoursLeadingPanel);
             placeHolderpanelForSkControl.CustomizableEdges = customizableEdges13;
-            placeHolderpanelForSkControl.Location = new Point(133, 21);
+            placeHolderpanelForSkControl.Location = new Point(27, 74);
             placeHolderpanelForSkControl.Name = "placeHolderpanelForSkControl";
             placeHolderpanelForSkControl.ShadowDecoration.CustomizableEdges = customizableEdges14;
             placeHolderpanelForSkControl.Size = new Size(448, 590);
@@ -73,7 +73,7 @@
             // 
             hoursSinglePanel.BackColor = Color.FromArgb(50, 49, 65);
             hoursSinglePanel.CustomizableEdges = customizableEdges1;
-            hoursSinglePanel.Location = new Point(99, 240);
+            hoursSinglePanel.Location = new Point(87, 234);
             hoursSinglePanel.Name = "hoursSinglePanel";
             hoursSinglePanel.ShadowDecoration.CustomizableEdges = customizableEdges2;
             hoursSinglePanel.Size = new Size(25, 300);
@@ -83,7 +83,7 @@
             // 
             minutesLeadingPanel.BackColor = Color.FromArgb(50, 49, 65);
             minutesLeadingPanel.CustomizableEdges = customizableEdges3;
-            minutesLeadingPanel.Location = new Point(191, 240);
+            minutesLeadingPanel.Location = new Point(179, 234);
             minutesLeadingPanel.Name = "minutesLeadingPanel";
             minutesLeadingPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
             minutesLeadingPanel.Size = new Size(25, 300);
@@ -93,7 +93,7 @@
             // 
             secondsLeadingPanel.BackColor = Color.FromArgb(50, 49, 65);
             secondsLeadingPanel.CustomizableEdges = customizableEdges5;
-            secondsLeadingPanel.Location = new Point(325, 240);
+            secondsLeadingPanel.Location = new Point(313, 234);
             secondsLeadingPanel.Name = "secondsLeadingPanel";
             secondsLeadingPanel.ShadowDecoration.CustomizableEdges = customizableEdges6;
             secondsLeadingPanel.Size = new Size(25, 300);
@@ -103,7 +103,7 @@
             // 
             secondsSinglePanel.BackColor = Color.FromArgb(50, 49, 65);
             secondsSinglePanel.CustomizableEdges = customizableEdges7;
-            secondsSinglePanel.Location = new Point(365, 240);
+            secondsSinglePanel.Location = new Point(353, 234);
             secondsSinglePanel.Name = "secondsSinglePanel";
             secondsSinglePanel.ShadowDecoration.CustomizableEdges = customizableEdges8;
             secondsSinglePanel.Size = new Size(25, 300);
@@ -113,7 +113,7 @@
             // 
             minutesSinglePanel.BackColor = Color.FromArgb(50, 49, 65);
             minutesSinglePanel.CustomizableEdges = customizableEdges9;
-            minutesSinglePanel.Location = new Point(231, 240);
+            minutesSinglePanel.Location = new Point(219, 234);
             minutesSinglePanel.Name = "minutesSinglePanel";
             minutesSinglePanel.ShadowDecoration.CustomizableEdges = customizableEdges10;
             minutesSinglePanel.Size = new Size(25, 300);
@@ -123,7 +123,7 @@
             // 
             hoursLeadingPanel.BackColor = Color.FromArgb(50, 49, 65);
             hoursLeadingPanel.CustomizableEdges = customizableEdges11;
-            hoursLeadingPanel.Location = new Point(59, 240);
+            hoursLeadingPanel.Location = new Point(47, 234);
             hoursLeadingPanel.Name = "hoursLeadingPanel";
             hoursLeadingPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
             hoursLeadingPanel.Size = new Size(25, 300);
@@ -134,7 +134,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(699, 749);
+            ClientSize = new Size(511, 749);
             Controls.Add(placeHolderpanelForSkControl);
             FormBorderStyle = FormBorderStyle.None;
             Name = "TimerPlaceHolderForm";

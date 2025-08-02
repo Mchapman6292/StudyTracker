@@ -79,7 +79,7 @@ namespace CodingTracker.View
             guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
             loginButton = new CustomGradientButton();
             createAccountButton = new CustomGradientButton();
-            newForgotPasswordButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            forgotPasswordButton = new CustomGradientButton();
             guna2Transition1 = new Guna.UI2.WinForms.Guna2Transition();
             guna2Separator1 = new Guna.UI2.WinForms.Guna2Separator();
             orLabel = new Label();
@@ -309,33 +309,36 @@ namespace CodingTracker.View
             createAccountButton.Text = "Create Account";
             createAccountButton.Click += NewForgotPasswordButton_Click;
             // 
-            // newForgotPasswordButton
+            // forgotPasswordButton
             // 
-            newForgotPasswordButton.AutoRoundedCorners = true;
-            newForgotPasswordButton.BorderColor = Color.Transparent;
-            newForgotPasswordButton.BorderRadius = 10;
-            newForgotPasswordButton.BorderThickness = 2;
-            newForgotPasswordButton.Cursor = Cursors.Hand;
-            newForgotPasswordButton.CustomizableEdges = customizableEdges17;
-            guna2Transition1.SetDecoration(newForgotPasswordButton, Guna.UI2.AnimatorNS.DecorationType.None);
-            newForgotPasswordButton.DisabledState.BorderColor = Color.DarkGray;
-            newForgotPasswordButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            newForgotPasswordButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            newForgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            newForgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            newForgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
-            newForgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
-            newForgotPasswordButton.Font = new Font("Segoe UI", 9F);
-            newForgotPasswordButton.ForeColor = Color.FromArgb(255, 200, 230);
-            newForgotPasswordButton.Location = new Point(196, 291);
-            newForgotPasswordButton.Name = "newForgotPasswordButton";
-            newForgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            newForgotPasswordButton.Size = new Size(158, 23);
-            newForgotPasswordButton.TabIndex = 28;
-            newForgotPasswordButton.Text = "Forgot password?";
-            newForgotPasswordButton.Click += NewCreateAccountButton_Click;
-            newForgotPasswordButton.MouseEnter += CreateAccountButton_MouseEnter;
-            newForgotPasswordButton.MouseLeave += CreateAccountButton_MouseLeave;
+            forgotPasswordButton.Animated = true;
+            forgotPasswordButton.EnableHoverRipple = true;
+            forgotPasswordButton.EnableHoverRipple = true;
+            forgotPasswordButton.AutoRoundedCorners = true;
+            forgotPasswordButton.BorderColor = Color.Transparent;
+            forgotPasswordButton.BorderRadius = 10;
+            forgotPasswordButton.BorderThickness = 2;
+            forgotPasswordButton.Cursor = Cursors.Hand;
+            forgotPasswordButton.CustomizableEdges = customizableEdges17;
+            guna2Transition1.SetDecoration(forgotPasswordButton, Guna.UI2.AnimatorNS.DecorationType.None);
+            forgotPasswordButton.DisabledState.BorderColor = Color.DarkGray;
+            forgotPasswordButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            forgotPasswordButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            forgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            forgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            forgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
+            forgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
+            forgotPasswordButton.Font = new Font("Segoe UI", 9F);
+            forgotPasswordButton.ForeColor = Color.FromArgb(255, 200, 230);
+            forgotPasswordButton.Location = new Point(196, 291);
+            forgotPasswordButton.Name = "forgotPasswordButton";
+            forgotPasswordButton.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            forgotPasswordButton.Size = new Size(158, 23);
+            forgotPasswordButton.TabIndex = 28;
+            forgotPasswordButton.Text = "Forgot password?";
+            forgotPasswordButton.Click += NewCreateAccountButton_Click;
+            forgotPasswordButton.MouseEnter += CreateAccountButton_MouseEnter;
+            forgotPasswordButton.MouseLeave += CreateAccountButton_MouseLeave;
             // 
             // guna2Transition1
             // 
@@ -436,7 +439,7 @@ namespace CodingTracker.View
             Controls.Add(orLabel);
             Controls.Add(guna2Separator1);
             Controls.Add(createAccountButton);
-            Controls.Add(newForgotPasswordButton);
+            Controls.Add(forgotPasswordButton);
             Controls.Add(loginButton);
             Controls.Add(loginPageTopPanel);
             Controls.Add(rememberMeToggle);
@@ -487,7 +490,7 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private CustomGradientButton loginButton;
         private CustomGradientButton createAccountButton;
-        private Guna.UI2.WinForms.Guna2GradientButton newForgotPasswordButton;
+        private CustomGradientButton forgotPasswordButton;
         private Guna.UI2.WinForms.Guna2Transition guna2Transition1;
         private Guna.UI2.WinForms.Guna2Separator guna2Separator1;
         private Label orLabel;

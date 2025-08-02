@@ -282,7 +282,6 @@ namespace CodingTracker.View.Forms
         {
             List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
 
-
             _stopWatchTimerService.StopTimer();
             _exitFlowManager.HandleRestartSessionRequest(this);
 
@@ -304,6 +303,43 @@ namespace CodingTracker.View.Forms
         private void minimizeButton_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void newPauseButton_Click(object sender, EventArgs e)
+        {
+            if (isPaused)
+            {
+                _stopWatchTimerService.StartSessionTimer();
+                animationTimer.Start();
+
+                pauseButton.Text = "⏸";
+                pauseButton.TextOffset = new Point(2, 0);
+                isPaused = false;
+            }
+            else
+            {
+                _stopWatchTimerService.StopTimer();
+                animationTimer.Stop();
+                pauseButton.Text = "▶";
+                pauseButton.TextOffset = new Point(3, 0);
+                isPaused = true;
+            }
+        }
+
+        private void newRestartButton_Click(object sender, EventArgs e)
+        {
+            List<AnimatedTimerColumn> columnsList = _animatedTimerManager.ReturnTimerColumns();
+
+            _stopWatchTimerService.StopTimer();
+            _exitFlowManager.HandleRestartSessionRequest(this);
+        }
+
+        private void newStopButton_Click(object sender, EventArgs e)
+        {
+            TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            _exitFlowManager.HandleStopButtonRequest(this);
+
+            _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
         }
 
 

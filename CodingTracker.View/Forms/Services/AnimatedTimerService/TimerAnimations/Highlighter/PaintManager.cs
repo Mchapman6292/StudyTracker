@@ -113,12 +113,9 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             {
 
 
-                /*
+                
                 Color = new SKColor(49, 50, 68).WithAlpha(alpha),
-                */
-                Color = AnimatedColumnSettings.CatppuccinPink,
                 Style = SKPaintStyle.Fill,
-
                 StrokeWidth = 1f,
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
@@ -160,7 +157,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         {
             SKShader columnGradinet = _gradientManager.CreateColumnGradientByIsColumnActive(column);
 
-    
+
             return new SKPaint()
             {
                 StrokeWidth = 1f,
@@ -170,7 +167,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             };
         }
 
- 
+
 
 
         // To handle blue occuring on first transition add a bool 

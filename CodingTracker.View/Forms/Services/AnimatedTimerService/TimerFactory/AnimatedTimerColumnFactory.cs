@@ -19,7 +19,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerFactory
 
     public class AnimatedTimerColumnFactory : IAnimatedTimerColumnFactory
     {
-
         private const float _columnSpacing = 100;
         private const float _spacingBetweenMatchingColumns = 60;
         private readonly IApplicationLogger _appLogger;

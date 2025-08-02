@@ -71,7 +71,7 @@ namespace CodingTracker.View
         private void LoginPage_Load(object sender, EventArgs e)
         {
             _buttonHighlighterService.SetButtonHoverColors(loginButton);
-            _buttonHighlighterService.SetButtonHoverColors(newForgotPasswordButton);
+            _buttonHighlighterService.SetButtonHoverColors(forgotPasswordButton);
             _buttonHighlighterService.SetButtonHoverColors(createAccountButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(loginButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(createAccountButton);
