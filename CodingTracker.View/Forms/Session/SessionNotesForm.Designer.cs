@@ -165,7 +165,7 @@ namespace CodingTracker.View
             // 
             // SessionNotesTextBox
             // 
-            SessionNotesTextBox.BorderColor = Color.FromArgb(168, 228, 255);
+            SessionNotesTextBox.BorderColor = Color.FromArgb(255, 81, 195);
             SessionNotesTextBox.BorderRadius = 8;
             customizableEdges9.BottomRight = false;
             customizableEdges9.TopLeft = false;

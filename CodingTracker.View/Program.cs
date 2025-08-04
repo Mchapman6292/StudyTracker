@@ -50,7 +50,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 // Add good session indicator? / mouse up /down?
-
+// TODO Trim login screen animation.
 
 
 namespace CodingTracker.View.Program

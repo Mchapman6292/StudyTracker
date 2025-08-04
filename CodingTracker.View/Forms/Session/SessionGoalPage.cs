@@ -186,7 +186,7 @@ namespace CodingTracker.View.PopUpFormService
                 return;
             }
 
-
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, true);
             _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
         }
 

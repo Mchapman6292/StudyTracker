@@ -1,5 +1,6 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.View.FormManagement;
+using CodingTracker.View.Forms.Services.SharedFormServices;
 using Guna.UI2.WinForms;
 using OpenTK.Platform.Windows;
 
@@ -12,11 +13,12 @@ namespace CodingTracker.View.Forms.Containers
         private readonly IFormFactory _formFactory;
         private readonly IFormNavigator _formNavigator;
         private readonly IApplicationLogger _appLogger;
+        private readonly IButtonHighlighterService _buttonHighlighterService;
 
 
         private int mainContentPanelXLocation => mainContentPanel.Location.X;
 
-        public MainContainerForm(IFormFactory formFactory, IFormNavigator formNavigator, IApplicationLogger appLogger)
+        public MainContainerForm(IFormFactory formFactory, IFormNavigator formNavigator, IApplicationLogger appLogger, IButtonHighlighterService buttonHighlighterService)
         {
 
             _formFactory = formFactory;
@@ -27,12 +29,23 @@ namespace CodingTracker.View.Forms.Containers
             // Load the dashboard by default when the container opens
             LoadMainPageOnStart();
 
-            // Wire up button click events
+
             mainPageButton.Click += MainPageButton_Click;
             sessionsButton.Click += SessionsButton_Click;
             newSessionButton.Click += NewSessionButton_Click;
             logoutButton.Click += LogoutButton_Click;
 
+            _buttonHighlighterService = buttonHighlighterService;   
+            
+
+        }
+
+
+        private void MainContainerForm_Load(object sender, EventArgs e)
+        {
+            _buttonHighlighterService.SetButtonHoverColors(mainPageButton);
+            _buttonHighlighterService.SetButtonHoverColors(newSessionButton);
+            _buttonHighlighterService.SetButtonHoverColors(sessionsButton);
         }
 
 
@@ -44,7 +57,7 @@ namespace CodingTracker.View.Forms.Containers
 
             foreach (Control control in childForm.Controls)
             {
-                if (control.Location.X > 100) 
+                if (control.Location.X > sideBarXLocation) 
                 {
                     control.Location = new Point(control.Location.X - 178, control.Location.Y);
                     controlsChanged++;
@@ -58,6 +71,15 @@ namespace CodingTracker.View.Forms.Containers
             }
             _appLogger.Debug($"Number of controls changed for {childForm.Name}: {controlsChanged}.");
         }
+
+
+        public void CalculateControlNewLocation(Control childFormControl)
+        {
+
+        }
+
+
+
 
 
 
@@ -119,8 +141,6 @@ namespace CodingTracker.View.Forms.Containers
         {
 
             mainContentPanel.Controls.Clear();
-
-  
             childForm.TopLevel = false;              
             childForm.Dock = DockStyle.Fill;
 

@@ -33,12 +33,12 @@ namespace CodingTracker.View.Forms.Session
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
+            CustomizableEdges customizableEdges3 = new CustomizableEdges();
+            CustomizableEdges customizableEdges4 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2Panel();
             titleLabel = new Guna2HtmlLabel();
-            starRating = new Guna2RatingStar();
+            ratingStarTool = new Guna2RatingStar();
             mainPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -55,39 +55,39 @@ namespace CodingTracker.View.Forms.Session
             mainPanel.BorderRadius = 15;
             mainPanel.BorderThickness = 1;
             mainPanel.Controls.Add(titleLabel);
-            mainPanel.Controls.Add(starRating);
-            mainPanel.CustomizableEdges = customizableEdges1;
+            mainPanel.Controls.Add(ratingStarTool);
+            mainPanel.CustomizableEdges = customizableEdges3;
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(15);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
             mainPanel.Size = new Size(230, 100);
             mainPanel.TabIndex = 0;
             // 
             // titleLabel
             // 
             titleLabel.BackColor = Color.Transparent;
-            titleLabel.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            titleLabel.ForeColor = Color.White;
+            titleLabel.Font = new Font("Century Gothic", 11F, FontStyle.Bold);
+            titleLabel.ForeColor = Color.FromArgb(255, 160, 210);
             titleLabel.Location = new Point(59, 12);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(124, 22);
+            titleLabel.Size = new Size(118, 20);
             titleLabel.TabIndex = 0;
-            titleLabel.Text = "Rate this session:";
+            titleLabel.Text = "Rate this session";
             titleLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
-            // starRating
+            // ratingStarTool
             // 
-            starRating.BorderColor = Color.FromArgb(213, 218, 223);
-            starRating.FillColor = Color.FromArgb(213, 218, 223);
-            starRating.Location = new Point(44, 47);
-            starRating.Name = "starRating";
-            starRating.RatingColor = Color.Gold;
-            starRating.Size = new Size(152, 35);
-            starRating.TabIndex = 1;
-            starRating.ValueChanged += starRating_ValueChanged;
+            ratingStarTool.BorderColor = Color.FromArgb(213, 218, 223);
+            ratingStarTool.FillColor = Color.FromArgb(213, 218, 223);
+            ratingStarTool.Location = new Point(44, 47);
+            ratingStarTool.Name = "ratingStarTool";
+            ratingStarTool.RatingColor = Color.Gold;
+            ratingStarTool.Size = new Size(152, 35);
+            ratingStarTool.TabIndex = 1;
+            ratingStarTool.ValueChanged += starRating_ValueChanged;
             // 
             // SessionRatingForm
             // 
@@ -110,7 +110,7 @@ namespace CodingTracker.View.Forms.Session
 
         private Guna2Panel mainPanel;
         private Guna2GradientButton confirmButton;
-        private Guna2RatingStar starRating;
+        private Guna2RatingStar ratingStarTool;
         private Guna2HtmlLabel titleLabel;
     }
 }

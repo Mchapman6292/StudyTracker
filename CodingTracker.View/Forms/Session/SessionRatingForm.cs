@@ -18,10 +18,10 @@ namespace CodingTracker.View.Forms.Session
 
         private void starRating_ValueChanged(object sender, EventArgs e)
         {
-            starRating.Value = (float)Math.Round(starRating.Value);
-            _codingSessionManager.SetSessionStarRating((int)starRating.Value);
+            ratingStarTool.Value = (float)Math.Round(ratingStarTool.Value);
+            _codingSessionManager.SetSessionStarRating((int)ratingStarTool.Value);
 
-            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
         }
     }
 }

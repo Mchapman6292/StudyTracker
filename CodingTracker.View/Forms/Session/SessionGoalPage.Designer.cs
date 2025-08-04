@@ -59,6 +59,7 @@ namespace CodingTracker.View.PopUpFormService
             minimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             mainPanel = new Guna.UI2.WinForms.Guna2Panel();
             newHomeButton = new FontAwesome.Sharp.IconPictureBox();
+            sessionGoalDragControl = new Guna.UI2.WinForms.Guna2DragControl(components);
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)newHomeButton).BeginInit();
             SuspendLayout();
@@ -90,11 +91,11 @@ namespace CodingTracker.View.PopUpFormService
             formatLabel.BackColor = Color.Transparent;
             formatLabel.Font = new Font("Segoe UI", 9F);
             formatLabel.ForeColor = Color.FromArgb(255, 200, 230);
-            formatLabel.Location = new Point(25, 135);
+            formatLabel.Location = new Point(27, 154);
             formatLabel.Name = "formatLabel";
             formatLabel.Size = new Size(350, 20);
             formatLabel.TabIndex = 2;
-            formatLabel.Text = "Enter time in HHMM format (e.g., 0130 for 1 hour 30 minutes)";
+            formatLabel.Text = "HH:MM";
             formatLabel.TextAlignment = ContentAlignment.MiddleCenter;
             // 
             // timeDisplayLabel
@@ -103,7 +104,7 @@ namespace CodingTracker.View.PopUpFormService
             timeDisplayLabel.BackColor = Color.Transparent;
             timeDisplayLabel.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             timeDisplayLabel.ForeColor = Color.FromArgb(255, 200, 230);
-            timeDisplayLabel.Location = new Point(23, 44);
+            timeDisplayLabel.Location = new Point(38, 44);
             timeDisplayLabel.Name = "timeDisplayLabel";
             timeDisplayLabel.Size = new Size(350, 40);
             timeDisplayLabel.TabIndex = 0;
@@ -112,33 +113,36 @@ namespace CodingTracker.View.PopUpFormService
             // 
             // skipButton
             // 
-            skipButton.BorderRadius = 8;
+            skipButton.BorderColor = Color.FromArgb(35, 34, 50);
+            skipButton.BorderRadius = 23;
             skipButton.CustomizableEdges = customizableEdges9;
             skipButton.FillColor = Color.FromArgb(255, 81, 195);
             skipButton.FillColor2 = Color.FromArgb(168, 228, 255);
             skipButton.Font = new Font("Segoe UI", 9F);
             skipButton.ForeColor = Color.White;
-            skipButton.Location = new Point(215, 170);
+            skipButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            skipButton.Location = new Point(215, 191);
             skipButton.Name = "skipButton";
             skipButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            skipButton.Size = new Size(150, 45);
+            skipButton.Size = new Size(150, 36);
             skipButton.TabIndex = 4;
             skipButton.Text = "Skip";
             skipButton.Click += SkipButton_Click;
             // 
             // setTimeGoalButton
             // 
-            setTimeGoalButton.BorderRadius = 8;
+            setTimeGoalButton.BorderColor = Color.FromArgb(35, 34, 50);
+            setTimeGoalButton.BorderRadius = 23;
             setTimeGoalButton.CustomizableEdges = customizableEdges7;
             setTimeGoalButton.FillColor = Color.FromArgb(255, 81, 195);
             setTimeGoalButton.FillColor2 = Color.FromArgb(168, 228, 255);
             setTimeGoalButton.Font = new Font("Segoe UI", 9F);
             setTimeGoalButton.ForeColor = Color.White;
-            setTimeGoalButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            setTimeGoalButton.Location = new Point(55, 170);
+            setTimeGoalButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            setTimeGoalButton.Location = new Point(55, 191);
             setTimeGoalButton.Name = "setTimeGoalButton";
             setTimeGoalButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            setTimeGoalButton.Size = new Size(150, 45);
+            setTimeGoalButton.Size = new Size(150, 36);
             setTimeGoalButton.TabIndex = 3;
             setTimeGoalButton.Text = "Set Time Goal";
             setTimeGoalButton.Click += SetTimeGoalButton_Click;
@@ -152,7 +156,7 @@ namespace CodingTracker.View.PopUpFormService
             timeGoalTextBox.FillColor = Color.FromArgb(45, 46, 50);
             timeGoalTextBox.Font = new Font("Segoe UI", 9F);
             timeGoalTextBox.ForeColor = Color.FromArgb(255, 200, 230);
-            timeGoalTextBox.Location = new Point(140, 90);
+            timeGoalTextBox.Location = new Point(151, 100);
             timeGoalTextBox.MaxLength = 4;
             timeGoalTextBox.Name = "timeGoalTextBox";
             timeGoalTextBox.PlaceholderText = "0100";
@@ -207,6 +211,8 @@ namespace CodingTracker.View.PopUpFormService
             mainPanel.Controls.Add(timeGoalTextBox);
             mainPanel.Controls.Add(setTimeGoalButton);
             mainPanel.Controls.Add(skipButton);
+            mainPanel.Controls.Add(formatLabel);
+            mainPanel.Controls.Add(timeDisplayLabel);
             mainPanel.CustomizableEdges = customizableEdges11;
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.FillColor = Color.FromArgb(35, 34, 50);
@@ -234,6 +240,12 @@ namespace CodingTracker.View.PopUpFormService
             newHomeButton.TabIndex = 46;
             newHomeButton.TabStop = false;
             newHomeButton.Click += newHomeButton_Click;
+            // 
+            // sessionGoalDragControl
+            // 
+            sessionGoalDragControl.DockIndicatorTransparencyValue = 0.6D;
+            sessionGoalDragControl.TargetControl = mainPanel;
+            sessionGoalDragControl.UseTransparentDrag = true;
             // 
             // SessionGoalPage
             // 
@@ -264,5 +276,6 @@ namespace CodingTracker.View.PopUpFormService
         private Guna.UI2.WinForms.Guna2GradientButton setTimeGoalButton;
         private Guna.UI2.WinForms.Guna2GradientButton skipButton;
         private FontAwesome.Sharp.IconPictureBox newHomeButton;
+        private Guna.UI2.WinForms.Guna2DragControl sessionGoalDragControl;
     }
 }

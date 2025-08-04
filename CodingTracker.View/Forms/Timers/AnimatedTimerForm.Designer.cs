@@ -68,6 +68,7 @@ namespace CodingTracker.View.Forms
             timeDisplayLabel = new Guna2HtmlLabel();
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            animatedTimerFormDragControl = new Guna2DragControl(components);
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)codingTrackerSymbol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
@@ -334,6 +335,12 @@ namespace CodingTracker.View.Forms
             animatedTimerSKControl.Size = new Size(448, 608);
             animatedTimerSKControl.TabIndex = 0;
             // 
+            // animatedTimerFormDragControl
+            // 
+            animatedTimerFormDragControl.DockIndicatorTransparencyValue = 0.6D;
+            animatedTimerFormDragControl.TargetControl = mainPanel;
+            animatedTimerFormDragControl.UseTransparentDrag = true;
+            // 
             // AnimatedTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -371,5 +378,6 @@ namespace CodingTracker.View.Forms
         private FontAwesome.Sharp.IconPictureBox codingTrackerSymbol;
         private Guna2HtmlLabel codingTrackerDisplayLabel;
         private Guna2TextBox nameDisplayTextBox;
+        private Guna2DragControl animatedTimerFormDragControl;
     }
 }
