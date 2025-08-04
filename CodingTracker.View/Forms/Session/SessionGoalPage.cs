@@ -186,7 +186,7 @@ namespace CodingTracker.View.PopUpFormService
                 return;
             }
 
-
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, true);
             _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
         }
 
@@ -253,7 +253,7 @@ namespace CodingTracker.View.PopUpFormService
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
             this.Close();
         }
 

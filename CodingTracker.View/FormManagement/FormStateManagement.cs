@@ -26,7 +26,7 @@ namespace CodingTracker.View.FormManagement
 
     public class FormStateManagement : IFormStateManagement
     {
-        private MainPage _mainPageInstance;
+        private OldMainPage _mainPageInstance;
         private EditSessionPage _editSessionPageInstance;
         private CreateAccountPage _createAccountPageInstance;
         private LoginPage _loginPageInstance;
@@ -71,7 +71,7 @@ namespace CodingTracker.View.FormManagement
         private readonly Dictionary<FormPageEnum, Type> _formTypes = new Dictionary<FormPageEnum, Type>
         {
             { FormPageEnum.LoginPage, typeof(LoginPage)},
-            { FormPageEnum.MainPage, typeof(MainPage)},
+            { FormPageEnum.OldMainPage, typeof(OldMainPage)},
             { FormPageEnum.EditSessionForm, typeof(EditSessionPage)},
             { FormPageEnum.CreateAccountForm, typeof(CreateAccountPage)},
             { FormPageEnum.SessionGoalForm, typeof(SessionGoalPage)},
@@ -120,7 +120,7 @@ namespace CodingTracker.View.FormManagement
         {
             switch (form)
             {
-                case FormPageEnum.MainPage:
+                case FormPageEnum.OldMainPage:
                     return _mainPageInstance;
                 case FormPageEnum.EditSessionForm:
                     return _editSessionPageInstance;
@@ -154,8 +154,8 @@ namespace CodingTracker.View.FormManagement
         {
             switch (form)
             {
-                case FormPageEnum.MainPage:
-                    _mainPageInstance = instance as MainPage;
+                case FormPageEnum.OldMainPage:
+                    _mainPageInstance = instance as OldMainPage;
                     break;
                 case FormPageEnum.EditSessionForm:
                     _editSessionPageInstance = instance as EditSessionPage;
@@ -197,7 +197,7 @@ namespace CodingTracker.View.FormManagement
         {
             switch (form)
             {
-                case FormPageEnum.MainPage:
+                case FormPageEnum.OldMainPage:
                     return _mainPageCreated;
                 case FormPageEnum.EditSessionForm:
                     return _editSessionPageCreated;

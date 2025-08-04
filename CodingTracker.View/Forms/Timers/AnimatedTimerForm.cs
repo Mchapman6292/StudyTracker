@@ -38,6 +38,7 @@ namespace CodingTracker.View.Forms
         private readonly IButtonHighlighterService _buttonHighLighterService;
         private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
 
+
         public AnimatedTimerColumn column;
 
         private System.Windows.Forms.Timer animationTimer;
@@ -176,6 +177,7 @@ namespace CodingTracker.View.Forms
         private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
         {
             _stopWatchTimerService.StartSessionTimer();
+            _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
         }
 
         public string FormatElapsedTimeSPan(TimeSpan elapsed)
@@ -242,7 +244,7 @@ namespace CodingTracker.View.Forms
 
         private void homeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
+            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.OldMainPage);
             this.WindowState = FormWindowState.Minimized;
         }
 
@@ -296,7 +298,7 @@ namespace CodingTracker.View.Forms
 
         private void HomeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
+            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.OldMainPage);
             this.WindowState = FormWindowState.Minimized;
         }
 
@@ -336,10 +338,10 @@ namespace CodingTracker.View.Forms
 
         private void newStopButton_Click(object sender, EventArgs e)
         {
-            TimeSpan duration = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            _stopWatchTimerService.StopTimer();
             _exitFlowManager.HandleStopButtonRequest(this);
 
-            _codingSessionManager.UpdateCodingSessionTimerEnded(duration);
+
         }
 
 

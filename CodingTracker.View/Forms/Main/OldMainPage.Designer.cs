@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace CodingTracker.View
 {
-    partial class MainPage
+    partial class OldMainPage
     {
         /// <summary>
         /// Required designer variable.
@@ -958,7 +958,7 @@ namespace CodingTracker.View
             homeButton.TabIndex = 45;
             homeButton.TabStop = false;
             // 
-            // MainPage
+            // OldMainPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -974,7 +974,7 @@ namespace CodingTracker.View
             Controls.Add(closeButton);
             ForeColor = Color.FromArgb(35, 34, 50);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "MainPage";
+            Name = "OldMainPage";
             TodayTotalPanel.ResumeLayout(false);
             guna2GradientPanel3.ResumeLayout(false);
             averageSessionPanel.ResumeLayout(false);

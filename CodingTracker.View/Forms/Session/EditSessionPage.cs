@@ -331,12 +331,12 @@ namespace CodingTracker.View
 
         private void EditSessionPageBackButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
 
         private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToForm(FormPageEnum.MainPage);
+            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
 
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)

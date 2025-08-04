@@ -33,7 +33,7 @@ namespace CodingTracker.View
 {
 
     // Old background colors 52, 90, 160, 220,  52, 255, 81, 195
-    public partial class MainPage : Form
+    public partial class OldMainPage : Form
     {
         private readonly IFormNavigator _formNavigator;
         private readonly ILabelAssignment _labelAssignment;
@@ -73,7 +73,7 @@ namespace CodingTracker.View
 
         private Stopwatch waveStopWatch = new Stopwatch();
 
-        public MainPage(
+        public OldMainPage(
             IFormNavigator formNavigator,
             ILabelAssignment labelAssignment,
             IButtonHighlighterService buttonHighlighterService,

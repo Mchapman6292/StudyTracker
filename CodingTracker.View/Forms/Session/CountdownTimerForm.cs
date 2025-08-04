@@ -181,7 +181,7 @@ namespace CodingTracker.View.TimerDisplayService
 
         private void homeButton_Click(object sender, EventArgs e)
         {
-            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.MainPage);
+            _formNavigator.SwitchToFormWithoutPreviousFormClosing(FormPageEnum.OldMainPage);
             this.WindowState = FormWindowState.Minimized;
         }
 

@@ -68,7 +68,7 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         public void UpdateSessionStartTimeAndActiveBoolsToTrue()
         {
-            SetCodingSessionStartTimeAndDate(DateTime.Now);
+            SetCodingSessionStartTimeAndDate(DateTime.UtcNow);
             UpdateISCodingSessionActive(true);
             UpdateIsSessionTimerActive(true);
         }
@@ -82,7 +82,7 @@ namespace CodingTracker.Business.CodingSessionManagers
             string durationHHMM = _utilityService.ConvertDurationSecondsToHHMMStringWithSpace(durationSeconds);
             SetDurationHHMM(durationHHMM);
             SetDurationSeconds(durationSeconds);
-            SetCodingSessionEndTimeAndDate(DateTime.Now);
+            SetCodingSessionEndTimeAndDate(DateTime.UtcNow);
             UpdateGoalCompletionStatus();
         }
 

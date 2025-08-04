@@ -253,6 +253,7 @@ namespace CodingTracker.View
             // 
             // LoginPageAnimateWindow
             // 
+            LoginPageAnimateWindow.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_SLIDE;
             LoginPageAnimateWindow.TargetForm = this;
             // 
             // guna2BorderlessForm1
@@ -312,8 +313,6 @@ namespace CodingTracker.View
             // forgotPasswordButton
             // 
             forgotPasswordButton.Animated = true;
-            forgotPasswordButton.EnableHoverRipple = true;
-            forgotPasswordButton.EnableHoverRipple = true;
             forgotPasswordButton.AutoRoundedCorners = true;
             forgotPasswordButton.BorderColor = Color.Transparent;
             forgotPasswordButton.BorderRadius = 10;
@@ -326,6 +325,7 @@ namespace CodingTracker.View
             forgotPasswordButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             forgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
             forgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            forgotPasswordButton.EnableHoverRipple = true;
             forgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
             forgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
             forgotPasswordButton.Font = new Font("Segoe UI", 9F);

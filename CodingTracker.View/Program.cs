@@ -50,7 +50,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 // Add good session indicator? / mouse up /down?
-
+// TODO Trim login screen animation.
 
 
 namespace CodingTracker.View.Program
@@ -146,7 +146,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
 
-                    .AddSingleton<MainPage>()
+                    .AddSingleton<OldMainPage>()
                     .AddTransient<EditSessionPage>()
                     .AddTransient<CreateAccountPage>()
                     .AddTransient<SessionGoalPage>()
@@ -157,7 +157,7 @@ namespace CodingTracker.View.Program
                     .AddSingleton<SessionRatingForm>()
                     .AddSingleton<TimerPlaceHolderForm>()
                     .AddSingleton<AnimatedTimerForm>()
-                    .AddSingleton<TestFormMainPage>()
+                    .AddSingleton<MainPage>()
     
 
 
