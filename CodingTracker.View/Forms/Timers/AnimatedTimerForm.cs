@@ -91,7 +91,7 @@ namespace CodingTracker.View.Forms
             this.Shown += AnimatedTimerForm_Shownn;
             this.Load += AnimatedTimerForm_Load;
 
-
+            elapsedTestToggleSwitch.CheckedChanged += ElapsedTestToggleSwitch_Checked;
 
 
             InitializeAnimationTimer();
@@ -102,6 +102,17 @@ namespace CodingTracker.View.Forms
 
 
         }
+
+
+        private void ElapsedTestToggleSwitch_Checked(Object sender, EventArgs e)
+        {
+            _animatedTimerManager.UpdateTimerTestModeEnabled(elapsedTestToggleSwitch.Checked);
+      
+        }
+
+
+
+
 
 
 

@@ -70,11 +70,11 @@
             sidebarPanel.Controls.Add(guna2HtmlLabel6);
             sidebarPanel.CustomizableEdges = customizableEdges9;
             sidebarPanel.Dock = DockStyle.Left;
-            sidebarPanel.FillColor = Color.FromArgb(35, 34, 50);
+            sidebarPanel.FillColor = Color.FromArgb(26, 26, 46);
             sidebarPanel.Location = new Point(0, 0);
             sidebarPanel.Name = "sidebarPanel";
             sidebarPanel.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            sidebarPanel.Size = new Size(200, 800);
+            sidebarPanel.Size = new Size(200, 850);
             sidebarPanel.TabIndex = 50;
             // 
             // newSessionButton
@@ -154,7 +154,7 @@
             logoutButton.FillColor2 = Color.Transparent;
             logoutButton.Font = new Font("Segoe UI", 10F);
             logoutButton.ForeColor = Color.FromArgb(206, 212, 218);
-            logoutButton.Location = new Point(12, 729);
+            logoutButton.Location = new Point(12, 757);
             logoutButton.Name = "logoutButton";
             logoutButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             logoutButton.Size = new Size(160, 40);
@@ -169,7 +169,7 @@
             githubPictureBox.IconColor = Color.FromArgb(204, 84, 144);
             githubPictureBox.IconFont = FontAwesome.Sharp.IconFont.Auto;
             githubPictureBox.IconSize = 34;
-            githubPictureBox.Location = new Point(68, 39);
+            githubPictureBox.Location = new Point(81, 48);
             githubPictureBox.Margin = new Padding(3, 2, 3, 2);
             githubPictureBox.Name = "githubPictureBox";
             githubPictureBox.Size = new Size(35, 34);
@@ -182,7 +182,7 @@
             guna2HtmlLabel6.BackColor = Color.Transparent;
             guna2HtmlLabel6.Font = new Font("Century Gothic", 18F, FontStyle.Bold);
             guna2HtmlLabel6.ForeColor = Color.FromArgb(204, 84, 144);
-            guna2HtmlLabel6.Location = new Point(12, 13);
+            guna2HtmlLabel6.Location = new Point(12, 4);
             guna2HtmlLabel6.Name = "guna2HtmlLabel6";
             guna2HtmlLabel6.Size = new Size(175, 30);
             guna2HtmlLabel6.TabIndex = 33;
@@ -191,14 +191,14 @@
             // 
             // mainContentPanel
             // 
-            mainContentPanel.BackColor = Color.FromArgb(35, 34, 50);
+            mainContentPanel.BackColor = Color.FromArgb(26, 26, 46);
             mainContentPanel.BorderRadius = 12;
             mainContentPanel.CustomizableEdges = customizableEdges11;
             mainContentPanel.Dock = DockStyle.Fill;
             mainContentPanel.Location = new Point(200, 0);
             mainContentPanel.Name = "mainContentPanel";
             mainContentPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            mainContentPanel.Size = new Size(1100, 800);
+            mainContentPanel.Size = new Size(1100, 850);
             mainContentPanel.TabIndex = 51;
             // 
             // closeButton
@@ -244,7 +244,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1300, 800);
+            ClientSize = new Size(1300, 850);
             Controls.Add(mainContentPanel);
             Controls.Add(sidebarPanel);
             Controls.Add(closeButton);

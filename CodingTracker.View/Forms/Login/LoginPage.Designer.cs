@@ -326,8 +326,8 @@ namespace CodingTracker.View
             forgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
             forgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             forgotPasswordButton.EnableHoverRipple = true;
-            forgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
-            forgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
+            forgotPasswordButton.FillColor = Color.FromArgb(26, 26, 46);
+            forgotPasswordButton.FillColor2 = Color.FromArgb(26, 26, 46);
             forgotPasswordButton.Font = new Font("Segoe UI", 9F);
             forgotPasswordButton.ForeColor = Color.FromArgb(255, 200, 230);
             forgotPasswordButton.Location = new Point(196, 291);
@@ -431,7 +431,7 @@ namespace CodingTracker.View
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
+            BackColor = Color.FromArgb(26, 26, 46);
             ClientSize = new Size(1284, 681);
             Controls.Add(iconPictureBox1);
             Controls.Add(guna2HtmlLabel6);

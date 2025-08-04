@@ -157,7 +157,7 @@ namespace CodingTracker.View.Forms.TestForm
             closeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.FromArgb(255, 160, 210);
-            closeButton.Location = new Point(1065, -5);
+            closeButton.Location = new Point(1054, -4);
             closeButton.Name = "closeButton";
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
             closeButton.Size = new Size(45, 34);
@@ -174,10 +174,10 @@ namespace CodingTracker.View.Forms.TestForm
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
             minimizeButton.IconColor = Color.FromArgb(255, 160, 210);
-            minimizeButton.Location = new Point(1014, -5);
+            minimizeButton.Location = new Point(1003, 0);
             minimizeButton.Name = "minimizeButton";
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            minimizeButton.Size = new Size(45, 34);
+            minimizeButton.Size = new Size(45, 30);
             minimizeButton.TabIndex = 26;
             // 
             // TodayTotalPanel
@@ -676,7 +676,7 @@ namespace CodingTracker.View.Forms.TestForm
             todayTotalParentPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             todayTotalParentPanel.ForeColor = Color.FromArgb(44, 45, 65);
             todayTotalParentPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            todayTotalParentPanel.Location = new Point(21, 27);
+            todayTotalParentPanel.Location = new Point(12, 41);
             todayTotalParentPanel.Name = "todayTotalParentPanel";
             todayTotalParentPanel.ShadowDecoration.BorderRadius = 12;
             todayTotalParentPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
@@ -733,12 +733,14 @@ namespace CodingTracker.View.Forms.TestForm
             statsPanelsParentPanel.Controls.Add(todayTotalParentPanel);
             statsPanelsParentPanel.Controls.Add(averageSessionContainerPanel);
             statsPanelsParentPanel.Controls.Add(guna2GradientPanel7);
+            statsPanelsParentPanel.Controls.Add(minimizeButton);
+            statsPanelsParentPanel.Controls.Add(closeButton);
             statsPanelsParentPanel.CustomizableEdges = customizableEdges33;
-            statsPanelsParentPanel.Location = new Point(0, 34);
+            statsPanelsParentPanel.Location = new Point(0, -1);
             statsPanelsParentPanel.Name = "statsPanelsParentPanel";
             statsPanelsParentPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
             statsPanelsParentPanel.ShadowDecoration.CustomizableEdges = customizableEdges34;
-            statsPanelsParentPanel.Size = new Size(1188, 196);
+            statsPanelsParentPanel.Size = new Size(1188, 231);
             statsPanelsParentPanel.TabIndex = 44;
             // 
             // averageSessionContainerPanel
@@ -752,7 +754,7 @@ namespace CodingTracker.View.Forms.TestForm
             averageSessionContainerPanel.FillColor2 = Color.FromArgb(44, 45, 65);
             averageSessionContainerPanel.ForeColor = Color.FromArgb(44, 45, 65);
             averageSessionContainerPanel.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            averageSessionContainerPanel.Location = new Point(730, 27);
+            averageSessionContainerPanel.Location = new Point(721, 41);
             averageSessionContainerPanel.Name = "averageSessionContainerPanel";
             averageSessionContainerPanel.ShadowDecoration.BorderRadius = 12;
             averageSessionContainerPanel.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
@@ -773,7 +775,7 @@ namespace CodingTracker.View.Forms.TestForm
             guna2GradientPanel7.FillColor2 = Color.FromArgb(44, 45, 65);
             guna2GradientPanel7.ForeColor = Color.FromArgb(44, 45, 65);
             guna2GradientPanel7.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            guna2GradientPanel7.Location = new Point(376, 27);
+            guna2GradientPanel7.Location = new Point(367, 41);
             guna2GradientPanel7.Name = "guna2GradientPanel7";
             guna2GradientPanel7.ShadowDecoration.BorderRadius = 12;
             guna2GradientPanel7.ShadowDecoration.Color = Color.FromArgb(44, 45, 65);
@@ -874,12 +876,10 @@ namespace CodingTracker.View.Forms.TestForm
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(26, 26, 46);
-            ClientSize = new Size(1300, 780);
+            ClientSize = new Size(1190, 780);
             Controls.Add(statsPanelsParentPanel);
             Controls.Add(topHalfSeperator);
             Controls.Add(bottomHalfParentPanel);
-            Controls.Add(minimizeButton);
-            Controls.Add(closeButton);
             ForeColor = Color.FromArgb(35, 34, 50);
             FormBorderStyle = FormBorderStyle.None;
             Name = "MainPage";
