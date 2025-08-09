@@ -39,6 +39,10 @@ namespace CodingTracker.View.Forms
             components = new System.ComponentModel.Container();
             CustomizableEdges customizableEdges19 = new CustomizableEdges();
             CustomizableEdges customizableEdges20 = new CustomizableEdges();
+            CustomizableEdges customizableEdges1 = new CustomizableEdges();
+            CustomizableEdges customizableEdges2 = new CustomizableEdges();
+            CustomizableEdges customizableEdges3 = new CustomizableEdges();
+            CustomizableEdges customizableEdges4 = new CustomizableEdges();
             CustomizableEdges customizableEdges5 = new CustomizableEdges();
             CustomizableEdges customizableEdges6 = new CustomizableEdges();
             CustomizableEdges customizableEdges7 = new CustomizableEdges();
@@ -53,12 +57,10 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges14 = new CustomizableEdges();
             CustomizableEdges customizableEdges15 = new CustomizableEdges();
             CustomizableEdges customizableEdges16 = new CustomizableEdges();
-            CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            CustomizableEdges customizableEdges4 = new CustomizableEdges();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2GradientPanel();
+            elapsedTestToggleSwitch = new Guna2ToggleSwitch();
+            elapsedTestTextBox = new Guna2TextBox();
             nameDisplayTextBox = new Guna2TextBox();
             codingTrackerSymbol = new FontAwesome.Sharp.IconPictureBox();
             codingTrackerDisplayLabel = new Guna2HtmlLabel();
@@ -73,8 +75,6 @@ namespace CodingTracker.View.Forms
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             animatedTimerFormDragControl = new Guna2DragControl(components);
-            elapsedTestTextBox = new Guna2TextBox();
-            elapsedTestToggleSwitch = new Guna2ToggleSwitch();
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)codingTrackerSymbol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
@@ -118,6 +118,42 @@ namespace CodingTracker.View.Forms
             mainPanel.Size = new Size(511, 749);
             mainPanel.TabIndex = 0;
             // 
+            // elapsedTestToggleSwitch
+            // 
+            elapsedTestToggleSwitch.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
+            elapsedTestToggleSwitch.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
+            elapsedTestToggleSwitch.CheckedState.InnerBorderColor = Color.White;
+            elapsedTestToggleSwitch.CheckedState.InnerColor = Color.White;
+            elapsedTestToggleSwitch.CustomizableEdges = customizableEdges1;
+            elapsedTestToggleSwitch.Location = new Point(3, 10);
+            elapsedTestToggleSwitch.Name = "elapsedTestToggleSwitch";
+            elapsedTestToggleSwitch.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            elapsedTestToggleSwitch.Size = new Size(35, 20);
+            elapsedTestToggleSwitch.TabIndex = 52;
+            elapsedTestToggleSwitch.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
+            elapsedTestToggleSwitch.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
+            elapsedTestToggleSwitch.UncheckedState.InnerBorderColor = Color.White;
+            elapsedTestToggleSwitch.UncheckedState.InnerColor = Color.White;
+            // 
+            // elapsedTestTextBox
+            // 
+            elapsedTestTextBox.CustomizableEdges = customizableEdges3;
+            elapsedTestTextBox.DefaultText = "";
+            elapsedTestTextBox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            elapsedTestTextBox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            elapsedTestTextBox.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            elapsedTestTextBox.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            elapsedTestTextBox.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            elapsedTestTextBox.Font = new Font("Segoe UI", 9F);
+            elapsedTestTextBox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            elapsedTestTextBox.Location = new Point(57, 3);
+            elapsedTestTextBox.Name = "elapsedTestTextBox";
+            elapsedTestTextBox.PlaceholderText = "";
+            elapsedTestTextBox.SelectedText = "";
+            elapsedTestTextBox.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            elapsedTestTextBox.Size = new Size(63, 36);
+            elapsedTestTextBox.TabIndex = 51;
+            // 
             // nameDisplayTextBox
             // 
             nameDisplayTextBox.AutoSize = true;
@@ -133,7 +169,7 @@ namespace CodingTracker.View.Forms
             nameDisplayTextBox.Font = new Font("Segoe UI", 10F);
             nameDisplayTextBox.ForeColor = Color.FromArgb(255, 200, 230);
             nameDisplayTextBox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            nameDisplayTextBox.Location = new Point(190, 25);
+            nameDisplayTextBox.Location = new Point(199, 36);
             nameDisplayTextBox.Margin = new Padding(4, 3, 4, 3);
             nameDisplayTextBox.Name = "nameDisplayTextBox";
             nameDisplayTextBox.PlaceholderText = "";
@@ -348,42 +384,6 @@ namespace CodingTracker.View.Forms
             animatedTimerFormDragControl.DockIndicatorTransparencyValue = 0.6D;
             animatedTimerFormDragControl.TargetControl = mainPanel;
             animatedTimerFormDragControl.UseTransparentDrag = true;
-            // 
-            // elapsedTestTextBox
-            // 
-            elapsedTestTextBox.CustomizableEdges = customizableEdges3;
-            elapsedTestTextBox.DefaultText = "";
-            elapsedTestTextBox.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            elapsedTestTextBox.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            elapsedTestTextBox.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            elapsedTestTextBox.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            elapsedTestTextBox.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            elapsedTestTextBox.Font = new Font("Segoe UI", 9F);
-            elapsedTestTextBox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            elapsedTestTextBox.Location = new Point(57, 3);
-            elapsedTestTextBox.Name = "elapsedTestTextBox";
-            elapsedTestTextBox.PlaceholderText = "";
-            elapsedTestTextBox.SelectedText = "";
-            elapsedTestTextBox.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            elapsedTestTextBox.Size = new Size(63, 36);
-            elapsedTestTextBox.TabIndex = 51;
-            // 
-            // elapsedTestToggleSwitch
-            // 
-            elapsedTestToggleSwitch.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            elapsedTestToggleSwitch.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            elapsedTestToggleSwitch.CheckedState.InnerBorderColor = Color.White;
-            elapsedTestToggleSwitch.CheckedState.InnerColor = Color.White;
-            elapsedTestToggleSwitch.CustomizableEdges = customizableEdges1;
-            elapsedTestToggleSwitch.Location = new Point(3, 10);
-            elapsedTestToggleSwitch.Name = "elapsedTestToggleSwitch";
-            elapsedTestToggleSwitch.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            elapsedTestToggleSwitch.Size = new Size(35, 20);
-            elapsedTestToggleSwitch.TabIndex = 52;
-            elapsedTestToggleSwitch.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            elapsedTestToggleSwitch.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
-            elapsedTestToggleSwitch.UncheckedState.InnerBorderColor = Color.White;
-            elapsedTestToggleSwitch.UncheckedState.InnerColor = Color.White;
             // 
             // AnimatedTimerForm
             // 

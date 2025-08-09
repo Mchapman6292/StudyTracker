@@ -122,6 +122,7 @@ namespace CodingTracker.View
         private void UpdateIsEditSession(bool isEditSession)
         {
             IsEditSession = isEditSession;
+            _appLogger.Debug($"IsEditSession updated to {IsEditSession}.");
         }
 
         private void UpdateDeleteSessionButtonEnabled(bool? isEditSession = null)
@@ -138,7 +139,7 @@ namespace CodingTracker.View
         {
             if (!IsEditSession)
             {
-                throw new InvalidOperationException($"Error: IsEditSession is {IsEditSession}, must be true to delete.");
+                UpdateIsEditSession(true);
             }
 
             UpdateDeleteSessionButtonEnabled(false);

@@ -38,7 +38,7 @@ namespace CodingTracker.Common.Utilities
                         if (int.TryParse(cleanTime, out int hours))
                         {
                             TimeSpan hoursResult = new TimeSpan(hours, 0, 0);
-                            string timeSpanForLogging = LoggerHelpers.FormatElapsedTimeSpan(hoursResult);
+                            string timeSpanForLogging = LoggerHelper.FormatElapsedTimeSpan(hoursResult);
                             _appLogger.Info($"Timespan returned: {timeSpanForLogging}.");
                             return hoursResult;
                         }
@@ -53,7 +53,7 @@ namespace CodingTracker.Common.Utilities
                             h = int.Parse(hourStr);
                             m = int.Parse(minsStr);
                             TimeSpan hoursMinsResult = new TimeSpan(h, m, 0);
-                            string timeSpanForLogging = LoggerHelpers.FormatElapsedTimeSpan(hoursMinsResult);
+                            string timeSpanForLogging = LoggerHelper.FormatElapsedTimeSpan(hoursMinsResult);
                             _appLogger.Info($"Timespan returned: {timeSpanForLogging}.");
                             return hoursMinsResult;
                         }
@@ -68,7 +68,7 @@ namespace CodingTracker.Common.Utilities
                             h = int.Parse(hourStr);
                             m = int.Parse(minsStr);
                             TimeSpan fullHoursMinsResult = new TimeSpan(h, m, 0);
-                            string timeSpanForLogging = LoggerHelpers.FormatElapsedTimeSpan(fullHoursMinsResult);
+                            string timeSpanForLogging = LoggerHelper.FormatElapsedTimeSpan(fullHoursMinsResult);
                             _appLogger.Info($"Timespan returned: {timeSpanForLogging}.");
                             return fullHoursMinsResult;
                         }

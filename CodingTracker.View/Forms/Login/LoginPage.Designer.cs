@@ -285,8 +285,6 @@ namespace CodingTracker.View
             loginButton.Text = "Login";
             loginButton.UseTransparentBackground = true;
             loginButton.Click += LoginButton_Click;
-            loginButton.MouseEnter += LoginButton_MouseEnter;
-            loginButton.MouseLeave += LoginButton_MouseLeave;
             // 
             // createAccountButton
             // 
@@ -308,7 +306,7 @@ namespace CodingTracker.View
             createAccountButton.Size = new Size(258, 36);
             createAccountButton.TabIndex = 29;
             createAccountButton.Text = "Create Account";
-            createAccountButton.Click += NewForgotPasswordButton_Click;
+            createAccountButton.Click += CreateAccountButton_Click;
             // 
             // forgotPasswordButton
             // 
@@ -336,9 +334,7 @@ namespace CodingTracker.View
             forgotPasswordButton.Size = new Size(158, 23);
             forgotPasswordButton.TabIndex = 28;
             forgotPasswordButton.Text = "Forgot password?";
-            forgotPasswordButton.Click += NewCreateAccountButton_Click;
-            forgotPasswordButton.MouseEnter += CreateAccountButton_MouseEnter;
-            forgotPasswordButton.MouseLeave += CreateAccountButton_MouseLeave;
+            forgotPasswordButton.Click += ForgotPasswordButton_Click;
             // 
             // guna2Transition1
             // 

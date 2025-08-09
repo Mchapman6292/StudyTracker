@@ -1,5 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
-using CodingTracker.Logging;
+using CodingTracker.Common.Utilities; 
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
@@ -107,7 +107,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
             if (column.TargetDigit == 0 && column.ActiveDigit == column.MaxValue && column.IsStandardAnimationOccurring && elapsed > column.AnimationInterval)
             {
-                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
+                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelper.FormatElapsedTimeSpan(elapsed))}");
 
                 // Wrapping from max to 0, so animate downward from max position.
                 startY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
@@ -141,7 +141,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.Calculators
             // Handle when we reach the top of the column & need to scroll upwards back to start, elapsed check is to stop this occuring on the first 0 - 1 transition.
             if (column.TargetDigit == 0 && column.ActiveDigit == column.MaxValue && column.IsStandardAnimationOccurring && elapsed > column.AnimationInterval && !column.IsRestarting)
             {
-                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelpers.FormatElapsedTimeSpan(elapsed))}");
+                _appLogger.Debug($"Wrap around started for column: {column.ColumnType} at {(LoggerHelper.FormatElapsedTimeSpan(elapsed))}");
 
                 startY = column.MaxValue * AnimatedColumnSettings.SegmentHeight;
                 endY = 0;

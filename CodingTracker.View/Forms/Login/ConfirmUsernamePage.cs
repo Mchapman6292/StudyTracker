@@ -46,11 +46,13 @@ namespace CodingTracker.View.LoginPageService
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {
                 _notificationManager.ShowNotificationDialog(this, "Username cannot be blank.");
+                return;
             }
 
             if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
             {
-                _notificationManager.ShowNotificationDialog(this,"Username does not exist");
+                _notificationManager.ShowNotificationDialog(this, "Username does not exist");
+                return;
             }
 
             _formNavigator.SwitchToForm(FormPageEnum.ResetPasswordForm);
@@ -70,6 +72,32 @@ namespace CodingTracker.View.LoginPageService
         private void ConfirmUsernameHomeButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
+        }
+
+        private async void newConfirmUsernameButton_Click(object sender, EventArgs e)
+        {
+            string textBoxUsername = newUsernameTextBox.Text;
+
+            if (textBoxUsername == string.Empty || textBoxUsername == "Username")
+            {
+                _notificationManager.ShowNotificationDialog(this, "Username cannot be blank.");
+                return;
+            }
+
+            if (!await _userCredentialRepository.UsernameExistsAsync(textBoxUsername))
+            {
+                _notificationManager.ShowNotificationDialog(this, "Username does not exist");
+                return;
+            }
+
+            _formNavigator.SwitchToForm(FormPageEnum.ResetPasswordForm);
+            _authenticationService.SetUsernameForPasswordReset(textBoxUsername);
+        }
+
+        private void resetPasswordFormHomeButton_Click(object sender, EventArgs e)
+        {
+
+            _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
         }
     }
 }

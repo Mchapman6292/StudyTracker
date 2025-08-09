@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.FormManagement;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
@@ -34,6 +35,10 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         void UpdateTimerTestModeEnabled(bool modifyElapsedTime);
 
+        bool IsTimerTestModeEnabled();
+
+        void UpdateTestModeElapsed(TimeSpan testModeElapsed);
+        TimeSpan ReturnTestModeElapsed();
 
     }
 
@@ -69,6 +74,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         public bool TimerTestModeEnabled { get; set; } = false;
 
+        public TimeSpan TestModeElapsed = TimeSpan.Zero;
+
 
 
 
@@ -87,13 +94,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
             _animatedLogHelper = animatedLogHelper;
             _columns = new List<AnimatedTimerColumn>();
 
-        }
-
-
-        public void UpdateTimerTestModeEnabled(bool isTimerTestModeEnabled)
-        {
-            TimerTestModeEnabled = isTimerTestModeEnabled;
-            _appLogger.Debug($"TimerTestMode updated to {TimerTestModeEnabled}.");
         }
 
 
@@ -208,6 +208,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
             bool areColumnsInRestartState = _columnStateManager.ReturnAreColumnsInRestartState();
 
+
+
             if (areColumnsInRestartState)
             {
 
@@ -242,7 +244,11 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
                 if (TimerTestModeEnabled)
                 {
-                    targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromMinutes(120), column.ColumnType);
+                    TimeSpan newElapsed = elapsed + TestModeElapsed;
+
+                    targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TestModeElapsed, column.ColumnType);
+
+                    _appLogger.Info($"Values passed to CalculateTargetDigitAtCurrentElapsed = {LoggerHelper.FormatElapsedTimeSpan(elapsed)} + {LoggerHelper.FormatElapsedTimeSpan(TestModeElapsed)} = {LoggerHelper.FormatElapsedTimeSpan(newElapsed)}.");
                 }
 
                 else
@@ -399,10 +405,36 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
 
 
+        public bool IsTimerTestModeEnabled()
+        {
+            return TimerTestModeEnabled;
+        }
 
 
-   
 
+        public void UpdateTimerTestModeEnabled(bool isTimerTestModeEnabled)
+        {
+            TimerTestModeEnabled = isTimerTestModeEnabled;
+            _appLogger.Debug($"TimerTestMode updated to {TimerTestModeEnabled}.");
+        }
+
+
+
+        public void UpdateTestModeElapsed(TimeSpan testModeElapsed)
+        {
+            TestModeElapsed = testModeElapsed;
+        }
+
+        public TimeSpan ReturnTestModeElapsed()
+        {
+            if(TestModeElapsed == TimeSpan.Zero)
+            {
+                _appLogger.Error($"Attempted to return {nameof(TestModeElapsed)} when it is set as a default 0, TimeSpan zero returned but this should not occur");
+                return TestModeElapsed;
+            }
+
+            return TestModeElapsed;
+        }
 
 
 

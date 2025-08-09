@@ -1,6 +1,7 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
@@ -107,47 +108,17 @@ namespace CodingTracker.View.Forms
         private void ElapsedTestToggleSwitch_Checked(Object sender, EventArgs e)
         {
             _animatedTimerManager.UpdateTimerTestModeEnabled(elapsedTestToggleSwitch.Checked);
-      
-        }
 
-
-
-
-
-
-
-
-        public void LogTargetValue0LocationAtIinitialization()
-        {
-
-
-            List<AnimatedTimerColumn> columns = _animatedTimerManager.ReturnTimerColumns();
-
-            AnimatedTimerColumn targetColumn = columns.FirstOrDefault(s => s.ColumnType == ColumnUnitType.SecondsSingleDigits);
-
-
-            if (targetColumn != null)
-            {
-                throw new InvalidOperationException($"Unable to find targetColumn");
-            }
-
-
-
-
-            int targetValue = 0;
-
-            AnimatedTimerSegment targetSegment = targetColumn.TimerSegments.FirstOrDefault(s => s.Value == 0);
-
-            if (targetSegment != null)
-            {
-                throw new InvalidOperationException($"Unable to find timerSegment");
-            }
-
-
-            _appLogger.Debug($"SecondsSingleDigits Segment with value {targetSegment.Value} initial location = X: {targetSegment.Location.X} , Y = {targetSegment.Location.Y}.");
+            _animatedTimerManager.UpdateTestModeElapsed(new TimeSpan(00,40,00));
 
 
         }
+
+
+
+
+
+
 
 
         public void SetSKControlLocationAndSize()
@@ -207,12 +178,21 @@ namespace CodingTracker.View.Forms
 
         public void UpdateTimeDisplayLAbel()
         {
-            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            bool testModeEnabled = _animatedTimerManager.IsTimerTestModeEnabled();
 
-            string elapsedString = FormatElapsedTimeSPan(elapsed);
-
+            TimeSpan elapsed;
+            string elapsedString = string.Empty;
+            if (testModeEnabled)
+            {
+                elapsed = _animatedTimerManager.ReturnTestModeElapsed();
+                elapsedString += LoggerHelper.FormatAllElapsedTimeSpan(elapsed);       
+            }
+            else
+            {
+                elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+                elapsedString = LoggerHelper.FormatAllElapsedTimeSpan(elapsed);
+            }
             timeDisplayLabel.Text = elapsedString;
-
         }
 
 

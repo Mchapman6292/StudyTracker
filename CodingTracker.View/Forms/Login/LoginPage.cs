@@ -48,9 +48,7 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Enter += LoginPagePasswordTextbox_Enter;
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
-            // Set up button events
-            createAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            createAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+
 
 
 
@@ -199,33 +197,7 @@ namespace CodingTracker.View
 
 
 
-        private void NewForgotPasswordButton_MouseEnter(object sender, EventArgs e)
-        {
-        }
-
-        private void NewForgotPasswordButton_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoginButton_MouseEnter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoginButton_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_MouseEnter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_MouseLeave(object sender, EventArgs e)
-        {
-        }
+  
 
         #endregion
 
@@ -279,12 +251,12 @@ namespace CodingTracker.View
          var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
         _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         */
-        private void NewCreateAccountButton_Click(object sender, EventArgs e)
+        private void ForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ResetPasswordForm);
         }
 
-        private void NewForgotPasswordButton_Click(object sender, EventArgs e)
+        private void CreateAccountButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
             _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
