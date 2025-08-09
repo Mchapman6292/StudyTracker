@@ -145,6 +145,7 @@ namespace CodingTracker.View.Program
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
+                    .AddSingleton<IInputFormatter, InputFormatter>()
 
                     .AddSingleton<OldMainPage>()
                     .AddTransient<EditSessionPage>()

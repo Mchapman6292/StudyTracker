@@ -242,19 +242,19 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
                 if (TimerTestModeEnabled)
                 {
-                    targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromSeconds(360), column.ColumnType);
+                    targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromMinutes(120), column.ColumnType);
                 }
 
                 else
                 {
                     // We use this method to extract the time digit for the corresponding column, this method will always return a value between 0-9, we can calculate this for each column inside the loop as we use the same elapsed value. 
-                     targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
+                    targetDigitAtCurrentElapsedTime = _animationCalculator.CalculateTargetDigitAtCurrentElapsedTime(elapsed + TimeSpan.FromSeconds(1), column.ColumnType);
                 }
 
- 
+
 
                 // If the targetDigitAtCurrentElapsed update the column & segment values. 
-                if (targetDigitAtCurrentElapsedTime != column.TargetDigit && !column.IsRestarting)
+                if ((targetDigitAtCurrentElapsedTime != column.TargetDigit && !column.IsRestarting) || (elapsed > column.AnimationInterval && targetDigitAtCurrentElapsedTime != column.TargetDigit && !column.IsRestarting))
                 {
                     // These are used to update the column position, numbers etc.
                     _columnStateManager.UpdateColumnActiveDigit(column, column.TargetDigit);

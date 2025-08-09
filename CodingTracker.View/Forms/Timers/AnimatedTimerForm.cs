@@ -187,8 +187,15 @@ namespace CodingTracker.View.Forms
         // TODO review, what happens if we close re open form etc. 
         private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
         {
+            bool currentCodingSessionActive = _codingSessionManager.IsCurrentCodingSessionNull();
+
+            if(!currentCodingSessionActive)
+            {
+                _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
+                _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
+            }
+
             _stopWatchTimerService.StartSessionTimer();
-            _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
         }
 
         public string FormatElapsedTimeSPan(TimeSpan elapsed)

@@ -114,6 +114,11 @@ namespace CodingTracker.Business.CodingSessionManagers
 
         }
 
+        public bool IsCurrentCodingSessionNull()
+        {
+            return _currentCodingSession == null;
+        }
+
 
         public void RestartCodingSession()
         {
