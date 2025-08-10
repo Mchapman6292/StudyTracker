@@ -34,14 +34,14 @@ namespace CodingTracker.View.LoginPageService
 
         private void ConfirmUsernamePage_Load(object sender, EventArgs e)
         {
-            _buttonHighlighterService.SetButtonHoverColors(confirmUsernameButton);
-            _buttonHighlighterService.SetButtonBackColorAndBorderColor(confirmUsernameButton);
-            confirmUsernameButton.Visible = false;
+            _buttonHighlighterService.SetButtonHoverColors(usernamePageConfirmUsernameButton);
+            _buttonHighlighterService.SetButtonBackColorAndBorderColor(usernamePageConfirmUsernameButton);
+            usernamePageConfirmUsernameButton.Visible = false;
         }
 
         private async void ConfirmUsernameButton_Click(object sender, EventArgs e)
         {
-            string textBoxUsername = UsernameTextBox.Text;
+            string textBoxUsername = usernamePageUsernameTextBox.Text;
 
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {
@@ -76,7 +76,7 @@ namespace CodingTracker.View.LoginPageService
 
         private async void newConfirmUsernameButton_Click(object sender, EventArgs e)
         {
-            string textBoxUsername = newUsernameTextBox.Text;
+            string textBoxUsername = usernamePageUsernameTextBox.Text;
 
             if (textBoxUsername == string.Empty || textBoxUsername == "Username")
             {

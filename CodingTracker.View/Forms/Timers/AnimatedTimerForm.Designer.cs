@@ -169,7 +169,7 @@ namespace CodingTracker.View.Forms
             nameDisplayTextBox.Font = new Font("Segoe UI", 10F);
             nameDisplayTextBox.ForeColor = Color.FromArgb(255, 200, 230);
             nameDisplayTextBox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            nameDisplayTextBox.Location = new Point(199, 36);
+            nameDisplayTextBox.Location = new Point(201, 36);
             nameDisplayTextBox.Margin = new Padding(4, 3, 4, 3);
             nameDisplayTextBox.Name = "nameDisplayTextBox";
             nameDisplayTextBox.PlaceholderText = "";
@@ -267,7 +267,7 @@ namespace CodingTracker.View.Forms
             controlPanel.Location = new Point(41, 687);
             controlPanel.Name = "controlPanel";
             controlPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            controlPanel.Size = new Size(444, 50);
+            controlPanel.Size = new Size(444, 62);
             controlPanel.TabIndex = 9;
             // 
             // pauseButton
@@ -275,7 +275,7 @@ namespace CodingTracker.View.Forms
             pauseButton.Animated = true;
             pauseButton.BackColor = Color.Transparent;
             pauseButton.BorderColor = Color.FromArgb(170, 60, 130);
-            pauseButton.BorderRadius = 24;
+            pauseButton.BorderRadius = 25;
             pauseButton.CustomizableEdges = customizableEdges11;
             pauseButton.DisabledState.BorderColor = Color.DarkGray;
             pauseButton.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -288,14 +288,14 @@ namespace CodingTracker.View.Forms
             pauseButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pauseButton.ForeColor = Color.White;
             pauseButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            pauseButton.Location = new Point(16, 11);
+            pauseButton.Location = new Point(60, 10);
             pauseButton.Name = "pauseButton";
             pauseButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
             pauseButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
             pauseButton.ShadowDecoration.Depth = 5;
             pauseButton.ShadowDecoration.Enabled = true;
             pauseButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            pauseButton.Size = new Size(103, 36);
+            pauseButton.Size = new Size(50, 50);
             pauseButton.TabIndex = 5;
             pauseButton.Text = "⏸";
             pauseButton.TextOffset = new Point(3, 0);
@@ -304,7 +304,7 @@ namespace CodingTracker.View.Forms
             // 
             restartButton.Animated = true;
             restartButton.BackColor = Color.Transparent;
-            restartButton.BorderRadius = 24;
+            restartButton.BorderRadius = 25;
             restartButton.CustomizableEdges = customizableEdges13;
             restartButton.DisabledState.BorderColor = Color.DarkGray;
             restartButton.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -314,19 +314,19 @@ namespace CodingTracker.View.Forms
             restartButton.EnableHoverRipple = true;
             restartButton.FillColor = Color.FromArgb(255, 81, 195);
             restartButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            restartButton.Font = new Font("Segoe UI", 22F);
+            restartButton.Font = new Font("Segoe UI", 26F);
             restartButton.ForeColor = Color.White;
-            restartButton.Location = new Point(158, 11);
+            restartButton.Location = new Point(160, 10);
             restartButton.Name = "restartButton";
             restartButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
             restartButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             restartButton.ShadowDecoration.Depth = 5;
             restartButton.ShadowDecoration.Enabled = true;
             restartButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            restartButton.Size = new Size(103, 36);
+            restartButton.Size = new Size(50, 50);
             restartButton.TabIndex = 7;
             restartButton.Text = "⟳";
-            restartButton.TextOffset = new Point(0, -8);
+            restartButton.TextOffset = new Point(3, -5);
             restartButton.Click += RestartButton_Click;
             // 
             // stopButton
@@ -334,7 +334,7 @@ namespace CodingTracker.View.Forms
             stopButton.Animated = true;
             stopButton.BackColor = Color.Transparent;
             stopButton.BorderColor = Color.FromArgb(170, 60, 130);
-            stopButton.BorderRadius = 24;
+            stopButton.BorderRadius = 25;
             stopButton.CustomizableEdges = customizableEdges15;
             stopButton.DisabledState.BorderColor = Color.DarkGray;
             stopButton.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -344,19 +344,19 @@ namespace CodingTracker.View.Forms
             stopButton.EnableHoverRipple = true;
             stopButton.FillColor = Color.FromArgb(255, 81, 195);
             stopButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            stopButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            stopButton.Font = new Font("Segoe UI", 20F);
             stopButton.ForeColor = Color.White;
-            stopButton.Location = new Point(295, 11);
+            stopButton.Location = new Point(260, 10);
             stopButton.Name = "stopButton";
             stopButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
             stopButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
             stopButton.ShadowDecoration.Depth = 5;
             stopButton.ShadowDecoration.Enabled = true;
             stopButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            stopButton.Size = new Size(103, 36);
+            stopButton.Size = new Size(50, 50);
             stopButton.TabIndex = 8;
             stopButton.Text = "■";
-            stopButton.TextOffset = new Point(2, 0);
+            stopButton.TextOffset = new Point(2, -2);
             // 
             // timeDisplayLabel
             // 

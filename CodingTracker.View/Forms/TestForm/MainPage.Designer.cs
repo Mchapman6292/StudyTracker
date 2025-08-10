@@ -157,10 +157,10 @@ namespace CodingTracker.View.Forms.TestForm
             closeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.FromArgb(255, 160, 210);
-            closeButton.Location = new Point(1054, -4);
+            closeButton.Location = new Point(1115, 0);
             closeButton.Name = "closeButton";
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            closeButton.Size = new Size(45, 34);
+            closeButton.Size = new Size(45, 30);
             closeButton.TabIndex = 25;
             closeButton.Click += closeButton_Click;
             // 
@@ -174,7 +174,7 @@ namespace CodingTracker.View.Forms.TestForm
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
             minimizeButton.IconColor = Color.FromArgb(255, 160, 210);
-            minimizeButton.Location = new Point(1003, 0);
+            minimizeButton.Location = new Point(1070, 0);
             minimizeButton.Name = "minimizeButton";
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
             minimizeButton.Size = new Size(45, 30);

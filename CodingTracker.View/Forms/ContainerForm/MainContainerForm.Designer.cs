@@ -154,7 +154,7 @@
             logoutButton.FillColor2 = Color.Transparent;
             logoutButton.Font = new Font("Segoe UI", 10F);
             logoutButton.ForeColor = Color.FromArgb(206, 212, 218);
-            logoutButton.Location = new Point(12, 757);
+            logoutButton.Location = new Point(12, 810);
             logoutButton.Name = "logoutButton";
             logoutButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             logoutButton.Size = new Size(160, 40);
@@ -198,7 +198,7 @@
             mainContentPanel.Location = new Point(200, 0);
             mainContentPanel.Name = "mainContentPanel";
             mainContentPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            mainContentPanel.Size = new Size(1100, 850);
+            mainContentPanel.Size = new Size(1150, 850);
             mainContentPanel.TabIndex = 51;
             // 
             // closeButton
@@ -211,7 +211,7 @@
             closeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.White;
-            closeButton.Location = new Point(1254, 0);
+            closeButton.Location = new Point(1304, 0);
             closeButton.Name = "closeButton";
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             closeButton.Size = new Size(45, 34);
@@ -227,7 +227,7 @@
             minimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             minimizeButton.HoverState.IconColor = Color.White;
             minimizeButton.IconColor = Color.White;
-            minimizeButton.Location = new Point(1212, 0);
+            minimizeButton.Location = new Point(1262, 0);
             minimizeButton.Name = "minimizeButton";
             minimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
             minimizeButton.Size = new Size(45, 34);
@@ -244,7 +244,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1300, 850);
+            ClientSize = new Size(1350, 850);
             Controls.Add(mainContentPanel);
             Controls.Add(sidebarPanel);
             Controls.Add(closeButton);

@@ -57,6 +57,7 @@
             // resetPasswordFormMinimizeButton
             // 
             resetPasswordFormMinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            resetPasswordFormMinimizeButton.BackColor = Color.FromArgb(25, 24, 40);
             resetPasswordFormMinimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             resetPasswordFormMinimizeButton.CustomizableEdges = customizableEdges1;
             resetPasswordFormMinimizeButton.FillColor = Color.FromArgb(25, 24, 40);
@@ -72,6 +73,7 @@
             // resetPasswordFormExitButton
             // 
             resetPasswordFormExitButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            resetPasswordFormExitButton.BackColor = Color.FromArgb(25, 24, 40);
             resetPasswordFormExitButton.CustomClick = true;
             resetPasswordFormExitButton.CustomizableEdges = customizableEdges3;
             resetPasswordFormExitButton.FillColor = Color.FromArgb(25, 24, 40);
@@ -221,7 +223,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
+            BackColor = Color.FromArgb(26, 26, 46);
             ClientSize = new Size(455, 575);
             Controls.Add(resetPasswordFormHomeButton);
             Controls.Add(passwordTextBox);

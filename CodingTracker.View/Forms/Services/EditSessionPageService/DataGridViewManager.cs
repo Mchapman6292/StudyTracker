@@ -4,7 +4,6 @@ using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.Common.Utilities;
-using CodingTracker.View.FormService.ColourServices;
 using Guna.UI2.WinForms;
 using Microsoft.Extensions.Configuration;
 
@@ -49,6 +48,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
         HashSet<int> GetSessionIdsMarkedForDeletion();
         List<int> GetSessionIdsNotMarkedForDeletion();
         void DeleteRowInfoMarkedForDeletion();
+        int CountPopulatedRowsInDataGrid(Guna2DataGridView dataGridView);
 
 
 
@@ -564,5 +564,19 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
         }
 
         #endregion
+
+
+        #region DataGridHelpers
+
+
+
+        public int CountPopulatedRowsInDataGrid(Guna2DataGridView dataGridView)
+        {
+            int count = 0;
+            count = dataGridView.Rows.Count;
+            return count;
+
+        }
     }
+    #endregion
 }

@@ -32,42 +32,31 @@ namespace CodingTracker.View
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            CustomizableEdges customizableEdges11 = new CustomizableEdges();
-            CustomizableEdges customizableEdges12 = new CustomizableEdges();
+            CustomizableEdges customizableEdges9 = new CustomizableEdges();
+            CustomizableEdges customizableEdges10 = new CustomizableEdges();
             CustomizableEdges customizableEdges1 = new CustomizableEdges();
             CustomizableEdges customizableEdges2 = new CustomizableEdges();
             CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditSessionPage));
             CustomizableEdges customizableEdges4 = new CustomizableEdges();
             CustomizableEdges customizableEdges5 = new CustomizableEdges();
             CustomizableEdges customizableEdges6 = new CustomizableEdges();
             CustomizableEdges customizableEdges7 = new CustomizableEdges();
             CustomizableEdges customizableEdges8 = new CustomizableEdges();
-            CustomizableEdges customizableEdges9 = new CustomizableEdges();
-            CustomizableEdges customizableEdges10 = new CustomizableEdges();
-            CustomizableEdges customizableEdges17 = new CustomizableEdges();
-            CustomizableEdges customizableEdges18 = new CustomizableEdges();
-            CustomizableEdges customizableEdges13 = new CustomizableEdges();
-            CustomizableEdges customizableEdges14 = new CustomizableEdges();
             CustomizableEdges customizableEdges15 = new CustomizableEdges();
             CustomizableEdges customizableEdges16 = new CustomizableEdges();
+            CustomizableEdges customizableEdges11 = new CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditSessionPage));
+            CustomizableEdges customizableEdges12 = new CustomizableEdges();
+            CustomizableEdges customizableEdges13 = new CustomizableEdges();
+            CustomizableEdges customizableEdges14 = new CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            CustomizableEdges customizableEdges19 = new CustomizableEdges();
-            CustomizableEdges customizableEdges20 = new CustomizableEdges();
-            CustomizableEdges customizableEdges21 = new CustomizableEdges();
-            CustomizableEdges customizableEdges22 = new CustomizableEdges();
-            CustomizableEdges customizableEdges23 = new CustomizableEdges();
-            CustomizableEdges customizableEdges24 = new CustomizableEdges();
-            CustomizableEdges customizableEdges25 = new CustomizableEdges();
-            CustomizableEdges customizableEdges26 = new CustomizableEdges();
             topPanel = new Guna.UI2.WinForms.Guna2Panel();
             newHomeButton = new FontAwesome.Sharp.IconPictureBox();
             editSessionPageTimePicker = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            CodingSessionPageHomeButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            EditSessionsPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            editSessionsPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             EditSessionPageComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
             EditSessionPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             EditSessionPageSortByLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -85,10 +74,6 @@ namespace CodingTracker.View
             EndTime = new DataGridViewTextBoxColumn();
             DisplayMessageBox = new Guna.UI2.WinForms.Guna2MessageDialog();
             EditSessionPageNotificationPaint = new Guna.UI2.WinForms.Guna2NotificationPaint(components);
-            newSessionButton = new CustomGradientButton();
-            dashboardButton = new CustomGradientButton();
-            sessionsButton = new CustomGradientButton();
-            logoutButton = new CustomGradientButton();
             githubPictureBox = new FontAwesome.Sharp.IconPictureBox();
             guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             editSessionAnimationWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
@@ -104,18 +89,17 @@ namespace CodingTracker.View
             topPanel.BackColor = Color.FromArgb(25, 24, 40);
             topPanel.Controls.Add(newHomeButton);
             topPanel.Controls.Add(editSessionPageTimePicker);
-            topPanel.Controls.Add(CodingSessionPageHomeButton);
-            topPanel.Controls.Add(EditSessionsPageSessionsLabel);
+            topPanel.Controls.Add(editSessionsPageSessionsLabel);
             topPanel.Controls.Add(EditSessionPageComboBox);
             topPanel.Controls.Add(EditSessionPageSessionsLabel);
             topPanel.Controls.Add(EditSessionPageSortByLabel);
             topPanel.Controls.Add(MainPageExitControlMinimizeButton);
             topPanel.Controls.Add(closeButton);
-            topPanel.CustomizableEdges = customizableEdges11;
-            topPanel.Location = new Point(12, 0);
+            topPanel.CustomizableEdges = customizableEdges9;
+            topPanel.Location = new Point(0, 0);
             topPanel.Name = "topPanel";
-            topPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            topPanel.Size = new Size(1186, 75);
+            topPanel.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            topPanel.Size = new Size(1188, 75);
             topPanel.TabIndex = 0;
             // 
             // newHomeButton
@@ -126,13 +110,14 @@ namespace CodingTracker.View
             newHomeButton.IconColor = Color.FromArgb(255, 160, 210);
             newHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             newHomeButton.IconSize = 29;
-            newHomeButton.Location = new Point(1052, 0);
+            newHomeButton.Location = new Point(968, 0);
             newHomeButton.Margin = new Padding(3, 2, 3, 2);
             newHomeButton.Name = "newHomeButton";
             newHomeButton.Size = new Size(45, 29);
             newHomeButton.SizeMode = PictureBoxSizeMode.CenterImage;
             newHomeButton.TabIndex = 47;
             newHomeButton.TabStop = false;
+            newHomeButton.Click += newHomeButton_Click;
             // 
             // editSessionPageTimePicker
             // 
@@ -144,7 +129,7 @@ namespace CodingTracker.View
             editSessionPageTimePicker.Font = new Font("Segoe UI", 9F);
             editSessionPageTimePicker.ForeColor = Color.FromArgb(255, 200, 230);
             editSessionPageTimePicker.Format = DateTimePickerFormat.Long;
-            editSessionPageTimePicker.Location = new Point(751, -1);
+            editSessionPageTimePicker.Location = new Point(666, -3);
             editSessionPageTimePicker.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             editSessionPageTimePicker.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             editSessionPageTimePicker.Name = "editSessionPageTimePicker";
@@ -154,43 +139,23 @@ namespace CodingTracker.View
             editSessionPageTimePicker.Value = new DateTime(2025, 2, 23, 10, 14, 42, 360);
             editSessionPageTimePicker.ValueChanged += EditSessionPageTimePicker_ValueChanged;
             // 
-            // CodingSessionPageHomeButton
+            // editSessionsPageSessionsLabel
             // 
-            CodingSessionPageHomeButton.CustomizableEdges = customizableEdges3;
-            CodingSessionPageHomeButton.DisabledState.BorderColor = Color.DarkGray;
-            CodingSessionPageHomeButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            CodingSessionPageHomeButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            CodingSessionPageHomeButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            CodingSessionPageHomeButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            CodingSessionPageHomeButton.FillColor = Color.FromArgb(25, 24, 40);
-            CodingSessionPageHomeButton.FillColor2 = Color.FromArgb(25, 24, 40);
-            CodingSessionPageHomeButton.Font = new Font("Segoe UI", 9F);
-            CodingSessionPageHomeButton.ForeColor = Color.White;
-            CodingSessionPageHomeButton.Image = (Image)resources.GetObject("CodingSessionPageHomeButton.Image");
-            CodingSessionPageHomeButton.Location = new Point(1175, 0);
-            CodingSessionPageHomeButton.Name = "CodingSessionPageHomeButton";
-            CodingSessionPageHomeButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            CodingSessionPageHomeButton.Size = new Size(45, 29);
-            CodingSessionPageHomeButton.TabIndex = 32;
-            CodingSessionPageHomeButton.Click += CodingSessionPageHomeButton_Click;
-            // 
-            // EditSessionsPageSessionsLabel
-            // 
-            EditSessionsPageSessionsLabel.AutoSize = false;
-            EditSessionsPageSessionsLabel.BackColor = Color.Transparent;
-            EditSessionsPageSessionsLabel.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold);
-            EditSessionsPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
-            EditSessionsPageSessionsLabel.Location = new Point(4, 4);
-            EditSessionsPageSessionsLabel.Name = "EditSessionsPageSessionsLabel";
-            EditSessionsPageSessionsLabel.Size = new Size(28, 32);
-            EditSessionsPageSessionsLabel.TabIndex = 28;
-            EditSessionsPageSessionsLabel.Text = "28";
+            editSessionsPageSessionsLabel.AutoSize = false;
+            editSessionsPageSessionsLabel.BackColor = Color.Transparent;
+            editSessionsPageSessionsLabel.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold);
+            editSessionsPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
+            editSessionsPageSessionsLabel.Location = new Point(4, 4);
+            editSessionsPageSessionsLabel.Name = "editSessionsPageSessionsLabel";
+            editSessionsPageSessionsLabel.Size = new Size(28, 32);
+            editSessionsPageSessionsLabel.TabIndex = 28;
+            editSessionsPageSessionsLabel.Text = null;
             // 
             // EditSessionPageComboBox
             // 
             EditSessionPageComboBox.BackColor = Color.FromArgb(35, 34, 50);
             EditSessionPageComboBox.BorderColor = Color.FromArgb(55, 54, 70);
-            EditSessionPageComboBox.CustomizableEdges = customizableEdges5;
+            EditSessionPageComboBox.CustomizableEdges = customizableEdges3;
             EditSessionPageComboBox.DrawMode = DrawMode.OwnerDrawFixed;
             EditSessionPageComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             EditSessionPageComboBox.FillColor = Color.FromArgb(35, 34, 50);
@@ -201,7 +166,7 @@ namespace CodingTracker.View
             EditSessionPageComboBox.ItemHeight = 30;
             EditSessionPageComboBox.Location = new Point(360, 0);
             EditSessionPageComboBox.Name = "EditSessionPageComboBox";
-            EditSessionPageComboBox.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            EditSessionPageComboBox.ShadowDecoration.CustomizableEdges = customizableEdges4;
             EditSessionPageComboBox.Size = new Size(224, 36);
             EditSessionPageComboBox.TabIndex = 31;
             // 
@@ -234,14 +199,14 @@ namespace CodingTracker.View
             // 
             MainPageExitControlMinimizeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             MainPageExitControlMinimizeButton.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges7;
+            MainPageExitControlMinimizeButton.CustomizableEdges = customizableEdges5;
             MainPageExitControlMinimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             MainPageExitControlMinimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             MainPageExitControlMinimizeButton.HoverState.IconColor = Color.White;
             MainPageExitControlMinimizeButton.IconColor = Color.FromArgb(255, 160, 210);
-            MainPageExitControlMinimizeButton.Location = new Point(1096, 0);
+            MainPageExitControlMinimizeButton.Location = new Point(1010, 0);
             MainPageExitControlMinimizeButton.Name = "MainPageExitControlMinimizeButton";
-            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
             MainPageExitControlMinimizeButton.Size = new Size(45, 29);
             MainPageExitControlMinimizeButton.TabIndex = 27;
             MainPageExitControlMinimizeButton.Click += MainPageExitControlMinimizeButton_Click;
@@ -250,27 +215,27 @@ namespace CodingTracker.View
             // 
             closeButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             closeButton.CustomClick = true;
-            closeButton.CustomizableEdges = customizableEdges9;
+            closeButton.CustomizableEdges = customizableEdges7;
             closeButton.FillColor = Color.FromArgb(25, 24, 40);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.FromArgb(255, 160, 210);
-            closeButton.Location = new Point(1141, 0);
+            closeButton.Location = new Point(1054, 0);
             closeButton.Name = "closeButton";
-            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            closeButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             closeButton.Size = new Size(45, 29);
             closeButton.TabIndex = 26;
             // 
             // EditSessionPageMainPanel
             // 
-            EditSessionPageMainPanel.BackColor = Color.FromArgb(25, 24, 40);
+            EditSessionPageMainPanel.BackColor = Color.FromArgb(26, 26, 46);
             EditSessionPageMainPanel.Controls.Add(deleteSessionButton);
             EditSessionPageMainPanel.Controls.Add(toggleEditSessionsButton);
             EditSessionPageMainPanel.Controls.Add(editSessionPageDataGridView);
-            EditSessionPageMainPanel.CustomizableEdges = customizableEdges17;
-            EditSessionPageMainPanel.Location = new Point(12, 81);
+            EditSessionPageMainPanel.CustomizableEdges = customizableEdges15;
+            EditSessionPageMainPanel.Location = new Point(0, 81);
             EditSessionPageMainPanel.Name = "EditSessionPageMainPanel";
-            EditSessionPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            EditSessionPageMainPanel.Size = new Size(1189, 702);
+            EditSessionPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            EditSessionPageMainPanel.Size = new Size(1188, 702);
             EditSessionPageMainPanel.TabIndex = 1;
             // 
             // deleteSessionButton
@@ -282,7 +247,7 @@ namespace CodingTracker.View
             deleteSessionButton.BorderRadius = 15;
             deleteSessionButton.BorderThickness = 2;
             deleteSessionButton.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            deleteSessionButton.CustomizableEdges = customizableEdges13;
+            deleteSessionButton.CustomizableEdges = customizableEdges11;
             deleteSessionButton.DisabledState.BorderColor = Color.DarkGray;
             deleteSessionButton.DisabledState.CustomBorderColor = Color.DarkGray;
             deleteSessionButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -293,9 +258,9 @@ namespace CodingTracker.View
             deleteSessionButton.ForeColor = Color.White;
             deleteSessionButton.Image = (Image)resources.GetObject("deleteSessionButton.Image");
             deleteSessionButton.ImageSize = new Size(40, 30);
-            deleteSessionButton.Location = new Point(950, 621);
+            deleteSessionButton.Location = new Point(950, 610);
             deleteSessionButton.Name = "deleteSessionButton";
-            deleteSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            deleteSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
             deleteSessionButton.Size = new Size(105, 33);
             deleteSessionButton.TabIndex = 25;
             deleteSessionButton.Click += EditSessionPageDeleteButton_Click;
@@ -309,7 +274,7 @@ namespace CodingTracker.View
             toggleEditSessionsButton.BorderRadius = 15;
             toggleEditSessionsButton.BorderThickness = 2;
             toggleEditSessionsButton.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            toggleEditSessionsButton.CustomizableEdges = customizableEdges15;
+            toggleEditSessionsButton.CustomizableEdges = customizableEdges13;
             toggleEditSessionsButton.DisabledState.BorderColor = Color.DarkGray;
             toggleEditSessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
             toggleEditSessionsButton.DisabledState.FillColor = Color.FromArgb(255, 81, 195);
@@ -320,9 +285,9 @@ namespace CodingTracker.View
             toggleEditSessionsButton.ForeColor = Color.White;
             toggleEditSessionsButton.Image = (Image)resources.GetObject("toggleEditSessionsButton.Image");
             toggleEditSessionsButton.ImageSize = new Size(40, 40);
-            toggleEditSessionsButton.Location = new Point(811, 621);
+            toggleEditSessionsButton.Location = new Point(793, 610);
             toggleEditSessionsButton.Name = "toggleEditSessionsButton";
-            toggleEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            toggleEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             toggleEditSessionsButton.Size = new Size(105, 33);
             toggleEditSessionsButton.TabIndex = 23;
             toggleEditSessionsButton.CheckedChanged += TestEditSessionButton2_CheckedChanged;
@@ -336,7 +301,7 @@ namespace CodingTracker.View
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(255, 81, 195);
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             editSessionPageDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            editSessionPageDataGridView.BackgroundColor = Color.FromArgb(26, 26, 46);
+            editSessionPageDataGridView.BackgroundColor = Color.FromArgb(44, 45, 65);
             editSessionPageDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(44, 45, 65);
@@ -378,7 +343,7 @@ namespace CodingTracker.View
             editSessionPageDataGridView.ShowCellToolTips = false;
             editSessionPageDataGridView.ShowEditingIcon = false;
             editSessionPageDataGridView.ShowRowErrors = false;
-            editSessionPageDataGridView.Size = new Size(1189, 604);
+            editSessionPageDataGridView.Size = new Size(1188, 604);
             editSessionPageDataGridView.TabIndex = 22;
             editSessionPageDataGridView.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Dark;
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(44, 45, 65);
@@ -386,7 +351,7 @@ namespace CodingTracker.View
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlLight;
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.FromArgb(255, 81, 195);
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.White;
-            editSessionPageDataGridView.ThemeStyle.BackColor = Color.FromArgb(26, 26, 46);
+            editSessionPageDataGridView.ThemeStyle.BackColor = Color.FromArgb(44, 45, 65);
             editSessionPageDataGridView.ThemeStyle.GridColor = Color.FromArgb(26, 26, 46);
             editSessionPageDataGridView.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(44, 45, 65);
             editSessionPageDataGridView.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -462,95 +427,6 @@ namespace CodingTracker.View
             EditSessionPageNotificationPaint.TargetControl = toggleEditSessionsButton;
             EditSessionPageNotificationPaint.Text = "Off";
             // 
-            // newSessionButton
-            // 
-            newSessionButton.Animated = true;
-            newSessionButton.BorderColor = Color.HotPink;
-            newSessionButton.BorderRadius = 15;
-            newSessionButton.BorderThickness = 1;
-            newSessionButton.CustomizableEdges = customizableEdges19;
-            newSessionButton.EnableHoverRipple = true;
-            newSessionButton.FillColor = Color.FromArgb(35, 34, 50);
-            newSessionButton.FillColor2 = Color.FromArgb(35, 34, 50);
-            newSessionButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            newSessionButton.ForeColor = Color.FloralWhite;
-            newSessionButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            newSessionButton.Location = new Point(12, 172);
-            newSessionButton.Name = "newSessionButton";
-            newSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            newSessionButton.Size = new Size(160, 40);
-            newSessionButton.TabIndex = 42;
-            newSessionButton.Text = "New Session";
-            // 
-            // dashboardButton
-            // 
-            dashboardButton.Animated = true;
-            dashboardButton.BorderColor = Color.HotPink;
-            dashboardButton.BorderRadius = 15;
-            dashboardButton.BorderThickness = 1;
-            dashboardButton.CustomizableEdges = customizableEdges21;
-            dashboardButton.DisabledState.BorderColor = Color.DarkGray;
-            dashboardButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            dashboardButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            dashboardButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            dashboardButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            dashboardButton.EnableHoverRipple = true;
-            dashboardButton.FillColor = Color.FromArgb(35, 34, 50);
-            dashboardButton.FillColor2 = Color.FromArgb(35, 34, 50);
-            dashboardButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dashboardButton.ForeColor = Color.FloralWhite;
-            dashboardButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            dashboardButton.Location = new Point(12, 101);
-            dashboardButton.Name = "dashboardButton";
-            dashboardButton.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            dashboardButton.Size = new Size(160, 40);
-            dashboardButton.TabIndex = 0;
-            dashboardButton.Text = "Dashboard";
-            // 
-            // sessionsButton
-            // 
-            sessionsButton.Animated = true;
-            sessionsButton.BorderRadius = 15;
-            sessionsButton.CustomizableEdges = customizableEdges23;
-            sessionsButton.DisabledState.BorderColor = Color.DarkGray;
-            sessionsButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            sessionsButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            sessionsButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            sessionsButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            sessionsButton.EnableHoverRipple = true;
-            sessionsButton.FillColor = Color.FromArgb(255, 81, 195);
-            sessionsButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            sessionsButton.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            sessionsButton.ForeColor = Color.White;
-            sessionsButton.Location = new Point(12, 247);
-            sessionsButton.Name = "sessionsButton";
-            sessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges24;
-            sessionsButton.Size = new Size(160, 40);
-            sessionsButton.TabIndex = 29;
-            sessionsButton.Text = "Sessions";
-            // 
-            // logoutButton
-            // 
-            logoutButton.Animated = true;
-            logoutButton.BorderRadius = 15;
-            logoutButton.CustomizableEdges = customizableEdges25;
-            logoutButton.DisabledState.BorderColor = Color.DarkGray;
-            logoutButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            logoutButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            logoutButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            logoutButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            logoutButton.EnableHoverRipple = true;
-            logoutButton.FillColor = Color.Transparent;
-            logoutButton.FillColor2 = Color.Transparent;
-            logoutButton.Font = new Font("Segoe UI", 10F);
-            logoutButton.ForeColor = Color.FromArgb(206, 212, 218);
-            logoutButton.Location = new Point(12, 668);
-            logoutButton.Name = "logoutButton";
-            logoutButton.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            logoutButton.Size = new Size(160, 40);
-            logoutButton.TabIndex = 3;
-            logoutButton.Text = "Logout";
-            // 
             // githubPictureBox
             // 
             githubPictureBox.BackColor = Color.FromArgb(35, 34, 50);
@@ -587,8 +463,8 @@ namespace CodingTracker.View
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(1206, 780);
+            BackColor = Color.FromArgb(26, 26, 46);
+            ClientSize = new Size(1188, 780);
             Controls.Add(EditSessionPageMainPanel);
             Controls.Add(topPanel);
             FormBorderStyle = FormBorderStyle.None;
@@ -611,11 +487,10 @@ namespace CodingTracker.View
         private Guna.UI2.WinForms.Guna2ControlBox MainPageExitControlMinimizeButton;
         private Guna.UI2.WinForms.Guna2Panel EditSessionPageMainPanel;
         private Guna.UI2.WinForms.Guna2DataGridView editSessionPageDataGridView;
-        private Guna.UI2.WinForms.Guna2HtmlLabel EditSessionsPageSessionsLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel editSessionsPageSessionsLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel EditSessionPageSortByLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel EditSessionPageSessionsLabel;
         private Guna.UI2.WinForms.Guna2ComboBox EditSessionPageComboBox;
-        private Guna.UI2.WinForms.Guna2GradientButton CodingSessionPageHomeButton;
         private Guna.UI2.WinForms.Guna2MessageDialog DisplayMessageBox;
         private Guna.UI2.WinForms.Guna2GradientButton toggleEditSessionsButton;
         private Guna.UI2.WinForms.Guna2NotificationPaint EditSessionPageNotificationPaint;

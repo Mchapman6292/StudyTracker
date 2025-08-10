@@ -31,6 +31,9 @@ namespace CodingTracker.Business.CodingSessionManagers
         private bool IsCodingSessionActive { get; set; } = false;
         private bool IsSessionTimerActive { get; set; } = false;
 
+     
+
+
         #endregion
 
         #region Constructor

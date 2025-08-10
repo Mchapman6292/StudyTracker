@@ -73,7 +73,7 @@ namespace CodingTracker.View
             UpdateDeleteSessionButtonVisibility();
 
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
- 
+
         }
 
         #endregion
@@ -87,6 +87,9 @@ namespace CodingTracker.View
             _buttonHighlighterService.SetButtonHoverColors(deleteSessionButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(toggleEditSessionsButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(deleteSessionButton);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
 
         }
 
@@ -299,6 +302,13 @@ namespace CodingTracker.View
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
 
             await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, selectedCriteria);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
+
+
+
         }
 
         #endregion
@@ -307,7 +317,7 @@ namespace CodingTracker.View
 
         private void CustomizeDatePicker()
         {
-            
+
             editSessionPageTimePicker.BackColor = ColorService.DarkerGrey;
             editSessionPageTimePicker.FillColor = ColorService.DarkerGrey;
             editSessionPageTimePicker.BorderColor = ColorService.MediumGrey;
@@ -317,13 +327,16 @@ namespace CodingTracker.View
             editSessionPageTimePicker.Size = new Size(200, 36);
             editSessionPageTimePicker.ShadowDecoration.Enabled = true;
             editSessionPageTimePicker.ShadowDecoration.Color = ColorService.MediumGrey;
-            
+
         }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
             var date = DateOnly.FromDateTime(editSessionPageTimePicker.Value);
             await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDateAsync(editSessionPageDataGridView, date);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
         }
 
         #endregion
@@ -335,23 +348,29 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
 
-        private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
-        {
-            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
-        }
+
 
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
 
+        #region Session Count Label
 
+        public void UpdateEditSessionsPageSessionsLabel(int sessionCount)
+        {
+            string sessionCountString = sessionCount.ToString();
 
-
-
+            editSessionsPageSessionsLabel.Text = sessionCountString;
+        }
 
         #endregion
 
 
+        private void newHomeButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+        }
     }
+    #endregion
 }
