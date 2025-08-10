@@ -89,7 +89,7 @@ namespace CodingTracker.View.Forms
             stopButton.Click += StopButton_Click;
             restartButton.Click += RestartSessionButton_Click;
 
-            this.Shown += AnimatedTimerForm_Shownn;
+            this.Shown += AnimatedTimerForm_Shown;
             this.Load += AnimatedTimerForm_Load;
 
             elapsedTestToggleSwitch.CheckedChanged += ElapsedTestToggleSwitch_Checked;
@@ -156,7 +156,7 @@ namespace CodingTracker.View.Forms
         }
 
         // TODO review, what happens if we close re open form etc. 
-        private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
+        private async void AnimatedTimerForm_Shown(object sender, EventArgs e)
         {
             bool currentCodingSessionActive = _codingSessionManager.IsCurrentCodingSessionNull();
 

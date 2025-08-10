@@ -133,7 +133,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\Services\AnimatedTimerService\TimerAnimations\Highlighter\Calculators\" />
+    <Folder Include="Forms\Services\AnimatedTimerService\TimerAnimations\TimerColors\Calculators\" />
     <Folder Include="Forms\Services\AnimatedTimerService\Validators\" />
   </ItemGroup>
 

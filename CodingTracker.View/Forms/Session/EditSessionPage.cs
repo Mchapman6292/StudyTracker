@@ -26,6 +26,7 @@ namespace CodingTracker.View
         private readonly INotificationManager _notificationManager;
         private readonly IExitFlowManager _exitFlowManager;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly IFormStateManagement _formStateManagement;
 
         private bool IsEditSession { get; set; } = false;
         private List<int> _currentHighlightedRows = new();
@@ -56,7 +57,9 @@ namespace CodingTracker.View
             IDataGridViewManager dataGridViewManager,
             INotificationManager notificationManager,
             IExitFlowManager buttonNotificationManager,
-            IButtonHighlighterService buttonHighlighterService)
+            IButtonHighlighterService buttonHighlighterService,
+            IFormStateManagement formStateManagement)
+            
         {
             _appLogger = appLogger;
             _formNavigator = formSwitcher;
@@ -65,6 +68,7 @@ namespace CodingTracker.View
             _notificationManager = notificationManager;
             _exitFlowManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
+            _formStateManagement = formStateManagement;
 
             InitializeComponent();
             InitializeComboBoxDropDowns();
@@ -154,7 +158,11 @@ namespace CodingTracker.View
                 _dataGridViewManager.DeleteRowInfoMarkedForDeletion();
 
                 string message = deletedSessions == 0 ? "No sessions deleted" : $"{deletedSessions} sessions deleted.";
+
+    
                 _notificationManager.ShowNotificationDialog(this, message);
+
+
                 ClearCurrentHighlightedRows();
             }
             finally

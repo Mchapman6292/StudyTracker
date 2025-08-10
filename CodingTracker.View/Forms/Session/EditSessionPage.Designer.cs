@@ -110,7 +110,7 @@ namespace CodingTracker.View
             newHomeButton.IconColor = Color.FromArgb(255, 160, 210);
             newHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             newHomeButton.IconSize = 29;
-            newHomeButton.Location = new Point(968, 0);
+            newHomeButton.Location = new Point(1010, 2);
             newHomeButton.Margin = new Padding(3, 2, 3, 2);
             newHomeButton.Name = "newHomeButton";
             newHomeButton.Size = new Size(45, 29);
@@ -204,7 +204,7 @@ namespace CodingTracker.View
             MainPageExitControlMinimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             MainPageExitControlMinimizeButton.HoverState.IconColor = Color.White;
             MainPageExitControlMinimizeButton.IconColor = Color.FromArgb(255, 160, 210);
-            MainPageExitControlMinimizeButton.Location = new Point(1010, 0);
+            MainPageExitControlMinimizeButton.Location = new Point(1052, 2);
             MainPageExitControlMinimizeButton.Name = "MainPageExitControlMinimizeButton";
             MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges6;
             MainPageExitControlMinimizeButton.Size = new Size(45, 29);
@@ -219,7 +219,7 @@ namespace CodingTracker.View
             closeButton.FillColor = Color.FromArgb(25, 24, 40);
             closeButton.HoverState.IconColor = Color.White;
             closeButton.IconColor = Color.FromArgb(255, 160, 210);
-            closeButton.Location = new Point(1054, 0);
+            closeButton.Location = new Point(1096, 2);
             closeButton.Name = "closeButton";
             closeButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             closeButton.Size = new Size(45, 29);
@@ -232,10 +232,10 @@ namespace CodingTracker.View
             EditSessionPageMainPanel.Controls.Add(toggleEditSessionsButton);
             EditSessionPageMainPanel.Controls.Add(editSessionPageDataGridView);
             EditSessionPageMainPanel.CustomizableEdges = customizableEdges15;
-            EditSessionPageMainPanel.Location = new Point(0, 81);
+            EditSessionPageMainPanel.Location = new Point(0, 73);
             EditSessionPageMainPanel.Name = "EditSessionPageMainPanel";
             EditSessionPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            EditSessionPageMainPanel.Size = new Size(1188, 702);
+            EditSessionPageMainPanel.Size = new Size(1188, 707);
             EditSessionPageMainPanel.TabIndex = 1;
             // 
             // deleteSessionButton
@@ -258,7 +258,7 @@ namespace CodingTracker.View
             deleteSessionButton.ForeColor = Color.White;
             deleteSessionButton.Image = (Image)resources.GetObject("deleteSessionButton.Image");
             deleteSessionButton.ImageSize = new Size(40, 30);
-            deleteSessionButton.Location = new Point(950, 610);
+            deleteSessionButton.Location = new Point(992, 625);
             deleteSessionButton.Name = "deleteSessionButton";
             deleteSessionButton.ShadowDecoration.CustomizableEdges = customizableEdges12;
             deleteSessionButton.Size = new Size(105, 33);
@@ -285,7 +285,7 @@ namespace CodingTracker.View
             toggleEditSessionsButton.ForeColor = Color.White;
             toggleEditSessionsButton.Image = (Image)resources.GetObject("toggleEditSessionsButton.Image");
             toggleEditSessionsButton.ImageSize = new Size(40, 40);
-            toggleEditSessionsButton.Location = new Point(793, 610);
+            toggleEditSessionsButton.Location = new Point(835, 625);
             toggleEditSessionsButton.Name = "toggleEditSessionsButton";
             toggleEditSessionsButton.ShadowDecoration.CustomizableEdges = customizableEdges14;
             toggleEditSessionsButton.Size = new Size(105, 33);
@@ -323,7 +323,7 @@ namespace CodingTracker.View
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             editSessionPageDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             editSessionPageDataGridView.GridColor = Color.FromArgb(26, 26, 46);
-            editSessionPageDataGridView.Location = new Point(0, 0);
+            editSessionPageDataGridView.Location = new Point(24, 8);
             editSessionPageDataGridView.MultiSelect = false;
             editSessionPageDataGridView.Name = "editSessionPageDataGridView";
             editSessionPageDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -343,7 +343,7 @@ namespace CodingTracker.View
             editSessionPageDataGridView.ShowCellToolTips = false;
             editSessionPageDataGridView.ShowEditingIcon = false;
             editSessionPageDataGridView.ShowRowErrors = false;
-            editSessionPageDataGridView.Size = new Size(1188, 604);
+            editSessionPageDataGridView.Size = new Size(1129, 604);
             editSessionPageDataGridView.TabIndex = 22;
             editSessionPageDataGridView.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Dark;
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(44, 45, 65);

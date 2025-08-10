@@ -154,7 +154,7 @@
             logoutButton.FillColor2 = Color.Transparent;
             logoutButton.Font = new Font("Segoe UI", 10F);
             logoutButton.ForeColor = Color.FromArgb(206, 212, 218);
-            logoutButton.Location = new Point(12, 810);
+            logoutButton.Location = new Point(12, 798);
             logoutButton.Name = "logoutButton";
             logoutButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             logoutButton.Size = new Size(160, 40);
@@ -163,7 +163,7 @@
             // 
             // githubPictureBox
             // 
-            githubPictureBox.BackColor = Color.FromArgb(35, 34, 50);
+            githubPictureBox.BackColor = Color.FromArgb(26, 26, 46);
             githubPictureBox.ForeColor = Color.FromArgb(204, 84, 144);
             githubPictureBox.IconChar = FontAwesome.Sharp.IconChar.CodePullRequest;
             githubPictureBox.IconColor = Color.FromArgb(204, 84, 144);
