@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <BaseOutputPath>C:\Users\mchap\OneDrive\Desktop\StudyTrackerExe</BaseOutputPath>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +40,7 @@
 		<Content Include="AppSettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<Content Include="favicon.ico" />
 		<Content Include="Forms\FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Link>FormMedia\CodingTrackerLoginPagePlaceHolderMp4.mp4</Link>

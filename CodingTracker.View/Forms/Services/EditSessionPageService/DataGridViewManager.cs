@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.CommonEnums;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+using CodingTracker.Common.CommonEnums;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.CodingSessionEntities;
 using CodingTracker.Common.LoggingInterfaces;
@@ -42,11 +43,15 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
         void RenameDataGridColumns(DataGridView dataGrid);
         void FormatDataGridViewDateData(DataGridView dataGrid);
         Task ClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGridView, SessionSortCriteria sessionSortCriteria);
+        Task TESTClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria);
         Task CONTROLLERClearAndRefreshDataGridByDateAsync(DataGridView dataGrid, DateOnly date);
         void CONTROLLERClearAndLoadDataGridViewWithSessions(DataGridView dataGrid, List<CodingSessionEntity> codingSessions);
         HashSet<int> GetSessionIdsMarkedForDeletion();
         List<int> GetSessionIdsNotMarkedForDeletion();
         void DeleteRowInfoMarkedForDeletion();
+
+
+
     }
 
     public class DataGridViewManager : IDataGridViewManager
@@ -58,6 +63,7 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
         private readonly IRowStateManager _dataGridRowStateManager;
         private readonly IConfiguration _configuration;
         private readonly IUtilityService _utilityService;
+        private readonly ICodingSessionManager _codingSessionManager;
 
         // Maps the sessionId to the datagridview display, used to tracking session ids for deletion
         private Dictionary<DataGridViewRow, RowState> _rowToInfoMapping { get; set; }
@@ -71,13 +77,14 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
 
 
 
-        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IRowStateManager dataGridRowStateManager, IConfiguration configuration, IUtilityService utilityService)
+        public DataGridViewManager(IApplicationLogger appLogger, ICodingSessionRepository codingSessionRepository, IRowStateManager dataGridRowStateManager, IConfiguration configuration, IUtilityService utilityService, ICodingSessionManager codingSessionManager)
         {
             _appLogger = appLogger;
             _codingSessionRepository = codingSessionRepository;
             _dataGridRowStateManager = dataGridRowStateManager;
             _configuration = configuration;
             _utilityService = utilityService;
+            _codingSessionManager = codingSessionManager;
             _rowToInfoMapping = new Dictionary<DataGridViewRow, RowState>();
             _visibleColumns = new List<string>
             {
@@ -120,6 +127,30 @@ namespace CodingTracker.View.Forms.Services.EditSessionPageService
               RefreshDataGridView(dataGrid);
             CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
         }
+
+        public async Task TESTClearAndRefreshDataGridByCriteriaAsync(DataGridView dataGrid, SessionSortCriteria sessionSortCriteria)
+        {
+            ClearDataGridViewDataSource(dataGrid);
+            ClearDataGridViewColumns(dataGrid);
+
+            int currentUserId = _codingSessionManager.ReturnCurrentUserIdPlaceholder();
+            List<CodingSessionEntity> codingSessions = await _codingSessionRepository.TESTGetSessionBySessionSortCriteriaAsync(_numberOfSessions, sessionSortCriteria, currentUserId);
+
+            CodingSessionEntity testEntity = codingSessions.FirstOrDefault();
+
+            _appLogger.LogCodingSessionEntity(testEntity);
+
+
+            // Convert dates to local time from utc. 
+            ConvertCodingSessionListDatesToLocal(codingSessions);
+            LoadDataGridViewWithSessions(dataGrid, codingSessions);
+            HideUnusuedColumns(dataGrid);
+            RenameDataGridColumns(dataGrid);
+            FormatDataGridViewDateData(dataGrid);
+            RefreshDataGridView(dataGrid);
+            CreateRowStateAndAddToDictWithDataGridRow(dataGrid);
+        }
+
 
         /// <summary>
         /// Controller method to clear and reload the DataGridView with sessions from a specific date.

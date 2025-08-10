@@ -82,7 +82,7 @@ namespace CodingTracker.View
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, SessionSortCriteria.StartDate);
+            await _dataGridViewManager.TESTClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, SessionSortCriteria.StartDate);
             _buttonHighlighterService.SetButtonHoverColors(toggleEditSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(deleteSessionButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(toggleEditSessionsButton);

@@ -403,7 +403,7 @@ namespace CodingTracker.View
             // 
             // iconPictureBox1
             // 
-            iconPictureBox1.BackColor = Color.FromArgb(35, 34, 50);
+            iconPictureBox1.BackColor = Color.FromArgb(26, 26, 46);
             guna2Transition1.SetDecoration(iconPictureBox1, Guna.UI2.AnimatorNS.DecorationType.None);
             iconPictureBox1.ForeColor = Color.FromArgb(255, 160, 210);
             iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.CodePullRequest;

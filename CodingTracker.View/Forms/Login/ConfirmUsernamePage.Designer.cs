@@ -122,8 +122,8 @@
             MainPageExitControlMinimizeButton.FillColor = Color.FromArgb(25, 24, 40);
             MainPageExitControlMinimizeButton.HoverState.FillColor = Color.FromArgb(0, 9, 43);
             MainPageExitControlMinimizeButton.HoverState.IconColor = Color.White;
-            MainPageExitControlMinimizeButton.IconColor = Color.White;
-            MainPageExitControlMinimizeButton.Location = new Point(372, 0);
+            MainPageExitControlMinimizeButton.IconColor = Color.FromArgb(255, 160, 210);
+            MainPageExitControlMinimizeButton.Location = new Point(366, 1);
             MainPageExitControlMinimizeButton.Name = "MainPageExitControlMinimizeButton";
             MainPageExitControlMinimizeButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
             MainPageExitControlMinimizeButton.Size = new Size(45, 29);
@@ -136,8 +136,8 @@
             ConfirmUsernamePageExitButton.CustomizableEdges = customizableEdges9;
             ConfirmUsernamePageExitButton.FillColor = Color.FromArgb(25, 24, 40);
             ConfirmUsernamePageExitButton.HoverState.IconColor = Color.White;
-            ConfirmUsernamePageExitButton.IconColor = Color.White;
-            ConfirmUsernamePageExitButton.Location = new Point(414, 0);
+            ConfirmUsernamePageExitButton.IconColor = Color.FromArgb(255, 160, 210);
+            ConfirmUsernamePageExitButton.Location = new Point(408, 1);
             ConfirmUsernamePageExitButton.Name = "ConfirmUsernamePageExitButton";
             ConfirmUsernamePageExitButton.ShadowDecoration.CustomizableEdges = customizableEdges10;
             ConfirmUsernamePageExitButton.Size = new Size(45, 29);
@@ -252,10 +252,11 @@
             resetPasswordFormHomeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
             resetPasswordFormHomeButton.IconColor = Color.FromArgb(255, 160, 210);
             resetPasswordFormHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            resetPasswordFormHomeButton.Location = new Point(331, 0);
+            resetPasswordFormHomeButton.IconSize = 29;
+            resetPasswordFormHomeButton.Location = new Point(325, 1);
             resetPasswordFormHomeButton.Margin = new Padding(3, 2, 3, 2);
             resetPasswordFormHomeButton.Name = "resetPasswordFormHomeButton";
-            resetPasswordFormHomeButton.Size = new Size(45, 32);
+            resetPasswordFormHomeButton.Size = new Size(45, 29);
             resetPasswordFormHomeButton.SizeMode = PictureBoxSizeMode.CenterImage;
             resetPasswordFormHomeButton.TabIndex = 55;
             resetPasswordFormHomeButton.TabStop = false;

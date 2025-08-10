@@ -64,14 +64,15 @@ namespace CodingTracker.View
             CustomizableEdges customizableEdges25 = new CustomizableEdges();
             CustomizableEdges customizableEdges26 = new CustomizableEdges();
             topPanel = new Guna.UI2.WinForms.Guna2Panel();
+            newHomeButton = new FontAwesome.Sharp.IconPictureBox();
             editSessionPageTimePicker = new Guna.UI2.WinForms.Guna2DateTimePicker();
             CodingSessionPageHomeButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            EditSessionsPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             EditSessionPageComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
+            EditSessionPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             EditSessionPageSortByLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             MainPageExitControlMinimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
-            EditSessionPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            EditSessionsPageSessionsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             EditSessionPageMainPanel = new Guna.UI2.WinForms.Guna2Panel();
             deleteSessionButton = new Guna.UI2.WinForms.Guna2GradientButton();
             toggleEditSessionsButton = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -91,16 +92,16 @@ namespace CodingTracker.View
             githubPictureBox = new FontAwesome.Sharp.IconPictureBox();
             guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             editSessionAnimationWindow = new Guna.UI2.WinForms.Guna2AnimateWindow(components);
-            newHomeButton = new FontAwesome.Sharp.IconPictureBox();
             topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)newHomeButton).BeginInit();
             EditSessionPageMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)editSessionPageDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)githubPictureBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)newHomeButton).BeginInit();
             SuspendLayout();
             // 
             // topPanel
             // 
+            topPanel.BackColor = Color.FromArgb(25, 24, 40);
             topPanel.Controls.Add(newHomeButton);
             topPanel.Controls.Add(editSessionPageTimePicker);
             topPanel.Controls.Add(CodingSessionPageHomeButton);
@@ -117,13 +118,29 @@ namespace CodingTracker.View
             topPanel.Size = new Size(1186, 75);
             topPanel.TabIndex = 0;
             // 
+            // newHomeButton
+            // 
+            newHomeButton.BackColor = Color.FromArgb(25, 24, 40);
+            newHomeButton.ForeColor = Color.FromArgb(255, 160, 210);
+            newHomeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
+            newHomeButton.IconColor = Color.FromArgb(255, 160, 210);
+            newHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            newHomeButton.IconSize = 29;
+            newHomeButton.Location = new Point(1052, 0);
+            newHomeButton.Margin = new Padding(3, 2, 3, 2);
+            newHomeButton.Name = "newHomeButton";
+            newHomeButton.Size = new Size(45, 29);
+            newHomeButton.SizeMode = PictureBoxSizeMode.CenterImage;
+            newHomeButton.TabIndex = 47;
+            newHomeButton.TabStop = false;
+            // 
             // editSessionPageTimePicker
             // 
-            editSessionPageTimePicker.BackColor = Color.FromArgb(44, 45, 65);
+            editSessionPageTimePicker.BackColor = Color.FromArgb(26, 26, 46);
             editSessionPageTimePicker.BorderRadius = 10;
             editSessionPageTimePicker.Checked = true;
             editSessionPageTimePicker.CustomizableEdges = customizableEdges1;
-            editSessionPageTimePicker.FillColor = Color.FromArgb(35, 34, 50);
+            editSessionPageTimePicker.FillColor = Color.FromArgb(26, 26, 46);
             editSessionPageTimePicker.Font = new Font("Segoe UI", 9F);
             editSessionPageTimePicker.ForeColor = Color.FromArgb(255, 200, 230);
             editSessionPageTimePicker.Format = DateTimePickerFormat.Long;
@@ -157,6 +174,18 @@ namespace CodingTracker.View
             CodingSessionPageHomeButton.TabIndex = 32;
             CodingSessionPageHomeButton.Click += CodingSessionPageHomeButton_Click;
             // 
+            // EditSessionsPageSessionsLabel
+            // 
+            EditSessionsPageSessionsLabel.AutoSize = false;
+            EditSessionsPageSessionsLabel.BackColor = Color.Transparent;
+            EditSessionsPageSessionsLabel.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold);
+            EditSessionsPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
+            EditSessionsPageSessionsLabel.Location = new Point(4, 4);
+            EditSessionsPageSessionsLabel.Name = "EditSessionsPageSessionsLabel";
+            EditSessionsPageSessionsLabel.Size = new Size(28, 32);
+            EditSessionsPageSessionsLabel.TabIndex = 28;
+            EditSessionsPageSessionsLabel.Text = "28";
+            // 
             // EditSessionPageComboBox
             // 
             EditSessionPageComboBox.BackColor = Color.FromArgb(35, 34, 50);
@@ -175,6 +204,18 @@ namespace CodingTracker.View
             EditSessionPageComboBox.ShadowDecoration.CustomizableEdges = customizableEdges6;
             EditSessionPageComboBox.Size = new Size(224, 36);
             EditSessionPageComboBox.TabIndex = 31;
+            // 
+            // EditSessionPageSessionsLabel
+            // 
+            EditSessionPageSessionsLabel.AutoSize = false;
+            EditSessionPageSessionsLabel.BackColor = Color.Transparent;
+            EditSessionPageSessionsLabel.Font = new Font("Century Gothic", 12F);
+            EditSessionPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
+            EditSessionPageSessionsLabel.Location = new Point(38, 4);
+            EditSessionPageSessionsLabel.Name = "EditSessionPageSessionsLabel";
+            EditSessionPageSessionsLabel.Size = new Size(90, 32);
+            EditSessionPageSessionsLabel.TabIndex = 29;
+            EditSessionPageSessionsLabel.Text = "Sessions";
             // 
             // EditSessionPageSortByLabel
             // 
@@ -219,32 +260,9 @@ namespace CodingTracker.View
             closeButton.Size = new Size(45, 29);
             closeButton.TabIndex = 26;
             // 
-            // EditSessionPageSessionsLabel
-            // 
-            EditSessionPageSessionsLabel.AutoSize = false;
-            EditSessionPageSessionsLabel.BackColor = Color.Transparent;
-            EditSessionPageSessionsLabel.Font = new Font("Century Gothic", 12F);
-            EditSessionPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
-            EditSessionPageSessionsLabel.Location = new Point(38, 4);
-            EditSessionPageSessionsLabel.Name = "EditSessionPageSessionsLabel";
-            EditSessionPageSessionsLabel.Size = new Size(90, 32);
-            EditSessionPageSessionsLabel.TabIndex = 29;
-            EditSessionPageSessionsLabel.Text = "Sessions";
-            // 
-            // EditSessionsPageSessionsLabel
-            // 
-            EditSessionsPageSessionsLabel.AutoSize = false;
-            EditSessionsPageSessionsLabel.BackColor = Color.Transparent;
-            EditSessionsPageSessionsLabel.Font = new Font("Century Gothic", 15.75F, FontStyle.Bold);
-            EditSessionsPageSessionsLabel.ForeColor = Color.FromArgb(255, 200, 230);
-            EditSessionsPageSessionsLabel.Location = new Point(4, 4);
-            EditSessionsPageSessionsLabel.Name = "EditSessionsPageSessionsLabel";
-            EditSessionsPageSessionsLabel.Size = new Size(28, 32);
-            EditSessionsPageSessionsLabel.TabIndex = 28;
-            EditSessionsPageSessionsLabel.Text = "28";
-            // 
             // EditSessionPageMainPanel
             // 
+            EditSessionPageMainPanel.BackColor = Color.FromArgb(25, 24, 40);
             EditSessionPageMainPanel.Controls.Add(deleteSessionButton);
             EditSessionPageMainPanel.Controls.Add(toggleEditSessionsButton);
             EditSessionPageMainPanel.Controls.Add(editSessionPageDataGridView);
@@ -318,7 +336,7 @@ namespace CodingTracker.View
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(255, 81, 195);
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             editSessionPageDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            editSessionPageDataGridView.BackgroundColor = Color.FromArgb(35, 34, 50);
+            editSessionPageDataGridView.BackgroundColor = Color.FromArgb(26, 26, 46);
             editSessionPageDataGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(44, 45, 65);
@@ -339,8 +357,8 @@ namespace CodingTracker.View
             dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             editSessionPageDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
-            editSessionPageDataGridView.GridColor = Color.FromArgb(70, 71, 117);
-            editSessionPageDataGridView.Location = new Point(-3, 0);
+            editSessionPageDataGridView.GridColor = Color.FromArgb(26, 26, 46);
+            editSessionPageDataGridView.Location = new Point(0, 0);
             editSessionPageDataGridView.MultiSelect = false;
             editSessionPageDataGridView.Name = "editSessionPageDataGridView";
             editSessionPageDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -368,8 +386,8 @@ namespace CodingTracker.View
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlLight;
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.FromArgb(255, 81, 195);
             editSessionPageDataGridView.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.White;
-            editSessionPageDataGridView.ThemeStyle.BackColor = Color.FromArgb(35, 34, 50);
-            editSessionPageDataGridView.ThemeStyle.GridColor = Color.FromArgb(70, 71, 117);
+            editSessionPageDataGridView.ThemeStyle.BackColor = Color.FromArgb(26, 26, 46);
+            editSessionPageDataGridView.ThemeStyle.GridColor = Color.FromArgb(26, 26, 46);
             editSessionPageDataGridView.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(44, 45, 65);
             editSessionPageDataGridView.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
             editSessionPageDataGridView.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -565,22 +583,6 @@ namespace CodingTracker.View
             // 
             editSessionAnimationWindow.TargetForm = this;
             // 
-            // newHomeButton
-            // 
-            newHomeButton.BackColor = Color.FromArgb(25, 24, 40);
-            newHomeButton.ForeColor = Color.FromArgb(255, 160, 210);
-            newHomeButton.IconChar = FontAwesome.Sharp.IconChar.HomeLg;
-            newHomeButton.IconColor = Color.FromArgb(255, 160, 210);
-            newHomeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            newHomeButton.IconSize = 29;
-            newHomeButton.Location = new Point(1052, 0);
-            newHomeButton.Margin = new Padding(3, 2, 3, 2);
-            newHomeButton.Name = "newHomeButton";
-            newHomeButton.Size = new Size(45, 29);
-            newHomeButton.SizeMode = PictureBoxSizeMode.CenterImage;
-            newHomeButton.TabIndex = 47;
-            newHomeButton.TabStop = false;
-            // 
             // EditSessionPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -594,10 +596,10 @@ namespace CodingTracker.View
             Text = "EditSessionForm";
             Load += EditSessionPage_Load;
             topPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)newHomeButton).EndInit();
             EditSessionPageMainPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)editSessionPageDataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)githubPictureBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)newHomeButton).EndInit();
             ResumeLayout(false);
 
         }

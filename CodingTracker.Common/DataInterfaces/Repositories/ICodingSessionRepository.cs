@@ -36,5 +36,8 @@ namespace CodingTracker.Common.DataInterfaces.Repositories
 
         Task<Dictionary<DateOnly, List<CodingSessionEntity>>> GetSessionsGroupedByDateLastSevenDays();
 
+
+        Task<List<CodingSessionEntity>> TESTGetSessionBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy, int userId);
+
     }
 }

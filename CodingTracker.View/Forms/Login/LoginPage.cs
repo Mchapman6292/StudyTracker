@@ -54,7 +54,6 @@ namespace CodingTracker.View
 
             // Load saved settings
             rememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
-            rememberMeToggle.CheckedChanged += RememberMeToggle_Checked;
             LoadSavedCredentials();
 
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
@@ -267,22 +266,7 @@ namespace CodingTracker.View
             _exitFlowManager.ExitCodingTracker();
         }
 
-        private void RememberMeToggle_Checked(object sender, EventArgs e)
-        {
-            if (rememberMeToggle.Checked)
-            {
-                rememberMeTextBox.ForeColor = SystemColors.ControlLightLight;
-            }
-            else
-            {
-                rememberMeTextBox.ForeColor = Color.FromArgb(120, 120, 130);
-            }
-        }
 
-        /*
-                  rememberMeToggle.UncheckedState.FillColor = Color.FromArgb(50, 50, 60);
-            rememberMeToggle.UncheckedState.InnerColor = Color.FromArgb(120, 120, 130);
-        */
 
         #endregion
 
