@@ -35,6 +35,7 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
 
         void UpdateTimerTestModeEnabled(bool modifyElapsedTime);
 
+
         bool IsTimerTestModeEnabled();
 
         void UpdateTestModeElapsed(TimeSpan testModeElapsed);
@@ -75,6 +76,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService
         public bool TimerTestModeEnabled { get; set; } = false;
 
         public TimeSpan TestModeElapsed = TimeSpan.Zero;
+
+        bool LoggedInUnderTestAccount { get; set; } = false;
 
 
 

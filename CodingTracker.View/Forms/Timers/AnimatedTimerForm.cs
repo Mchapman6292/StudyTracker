@@ -1,4 +1,5 @@
-﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
 using CodingTracker.Common.Utilities;
@@ -38,6 +39,7 @@ namespace CodingTracker.View.Forms
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IButtonHighlighterService _buttonHighLighterService;
         private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
+        private readonly IAdminModeHandler _adminModeHander;
 
 
         public AnimatedTimerColumn column;
@@ -52,11 +54,10 @@ namespace CodingTracker.View.Forms
         private DateTime lastTime;
 
 
-
         private TimerPlaceHolderForm _timerPlaceHolderForm;
 
 
-        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IExitFlowManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager, IExitFlowManager exitFlowManager)
+        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IExitFlowManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager, IExitFlowManager exitFlowManager, IAdminModeHandler adminModeHandler)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -71,6 +72,7 @@ namespace CodingTracker.View.Forms
             _codingSessionManager = codingSessionManager;
             _buttonHighLighterService = buttonHighLighterService;
             _animatedColumnStateManager = animatedColumnStateManager;
+            _adminModeHander = adminModeHandler;
 
 
             _timerPlaceHolderForm = (TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm); ;
@@ -98,26 +100,14 @@ namespace CodingTracker.View.Forms
             InitializeAnimationTimer();
 
 
-
-
-
-
         }
 
 
         private void ElapsedTestToggleSwitch_Checked(Object sender, EventArgs e)
         {
             _animatedTimerManager.UpdateTimerTestModeEnabled(elapsedTestToggleSwitch.Checked);
-
             _animatedTimerManager.UpdateTestModeElapsed(new TimeSpan(00,40,00));
-
-
         }
-
-
-
-
-
 
 
 
@@ -165,7 +155,7 @@ namespace CodingTracker.View.Forms
                 _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
                 _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
             }
-
+            HideTestButtonsIfNotAdminMode();
             _stopWatchTimerService.StartSessionTimer();
         }
 
@@ -338,8 +328,6 @@ namespace CodingTracker.View.Forms
         {
             _stopWatchTimerService.StopTimer();
             _exitFlowManager.HandleStopButtonRequest(this);
-
-
         }
 
 
@@ -354,6 +342,18 @@ namespace CodingTracker.View.Forms
             }
         }
         */
+
+
+        public void HideTestButtonsIfNotAdminMode()
+        {
+            bool isAdmninMode = _adminModeHander.IsAdminModeEnabled();
+
+            if(!isAdmninMode)
+            {
+                elapsedTestTextBox.Visible = false;
+                elapsedTestToggleSwitch.Visible = false;
+            }
+        }
 
 
     }

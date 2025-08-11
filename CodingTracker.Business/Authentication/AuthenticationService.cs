@@ -1,5 +1,6 @@
 ﻿
 using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.Entities.UserCredentialEntities;
@@ -17,15 +18,17 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
         private readonly IApplicationLogger _appLogger;
         private readonly IUtilityService _utilityService;
         private readonly ICodingSessionManager _codingSessionManager;
+        private readonly IAdminModeHandler _adminModeHandler;
 
         private string _usernameForPasswordReset { get; set; }
 
-        public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, ICodingSessionManager codingSessionManager)
+        public AuthenticationService(IApplicationLogger appLogger, IUserCredentialRepository userCredentialRepository, IUtilityService utilityService, ICodingSessionManager codingSessionManager, IAdminModeHandler adminModeHandler)
         {
             _appLogger = appLogger;
             _userCredentialRepository = userCredentialRepository;
             _utilityService = utilityService;
             _codingSessionManager = codingSessionManager;
+            _adminModeHandler = adminModeHandler;
         }
 
         public void SetUsernameForPasswordReset(string username)
@@ -63,6 +66,8 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
 
 
 
+
+
         public async Task<bool> AuthenticateLogin(string username, string password)
         {
             bool usernameExist = await _userCredentialRepository.UsernameExistsAsync(username);
@@ -74,8 +79,6 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             }
 
             _appLogger.Debug($"Username found for {username}.");
-
-
 
             UserCredentialEntity loginCredential = await _userCredentialRepository.GetUserCredentialByUsernameAsync(username);
 
@@ -146,6 +149,11 @@ namespace CodingTracker.Business.Authentication.AuthenticationServices
             message = "Password validated";
             return true;
         }
+
+
+
+
+     
     }
 }
 

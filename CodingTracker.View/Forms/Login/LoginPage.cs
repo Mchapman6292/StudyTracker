@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.LoggingInterfaces;
@@ -23,10 +24,12 @@ namespace CodingTracker.View
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
+        private readonly IAdminModeHandler _adminModeHandler;
+
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager, IAdminModeHandler adminModeHandler)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -38,6 +41,8 @@ namespace CodingTracker.View
             _buttonHighlighterService = buttonHighlighterService;
             _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
+            _adminModeHandler = adminModeHandler;
+
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -100,6 +105,7 @@ namespace CodingTracker.View
                 var media = new Media(_libVLC, new Uri(videoFilePath));
                 media.AddOption("input-repeat=65535");
                 _videoView.MediaPlayer.Play(media);
+                _videoView.MediaPlayer.AspectRatio = $"{_videoView.Width}:{_videoView.Height}";
                 _videoView.MediaPlayer.Scale = 0;
                 _appLogger.Info($"VLC player loaded video from {videoFilePath}");
             }
@@ -219,13 +225,17 @@ namespace CodingTracker.View
 
                 if (isValidLogin)
                 {
-                    UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredential(username);
-
-                    _codingSessionManager.SetCurrentUserIdPlaceholder(userCredential.UserId);
-
+                    UserCredentialEntity currentUserCredential = await _authenticationService.ReturnUserCredential(username);
+                    _codingSessionManager.SetCurrentUserIdPlaceholder(currentUserCredential.UserId);
                     SaveUsernameForNextLogin(username);
 
-                    _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+                    if (_adminModeHandler.IsAdminUserCredential(currentUserCredential))
+                    {
+                        _adminModeHandler.UpdateAdminModeEnabled(true);
+                        _appLogger.Debug($"Login credentials match admin login, updating admin mode to true");
+                    }
+
+                        _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
                 }
                 if(!isValidLogin) 
                 {
