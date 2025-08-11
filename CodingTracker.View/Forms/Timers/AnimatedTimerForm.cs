@@ -1,6 +1,8 @@
-﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
+﻿using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces.Repositories;
 using CodingTracker.Common.LoggingInterfaces;
+using CodingTracker.Common.Utilities;
 using CodingTracker.View.ApplicationControlService;
 using CodingTracker.View.ApplicationControlService.ButtonNotificationManagers;
 using CodingTracker.View.FormManagement;
@@ -37,6 +39,7 @@ namespace CodingTracker.View.Forms
         private readonly ICodingSessionManager _codingSessionManager;
         private readonly IButtonHighlighterService _buttonHighLighterService;
         private readonly IAnimatedColumnStateManager _animatedColumnStateManager;
+        private readonly IAdminModeHandler _adminModeHander;
 
 
         public AnimatedTimerColumn column;
@@ -51,11 +54,10 @@ namespace CodingTracker.View.Forms
         private DateTime lastTime;
 
 
-
         private TimerPlaceHolderForm _timerPlaceHolderForm;
 
 
-        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IExitFlowManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager, IExitFlowManager exitFlowManager)
+        public AnimatedTimerForm(IButtonHighlighterService buttonHighlighterService, INotificationManager notificationManager, ICodingSessionRepository codingSessionRepository, ILabelAssignment labelAssignment, IApplicationLogger appLogger, IAnimatedTimerColumnFactory animatedTimerColumnFactory, IAnimatedTimerManager animatedTimerManager, IStopWatchTimerService stopWatchTimerService, IFormStateManagement formStateManagement, IFormFactory formFactory, IFormNavigator formNavigator, IExitFlowManager buttonNotificationManager, ICodingSessionManager codingSessionManager, IButtonHighlighterService buttonHighLighterService, IAnimatedColumnStateManager animatedColumnStateManager, IExitFlowManager exitFlowManager, IAdminModeHandler adminModeHandler)
         {
 
             _buttonHighligherService = buttonHighlighterService;
@@ -70,6 +72,7 @@ namespace CodingTracker.View.Forms
             _codingSessionManager = codingSessionManager;
             _buttonHighLighterService = buttonHighLighterService;
             _animatedColumnStateManager = animatedColumnStateManager;
+            _adminModeHander = adminModeHandler;
 
 
             _timerPlaceHolderForm = (TimerPlaceHolderForm)_formFactory.GetOrCreateForm(FormPageEnum.TimerPlaceHolderForm); ;
@@ -88,55 +91,24 @@ namespace CodingTracker.View.Forms
             stopButton.Click += StopButton_Click;
             restartButton.Click += RestartSessionButton_Click;
 
-            this.Shown += AnimatedTimerForm_Shownn;
+            this.Shown += AnimatedTimerForm_Shown;
             this.Load += AnimatedTimerForm_Load;
 
-
+            elapsedTestToggleSwitch.CheckedChanged += ElapsedTestToggleSwitch_Checked;
 
 
             InitializeAnimationTimer();
 
 
-
-
-
-
         }
 
 
-
-
-        public void LogTargetValue0LocationAtIinitialization()
+        private void ElapsedTestToggleSwitch_Checked(Object sender, EventArgs e)
         {
-
-
-            List<AnimatedTimerColumn> columns = _animatedTimerManager.ReturnTimerColumns();
-
-            AnimatedTimerColumn targetColumn = columns.FirstOrDefault(s => s.ColumnType == ColumnUnitType.SecondsSingleDigits);
-
-
-            if (targetColumn != null)
-            {
-                throw new InvalidOperationException($"Unable to find targetColumn");
-            }
-
-
-
-
-            int targetValue = 0;
-
-            AnimatedTimerSegment targetSegment = targetColumn.TimerSegments.FirstOrDefault(s => s.Value == 0);
-
-            if (targetSegment != null)
-            {
-                throw new InvalidOperationException($"Unable to find timerSegment");
-            }
-
-
-            _appLogger.Debug($"SecondsSingleDigits Segment with value {targetSegment.Value} initial location = X: {targetSegment.Location.X} , Y = {targetSegment.Location.Y}.");
-
-
+            _animatedTimerManager.UpdateTimerTestModeEnabled(elapsedTestToggleSwitch.Checked);
+            _animatedTimerManager.UpdateTestModeElapsed(new TimeSpan(00,40,00));
         }
+
 
 
         public void SetSKControlLocationAndSize()
@@ -174,10 +146,17 @@ namespace CodingTracker.View.Forms
         }
 
         // TODO review, what happens if we close re open form etc. 
-        private async void AnimatedTimerForm_Shownn(object sender, EventArgs e)
+        private async void AnimatedTimerForm_Shown(object sender, EventArgs e)
         {
+            bool currentCodingSessionActive = _codingSessionManager.IsCurrentCodingSessionNull();
+
+            if(!currentCodingSessionActive)
+            {
+                _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
+                _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
+            }
+            HideTestButtonsIfNotAdminMode();
             _stopWatchTimerService.StartSessionTimer();
-            _codingSessionManager.UpdateSessionStartTimeAndActiveBoolsToTrue();
         }
 
         public string FormatElapsedTimeSPan(TimeSpan elapsed)
@@ -189,12 +168,21 @@ namespace CodingTracker.View.Forms
 
         public void UpdateTimeDisplayLAbel()
         {
-            TimeSpan elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+            bool testModeEnabled = _animatedTimerManager.IsTimerTestModeEnabled();
 
-            string elapsedString = FormatElapsedTimeSPan(elapsed);
-
+            TimeSpan elapsed;
+            string elapsedString = string.Empty;
+            if (testModeEnabled)
+            {
+                elapsed = _animatedTimerManager.ReturnTestModeElapsed();
+                elapsedString += LoggerHelper.FormatAllElapsedTimeSpan(elapsed);       
+            }
+            else
+            {
+                elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
+                elapsedString = LoggerHelper.FormatAllElapsedTimeSpan(elapsed);
+            }
             timeDisplayLabel.Text = elapsedString;
-
         }
 
 
@@ -340,8 +328,6 @@ namespace CodingTracker.View.Forms
         {
             _stopWatchTimerService.StopTimer();
             _exitFlowManager.HandleStopButtonRequest(this);
-
-
         }
 
 
@@ -356,6 +342,18 @@ namespace CodingTracker.View.Forms
             }
         }
         */
+
+
+        public void HideTestButtonsIfNotAdminMode()
+        {
+            bool isAdmninMode = _adminModeHander.IsAdminModeEnabled();
+
+            if(!isAdmninMode)
+            {
+                elapsedTestTextBox.Visible = false;
+                elapsedTestToggleSwitch.Visible = false;
+            }
+        }
 
 
     }

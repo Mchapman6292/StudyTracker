@@ -17,6 +17,8 @@
         bool ReturnIsSessionTimerActive();
         bool ReturnIsCodingSessionActive();
 
+        bool IsCurrentCodingSessionNull();
+
 
         void SetCurrentUserIdPlaceholder(int userId);
         void SetStudyProject(string studyProject);

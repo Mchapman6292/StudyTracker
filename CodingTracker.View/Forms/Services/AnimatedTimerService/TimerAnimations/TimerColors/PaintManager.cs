@@ -3,8 +3,6 @@ using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.AnimatedTimerParts.StateManagers;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Shadows;
 using CodingTracker.View.Forms.Services.AnimatedTimerService.TimerParts;
-using LiveChartsCore.Painting;
-using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 
 namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations.Highlighter
@@ -25,13 +23,8 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
         SKPaint CreateTopLeftLightShadowPaint(ShadowIntensity intensity, SKColor lightColor);
         SKPaint CreateRightSideDarkShadowPaint(ShadowIntensity intensity, SKColor darkColor);
         SKPaint CreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column);
-
         SKPaint TESTCreateFocusedNumberPaintAndGradient(AnimatedTimerColumn column);
-
-
         SKPaint TESTCreateInnerSegmentPaint(AnimatedTimerColumn column);
-
-
         SKPaint CreateNeonGlowPaint(AnimatedTimerColumn column);
         SKPaint CreateNeonBorderPaint(AnimatedTimerColumn column);
 
@@ -111,17 +104,12 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
 
             return new SKPaint()
             {
-
-
-                
                 Color = new SKColor(49, 50, 68).WithAlpha(alpha),
                 Style = SKPaintStyle.Fill,
                 StrokeWidth = 1f,
                 StrokeCap = SKStrokeCap.Round,
                 StrokeJoin = SKStrokeJoin.Round,
                 IsAntialias = true
-
-
             };
         }
 
@@ -219,8 +207,6 @@ namespace CodingTracker.View.Forms.Services.AnimatedTimerService.TimerAnimations
             byte alpha = (byte)(opacityMultiplier * 150);
 
             SKShader focusedNumberGradient = _gradientManager.CreateBlendedNumberGradient(column);
-
-      
 
             return new SKPaint()
             {

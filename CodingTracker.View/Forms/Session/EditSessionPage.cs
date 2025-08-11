@@ -26,6 +26,7 @@ namespace CodingTracker.View
         private readonly INotificationManager _notificationManager;
         private readonly IExitFlowManager _exitFlowManager;
         private readonly IButtonHighlighterService _buttonHighlighterService;
+        private readonly IFormStateManagement _formStateManagement;
 
         private bool IsEditSession { get; set; } = false;
         private List<int> _currentHighlightedRows = new();
@@ -56,7 +57,9 @@ namespace CodingTracker.View
             IDataGridViewManager dataGridViewManager,
             INotificationManager notificationManager,
             IExitFlowManager buttonNotificationManager,
-            IButtonHighlighterService buttonHighlighterService)
+            IButtonHighlighterService buttonHighlighterService,
+            IFormStateManagement formStateManagement)
+            
         {
             _appLogger = appLogger;
             _formNavigator = formSwitcher;
@@ -65,6 +68,7 @@ namespace CodingTracker.View
             _notificationManager = notificationManager;
             _exitFlowManager = buttonNotificationManager;
             _buttonHighlighterService = buttonHighlighterService;
+            _formStateManagement = formStateManagement;
 
             InitializeComponent();
             InitializeComboBoxDropDowns();
@@ -73,7 +77,7 @@ namespace CodingTracker.View
             UpdateDeleteSessionButtonVisibility();
 
             EditSessionPageComboBox.SelectedIndexChanged += EditSessionPageComboBox_SelectedIndexChanged;
- 
+
         }
 
         #endregion
@@ -82,11 +86,14 @@ namespace CodingTracker.View
 
         private async void EditSessionPage_Load(object sender, EventArgs e)
         {
-            await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, SessionSortCriteria.StartDate);
+            await _dataGridViewManager.TESTClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, SessionSortCriteria.StartDate);
             _buttonHighlighterService.SetButtonHoverColors(toggleEditSessionsButton);
             _buttonHighlighterService.SetButtonHoverColors(deleteSessionButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(toggleEditSessionsButton);
             _buttonHighlighterService.SetButtonBackColorAndBorderColor(deleteSessionButton);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
 
         }
 
@@ -122,6 +129,7 @@ namespace CodingTracker.View
         private void UpdateIsEditSession(bool isEditSession)
         {
             IsEditSession = isEditSession;
+            _appLogger.Debug($"IsEditSession updated to {IsEditSession}.");
         }
 
         private void UpdateDeleteSessionButtonEnabled(bool? isEditSession = null)
@@ -138,7 +146,7 @@ namespace CodingTracker.View
         {
             if (!IsEditSession)
             {
-                throw new InvalidOperationException($"Error: IsEditSession is {IsEditSession}, must be true to delete.");
+                UpdateIsEditSession(true);
             }
 
             UpdateDeleteSessionButtonEnabled(false);
@@ -150,7 +158,11 @@ namespace CodingTracker.View
                 _dataGridViewManager.DeleteRowInfoMarkedForDeletion();
 
                 string message = deletedSessions == 0 ? "No sessions deleted" : $"{deletedSessions} sessions deleted.";
+
+    
                 _notificationManager.ShowNotificationDialog(this, message);
+
+
                 ClearCurrentHighlightedRows();
             }
             finally
@@ -298,6 +310,13 @@ namespace CodingTracker.View
             SessionSortCriteria selectedCriteria = GetSortCriteriaFromComboBoxSelection(selectedOption);
 
             await _dataGridViewManager.ClearAndRefreshDataGridByCriteriaAsync(editSessionPageDataGridView, selectedCriteria);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
+
+
+
         }
 
         #endregion
@@ -306,7 +325,7 @@ namespace CodingTracker.View
 
         private void CustomizeDatePicker()
         {
-            
+
             editSessionPageTimePicker.BackColor = ColorService.DarkerGrey;
             editSessionPageTimePicker.FillColor = ColorService.DarkerGrey;
             editSessionPageTimePicker.BorderColor = ColorService.MediumGrey;
@@ -316,13 +335,16 @@ namespace CodingTracker.View
             editSessionPageTimePicker.Size = new Size(200, 36);
             editSessionPageTimePicker.ShadowDecoration.Enabled = true;
             editSessionPageTimePicker.ShadowDecoration.Color = ColorService.MediumGrey;
-            
+
         }
 
         private async void EditSessionPageTimePicker_ValueChanged(object sender, EventArgs e)
         {
             var date = DateOnly.FromDateTime(editSessionPageTimePicker.Value);
             await _dataGridViewManager.CONTROLLERClearAndRefreshDataGridByDateAsync(editSessionPageDataGridView, date);
+
+            int populatedRowCount = _dataGridViewManager.CountPopulatedRowsInDataGrid(editSessionPageDataGridView);
+            UpdateEditSessionsPageSessionsLabel(populatedRowCount);
         }
 
         #endregion
@@ -334,23 +356,29 @@ namespace CodingTracker.View
             _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
         }
 
-        private void CodingSessionPageHomeButton_Click(object sender, EventArgs e)
-        {
-            _formNavigator.SwitchToForm(FormPageEnum.OldMainPage);
-        }
+
 
         private void MainPageExitControlMinimizeButton_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
 
+        #region Session Count Label
 
+        public void UpdateEditSessionsPageSessionsLabel(int sessionCount)
+        {
+            string sessionCountString = sessionCount.ToString();
 
-
-
+            editSessionsPageSessionsLabel.Text = sessionCountString;
+        }
 
         #endregion
 
 
+        private void newHomeButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+        }
     }
+    #endregion
 }

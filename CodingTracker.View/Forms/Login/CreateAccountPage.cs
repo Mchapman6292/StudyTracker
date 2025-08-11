@@ -105,6 +105,7 @@ namespace CodingTracker.View
                     if (isAccountCreated)
                     {
                         AccountCreatedCallback?.Invoke("Account created successfully.");
+                        _notificationManager.ShowNotificationDialog(this, $"Account creation successful for {username}.");
                         _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
                     }
                     else

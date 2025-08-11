@@ -73,12 +73,6 @@ namespace CodingTracker.View.Forms.Containers
         }
 
 
-        public void CalculateControlNewLocation(Control childFormControl)
-        {
-
-        }
-
-
 
 
 
@@ -102,32 +96,7 @@ namespace CodingTracker.View.Forms.Containers
 
 
 
-        public void TESTUpdateAllControlLocationsInChildForm(Form childForm)
-        {
-            int controlsChanged = 0;
-            UpdateControlsRecursively(childForm, ref controlsChanged);
-            _appLogger.Debug($"Number of controls changed for {childForm.Name}: {controlsChanged}.");
-        }
-
-        private void UpdateControlsRecursively(Control parent, ref int controlsChanged)
-        {
-            foreach (Control control in parent.Controls)
-            {
-
-                if (control.Dock == DockStyle.None && control.Location.X > 100)
-                {
-                    control.Location = new Point(control.Location.X - 178, control.Location.Y);
-                    controlsChanged++;
-                    _appLogger.Debug($"Updated {control.Name} from X:{control.Location.X + 178} to X:{control.Location.X}");
-                }
-
-                if (control.HasChildren)
-                {
-                    UpdateControlsRecursively(control, ref controlsChanged);
-                }
-            }
-        }
-
+   
 
 
         public void SetDataGridViewLocation(Guna2DataGridView dgv)
@@ -161,7 +130,7 @@ namespace CodingTracker.View.Forms.Containers
             mainPageForm.TopLevel = false;
             mainPageForm.Dock = DockStyle.Fill;
 
-            UpdateAllControlLocationsInChildForm(mainPageForm);
+
             mainContentPanel.Controls.Add(mainPageForm);
             mainPageForm.Anchor = AnchorStyles.Left;
             mainPageForm.BringToFront();

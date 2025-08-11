@@ -285,8 +285,6 @@ namespace CodingTracker.View
             loginButton.Text = "Login";
             loginButton.UseTransparentBackground = true;
             loginButton.Click += LoginButton_Click;
-            loginButton.MouseEnter += LoginButton_MouseEnter;
-            loginButton.MouseLeave += LoginButton_MouseLeave;
             // 
             // createAccountButton
             // 
@@ -308,7 +306,7 @@ namespace CodingTracker.View
             createAccountButton.Size = new Size(258, 36);
             createAccountButton.TabIndex = 29;
             createAccountButton.Text = "Create Account";
-            createAccountButton.Click += NewForgotPasswordButton_Click;
+            createAccountButton.Click += CreateAccountButton_Click;
             // 
             // forgotPasswordButton
             // 
@@ -326,8 +324,8 @@ namespace CodingTracker.View
             forgotPasswordButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
             forgotPasswordButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             forgotPasswordButton.EnableHoverRipple = true;
-            forgotPasswordButton.FillColor = Color.FromArgb(35, 34, 50);
-            forgotPasswordButton.FillColor2 = Color.FromArgb(35, 34, 50);
+            forgotPasswordButton.FillColor = Color.FromArgb(26, 26, 46);
+            forgotPasswordButton.FillColor2 = Color.FromArgb(26, 26, 46);
             forgotPasswordButton.Font = new Font("Segoe UI", 9F);
             forgotPasswordButton.ForeColor = Color.FromArgb(255, 200, 230);
             forgotPasswordButton.Location = new Point(196, 291);
@@ -336,9 +334,7 @@ namespace CodingTracker.View
             forgotPasswordButton.Size = new Size(158, 23);
             forgotPasswordButton.TabIndex = 28;
             forgotPasswordButton.Text = "Forgot password?";
-            forgotPasswordButton.Click += NewCreateAccountButton_Click;
-            forgotPasswordButton.MouseEnter += CreateAccountButton_MouseEnter;
-            forgotPasswordButton.MouseLeave += CreateAccountButton_MouseLeave;
+            forgotPasswordButton.Click += ForgotPasswordButton_Click;
             // 
             // guna2Transition1
             // 
@@ -407,7 +403,7 @@ namespace CodingTracker.View
             // 
             // iconPictureBox1
             // 
-            iconPictureBox1.BackColor = Color.FromArgb(35, 34, 50);
+            iconPictureBox1.BackColor = Color.FromArgb(26, 26, 46);
             guna2Transition1.SetDecoration(iconPictureBox1, Guna.UI2.AnimatorNS.DecorationType.None);
             iconPictureBox1.ForeColor = Color.FromArgb(255, 160, 210);
             iconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.CodePullRequest;
@@ -431,7 +427,7 @@ namespace CodingTracker.View
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
+            BackColor = Color.FromArgb(26, 26, 46);
             ClientSize = new Size(1284, 681);
             Controls.Add(iconPictureBox1);
             Controls.Add(guna2HtmlLabel6);

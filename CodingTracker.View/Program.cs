@@ -1,9 +1,11 @@
 using CodingTracker.Business.Authentication.AuthenticationServices;
 using CodingTracker.Business.CodingSessionManagers;
+using CodingTracker.Business.CodingSessionService.AdminModeHandlers;
 using CodingTracker.Business.InputValidators;
 using CodingTracker.Business.MainPageService.PanelColourAssigners;
 using CodingTracker.Common.BusinessInterfaces;
 using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.DataInterfaces;
 using CodingTracker.Common.DataInterfaces.DbContextService;
@@ -142,9 +144,11 @@ namespace CodingTracker.View.Program
                     .AddSingleton<IAnimationCalculator, AnimationCalculator>()
                     .AddSingleton<IAnimatedLogHelper, AnimatedLogHelper>()
                     .AddSingleton<MainContainerForm>()
+                    .AddSingleton<IAdminModeHandler, AdminModeHandler>()
 
                     .AddSingleton<IPathBuilder, PathBuilder>()
                     .AddSingleton<IRectanglePathBuilder, RectanglePathBuilder>()    
+                    .AddSingleton<IInputFormatter, InputFormatter>()
 
                     .AddSingleton<OldMainPage>()
                     .AddTransient<EditSessionPage>()

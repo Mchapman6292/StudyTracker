@@ -57,10 +57,10 @@ namespace CodingTracker.View.PopUpFormService
             timeGoalTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             closeButton = new Guna.UI2.WinForms.Guna2ControlBox();
             minimizeButton = new Guna.UI2.WinForms.Guna2ControlBox();
-            mainPanel = new Guna.UI2.WinForms.Guna2Panel();
+            sessionGoalPageMainPanel = new Guna.UI2.WinForms.Guna2Panel();
             newHomeButton = new FontAwesome.Sharp.IconPictureBox();
             sessionGoalDragControl = new Guna.UI2.WinForms.Guna2DragControl(components);
-            mainPanel.SuspendLayout();
+            sessionGoalPageMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)newHomeButton).BeginInit();
             SuspendLayout();
             // 
@@ -200,29 +200,30 @@ namespace CodingTracker.View.PopUpFormService
             minimizeButton.TabIndex = 2;
             minimizeButton.Click += MinimizeButton_Click;
             // 
-            // mainPanel
+            // sessionGoalPageMainPanel
             // 
-            mainPanel.BorderColor = Color.FromArgb(70, 71, 117);
-            mainPanel.BorderRadius = 12;
-            mainPanel.BorderThickness = 1;
-            mainPanel.Controls.Add(newHomeButton);
-            mainPanel.Controls.Add(minimizeButton);
-            mainPanel.Controls.Add(closeButton);
-            mainPanel.Controls.Add(timeGoalTextBox);
-            mainPanel.Controls.Add(setTimeGoalButton);
-            mainPanel.Controls.Add(skipButton);
-            mainPanel.Controls.Add(formatLabel);
-            mainPanel.Controls.Add(timeDisplayLabel);
-            mainPanel.CustomizableEdges = customizableEdges11;
-            mainPanel.Dock = DockStyle.Fill;
-            mainPanel.FillColor = Color.FromArgb(35, 34, 50);
-            mainPanel.ForeColor = Color.FromArgb(70, 71, 117);
-            mainPanel.Location = new Point(0, 0);
-            mainPanel.Name = "mainPanel";
-            mainPanel.Padding = new Padding(20);
-            mainPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            mainPanel.Size = new Size(400, 280);
-            mainPanel.TabIndex = 0;
+            sessionGoalPageMainPanel.BackColor = Color.FromArgb(26, 26, 46);
+            sessionGoalPageMainPanel.BorderColor = Color.FromArgb(70, 71, 117);
+            sessionGoalPageMainPanel.BorderRadius = 12;
+            sessionGoalPageMainPanel.BorderThickness = 1;
+            sessionGoalPageMainPanel.Controls.Add(newHomeButton);
+            sessionGoalPageMainPanel.Controls.Add(minimizeButton);
+            sessionGoalPageMainPanel.Controls.Add(closeButton);
+            sessionGoalPageMainPanel.Controls.Add(timeGoalTextBox);
+            sessionGoalPageMainPanel.Controls.Add(setTimeGoalButton);
+            sessionGoalPageMainPanel.Controls.Add(skipButton);
+            sessionGoalPageMainPanel.Controls.Add(formatLabel);
+            sessionGoalPageMainPanel.Controls.Add(timeDisplayLabel);
+            sessionGoalPageMainPanel.CustomizableEdges = customizableEdges11;
+            sessionGoalPageMainPanel.Dock = DockStyle.Fill;
+            sessionGoalPageMainPanel.FillColor = Color.FromArgb(26, 26, 46);
+            sessionGoalPageMainPanel.ForeColor = Color.FromArgb(26, 26, 46);
+            sessionGoalPageMainPanel.Location = new Point(0, 0);
+            sessionGoalPageMainPanel.Name = "sessionGoalPageMainPanel";
+            sessionGoalPageMainPanel.Padding = new Padding(20);
+            sessionGoalPageMainPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            sessionGoalPageMainPanel.Size = new Size(400, 280);
+            sessionGoalPageMainPanel.TabIndex = 0;
             // 
             // newHomeButton
             // 
@@ -244,23 +245,23 @@ namespace CodingTracker.View.PopUpFormService
             // sessionGoalDragControl
             // 
             sessionGoalDragControl.DockIndicatorTransparencyValue = 0.6D;
-            sessionGoalDragControl.TargetControl = mainPanel;
+            sessionGoalDragControl.TargetControl = sessionGoalPageMainPanel;
             sessionGoalDragControl.UseTransparentDrag = true;
             // 
             // SessionGoalPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(35, 34, 50);
+            BackColor = Color.FromArgb(26, 26, 46);
             ClientSize = new Size(400, 280);
-            Controls.Add(mainPanel);
+            Controls.Add(sessionGoalPageMainPanel);
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.None;
             Name = "SessionGoalPage";
-            StartPosition = FormStartPosition.CenterParent;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Session Goal";
             Load += SessionGoalPage_Load;
-            mainPanel.ResumeLayout(false);
+            sessionGoalPageMainPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)newHomeButton).EndInit();
             ResumeLayout(false);
         }
@@ -269,7 +270,7 @@ namespace CodingTracker.View.PopUpFormService
         private Guna.UI2.WinForms.Guna2AnimateWindow gunaAnimationWindow;
         private Guna.UI2.WinForms.Guna2HtmlLabel formatLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel timeDisplayLabel;
-        private Guna.UI2.WinForms.Guna2Panel mainPanel;
+        private Guna.UI2.WinForms.Guna2Panel sessionGoalPageMainPanel;
         private Guna.UI2.WinForms.Guna2ControlBox minimizeButton;
         private Guna.UI2.WinForms.Guna2ControlBox closeButton;
         private Guna.UI2.WinForms.Guna2TextBox timeGoalTextBox;

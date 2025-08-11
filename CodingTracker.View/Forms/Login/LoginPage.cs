@@ -1,4 +1,5 @@
 ﻿using CodingTracker.Common.BusinessInterfaces.Authentication;
+using CodingTracker.Common.BusinessInterfaces.CodingSessionService;
 using CodingTracker.Common.BusinessInterfaces.CodingSessionService.ICodingSessionManagers;
 using CodingTracker.Common.Entities.UserCredentialEntities;
 using CodingTracker.Common.LoggingInterfaces;
@@ -23,10 +24,12 @@ namespace CodingTracker.View
         private readonly IButtonHighlighterService _buttonHighlighterService;
         private readonly IExitFlowManager _exitFlowManager;
         private readonly INotificationManager _notificationManager;
+        private readonly IAdminModeHandler _adminModeHandler;
+
         private LibVLC _libVLC;
         private VideoView _videoView;
 
-        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager)
+        public LoginPage(IAuthenticationService authenticationService, IApplicationLogger applogger, IFormManager formController, IFormNavigator formSwitcher, ICodingSessionManager codingSessionManager, IFormFactory formFactory, IFormStateManagement formStateManagement, IButtonHighlighterService buttonHighlighterService, IExitFlowManager buttonNotificationManager, INotificationManager notificationManager, IAdminModeHandler adminModeHandler)
         {
             _authenticationService = authenticationService;
             _appLogger = applogger;
@@ -38,6 +41,8 @@ namespace CodingTracker.View
             _buttonHighlighterService = buttonHighlighterService;
             _exitFlowManager = buttonNotificationManager;
             _notificationManager = notificationManager;
+            _adminModeHandler = adminModeHandler;
+
             this.FormBorderStyle = FormBorderStyle.None;
             InitializeComponent();
             InitializeVLCPlayer();
@@ -48,15 +53,12 @@ namespace CodingTracker.View
             LoginPagePasswordTextbox.Enter += LoginPagePasswordTextbox_Enter;
             LoginPagePasswordTextbox.Leave += LoginPagePasswordTextbox_Leave;
 
-            // Set up button events
-            createAccountButton.MouseEnter += NewForgotPasswordButton_MouseEnter;
-            createAccountButton.MouseLeave += NewForgotPasswordButton_MouseLeave;
+
 
 
 
             // Load saved settings
             rememberMeToggle.Checked = Properties.Settings.Default.RememberMe;
-            rememberMeToggle.CheckedChanged += RememberMeToggle_Checked;
             LoadSavedCredentials();
 
             // Set the _currentForm property in FormStateManagement to ensure that loginPage will be hidden when the forms are swapped. 
@@ -103,6 +105,7 @@ namespace CodingTracker.View
                 var media = new Media(_libVLC, new Uri(videoFilePath));
                 media.AddOption("input-repeat=65535");
                 _videoView.MediaPlayer.Play(media);
+                _videoView.MediaPlayer.AspectRatio = $"{_videoView.Width}:{_videoView.Height}";
                 _videoView.MediaPlayer.Scale = 0;
                 _appLogger.Info($"VLC player loaded video from {videoFilePath}");
             }
@@ -199,33 +202,7 @@ namespace CodingTracker.View
 
 
 
-        private void NewForgotPasswordButton_MouseEnter(object sender, EventArgs e)
-        {
-        }
-
-        private void NewForgotPasswordButton_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoginButton_MouseEnter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void LoginButton_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_MouseEnter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CreateAccountButton_MouseLeave(object sender, EventArgs e)
-        {
-        }
+  
 
         #endregion
 
@@ -248,13 +225,17 @@ namespace CodingTracker.View
 
                 if (isValidLogin)
                 {
-                    UserCredentialEntity userCredential = await _authenticationService.ReturnUserCredential(username);
-
-                    _codingSessionManager.SetCurrentUserIdPlaceholder(userCredential.UserId);
-
+                    UserCredentialEntity currentUserCredential = await _authenticationService.ReturnUserCredential(username);
+                    _codingSessionManager.SetCurrentUserIdPlaceholder(currentUserCredential.UserId);
                     SaveUsernameForNextLogin(username);
 
-                    _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
+                    if (_adminModeHandler.IsAdminUserCredential(currentUserCredential))
+                    {
+                        _adminModeHandler.UpdateAdminModeEnabled(true);
+                        _appLogger.Debug($"Login credentials match admin login, updating admin mode to true");
+                    }
+
+                        _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
                 }
                 if(!isValidLogin) 
                 {
@@ -279,12 +260,12 @@ namespace CodingTracker.View
          var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
         _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
         */
-        private void NewCreateAccountButton_Click(object sender, EventArgs e)
+        private void ForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
         }
 
-        private void NewForgotPasswordButton_Click(object sender, EventArgs e)
+        private void CreateAccountButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.CreateAccountForm);
             _formStateManagement.UpdateAccountCreatedCallBack(AccountCreatedSuccessfully);
@@ -295,22 +276,7 @@ namespace CodingTracker.View
             _exitFlowManager.ExitCodingTracker();
         }
 
-        private void RememberMeToggle_Checked(object sender, EventArgs e)
-        {
-            if (rememberMeToggle.Checked)
-            {
-                rememberMeTextBox.ForeColor = SystemColors.ControlLightLight;
-            }
-            else
-            {
-                rememberMeTextBox.ForeColor = Color.FromArgb(120, 120, 130);
-            }
-        }
 
-        /*
-                  rememberMeToggle.UncheckedState.FillColor = Color.FromArgb(50, 50, 60);
-            rememberMeToggle.UncheckedState.InnerColor = Color.FromArgb(120, 120, 130);
-        */
 
         #endregion
 

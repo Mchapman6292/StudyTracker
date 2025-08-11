@@ -127,6 +127,32 @@ namespace CodingTracker.Data.Repositories.CodingSessionRepositories
                 .ToListAsync();
         }
 
+
+
+        public async Task<List<CodingSessionEntity>> TESTGetSessionBySessionSortCriteriaAsync(int numberOfSessions, SessionSortCriteria? sortBy, int userId)
+        {
+            IQueryable<CodingSessionEntity> query = _dbContext.CodingSessions;
+
+            query = sortBy switch
+            {
+                SessionSortCriteria.StudyProject => query.OrderByDescending(s => s.StudyProject),
+                SessionSortCriteria.Duration => query.OrderByDescending(s => s.DurationHHMM),
+                SessionSortCriteria.StartDate => query.OrderByDescending(s => s.StartDateUTC),
+                SessionSortCriteria.StartTime => query.OrderByDescending(s => s.StartDateUTC),
+                SessionSortCriteria.EndDate => query.OrderByDescending(s => s.EndDateUTC),
+                SessionSortCriteria.EndTime => query.OrderByDescending(s => s.EndDateUTC),
+                SessionSortCriteria.None => query.OrderByDescending(s => s.StartDateUTC),
+                _ => query.OrderByDescending(s => s.StartDateUTC)  // Fallback
+            };
+
+            return await query
+                .Take(numberOfSessions)
+                .Where(s => s.UserId == userId)
+                .ToListAsync();
+        }
+
+
+
         public async Task<List<CodingSessionEntity>> GetSessionsForLastDaysAsync(int numberOfDays)
         {
             DateOnly targetDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-numberOfDays));

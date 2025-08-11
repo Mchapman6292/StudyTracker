@@ -77,5 +77,10 @@ namespace CodingTracker.View.LoginPageService
         {
 
         }
+
+        private void resetPasswordFormHomeButton_Click(object sender, EventArgs e)
+        {
+            _formNavigator.SwitchToForm(FormPageEnum.LoginPage);
+        }
     }
 }

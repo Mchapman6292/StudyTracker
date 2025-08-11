@@ -57,6 +57,18 @@ namespace CodingTracker.View.PopUpFormService
         }
 
 
+        private void SkipButton_Click(object sender, EventArgs e)
+        {
+            HandleSkipButton();
+        }
+
+        public void HandleSkipButton()
+        {
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(0, false);
+            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+        }
+
+
 
         /// Updates real-time input to update a display label as the user types, e.g 130 = 1 hours, 30 minutes.
         /// <param name="timeGoalTextBoxText">The text from timeDisplayLabel.</param>
@@ -106,17 +118,35 @@ namespace CodingTracker.View.PopUpFormService
         }
 
 
+        private void SetTimeGoalButton_Click(object sender, EventArgs e)
+        {
+            string timeInputString = timeGoalTextBox.Text;
+            int sessionGoalSeconds = ConvertHHMMStringToDurationSeconds(timeInputString);
+
+            bool valid = false;
+            List<string> errorMessages = new List<string>();
+
+            _appLogger.Debug($"SetTimeGoalButton pressed:TimeInputString: {timeInputString}, sessionGoalSecondsInt: {sessionGoalSeconds}");
+            DateTime startTime = DateTime.Now;
 
 
+            _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
 
+            if (!ValidateTimeFormat(out valid, out errorMessages, timeInputString))
+            {
+                _notificationManager.ShowDialogWithMultipleMessages(this, errorMessages);
+                timeGoalTextBox.Text = string.Empty;
+                return;
+            }
+
+            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, true);
+            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
+        }
 
         private void UpdateTimeDisplayLabel(string displayText)
         {
             timeDisplayLabel.Text = displayText;
         }
-
-
-
 
         private void TimeGoalTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -135,7 +165,6 @@ namespace CodingTracker.View.PopUpFormService
             UpdateTimeDisplayLabel(displayText);
 
         }
-
 
 
 
@@ -165,30 +194,6 @@ namespace CodingTracker.View.PopUpFormService
             return true;
         }
 
-        private void SetTimeGoalButton_Click(object sender, EventArgs e)
-        {
-            string timeInputString = timeGoalTextBox.Text;
-            int sessionGoalSeconds = ConvertHHMMStringToDurationSeconds(timeInputString);
-
-            bool valid = false;
-            List<string> errorMessages = new List<string>();
-
-            _appLogger.Debug($"SetTimeGoalButton pressed:TimeInputString: {timeInputString}, sessionGoalSecondsInt: {sessionGoalSeconds}");
-            DateTime startTime = DateTime.Now;
-
-
-            _appLogger.Debug($"Time string extraced from text box: {timeInputString}");
-
-            if (!ValidateTimeFormat(out valid, out errorMessages, timeInputString))
-            {
-                _notificationManager.ShowDialogWithMultipleMessages(this, errorMessages);
-                timeGoalTextBox.Text = string.Empty;
-                return;
-            }
-
-            _codingSessionManager.InitializeCodingSessionAndSetGoal(sessionGoalSeconds, true);
-            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
-        }
 
 
         public int ConvertHHMMStringToDurationSeconds(string timeInputString)
@@ -241,10 +246,7 @@ namespace CodingTracker.View.PopUpFormService
         }
 
 
-        private void SkipButton_Click(object sender, EventArgs e)
-        {
-            HandleSkipButton();
-        }
+    
 
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
@@ -267,13 +269,7 @@ namespace CodingTracker.View.PopUpFormService
             _exitFlowManager.HandleExitRequestAndStopSession(sender, e, this);
         }
 
-        public void HandleSkipButton()
-        {
-
-            _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
-
-        }
-
+  
         private void newHomeButton_Click(object sender, EventArgs e)
         {
             _formNavigator.SwitchToForm(FormPageEnum.MainContainerForm);
