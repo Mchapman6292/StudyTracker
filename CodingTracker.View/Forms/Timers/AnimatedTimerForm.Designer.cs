@@ -39,8 +39,14 @@ namespace CodingTracker.View.Forms
             components = new System.ComponentModel.Container();
             CustomizableEdges customizableEdges17 = new CustomizableEdges();
             CustomizableEdges customizableEdges18 = new CustomizableEdges();
+            CustomizableEdges customizableEdges1 = new CustomizableEdges();
+            CustomizableEdges customizableEdges2 = new CustomizableEdges();
+            CustomizableEdges customizableEdges3 = new CustomizableEdges();
+            CustomizableEdges customizableEdges4 = new CustomizableEdges();
             CustomizableEdges customizableEdges5 = new CustomizableEdges();
             CustomizableEdges customizableEdges6 = new CustomizableEdges();
+            CustomizableEdges customizableEdges7 = new CustomizableEdges();
+            CustomizableEdges customizableEdges8 = new CustomizableEdges();
             CustomizableEdges customizableEdges9 = new CustomizableEdges();
             CustomizableEdges customizableEdges10 = new CustomizableEdges();
             CustomizableEdges customizableEdges11 = new CustomizableEdges();
@@ -49,15 +55,12 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges14 = new CustomizableEdges();
             CustomizableEdges customizableEdges15 = new CustomizableEdges();
             CustomizableEdges customizableEdges16 = new CustomizableEdges();
-            CustomizableEdges customizableEdges1 = new CustomizableEdges();
-            CustomizableEdges customizableEdges2 = new CustomizableEdges();
-            CustomizableEdges customizableEdges3 = new CustomizableEdges();
-            CustomizableEdges customizableEdges4 = new CustomizableEdges();
-            CustomizableEdges customizableEdges7 = new CustomizableEdges();
-            CustomizableEdges customizableEdges8 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2GradientPanel();
+            pauseButton = new CustomGradientButton();
+            restartButton = new CustomGradientButton();
             elapsedTestToggleSwitch = new Guna2ToggleSwitch();
+            stopButton = new CustomGradientButton();
             elapsedTestTextBox = new Guna2TextBox();
             nameDisplayTextBox = new Guna2TextBox();
             codingTrackerSymbol = new FontAwesome.Sharp.IconPictureBox();
@@ -65,13 +68,13 @@ namespace CodingTracker.View.Forms
             homeButton = new FontAwesome.Sharp.IconPictureBox();
             minimizeButton = new Guna2ControlBox();
             exitButton = new Guna2ControlBox();
-            pauseButton = new CustomGradientButton();
-            restartButton = new CustomGradientButton();
-            stopButton = new CustomGradientButton();
             timeDisplayLabel = new Guna2HtmlLabel();
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             animatedTimerFormDragControl = new Guna2DragControl(components);
+            guna2HtmlLabel1 = new Guna2HtmlLabel();
+            guna2HtmlLabel2 = new Guna2HtmlLabel();
+            guna2HtmlLabel3 = new Guna2HtmlLabel();
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)codingTrackerSymbol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
@@ -90,6 +93,9 @@ namespace CodingTracker.View.Forms
             mainPanel.BackColor = Color.Transparent;
             mainPanel.BorderColor = Color.FromArgb(225, 225, 225);
             mainPanel.BorderRadius = 12;
+            mainPanel.Controls.Add(guna2HtmlLabel3);
+            mainPanel.Controls.Add(guna2HtmlLabel2);
+            mainPanel.Controls.Add(guna2HtmlLabel1);
             mainPanel.Controls.Add(pauseButton);
             mainPanel.Controls.Add(restartButton);
             mainPanel.Controls.Add(elapsedTestToggleSwitch);
@@ -113,8 +119,67 @@ namespace CodingTracker.View.Forms
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
-            mainPanel.Size = new Size(511, 749);
+            mainPanel.Size = new Size(511, 800);
             mainPanel.TabIndex = 0;
+            // 
+            // pauseButton
+            // 
+            pauseButton.Animated = true;
+            pauseButton.BackColor = Color.Transparent;
+            pauseButton.BorderColor = Color.FromArgb(170, 60, 130);
+            pauseButton.BorderRadius = 25;
+            pauseButton.CustomizableEdges = customizableEdges1;
+            pauseButton.DisabledState.BorderColor = Color.DarkGray;
+            pauseButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            pauseButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            pauseButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            pauseButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            pauseButton.EnableHoverRipple = true;
+            pauseButton.FillColor = Color.FromArgb(255, 81, 195);
+            pauseButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            pauseButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            pauseButton.ForeColor = Color.White;
+            pauseButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            pauseButton.Location = new Point(87, 738);
+            pauseButton.Name = "pauseButton";
+            pauseButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
+            pauseButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            pauseButton.ShadowDecoration.Depth = 5;
+            pauseButton.ShadowDecoration.Enabled = true;
+            pauseButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
+            pauseButton.Size = new Size(50, 50);
+            pauseButton.TabIndex = 5;
+            pauseButton.Text = "⏸";
+            pauseButton.TextOffset = new Point(3, 0);
+            // 
+            // restartButton
+            // 
+            restartButton.Animated = true;
+            restartButton.BackColor = Color.Transparent;
+            restartButton.BorderRadius = 25;
+            restartButton.CustomizableEdges = customizableEdges3;
+            restartButton.DisabledState.BorderColor = Color.DarkGray;
+            restartButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            restartButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            restartButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            restartButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            restartButton.EnableHoverRipple = true;
+            restartButton.FillColor = Color.FromArgb(255, 81, 195);
+            restartButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            restartButton.Font = new Font("Segoe UI", 26F);
+            restartButton.ForeColor = Color.White;
+            restartButton.Location = new Point(187, 738);
+            restartButton.Name = "restartButton";
+            restartButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
+            restartButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            restartButton.ShadowDecoration.Depth = 5;
+            restartButton.ShadowDecoration.Enabled = true;
+            restartButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
+            restartButton.Size = new Size(50, 50);
+            restartButton.TabIndex = 7;
+            restartButton.Text = "⟳";
+            restartButton.TextOffset = new Point(3, -5);
+            restartButton.Click += RestartButton_Click;
             // 
             // elapsedTestToggleSwitch
             // 
@@ -132,6 +197,35 @@ namespace CodingTracker.View.Forms
             elapsedTestToggleSwitch.UncheckedState.FillColor = Color.FromArgb(125, 137, 149);
             elapsedTestToggleSwitch.UncheckedState.InnerBorderColor = Color.White;
             elapsedTestToggleSwitch.UncheckedState.InnerColor = Color.White;
+            // 
+            // stopButton
+            // 
+            stopButton.Animated = true;
+            stopButton.BackColor = Color.Transparent;
+            stopButton.BorderColor = Color.FromArgb(170, 60, 130);
+            stopButton.BorderRadius = 25;
+            stopButton.CustomizableEdges = customizableEdges7;
+            stopButton.DisabledState.BorderColor = Color.DarkGray;
+            stopButton.DisabledState.CustomBorderColor = Color.DarkGray;
+            stopButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            stopButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
+            stopButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            stopButton.EnableHoverRipple = true;
+            stopButton.FillColor = Color.FromArgb(255, 81, 195);
+            stopButton.FillColor2 = Color.FromArgb(168, 228, 255);
+            stopButton.Font = new Font("Segoe UI", 20F);
+            stopButton.ForeColor = Color.White;
+            stopButton.Location = new Point(287, 738);
+            stopButton.Name = "stopButton";
+            stopButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
+            stopButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            stopButton.ShadowDecoration.Depth = 5;
+            stopButton.ShadowDecoration.Enabled = true;
+            stopButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
+            stopButton.Size = new Size(50, 50);
+            stopButton.TabIndex = 8;
+            stopButton.Text = "■";
+            stopButton.TextOffset = new Point(2, -2);
             // 
             // elapsedTestTextBox
             // 
@@ -254,94 +348,6 @@ namespace CodingTracker.View.Forms
             exitButton.TabIndex = 27;
             exitButton.Click += ExitButton_Click;
             // 
-            // pauseButton
-            // 
-            pauseButton.Animated = true;
-            pauseButton.BackColor = Color.Transparent;
-            pauseButton.BorderColor = Color.FromArgb(170, 60, 130);
-            pauseButton.BorderRadius = 25;
-            pauseButton.CustomizableEdges = customizableEdges1;
-            pauseButton.DisabledState.BorderColor = Color.DarkGray;
-            pauseButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            pauseButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            pauseButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            pauseButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            pauseButton.EnableHoverRipple = true;
-            pauseButton.FillColor = Color.FromArgb(255, 81, 195);
-            pauseButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            pauseButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pauseButton.ForeColor = Color.White;
-            pauseButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
-            pauseButton.Location = new Point(97, 687);
-            pauseButton.Name = "pauseButton";
-            pauseButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
-            pauseButton.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            pauseButton.ShadowDecoration.Depth = 5;
-            pauseButton.ShadowDecoration.Enabled = true;
-            pauseButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            pauseButton.Size = new Size(50, 50);
-            pauseButton.TabIndex = 5;
-            pauseButton.Text = "⏸";
-            pauseButton.TextOffset = new Point(3, 0);
-            // 
-            // restartButton
-            // 
-            restartButton.Animated = true;
-            restartButton.BackColor = Color.Transparent;
-            restartButton.BorderRadius = 25;
-            restartButton.CustomizableEdges = customizableEdges3;
-            restartButton.DisabledState.BorderColor = Color.DarkGray;
-            restartButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            restartButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            restartButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            restartButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            restartButton.EnableHoverRipple = true;
-            restartButton.FillColor = Color.FromArgb(255, 81, 195);
-            restartButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            restartButton.Font = new Font("Segoe UI", 26F);
-            restartButton.ForeColor = Color.White;
-            restartButton.Location = new Point(197, 687);
-            restartButton.Name = "restartButton";
-            restartButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
-            restartButton.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            restartButton.ShadowDecoration.Depth = 5;
-            restartButton.ShadowDecoration.Enabled = true;
-            restartButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            restartButton.Size = new Size(50, 50);
-            restartButton.TabIndex = 7;
-            restartButton.Text = "⟳";
-            restartButton.TextOffset = new Point(3, -5);
-            restartButton.Click += RestartButton_Click;
-            // 
-            // stopButton
-            // 
-            stopButton.Animated = true;
-            stopButton.BackColor = Color.Transparent;
-            stopButton.BorderColor = Color.FromArgb(170, 60, 130);
-            stopButton.BorderRadius = 25;
-            stopButton.CustomizableEdges = customizableEdges7;
-            stopButton.DisabledState.BorderColor = Color.DarkGray;
-            stopButton.DisabledState.CustomBorderColor = Color.DarkGray;
-            stopButton.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            stopButton.DisabledState.FillColor2 = Color.FromArgb(169, 169, 169);
-            stopButton.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            stopButton.EnableHoverRipple = true;
-            stopButton.FillColor = Color.FromArgb(255, 81, 195);
-            stopButton.FillColor2 = Color.FromArgb(168, 228, 255);
-            stopButton.Font = new Font("Segoe UI", 20F);
-            stopButton.ForeColor = Color.White;
-            stopButton.Location = new Point(297, 687);
-            stopButton.Name = "stopButton";
-            stopButton.ShadowDecoration.Color = Color.FromArgb(0, 0, 0, 40);
-            stopButton.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            stopButton.ShadowDecoration.Depth = 5;
-            stopButton.ShadowDecoration.Enabled = true;
-            stopButton.ShadowDecoration.Shadow = new Padding(0, 0, 3, 3);
-            stopButton.Size = new Size(50, 50);
-            stopButton.TabIndex = 8;
-            stopButton.Text = "■";
-            stopButton.TextOffset = new Point(2, -2);
-            // 
             // timeDisplayLabel
             // 
             timeDisplayLabel.BackColor = Color.Transparent;
@@ -358,9 +364,9 @@ namespace CodingTracker.View.Forms
             // 
             animatedTimerSKControl.BackColor = Color.FromArgb(26, 26, 46);
             animatedTimerSKControl.ForeColor = Color.FromArgb(50, 49, 65);
-            animatedTimerSKControl.Location = new Point(27, 73);
+            animatedTimerSKControl.Location = new Point(12, 77);
             animatedTimerSKControl.Name = "animatedTimerSKControl";
-            animatedTimerSKControl.Size = new Size(448, 608);
+            animatedTimerSKControl.Size = new Size(448, 655);
             animatedTimerSKControl.TabIndex = 0;
             // 
             // animatedTimerFormDragControl
@@ -369,12 +375,48 @@ namespace CodingTracker.View.Forms
             animatedTimerFormDragControl.TargetControl = mainPanel;
             animatedTimerFormDragControl.UseTransparentDrag = true;
             // 
+            // guna2HtmlLabel1
+            // 
+            guna2HtmlLabel1.BackColor = Color.Transparent;
+            guna2HtmlLabel1.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel1.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel1.Location = new Point(330, 152);
+            guna2HtmlLabel1.Name = "guna2HtmlLabel1";
+            guna2HtmlLabel1.Size = new Size(52, 19);
+            guna2HtmlLabel1.TabIndex = 53;
+            guna2HtmlLabel1.Text = "Seconds";
+            guna2HtmlLabel1.TextAlignment = ContentAlignment.TopCenter;
+            // 
+            // guna2HtmlLabel2
+            // 
+            guna2HtmlLabel2.BackColor = Color.Transparent;
+            guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel2.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel2.Location = new Point(201, 152);
+            guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            guna2HtmlLabel2.Size = new Size(49, 19);
+            guna2HtmlLabel2.TabIndex = 54;
+            guna2HtmlLabel2.Text = "Minutes";
+            guna2HtmlLabel2.TextAlignment = ContentAlignment.TopCenter;
+            // 
+            // guna2HtmlLabel3
+            // 
+            guna2HtmlLabel3.BackColor = Color.Transparent;
+            guna2HtmlLabel3.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel3.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel3.Location = new Point(68, 152);
+            guna2HtmlLabel3.Name = "guna2HtmlLabel3";
+            guna2HtmlLabel3.Size = new Size(38, 19);
+            guna2HtmlLabel3.TabIndex = 55;
+            guna2HtmlLabel3.Text = "Hours";
+            guna2HtmlLabel3.TextAlignment = ContentAlignment.TopCenter;
+            // 
             // AnimatedTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(511, 749);
+            ClientSize = new Size(511, 800);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "AnimatedTimerForm";
@@ -407,5 +449,8 @@ namespace CodingTracker.View.Forms
         private Guna2DragControl animatedTimerFormDragControl;
         private Guna2ToggleSwitch elapsedTestToggleSwitch;
         private Guna2TextBox elapsedTestTextBox;
+        private Guna2HtmlLabel guna2HtmlLabel1;
+        private Guna2HtmlLabel guna2HtmlLabel3;
+        private Guna2HtmlLabel guna2HtmlLabel2;
     }
 }

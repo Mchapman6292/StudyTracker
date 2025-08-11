@@ -262,7 +262,7 @@ namespace CodingTracker.View
         */
         private void ForgotPasswordButton_Click(object sender, EventArgs e)
         {
-            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.ConfirmUsernameForm);
+            var createAccountPage = _formNavigator.SwitchToForm(FormPageEnum.AnimatedTimerForm);
         }
 
         private void CreateAccountButton_Click(object sender, EventArgs e)

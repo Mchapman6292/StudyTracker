@@ -49,6 +49,7 @@
             secondsSinglePanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             minutesSinglePanel = new Guna.UI2.WinForms.Guna2GradientPanel();
             hoursLeadingPanel = new Guna.UI2.WinForms.Guna2GradientPanel();
+            animatedTimerPageSecondsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             placeHolderpanelForSkControl.SuspendLayout();
             SuspendLayout();
             // 
@@ -66,7 +67,7 @@
             placeHolderpanelForSkControl.Location = new Point(27, 74);
             placeHolderpanelForSkControl.Name = "placeHolderpanelForSkControl";
             placeHolderpanelForSkControl.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            placeHolderpanelForSkControl.Size = new Size(448, 590);
+            placeHolderpanelForSkControl.Size = new Size(448, 623);
             placeHolderpanelForSkControl.TabIndex = 30;
             // 
             // hoursSinglePanel
@@ -129,12 +130,25 @@
             hoursLeadingPanel.Size = new Size(25, 300);
             hoursLeadingPanel.TabIndex = 16;
             // 
+            // animatedTimerPageSecondsLabel
+            // 
+            animatedTimerPageSecondsLabel.BackColor = Color.Transparent;
+            animatedTimerPageSecondsLabel.Font = new Font("Segoe UI", 8F);
+            animatedTimerPageSecondsLabel.ForeColor = Color.FromArgb(166, 147, 167);
+            animatedTimerPageSecondsLabel.Location = new Point(273, 23);
+            animatedTimerPageSecondsLabel.Name = "animatedTimerPageSecondsLabel";
+            animatedTimerPageSecondsLabel.Size = new Size(46, 15);
+            animatedTimerPageSecondsLabel.TabIndex = 56;
+            animatedTimerPageSecondsLabel.Text = "Seconds";
+            animatedTimerPageSecondsLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            // 
             // TimerPlaceHolderForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(511, 749);
+            ClientSize = new Size(511, 800);
+            Controls.Add(animatedTimerPageSecondsLabel);
             Controls.Add(placeHolderpanelForSkControl);
             FormBorderStyle = FormBorderStyle.None;
             Name = "TimerPlaceHolderForm";
@@ -142,6 +156,7 @@
             Text = "bh n";
             placeHolderpanelForSkControl.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -152,5 +167,6 @@
         private Guna.UI2.WinForms.Guna2GradientPanel secondsSinglePanel;
         private Guna.UI2.WinForms.Guna2GradientPanel minutesSinglePanel;
         private Guna.UI2.WinForms.Guna2GradientPanel hoursLeadingPanel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel animatedTimerPageSecondsLabel;
     }
 }
