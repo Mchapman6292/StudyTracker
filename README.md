@@ -1,8 +1,15 @@
-Summary:
-A simple WinForms application to track and visualize study session durations, averages, and related statistics.
+Personalised study tracker with responsive ui, custom animations and credential management.
+
+To run this on a local machine it requires a Guna Ui account, this should appear as a prompt when the app is run and does offer a two week trial per email address without any confirmation codes etc.
+
+The database is kept locally on my personal pc so please do not use any personal passwords if registering for an account, password requirements are less than 15 characters, one upper case & one special char.
+
+Current state is still somewhat buggy with unhandled exceptions popping up now and again but will work on this now and again when I have the time.
 
 Technologies Used:
 
 C# WinForms
 PostgreSQL
 Entity Framework
+SkiaSharp
+
