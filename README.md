@@ -6,7 +6,7 @@ The database is kept locally on my personal pc so please do not use any personal
 
 Current state is still somewhat buggy with unhandled exceptions popping up now and again but will work on this now and again when I have the time.
 
-I've taken a small recording of the timer I've made as this took my far the most effort and has been the hardest thing I have done, with the inspiration coming from reddit of all places - https://www.reddit.com/r/Satisfyingasfuck/comments/1l3ot0l/this_clock_hitting_midnight_is_so_satisfying/ 
+I've taken a small recording of the session timer I've made as this took my far the most effort and has been the hardest thing I have done, with the inspiration coming from reddit of all places - https://www.reddit.com/r/Satisfyingasfuck/comments/1l3ot0l/this_clock_hitting_midnight_is_so_satisfying/ 
 
 
 
