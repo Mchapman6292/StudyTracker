@@ -182,7 +182,7 @@ namespace CodingTracker.View.Forms
                 elapsed = _stopWatchTimerService.ReturnElapsedTimeSpan();
                 elapsedString = LoggerHelper.FormatAllElapsedTimeSpan(elapsed);
             }
-            timeDisplayLabel.Text = elapsedString;
+            elapsedTimeDisplayLabel.Text = elapsedString;
         }
 
 
@@ -352,6 +352,8 @@ namespace CodingTracker.View.Forms
             {
                 elapsedTestTextBox.Visible = false;
                 elapsedTestToggleSwitch.Visible = false;
+                elapsedTimeDisplayLabel.Visible = false;
+                nameDisplayTextBox.Visible = false;
             }
         }
 

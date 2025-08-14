@@ -57,6 +57,9 @@ namespace CodingTracker.View.Forms
             CustomizableEdges customizableEdges16 = new CustomizableEdges();
             borderlessForm = new Guna2BorderlessForm(components);
             mainPanel = new Guna2GradientPanel();
+            guna2HtmlLabel3 = new Guna2HtmlLabel();
+            guna2HtmlLabel2 = new Guna2HtmlLabel();
+            guna2HtmlLabel1 = new Guna2HtmlLabel();
             pauseButton = new CustomGradientButton();
             restartButton = new CustomGradientButton();
             elapsedTestToggleSwitch = new Guna2ToggleSwitch();
@@ -68,13 +71,10 @@ namespace CodingTracker.View.Forms
             homeButton = new FontAwesome.Sharp.IconPictureBox();
             minimizeButton = new Guna2ControlBox();
             exitButton = new Guna2ControlBox();
-            timeDisplayLabel = new Guna2HtmlLabel();
+            elapsedTimeDisplayLabel = new Guna2HtmlLabel();
             animatedTimerSKControl = new SKControl();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             animatedTimerFormDragControl = new Guna2DragControl(components);
-            guna2HtmlLabel1 = new Guna2HtmlLabel();
-            guna2HtmlLabel2 = new Guna2HtmlLabel();
-            guna2HtmlLabel3 = new Guna2HtmlLabel();
             mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)codingTrackerSymbol).BeginInit();
             ((System.ComponentModel.ISupportInitialize)homeButton).BeginInit();
@@ -107,7 +107,7 @@ namespace CodingTracker.View.Forms
             mainPanel.Controls.Add(homeButton);
             mainPanel.Controls.Add(minimizeButton);
             mainPanel.Controls.Add(exitButton);
-            mainPanel.Controls.Add(timeDisplayLabel);
+            mainPanel.Controls.Add(elapsedTimeDisplayLabel);
             mainPanel.Controls.Add(animatedTimerSKControl);
             mainPanel.CustomizableEdges = customizableEdges17;
             mainPanel.FillColor = Color.FromArgb(26, 26, 46);
@@ -119,8 +119,44 @@ namespace CodingTracker.View.Forms
             mainPanel.ShadowDecoration.Depth = 20;
             mainPanel.ShadowDecoration.Enabled = true;
             mainPanel.ShadowDecoration.Shadow = new Padding(3, 3, 7, 7);
-            mainPanel.Size = new Size(511, 800);
+            mainPanel.Size = new Size(511, 835);
             mainPanel.TabIndex = 0;
+            // 
+            // guna2HtmlLabel3
+            // 
+            guna2HtmlLabel3.BackColor = Color.Transparent;
+            guna2HtmlLabel3.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel3.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel3.Location = new Point(73, 694);
+            guna2HtmlLabel3.Name = "guna2HtmlLabel3";
+            guna2HtmlLabel3.Size = new Size(38, 19);
+            guna2HtmlLabel3.TabIndex = 55;
+            guna2HtmlLabel3.Text = "Hours";
+            guna2HtmlLabel3.TextAlignment = ContentAlignment.TopCenter;
+            // 
+            // guna2HtmlLabel2
+            // 
+            guna2HtmlLabel2.BackColor = Color.Transparent;
+            guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel2.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel2.Location = new Point(205, 694);
+            guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            guna2HtmlLabel2.Size = new Size(49, 19);
+            guna2HtmlLabel2.TabIndex = 54;
+            guna2HtmlLabel2.Text = "Minutes";
+            guna2HtmlLabel2.TextAlignment = ContentAlignment.TopCenter;
+            // 
+            // guna2HtmlLabel1
+            // 
+            guna2HtmlLabel1.BackColor = Color.Transparent;
+            guna2HtmlLabel1.Font = new Font("Segoe UI", 10F);
+            guna2HtmlLabel1.ForeColor = Color.FromArgb(166, 147, 167);
+            guna2HtmlLabel1.Location = new Point(350, 694);
+            guna2HtmlLabel1.Name = "guna2HtmlLabel1";
+            guna2HtmlLabel1.Size = new Size(52, 19);
+            guna2HtmlLabel1.TabIndex = 53;
+            guna2HtmlLabel1.Text = "Seconds";
+            guna2HtmlLabel1.TextAlignment = ContentAlignment.TopCenter;
             // 
             // pauseButton
             // 
@@ -261,7 +297,7 @@ namespace CodingTracker.View.Forms
             nameDisplayTextBox.Font = new Font("Segoe UI", 10F);
             nameDisplayTextBox.ForeColor = Color.FromArgb(255, 200, 230);
             nameDisplayTextBox.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            nameDisplayTextBox.Location = new Point(201, 36);
+            nameDisplayTextBox.Location = new Point(390, 738);
             nameDisplayTextBox.Margin = new Padding(4, 3, 4, 3);
             nameDisplayTextBox.Name = "nameDisplayTextBox";
             nameDisplayTextBox.PlaceholderText = "";
@@ -292,7 +328,7 @@ namespace CodingTracker.View.Forms
             codingTrackerDisplayLabel.BackColor = Color.Transparent;
             codingTrackerDisplayLabel.Font = new Font("Century Gothic", 16F, FontStyle.Bold);
             codingTrackerDisplayLabel.ForeColor = Color.FromArgb(204, 84, 144);
-            codingTrackerDisplayLabel.Location = new Point(173, 3);
+            codingTrackerDisplayLabel.Location = new Point(177, 3);
             codingTrackerDisplayLabel.Name = "codingTrackerDisplayLabel";
             codingTrackerDisplayLabel.Size = new Size(153, 27);
             codingTrackerDisplayLabel.TabIndex = 48;
@@ -348,25 +384,25 @@ namespace CodingTracker.View.Forms
             exitButton.TabIndex = 27;
             exitButton.Click += ExitButton_Click;
             // 
-            // timeDisplayLabel
+            // elapsedTimeDisplayLabel
             // 
-            timeDisplayLabel.BackColor = Color.Transparent;
-            timeDisplayLabel.Font = new Font("Segoe UI", 13F);
-            timeDisplayLabel.ForeColor = Color.HotPink;
-            timeDisplayLabel.Location = new Point(336, 3);
-            timeDisplayLabel.Name = "timeDisplayLabel";
-            timeDisplayLabel.Size = new Size(46, 25);
-            timeDisplayLabel.TabIndex = 8;
-            timeDisplayLabel.Text = "Timer";
-            timeDisplayLabel.TextAlignment = ContentAlignment.TopCenter;
+            elapsedTimeDisplayLabel.BackColor = Color.Transparent;
+            elapsedTimeDisplayLabel.Font = new Font("Segoe UI", 13F);
+            elapsedTimeDisplayLabel.ForeColor = Color.HotPink;
+            elapsedTimeDisplayLabel.Location = new Point(336, 3);
+            elapsedTimeDisplayLabel.Name = "elapsedTimeDisplayLabel";
+            elapsedTimeDisplayLabel.Size = new Size(46, 25);
+            elapsedTimeDisplayLabel.TabIndex = 8;
+            elapsedTimeDisplayLabel.Text = "Timer";
+            elapsedTimeDisplayLabel.TextAlignment = ContentAlignment.TopCenter;
             // 
             // animatedTimerSKControl
             // 
             animatedTimerSKControl.BackColor = Color.FromArgb(26, 26, 46);
             animatedTimerSKControl.ForeColor = Color.FromArgb(50, 49, 65);
-            animatedTimerSKControl.Location = new Point(12, 77);
+            animatedTimerSKControl.Location = new Point(27, 45);
             animatedTimerSKControl.Name = "animatedTimerSKControl";
-            animatedTimerSKControl.Size = new Size(448, 655);
+            animatedTimerSKControl.Size = new Size(448, 687);
             animatedTimerSKControl.TabIndex = 0;
             // 
             // animatedTimerFormDragControl
@@ -375,48 +411,12 @@ namespace CodingTracker.View.Forms
             animatedTimerFormDragControl.TargetControl = mainPanel;
             animatedTimerFormDragControl.UseTransparentDrag = true;
             // 
-            // guna2HtmlLabel1
-            // 
-            guna2HtmlLabel1.BackColor = Color.Transparent;
-            guna2HtmlLabel1.Font = new Font("Segoe UI", 10F);
-            guna2HtmlLabel1.ForeColor = Color.FromArgb(166, 147, 167);
-            guna2HtmlLabel1.Location = new Point(330, 152);
-            guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(52, 19);
-            guna2HtmlLabel1.TabIndex = 53;
-            guna2HtmlLabel1.Text = "Seconds";
-            guna2HtmlLabel1.TextAlignment = ContentAlignment.TopCenter;
-            // 
-            // guna2HtmlLabel2
-            // 
-            guna2HtmlLabel2.BackColor = Color.Transparent;
-            guna2HtmlLabel2.Font = new Font("Segoe UI", 10F);
-            guna2HtmlLabel2.ForeColor = Color.FromArgb(166, 147, 167);
-            guna2HtmlLabel2.Location = new Point(201, 152);
-            guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(49, 19);
-            guna2HtmlLabel2.TabIndex = 54;
-            guna2HtmlLabel2.Text = "Minutes";
-            guna2HtmlLabel2.TextAlignment = ContentAlignment.TopCenter;
-            // 
-            // guna2HtmlLabel3
-            // 
-            guna2HtmlLabel3.BackColor = Color.Transparent;
-            guna2HtmlLabel3.Font = new Font("Segoe UI", 10F);
-            guna2HtmlLabel3.ForeColor = Color.FromArgb(166, 147, 167);
-            guna2HtmlLabel3.Location = new Point(68, 152);
-            guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(38, 19);
-            guna2HtmlLabel3.TabIndex = 55;
-            guna2HtmlLabel3.Text = "Hours";
-            guna2HtmlLabel3.TextAlignment = ContentAlignment.TopCenter;
-            // 
             // AnimatedTimerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(35, 34, 50);
-            ClientSize = new Size(511, 800);
+            ClientSize = new Size(511, 835);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "AnimatedTimerForm";
@@ -436,7 +436,7 @@ namespace CodingTracker.View.Forms
 
 
         private SKControl animatedTimerSKControl;
-        private Guna2HtmlLabel timeDisplayLabel;
+        private Guna2HtmlLabel elapsedTimeDisplayLabel;
         private CustomGradientButton pauseButton;
         private CustomGradientButton restartButton;
         private CustomGradientButton stopButton;
